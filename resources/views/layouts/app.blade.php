@@ -34,6 +34,12 @@
             font-weight: normal;
             src: local('TT Norms Bold'), url('assets/font/TTNorms-Bold.woff') format('woff');
         }
+        @font-face {
+        font-family: 'TT Norms Regular';
+        font-style: normal;
+        font-weight: normal;
+        src: local('TT Norms Regular'), url('assets/font/TTNorms-Regular.woff') format('woff');
+        }
         
         .nav-link,
         .nav-link:focus {
@@ -48,10 +54,12 @@
             border-radius: 5px;
         }
         
+        
     </style>
 
     {{-- CSS Tambahan Internal --}}
     @yield('css')
+
 </head>
 
 <body>

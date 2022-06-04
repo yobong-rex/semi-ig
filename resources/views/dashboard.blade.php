@@ -4,22 +4,6 @@
 
 @section('content')
     <style>
-        @font-face {
-        font-family: 'TT Norms Regular';
-        font-style: normal;
-        font-weight: normal;
-        src: local('TT Norms Regular'), url('assets/font/TTNorms-Regular.woff') format('woff');
-        }
-        @font-face {
-            font-family: 'TT Norms Bold';
-            font-style: normal;
-            font-weight: normal;
-            src: local('TT Norms Bold'), url('assets/font/TTNorms-Bold.woff') format('woff');
-        }
-        .card-header{
-            background-color:#faf0dc;
-            box-shadow: 0 6px 10px rgba(0,0,0,.08);
-        }
         .heading{
             box-shadow: 0 6px 10px rgba(0,0,0,.08);
             padding:5px;
