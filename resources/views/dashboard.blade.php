@@ -1,24 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Semifinal IG XXX</title>
+@extends('layouts.app')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+@section("title", "Announcements")
 
+@section('content')
     <style>
+        @font-face {
+        font-family: 'TT Norms Regular';
+        font-style: normal;
+        font-weight: normal;
+        src: local('TT Norms Regular'), url('assets/font/TTNorms-Regular.woff') format('woff');
+        }
+        @font-face {
+            font-family: 'TT Norms Bold';
+            font-style: normal;
+            font-weight: normal;
+            src: local('TT Norms Bold'), url('assets/font/TTNorms-Bold.woff') format('woff');
+        }
         .card-header{
             background-color:#faf0dc;
+            box-shadow: 0 6px 10px rgba(0,0,0,.08);
         }
-        .label_dana{}
+        .heading{
+            box-shadow: 0 6px 10px rgba(0,0,0,.08);
+            padding:5px;
+        }
+        .nama_team{
+            color:#ea435e;
+        }
+        .timer{
+            background-color:#77dd77; /* misal waktu habis background jadi #ea435e */
+            width:150px;
+            box-shadow: 0 6px 10px rgba(0,0,0,.08);
+        }
+         
+        
         .dana{
             text-align:right;
         }
         .spacing{
-            margin:20px;
+            margin:15px;
+            padding:10px;
         }
         .col-4{
             background-color:#faf0dc;
@@ -26,26 +47,43 @@
         }
         .kartu_Home{
             background-color:#faf0dc;
+            box-shadow: 0 6px 10px rgba(0,0,0,.08);
         }
     </style>
 
     @php
+        $sesi=1;
         $dana=10000;
-        $namaTeam="Banyak Teamnya";
+        $namaTeam="apapun namanya";
         $sisaInventory=1000;
         $demandTerpenuhi=400;
         $customerValue=0.6;
+        $timer="00:00";
     @endphp
 
-</head>
-<body>
-    <div class="container px-4 py-5">
-        <h2>Team {{$namaTeam}}</h2>
+<body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
+    <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
+        <!-- <div class="text-center timer rounded" style="right:124px;position:fixed;background-color:#77dd77;width:150px;">
+            <h5>Sesi {{$sesi}}</h5>
+            <h3>Timer</h3>
+            <h4>00:00</h4>   
+        </div> -->
+        <div class="row align-items-center rounded heading">
+            <div class="col-10 nama_team">
+                <h1>Team {{$namaTeam}}</h1> 
+            </div>
+            <div class="col-1 text-center align-self-end timer rounded-2"  style="font-family:TT Norms Regular;">
+                <h3>Timer</h3>
+                <h4>{{$timer}}</h4>   
+            </div>
+
+        </div>
+        
         <div class="row spacing"></div>
         <div class="row-12">
             {{--Card Dana--}}
             <div class="card-header rounded">
-                <div class="row">
+                <div class="row align-items-center">
                     <div class="col-1 text-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
   <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"/>
@@ -123,4 +161,4 @@
         </div>
     </div>
 </body>
-</html>
+@endsection

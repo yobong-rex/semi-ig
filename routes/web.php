@@ -14,26 +14,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
-});
+    return view('dashboard');
+})->name('dashboard');
 
 Route::get('/12345678', function () {
     return view ('admin');
-});
+})->name('admin');
 
-Route::view('/permisi','permisi');
-
-Route::get('/test','test@test123')->name('test');
-
-Route::get('/bbb/{a}',function($a){
-    return $a;
-});
-
-Route::get('/aaa/{a?}',function($a='punten'){
-    if($a === 'gopud'){
-        return view('welcome');
-    }
-    else{
-        return 'b';
-    }
-});
+Route::get('/market', function () {
+    return view ('market');
+})->name('market');
