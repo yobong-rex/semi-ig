@@ -13,14 +13,39 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/', function () {
+//     return view('');
+// })->name('');
+
+// Dashboard
 Route::get('/', function () {
-    return view('dashboard');
+    return view('Dashboard/dashboard');
 })->name('dashboard');
 
-Route::get('/12345678', function () {
-    return view ('admin');
+// Sesi Analisis
+Route::get('/admin', function () {
+    return view ('/Sesi Analisis/admin');
 })->name('admin');
 
+Route::get('/analisis', function () {
+    return view ('/Sesi Analisis/analisis');
+})->name('analisis');
+
+// IG Market
 Route::get('/market', function () {
     return view ('market');
 })->name('market');
+
+// Analisis Bahan Baku
+Route::get('/bahan', function () {
+    return view ('/Analisis Bahan Baku/bahan');
+})->name('bahan');
+
+// Mesin
+Route::get('/komponen', function () {
+    return view ('/Mesin/komponen');
+})->name('komponen');
+
+Route::get('/kapasitas', function () {
+    return view ('/Mesin/kapasitas');
+})->name('kapasitas');

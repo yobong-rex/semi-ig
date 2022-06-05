@@ -11,7 +11,7 @@
     {{-- CDN Bootstrap --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
+    
     {{-- CSS Internal --}}
     <style>
         @font-face {
@@ -60,6 +60,17 @@
     {{-- CSS Tambahan Internal --}}
     @yield('css')
 
+    {{-- CDN JQuery --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    {{-- Code JQuery --}}
+    <script>
+        $(document).ready(function() {
+            $("#upgrade_a").click(function(){
+                
+            })
+        })
+    </script>
 </head>
 
 <body>
@@ -77,6 +88,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('market') }}">Market</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route('komponen') }}">Mesin</a>
                     </li>
                 </ul>
             </div>
