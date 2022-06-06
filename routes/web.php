@@ -19,16 +19,16 @@ use Illuminate\Support\Facades\Route;
 
 // Dashboard
 Route::get('/', function () {
-    return view('Dashboard/dashboard');
+    return view('Dashboard.dashboard');
 })->name('dashboard');
 
 // Sesi Analisis
 Route::get('/admin', function () {
-    return view ('/Sesi Analisis/admin');
+    return view ('Sesi Analisis.admin');
 })->name('admin');
 
 Route::get('/analisis', function () {
-    return view ('/Sesi Analisis/analisis');
+    return view ('Sesi Analisis.analisis');
 })->name('analisis');
 
 // IG Market
@@ -38,14 +38,14 @@ Route::get('/market', function () {
 
 // Analisis Bahan Baku
 Route::get('/bahan', function () {
-    return view ('/Analisis Bahan Baku/bahan');
+    return view ('Analisis Bahan Baku.bahan');
 })->name('bahan');
 
 // Mesin
 Route::get('/komponen', function () {
-    return view ('/Mesin/komponen');
+    return view ('Mesin.komponen');
 })->name('komponen');
 
 Route::get('/kapasitas', function () {
-    return view ('/Mesin/kapasitas');
+    return view ('Mesin.kapasitas');
 })->name('kapasitas');
