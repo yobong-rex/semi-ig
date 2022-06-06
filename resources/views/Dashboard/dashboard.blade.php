@@ -33,6 +33,18 @@
             background-color:#faf0dc;
             box-shadow: 0 6px 10px rgba(0,0,0,.08);
         }
+        .inventory{
+            background-color:#ffffff;
+            box-shadow: 0 6px 10px rgba(0,0,0,.08);
+        }
+        .nomor_inventory{
+            width:50px;
+            text-align:center;
+        }
+        .pemenuhan{
+            background-color:#ffffff;
+            box-shadow: 0 6px 10px rgba(0,0,0,.08);
+        }
     </style>
 
     @php
@@ -66,7 +78,7 @@
         <div class="row spacing"></div>
         <div class="row-12">
             {{--Card Dana--}}
-            <div class="card-header rounded">
+            <div class="card-header rounded" style="background-color:#faf0dc;">
                 <div class="row align-items-center">
                     <div class="col-1 text-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
@@ -143,6 +155,230 @@
             </div>
 
         </div>
+
+        <div class="spacing"></div>
+
+        {{--Inventory--}}
+        <div class="card-body inventory rounded">
+            <h1>Inventory</h1>
+            <table class="table table-bordered" style="vertical-align: middle;">
+                <thead class="thead">
+                    <tr>
+                        <th class="nomor_inventory"scope="col">No.</th>
+                        <th scope="col">Produk</th>
+                        <th scope="col">Tersedia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">1</th>
+                        <td>Steel</td>
+                        <td>0</td>
+
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">2</th>
+                        <td>Iron</td>
+                        <td>0</td>
+
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">3</th>
+                        <td>Aluminum Alloy</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">4</th>
+                        <td>ABS Plastic</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">5</th>
+                        <td>PP Plastic</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">6</th>
+                        <td>PC Plastic</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">7</th>
+                        <td>SBR Rubber</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">8</th>
+                        <td>PU Rubber</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">9</th>
+                        <td>NBR Rubber</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">10</th>
+                        <td>Silicone</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">11</th>
+                        <td>Acrylic</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">12</th>
+                        <td>Cable</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">13</th>
+                        <td>EVA Glue</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">14</th>
+                        <td>PVA Glue</td>
+                        <td>0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="spacing"></div>
+
+        {{--Pemenuhan Demand--}}
+        <div class="card-body pemenuhan rounded">
+            <h1>Pemenuhan Demand</h1>
+            <table class="table table-bordered" style="vertical-align: middle;">
+                <thead class="thead">
+                    <tr>
+                        <th class="nomor_inventory"scope="col">No.</th>
+                        <th scope="col">Produk</th>
+                        <th scope="col" colspan="3" style="text-align:center;">Memenuhi Demand</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">1</th>
+                        <td>Scooter</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">2</th>
+                        <td>Hoverboard</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">3</th>
+                        <td>Skateboard</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">4</th>
+                        <td>Bicycle</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">5</th>
+                        <td>Claw Machine</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">6</th>
+                        <td>RC Car</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">7</th>
+                        <td>RC Helicopter</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">8</th>
+                        <td>Trampoline</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">9</th>
+                        <td>Robot</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">10</th>
+                        <td>Airsoft Gun</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">11</th>
+                        <td>Rubber Ball</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">12</th>
+                        <td>Fidget Spinner</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">13</th>
+                        <td>Bowling set</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">14</th>
+                        <td>Action Figure</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                </tbody>
+             </table>
+        </div>
+
     </div>
 </body>
 @endsection

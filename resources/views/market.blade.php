@@ -34,6 +34,7 @@
     $namaTeam="apapun namanya";
     $nomorSesi=1;
     $timer="00:00";
+    $biayaPengiriman= 1500;
     $totalPembelian=1500;
 @endphp
 
@@ -64,7 +65,7 @@
                     <th scope="col">Stok</th>
                     <th scope="col">Harga Paket</th>
                     <th scope="col" style="width:250px;">Pembelian per paket</th>
-                    <th scope="col">Harga Pembelian</th>
+                    <th scope="col">Sub-Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -193,6 +194,10 @@
                     <td>60</td>
                     <td><input class="form-control" type="text" placeholder=0></td>
                     <td>0 TC</td>
+                </tr>
+                <tr>
+                    <td colspan="6">Biaya Pengiriman:</td>
+                    <td>{{$biayaPengiriman}} TC</td>
                 </tr>
                 <tr>
                     <td colspan="6">Total Pembelian:</td>
