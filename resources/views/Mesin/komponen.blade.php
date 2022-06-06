@@ -2,9 +2,8 @@
 
 @section("title", "Mesin")
 
-@section("content")
-<body>
-    @php
+@section("php")
+@php
     $a = 1;
     $b = 1;
     $c = 1;
@@ -62,11 +61,16 @@
     echo "<p> Defect B = $b_defect </p>";
     echo "<p> Defect C = $c_defect </p>";
     echo "<p> Defect D = $d_defect </p>";
-    @endphp
+@endphp
+@section("content")
+<body>
 
     <button id="upgrade_a">Upgrade Komponen A</button>
     <button id="upgrade_b">Upgrade Komponen B</button>
     <button id="upgrade_c">Upgrade Komponen C</button>
     <button id="upgrade_d">Upgrade Komponen D</button>
 </body>
+@endsection
+
+@section("ajax query")
 @endsection

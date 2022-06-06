@@ -49,3 +49,9 @@ Route::get('/komponen', function () {
 Route::get('/kapasitas', function () {
     return view ('Mesin.kapasitas');
 })->name('kapasitas');
+
+//Route Controller
+Route::resource('team', 'TeamController');
+Route::resource('mesin', 'MesinController');
+Route::resource('komponen', 'KomponenController');
+Route::resource('kapasitas', 'KapasitasController');
