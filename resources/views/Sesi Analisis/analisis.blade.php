@@ -3,7 +3,6 @@
 @section("title", "Sesi Analisis")
 
 @section("content")
-<<<<<<< Updated upstream
 <style>
 .nomor{
     width:50px;
