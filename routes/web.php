@@ -42,9 +42,9 @@ Route::get('/bahan', function () {
 })->name('bahan');
 
 // Mesin
-Route::get('/komponen', function () {
+Route::get('/komponen-mesin', function () {
     return view ('Mesin.komponen');
-})->name('komponen');
+})->name('komponenMesin');
 
 Route::get('/kapasitas', function () {
     return view ('Mesin.kapasitas');
