@@ -14,7 +14,14 @@
     text-align: center;
 }
 </style>
-
+@php
+    $notEff1 = array('Sorting', 'Cutting', 'Drilling', 'Assembling', 'Cutting', 'Assembling', 'Sorting', 'Wrapping', 'Packing');
+    $notEff2 = array('Sorting', 'Cutting', 'Assembling', 'Drilling', 'Assembling', 'Wrapping', 'Packing');
+    $notEff3 = array('Sorting', 'Molding', 'Assembling', 'Sorting', 'Wrapping', 'Packing');
+    $eff1 = array('Sorting', 'Cutting', 'Bending', 'Assembling', 'Packing');
+    $eff2 = array('Sorting', 'Cutting', 'Drilling', 'Assembling', 'Packing');
+    $eff3 = array('Sorting', 'Molding', 'Assembling', 'Packing');
+@endphp
 {{-- DOKUMENTASI ID --}}
 {{-- 
     proses_{nomor proses produksi}_{urutan ke}
@@ -67,17 +74,6 @@
         </table>
         </div>
     </div>
-=======
-@php
-    $notEff1 = array('Sorting', 'Cutting', 'Drilling', 'Assembling', 'Cutting', 'Assembling', 'Sorting', 'Wrapping', 'Packing');
-    $notEff2 = array('Sorting', 'Cutting', 'Assembling', 'Drilling', 'Assembling', 'Wrapping', 'Packing');
-    $notEff3 = array('Sorting', 'Molding', 'Assembling', 'Sorting', 'Wrapping', 'Packing');
-    $eff1 = array('Sorting', 'Cutting', 'Bending', 'Assembling', 'Packing');
-    $eff2 = array('Sorting', 'Cutting', 'Drilling', 'Assembling', 'Packing');
-    $eff3 = array('Sorting', 'Molding', 'Assembling', 'Packing');
-@endphp
-<body>
-    
->>>>>>> Stashed changes
+
 </body>
 @endsection

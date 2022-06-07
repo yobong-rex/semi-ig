@@ -80,15 +80,12 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('market') }}">Market</a>
                     </li>
-<<<<<<< Updated upstream
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('komponenMesin') }}">Mesin</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('analisis') }}">Analisis</a>
                     </li>
-=======
->>>>>>> Stashed changes
                 </ul>
             </div>
         </div>

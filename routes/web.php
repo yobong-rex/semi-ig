@@ -46,15 +46,9 @@ Route::get('/prosesbahan', function () {
 })->name('prosesbahan');
 
 // Mesin
-<<<<<<< Updated upstream
 Route::get('/komponen-mesin', function () {
-    return view ('Mesin.komponen');
-})->name('komponenMesin');
-=======
-Route::get('/komponen', function () {
     return view ('mesin.komponen');
-})->name('komponen');
->>>>>>> Stashed changes
+})->name('komponenMesin');
 
 Route::get('/kapasitas', function () {
     return view ('mesin.kapasitas');
