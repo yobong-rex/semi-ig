@@ -116,7 +116,8 @@
                     <td>10</td>
                     <td id="stok_1">300</td>
                     <td id="harga_1">150</td>
-                    <td><input class="form-control" id="input_1" type="number" min="0" placeholder=0></td>
+                    <td><input class="form-control" id="input_1" type="number" min="0" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                     <td id="subtotal_1">0 TC</td>
                 </tr>
                 <tr>
@@ -125,7 +126,8 @@
                     <td>10</td>
                     <td id="stok_2">600</td>
                     <td id="harga_2">150</td>
-                    <td><input class="form-control" id="input_2" type="number" min="0" placeholder=0></td>
+                    <td><input class="form-control" id="input_2" type="number" min="0" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                     <td id="subtotal_2">0 TC</td>
                 </tr>
                 <tr>
@@ -134,7 +136,8 @@
                     <td>10</td>
                     <td id="stok_3">600</td>
                     <td id="harga_3">150</td>
-                    <td><input class="form-control" id="input_3" type="number" min="0" placeholder=0></td>
+                    <td><input class="form-control" id="input_3" type="number" min="0" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                     <td id="subtotal_3">0 TC</td>
                 </tr>
                 <tr>
@@ -143,7 +146,8 @@
                     <td>7</td>
                     <td id="stok_4">500</td>
                     <td id="harga_4">90</td>
-                    <td><input class="form-control" id="input_4" type="number" min="0" placeholder=0></td>
+                    <td><input class="form-control" id="input_4" type="number" min="0" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                     <td id="subtotal_4">0 TC</td>
                 </tr>
                 <tr>
@@ -152,7 +156,8 @@
                     <td>4</td>
                     <td id="stok_5">500</td>
                     <td id="harga_5">60</td>
-                    <td><input class="form-control" id="input_5" type="number" min="0" placeholder=0></td>
+                    <td><input class="form-control" id="input_5" type="number" min="0" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                     <td id="subtotal_5">0 TC</td>
                 </tr>
                 <tr>
@@ -161,7 +166,8 @@
                     <td>4</td>
                     <td id="stok_6">500</td>
                     <td id="harga_6">60</td>
-                    <td><input class="form-control" id="input_6" type="number" min="0" placeholder=0></td>
+                    <td><input class="form-control" id="input_6" type="number" min="0" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                     <td id="subtotal_6">0 TC</td>
                 </tr>
                 <tr>
@@ -170,7 +176,8 @@
                     <td>10</td>
                     <td id="stok_7">300</td>
                     <td id="harga_7">120</td>
-                    <td><input class="form-control" id="input_7" type="number" min="0" placeholder=0></td>
+                    <td><input class="form-control" id="input_7" type="number" min="0" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                     <td id="subtotal_7">0 TC</td>
                 </tr>
                 <tr>
@@ -179,7 +186,8 @@
                     <td>4</td>
                     <td id="stok_8">1000</td>
                     <td id="harga_8">80</td>
-                    <td><input class="form-control" id="input_8" type="number" min="0" placeholder=0></td>
+                    <td><input class="form-control" id="input_8" type="number" min="0" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                     <td id="subtotal_8">0 TC</td>
                 </tr>
                 <tr>
@@ -188,7 +196,8 @@
                     <td>5</td>
                     <td id="stok_9">600</td>
                     <td id="harga_9">80</td>
-                    <td><input class="form-control" id="input_9" type="number" min="0" placeholder=0></td>
+                    <td><input class="form-control" id="input_9" type="number" min="0" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                     <td id="subtotal_9">0 TC</td>
                 </tr>
                 <tr>
@@ -197,7 +206,8 @@
                     <td>4</td>
                     <td id="stok_10">600</td>
                     <td id="harga_10">80</td>
-                    <td><input class="form-control" id="input_10" type="number" min="0" placeholder=0></td>
+                    <td><input class="form-control" id="input_10" type="number" min="0" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                     <td id="subtotal_10">0 TC</td>
                 </tr>
                 <tr>
@@ -206,7 +216,8 @@
                     <td>4</td>
                     <td id="stok_11">600</td>
                     <td id="harga_11">80</td>
-                    <td><input class="form-control" id="input_11" type="number" min="0" placeholder=0></td>
+                    <td><input class="form-control" id="input_11" type="number" min="0" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                     <td id="subtotal_11">0 TC</td>
                 </tr>
                 <tr>
@@ -215,7 +226,8 @@
                     <td>4</td>
                     <td id="stok_12">500</td>
                     <td id="harga_12">60</td>
-                    <td><input class="form-control" id="input_12" type="number" min="0" placeholder=0></td>
+                    <td><input class="form-control" id="input_12" type="number" min="0" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                     <td id="subtotal_12">0 TC</td>
                 </tr>
                 <tr>
@@ -224,7 +236,8 @@
                     <td>4</td>
                     <td id="stok_13">600</td>
                     <td id="harga_13">80</td>
-                    <td><input class="form-control" id="input_13" type="number" min="0" placeholder=0></td>
+                    <td><input class="form-control" id="input_13" type="number" min="0" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                     <td id="subtotal_13">0 TC</td>
                 </tr>
                 <tr>
@@ -233,7 +246,8 @@
                     <td>4</td>
                     <td id="stok_14">600</td>
                     <td id="harga_14">60</td>
-                    <td><input class="form-control" id="input_14" type="number" min="0" placeholder=0></td>
+                    <td><input class="form-control" id="input_14" type="number" min="0" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                     <td id="subtotal_14">0 TC</td>
                 </tr>
                 <tr>
