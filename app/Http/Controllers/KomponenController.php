@@ -14,7 +14,7 @@ class KomponenController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -24,7 +24,7 @@ class KomponenController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -46,7 +46,7 @@ class KomponenController extends Controller
      */
     public function show(Komponen $komponen)
     {
-        //
+        
     }
 
     /**

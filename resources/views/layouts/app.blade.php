@@ -62,15 +62,6 @@
 
     {{-- CDN JQuery --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-    {{-- Code JQuery --}}
-    <script>
-        $(document).ready(function() {
-            $("#upgrade_a").click(function(){
-                
-            })
-        })
-    </script>
 </head>
 
 <body>
@@ -89,12 +80,15 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('market') }}">Market</a>
                     </li>
+<<<<<<< Updated upstream
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('komponenMesin') }}">Mesin</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('analisis') }}">Analisis</a>
                     </li>
+=======
+>>>>>>> Stashed changes
                 </ul>
             </div>
         </div>

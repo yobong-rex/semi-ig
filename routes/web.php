@@ -19,16 +19,16 @@ use Illuminate\Support\Facades\Route;
 
 // Dashboard
 Route::get('/', function () {
-    return view('Dashboard.dashboard');
+    return view('dashboard.dashboard');
 })->name('dashboard');
 
 // Sesi Analisis
 Route::get('/admin', function () {
-    return view ('Sesi Analisis.admin');
+    return view ('sesi analisis.admin');
 })->name('admin');
 
 Route::get('/analisis', function () {
-    return view ('Sesi Analisis.analisis');
+    return view ('sesi analisis.analisis');
 })->name('analisis');
 
 // IG Market
@@ -38,16 +38,26 @@ Route::get('/market', function () {
 
 // Analisis Bahan Baku
 Route::get('/bahan', function () {
-    return view ('Analisis Bahan Baku.bahan');
+    return view ('analisis bahan baku.bahan');
 })->name('bahan');
 
+Route::get('/prosesbahan', function () {
+    return view ('analisis bahan baku.prosesbahan');
+})->name('prosesbahan');
+
 // Mesin
+<<<<<<< Updated upstream
 Route::get('/komponen-mesin', function () {
     return view ('Mesin.komponen');
 })->name('komponenMesin');
+=======
+Route::get('/komponen', function () {
+    return view ('mesin.komponen');
+})->name('komponen');
+>>>>>>> Stashed changes
 
 Route::get('/kapasitas', function () {
-    return view ('Mesin.kapasitas');
+    return view ('mesin.kapasitas');
 })->name('kapasitas');
 
 //Route Controller

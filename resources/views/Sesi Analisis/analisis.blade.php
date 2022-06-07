@@ -3,6 +3,7 @@
 @section("title", "Sesi Analisis")
 
 @section("content")
+<<<<<<< Updated upstream
 <style>
 .nomor{
     width:50px;
@@ -66,5 +67,17 @@
         </table>
         </div>
     </div>
+=======
+@php
+    $notEff1 = array('Sorting', 'Cutting', 'Drilling', 'Assembling', 'Cutting', 'Assembling', 'Sorting', 'Wrapping', 'Packing');
+    $notEff2 = array('Sorting', 'Cutting', 'Assembling', 'Drilling', 'Assembling', 'Wrapping', 'Packing');
+    $notEff3 = array('Sorting', 'Molding', 'Assembling', 'Sorting', 'Wrapping', 'Packing');
+    $eff1 = array('Sorting', 'Cutting', 'Bending', 'Assembling', 'Packing');
+    $eff2 = array('Sorting', 'Cutting', 'Drilling', 'Assembling', 'Packing');
+    $eff3 = array('Sorting', 'Molding', 'Assembling', 'Packing');
+@endphp
+<body>
+    
+>>>>>>> Stashed changes
 </body>
 @endsection

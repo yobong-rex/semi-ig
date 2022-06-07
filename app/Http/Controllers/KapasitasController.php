@@ -16,16 +16,23 @@ class KapasitasController extends Controller
     public function index()
     {
         //search all
-        // $kapasitas = DB::table('kapasitas')->get();
-        // dd($kapasitas);
+        $kapasitas = DB::table('kapasitas')->get();
 
         //search where
-        // $kapasitas = DB::table('kapasitas')->where('idkapasitas','1')->get();
-        // dd($kapasitas);
+        // $kapasitas = DB::table('kapasitas')->where('level','1')->get();        
 
         //join
-        $kapasitas = DB::table('kapasitas')->join('mesin','kapasitas.mesin_idmesin', '=', 'mesin.idmesin')->select('kapasitas.*', 'mesin.nama', 'mesin.defect')->get();
-        dd($kapasitas);
+        // $kapasitas = DB::table('kapasitas')
+        // ->join('mesin','kapasitas.mesin_idmesin', '=', 'mesin.idmesin')
+        // ->select('mesin.*', 'kapasitas.*')->get();
+
+        //advanced join
+        // $kapasitas = DB::table('kapasitas')->join('mesin', function ($join) {
+        //     $join->on('kapasitas.mesin_idmesin', '=', 'mesin.idmesin')
+        //          ->where('kapasitas.level', '<', 2);
+        // })->get();    
+
+        return view('mesin.kapasitas', compact('kapasitas'));
     }
 
     /**
