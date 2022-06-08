@@ -32,7 +32,7 @@ class KapasitasController extends Controller
         //          ->where('kapasitas.level', '<', 2);
         // })->get();    
 
-        return view('mesin.kapasitas', compact('kapasitas'));
+        // return view('mesin.kapasitas', compact('kapasitas'));
     }
 
     /**

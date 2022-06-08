@@ -14,7 +14,6 @@ $product['Skateboard'] = array('Steel', 'Aluminium Alloy', 'SBR Rubber');
 $product['Bicycle'] = array('Steel', 'Aluminium Alloy', 'SBR Rubber');
 // print_r($product);
 
-
 $produk =  $_GET['produk'];
 // echo $produk."<br>";
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Mesin;
 use Illuminate\Http\Request;
+use DB;
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 class MesinController extends Controller
 {
@@ -81,5 +83,12 @@ class MesinController extends Controller
     public function destroy(Mesin $mesin)
     {
         //
+    }
+
+    function coba(){
+        $mesin = FacadesDB::table('mesin')->get();
+        return response()->json(array(
+            'mesin'=>$mesin
+        ),200);
     }
 }

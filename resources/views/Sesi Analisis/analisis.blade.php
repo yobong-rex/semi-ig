@@ -33,46 +33,97 @@
         <h1>Sesi Analisis</h1>
 
         {{--tabel analisis--}}
-        <table class="table table-bordered" style="vertical-align: middle;">
-            <thead class="thead">
-                <tr>
-                    <th scope="col"> </th>
-                    <th scope="col" colspan="9" style="text-align:center;">Urutan Produksi Produk</th>
-                    <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;">Konfirmasi</th>
-                </tr>
-                <tr>
-                    <th class="nomor" scope="col">Nomor</th>
-                    @for ($i=1;$i<=9;$i++)
-                    <th class="penomoran" scope="col">{{$i}}</th>
+        <form action="">
+            <table class="table table-bordered" style="vertical-align: middle;">
+                <thead class="thead">
+                    <tr>
+                        <th scope="col"> </th>
+                        <th scope="col" colspan="9" style="text-align:center;">Urutan Produksi Produk</th>
+                        <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;">Konfirmasi</th>
+                    </tr>
+                    <tr>
+                        <th class="nomor" scope="col">Nomor</th>
+                        @for ($i=1;$i<=9;$i++)
+                        <th class="penomoran" scope="col">{{$i}}</th>
+                        @endfor
+                    </tr>
+                </thead>
+                <tbody>
+                    {{-- id proses_(prosesId) --}}
+                    @for($i=1;$i<=3;$i++)
+                    <tr id="tr_{{$i}}">
+                        <th class="nomor" scope="row">Proses Produksi {{$i}}</th>
+                        @for($j=1;$j<=9;$j++)
+                        <td>
+                            <select name="proses" id="proses_{{$i}}_{{$j}}">
+                                <option value="">-Select-</option>
+                                <option value="sorting">Sorting</option>
+                                <option value="cutting">Cutting</option>
+                                <option value="bending">Bending</option>
+                                <option value="assembling">Assembling</option>
+                                <option value="packing">Packing</option>
+                                <option value="drilling">Drilling</option>
+                                <option value="molding">Molding</option>
+                            </select>
+                        </td>
+                        @endfor
+                        <td><button class="btn btn-success" id="button_{{$i}}" onclick="konfirmasi($i, length)">Konfirmasi</button></td>
+                    </tr>
                     @endfor
-                </tr>
-            </thead>
-            <tbody>
-                {{-- id proses_(prosesId) --}}
-                @for($i=1;$i<=3;$i++)
-                <tr id="tr_{{$i}}">
-                    <th class="nomor" scope="row">Proses Produksi {{$i}}</th>
-                    @for($j=1;$j<=9;$j++)
-                    <td>
-                        <select name="proses" id="proses_{{$i}}_{{$j}}">
-                            <option value="">-Select-</option>
-                            <option value="sorting">Sorting</option>
-                            <option value="cutting">Cutting</option>
-                            <option value="bending">Bending</option>
-                            <option value="assembling">Assembling</option>
-                            <option value="packing">Packing</option>
-                            <option value="drilling">Drilling</option>
-                            <option value="molding">Molding</option>
-                        </select>
-                    </td>
-                    @endfor
-                    <td><button class="btn btn-success" id="button_{{$i}}">Konfirmasi</button></td>
-                </tr>
-                @endfor
-            </tbody>
-        </table>
-        </div>
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-success" id="coba" onclick="coba_konfirmasi()">Coba</button>
+            <p id="coba-text"></p> 
+        </form>
     </div>
-
 </body>
+@endsection
+
+@section('ajaxquery')
+<script>
+    function coba_coba(){
+        $.ajax({
+            type: "POST",
+            url: "{{route('coba')}}",
+            data:{
+                '_token': '<?php echo csrf_token()?>'
+            },
+            success: function(data){
+                $.each(data.mesin, function(key, value){
+                    $('#coba-text').html(data.mesin[key].nama)
+                });
+            }
+        });
+    }
+
+    function coba_konfirmasi(){
+        $.ajax({
+            type: "POST",
+            url: "{{route('coba')}}",
+            data:{
+                '_token': '<?php echo csrf_token()?>'
+            },
+            success: function(data){
+                1;
+            }
+        });
+    }
+
+    function konfirmasi(produksi, length){
+        console.log(produksi);
+        console.log(length);
+        $.ajax({
+            type: "POST",
+            url: "{{route('konfirmasi_1')}}",
+            data:{
+                '_token': '<?php echo csrf_token()?>',
+                'produksi': produksi,
+                'length': length
+            },
+            success: function(data){
+                
+            }
+        });
+    }
+</script>
 @endsection

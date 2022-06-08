@@ -110,154 +110,28 @@
                 </tr>
             </thead>
             <tbody>
+                <?php $nomer = 1; ?>
+                @foreach ($data as $d)
                 <tr>
-                    <th class="nomor_bahan" scope="row">1</th>
-                    <td>Steel</td>
-                    <td>10</td>
-                    <td id="stok_1">300</td>
-                    <td id="harga_1">150</td>
-                    <td><input class="form-control" id="input_1" type="number" min="0" oninput="this.value = 
+                    <th class="nomor_bahan" scope="row">{{$nomer}}</th>
+                    <td>{{$d->bahan_baku}}</td>
+                    <td>{{$d->isi}}</td>
+                    <td id="stok_{{$d->idig_markets}}">{{$d->stok}}</td>
+                    <td id="harga_{{$d->idig_markets}}">{{$d->harga}}</td>
+                    <td><input class="form-control quantity" id="input_{{$d->idig_markets}}" type="number" min="0" oninput="this.value = 
                         !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                    <td id="subtotal_1">0 TC</td>
+                    <td><span id="subtotal_{{$d->idig_markets}}">0</span>  TC</td>
                 </tr>
-                <tr>
-                    <th class="nomor_bahan" scope="row">2</th>
-                    <td>Iron</td>
-                    <td>10</td>
-                    <td id="stok_2">600</td>
-                    <td id="harga_2">150</td>
-                    <td><input class="form-control" id="input_2" type="number" min="0" oninput="this.value = 
-                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                    <td id="subtotal_2">0 TC</td>
-                </tr>
-                <tr>
-                    <th class="nomor_bahan" scope="row">3</th>
-                    <td>Aluminum Alloy</td>
-                    <td>10</td>
-                    <td id="stok_3">600</td>
-                    <td id="harga_3">150</td>
-                    <td><input class="form-control" id="input_3" type="number" min="0" oninput="this.value = 
-                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                    <td id="subtotal_3">0 TC</td>
-                </tr>
-                <tr>
-                    <th class="nomor_bahan" scope="row">4</th>
-                    <td>ABS Plastic</td>
-                    <td>7</td>
-                    <td id="stok_4">500</td>
-                    <td id="harga_4">90</td>
-                    <td><input class="form-control" id="input_4" type="number" min="0" oninput="this.value = 
-                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                    <td id="subtotal_4">0 TC</td>
-                </tr>
-                <tr>
-                    <th class="nomor_bahan" scope="row">5</th>
-                    <td>PP Plastic</td>
-                    <td>4</td>
-                    <td id="stok_5">500</td>
-                    <td id="harga_5">60</td>
-                    <td><input class="form-control" id="input_5" type="number" min="0" oninput="this.value = 
-                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                    <td id="subtotal_5">0 TC</td>
-                </tr>
-                <tr>
-                    <th class="nomor_bahan" scope="row">6</th>
-                    <td>PC Plastic</td>
-                    <td>4</td>
-                    <td id="stok_6">500</td>
-                    <td id="harga_6">60</td>
-                    <td><input class="form-control" id="input_6" type="number" min="0" oninput="this.value = 
-                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                    <td id="subtotal_6">0 TC</td>
-                </tr>
-                <tr>
-                    <th class="nomor_bahan" scope="number">7</th>
-                    <td>SBR Rubber</td>
-                    <td>10</td>
-                    <td id="stok_7">300</td>
-                    <td id="harga_7">120</td>
-                    <td><input class="form-control" id="input_7" type="number" min="0" oninput="this.value = 
-                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                    <td id="subtotal_7">0 TC</td>
-                </tr>
-                <tr>
-                    <th class="nomor_bahan" scope="row">8</th>
-                    <td>PU Rubber</td>
-                    <td>4</td>
-                    <td id="stok_8">1000</td>
-                    <td id="harga_8">80</td>
-                    <td><input class="form-control" id="input_8" type="number" min="0" oninput="this.value = 
-                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                    <td id="subtotal_8">0 TC</td>
-                </tr>
-                <tr>
-                    <th class="nomor_bahan" scope="row">9</th>
-                    <td>NBR Rubber</td>
-                    <td>5</td>
-                    <td id="stok_9">600</td>
-                    <td id="harga_9">80</td>
-                    <td><input class="form-control" id="input_9" type="number" min="0" oninput="this.value = 
-                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                    <td id="subtotal_9">0 TC</td>
-                </tr>
-                <tr>
-                    <th class="nomor_bahan" scope="row">10</th>
-                    <td>Silicone</td>
-                    <td>4</td>
-                    <td id="stok_10">600</td>
-                    <td id="harga_10">80</td>
-                    <td><input class="form-control" id="input_10" type="number" min="0" oninput="this.value = 
-                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                    <td id="subtotal_10">0 TC</td>
-                </tr>
-                <tr>
-                    <th class="nomor_bahan" scope="row">11</th>
-                    <td>Acrylic</td>
-                    <td>4</td>
-                    <td id="stok_11">600</td>
-                    <td id="harga_11">80</td>
-                    <td><input class="form-control" id="input_11" type="number" min="0" oninput="this.value = 
-                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                    <td id="subtotal_11">0 TC</td>
-                </tr>
-                <tr>
-                    <th class="nomor_bahan" scope="row">12</th>
-                    <td>Cable</td>
-                    <td>4</td>
-                    <td id="stok_12">500</td>
-                    <td id="harga_12">60</td>
-                    <td><input class="form-control" id="input_12" type="number" min="0" oninput="this.value = 
-                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                    <td id="subtotal_12">0 TC</td>
-                </tr>
-                <tr>
-                    <th class="nomor_bahan" scope="row">13</th>
-                    <td>EVA Glue</td>
-                    <td>4</td>
-                    <td id="stok_13">600</td>
-                    <td id="harga_13">80</td>
-                    <td><input class="form-control" id="input_13" type="number" min="0" oninput="this.value = 
-                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                    <td id="subtotal_13">0 TC</td>
-                </tr>
-                <tr>
-                    <th class="nomor_bahan" scope="row">14</th>
-                    <td>PVA Glue</td>
-                    <td>4</td>
-                    <td id="stok_14">600</td>
-                    <td id="harga_14">60</td>
-                    <td><input class="form-control" id="input_14" type="number" min="0" oninput="this.value = 
-                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                    <td id="subtotal_14">0 TC</td>
-                </tr>
+                <?php $nomer += 1; ?>
+                @endforeach
                 <tr>
                     <td colspan="6">Biaya Pengiriman:</td>
-                    <td id="biaya_pengiriman">{{$biayaPengiriman}} TC</td>
+                    <td id="biaya_pengiriman">0 TC</td>
                 </tr>
                 <tr>
                     <td colspan="6">Total Pembelian:</td>
                     {{--button konfirmasi show pop up--}}
-                    <td id="total">{{$totalPembelian}} TC</td>
+                    <td><span id="total">0</span> TC</td>
                 </tr>
                 <tr>
                     <td colspan="8" style="text-align:right;">
@@ -289,5 +163,31 @@
             </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).on('change','.quantity', function(){
+            let quantity = $(this).val();
+            let id = $(this).attr('id');
+            let split_id = id.split('_');
+            let harga = $("#harga_"+split_id[1]).text();
+            let subtotal = parseInt(harga) * quantity;
+            $('#subtotal_'+split_id[1]).text(subtotal);
+            total();
+        })
+
+        function total(){
+            let total = 0;
+            let count = 0;
+            for (let i = 1; i <= 14; i++) {
+                let subtotal = parseInt($('#subtotal_'+i).text())
+                total += subtotal;
+                if(subtotal !== 0) count += 1
+            }
+            if(count>= 10){
+                total += (count-9)*200;
+            }
+            $('#total').text(total);
+        }
+    </script>
 </body>
 @endsection

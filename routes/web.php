@@ -32,9 +32,7 @@ Route::get('/analisis', function () {
 })->name('analisis');
 
 // IG Market
-Route::get('/market', function () {
-    return view ('market');
-})->name('market');
+Route::get('/market','MarketController@market')->name('market');
 
 // Analisis Bahan Baku
 Route::get('/bahan', function () {
@@ -59,3 +57,8 @@ Route::resource('team', 'TeamController');
 Route::resource('mesin', 'MesinController');
 Route::resource('komponen', 'KomponenController');
 Route::resource('kapasitas', 'KapasitasController');
+
+Route::post('/coba', 'MesinController@coba')->name('coba');
+Route::post('/konfirmasi_1', 'AnalisisController@insert')->name('konfirmasi_1');
+Route::post('/konfirmasi_2', 'AnalisisController@insert')->name('konfirmasi_2');
+Route::post('/konfirmasi_3', 'AnalisisController@insert')->name('konfirmasi_3');
