@@ -84,7 +84,13 @@
                         <a class="nav-link active" aria-current="page" href="{{ route('komponenMesin') }}">Mesin</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('analisis') }}">Analisis</a>
+                        <a class="nav-link active" aria-current="page" href="{{ route('produksi') }}">Produksi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route('analisis') }}">Analisis Produksi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route('bahan') }}">Analisis Bahan</a>
                     </li>
                 </ul>
             </div>

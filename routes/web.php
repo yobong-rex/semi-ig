@@ -40,6 +40,11 @@ Route::get('/bahan', function () {
     return view ('analisis bahan baku.bahan');
 })->name('bahan');
 
+//prduksi
+Route::get('/produksi', function () {
+    return view ('produksi.produksi');
+})->name('produksi');
+
 Route::get('/prosesbahan', function () {
     return view ('analisis bahan baku.prosesbahan');
 })->name('prosesbahan');

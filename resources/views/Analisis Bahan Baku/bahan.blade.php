@@ -16,17 +16,23 @@ if(isset($_GET['session'])){
     table, tbody, tr, th, td{
         border: 1px solid black;
     }
+    table{
+        padding:5px;
+    }
 </style>
 
-<body>
+<body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
+    <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
+        <h1>Analisis Bahan Baku</h1>
     <form action="prosesbahan" method="get">
-        <table>
+        <table class="table" style="width:100%;">
             <tbody>
                 <tr>
                     {{-- Tulisan Bahan Baku --}}
-                    <th scope="col" colspan="3">Bahan Baku</th>
+                    <th class="header_bahanbaku" scope="col" colspan="2">Bahan Baku</th>
+                    
                     {{-- combobox di kanan atas yang isinya produk --}}
-                    <td>
+                    <th>
                         <select name="produk" id="produk">
                             @php
                                 $arrProduct = array('Scooter', 'RC Car', 'Trampoline', 'Rubber Ball', 'Fidget Spinner', 'Playstation', 'Robot', 'Action Figure', 'Skateboard', 'Bicycle');
@@ -43,7 +49,8 @@ if(isset($_GET['session'])){
                                     }
                             @endphp
                         </select>
-                    </td>
+                    </th>
+                    <th scope="col">Status</th>
                 </tr>
                 <tr>
                     {{-- 3 combobox di bawah yang isinya resource/bahan baku --}}
@@ -82,7 +89,7 @@ if(isset($_GET['session'])){
             </tbody>
         </table>
         {{-- Button Submit --}}
-        <input type="submit" type="submit" value="submit">
+        <button class="btn btn-primary" type="submit" value="submit">Submit</button>
     </form>
 </body>
 @endsection
