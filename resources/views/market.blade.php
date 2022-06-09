@@ -152,7 +152,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body flex">
-                    Apakah anda yakin untuk melakukan pembelian sebesar {{$totalPembelian}} TC?
+                    Apakah anda yakin untuk melakukan pembelian sebesar <span id='mdlTotal'></span> TC?
                 </div>
                 <div class="modal-footer">
                     {{--button cancel--}}
@@ -163,11 +163,31 @@
                 </div>
             </div>
         </div>
+
+        <!-- modal pemberitahuan -->
+        <div class="modal fade" id="mdlPemberitahuan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Konfirmasi Pembelian</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body flex" id="body-konfir">
+                    
+                </div>
+                <div class="modal-footer">
+                    {{--button cancel--}}
+                    <button type="button" id='reload' class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         let item = [];
         let count = 0;
+        let totalItem = 0;
         $(document).on('change','.quantity', function(){
             let quantity = $(this).val();
             let id = $(this).attr('id');
@@ -182,19 +202,27 @@
             item = [];
             let total = 0;
             count = 0;
+            totalItem = 0;
             for (let i = 1; i <= 14; i++) {
                 let subtotal = parseInt($('#subtotal_'+i).text())
                 total += subtotal;
                 if(subtotal !== 0){
                     count += 1
-                    item.push({'item': $('#item_'+i).val(), '   ': $('#input_'+i).val(), 'subtotal': $('#subtotal_'+i).text()})
+                    item.push({'item': $('#item_'+i).val(), 'quantity': $('#input_'+i).val(), 'subtotal': $('#subtotal_'+i).text()});
+                    totalItem += parseInt($('#input_'+i).val())
                 } 
             }
+            console.log(totalItem);
             if(count>= 10){
                 total += (count-9)*200;
             }
             $('#total').text(total);
         }
+
+        $(document).on('click','#button_PopupModal',function(){
+            let total = $('#total').text();
+            $('#mdlTotal').text(total);
+        })
 
         $(document).on('click','#konfirmasi_pembelian', function(){
             let total = $('#total').text();
@@ -208,12 +236,20 @@
                     'item' : item,
                     'total': total,
                     'team': idteam,
-                    'total_bahan': count
+                    'total_bahan': count,
+                    'sesi': '1',
+                    'totalItem': totalItem
                 },
                 success: function(data){
-                   alert(data.response())
+                    $('#staticBackdrop').modal('hide');
+                    $('#body-konfir').text(data.msg);
+                    $('#mdlPemberitahuan').modal('show');
                 }
             });
+        })
+
+        $(document).on('click','#reload', function(){
+            location.reload()
         })
     </script>
 </body>
