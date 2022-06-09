@@ -65,7 +65,7 @@
         {{--Nama Team dan Timer--}}
         <div class="row align-items-center rounded heading">
             <div class="col-9 nama_team">
-                <h1 id="namaTeam">Team {{$namaTeam}}</h1> 
+                <h1 id="namaTeam" value="{{$user[0]->idteam}}">Team {{$user[0]->nama}}</h1> 
             </div>
             <div class="col-1"><h3 id="nomorSesi">Sesi {{$nomorSesi}}</h3></div>
             <div class="col-1 text-center align-self-end timer rounded-2"  style="font-family:TT Norms Regular;">
@@ -89,7 +89,7 @@
                         <h1>Dana : </h1>
                     </div>
                     <div class="col-9 dana">
-                        <h1 id="dana">{{number_format($dana)}} TC</h1>
+                        <h1 id="dana">{{number_format($user[0]->dana)}} TC</h1>
                     </div>
                 </div>
             </div>
@@ -112,15 +112,16 @@
             <tbody>
                 <?php $nomer = 1; ?>
                 @foreach ($data as $d)
+                <input type="hidden" id="item_{{$nomer}}" value="{{$d->idig_markets}}">
                 <tr>
                     <th class="nomor_bahan" scope="row">{{$nomer}}</th>
                     <td>{{$d->bahan_baku}}</td>
                     <td>{{$d->isi}}</td>
-                    <td id="stok_{{$d->idig_markets}}">{{$d->stok}}</td>
-                    <td id="harga_{{$d->idig_markets}}">{{$d->harga}}</td>
-                    <td><input class="form-control quantity" id="input_{{$d->idig_markets}}" type="number" min="0" oninput="this.value = 
+                    <td id="stok_{{$nomer}}">{{$d->stok}}</td>
+                    <td id="harga_{{$nomer}}">{{$d->harga}}</td>
+                    <td><input class="form-control quantity" id="input_{{$nomer}}" type="number" min="0" oninput="this.value = 
                         !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                    <td><span id="subtotal_{{$d->idig_markets}}">0</span>  TC</td>
+                    <td><span id="subtotal_{{$nomer}}">0</span>  TC</td>
                 </tr>
                 <?php $nomer += 1; ?>
                 @endforeach
@@ -165,6 +166,8 @@
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
+        let item = [];
+        let count = 0;
         $(document).on('change','.quantity', function(){
             let quantity = $(this).val();
             let id = $(this).attr('id');
@@ -176,18 +179,42 @@
         })
 
         function total(){
+            item = [];
             let total = 0;
-            let count = 0;
+            count = 0;
             for (let i = 1; i <= 14; i++) {
                 let subtotal = parseInt($('#subtotal_'+i).text())
                 total += subtotal;
-                if(subtotal !== 0) count += 1
+                if(subtotal !== 0){
+                    count += 1
+                    item.push({'item': $('#item_'+i).val(), '   ': $('#input_'+i).val(), 'subtotal': $('#subtotal_'+i).text()})
+                } 
             }
             if(count>= 10){
                 total += (count-9)*200;
             }
             $('#total').text(total);
         }
+
+        $(document).on('click','#konfirmasi_pembelian', function(){
+            let total = $('#total').text();
+            let idteam = $('#namaTeam').attr('value');
+            console.log(item);
+            $.ajax({
+                type: "POST",
+                url: "{{route('market.beli')}}",
+                data:{
+                    '_token': '<?php echo csrf_token()?>',
+                    'item' : item,
+                    'total': total,
+                    'team': idteam,
+                    'total_bahan': count
+                },
+                success: function(data){
+                   alert(data.response())
+                }
+            });
+        })
     </script>
 </body>
 @endsection

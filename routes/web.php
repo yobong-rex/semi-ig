@@ -33,6 +33,7 @@ Route::get('/analisis', function () {
 
 // IG Market
 Route::get('/market','MarketController@market')->name('market');
+Route::post('/market/beli','MarketController@marketBeli')->name('market.beli');
 
 // Analisis Bahan Baku
 Route::get('/bahan', function () {
