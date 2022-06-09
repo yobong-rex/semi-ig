@@ -67,7 +67,7 @@
             <div class="col-9 nama_team">
                 <h1 id="namaTeam" value="{{$user[0]->idteam}}">Team {{$user[0]->nama}}</h1> 
             </div>
-            <div class="col-1"><h3 id="nomorSesi">Sesi {{$nomorSesi}}</h3></div>
+            <div class="col-1"><h3 id="nomorSesi">Sesi <span id='sesi'>{{$sesi[0]->sesi}}</span></h3></div>
             <div class="col-1 text-center align-self-end timer rounded-2"  style="font-family:TT Norms Regular;">
                 <h3>Timer</h3>
                 <h4 id="timer">{{$timer}}</h4>   
@@ -227,6 +227,7 @@
         $(document).on('click','#konfirmasi_pembelian', function(){
             let total = $('#total').text();
             let idteam = $('#namaTeam').attr('value');
+            let sesi = $('sesi').text();
             console.log(item);
             $.ajax({
                 type: "POST",
@@ -237,7 +238,7 @@
                     'total': total,
                     'team': idteam,
                     'total_bahan': count,
-                    'sesi': '1',
+                    'sesi': sesi,
                     'totalItem': totalItem
                 },
                 success: function(data){

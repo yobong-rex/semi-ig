@@ -10,7 +10,8 @@ class MarketController extends Controller
     function market(){
         $user = DB::table('teams')->select('nama','dana','idteam')->where('idteam',1)->get();
         $data = DB::table('ig_markets')->where('sesi','1')->get();
-        return view('market',compact('data','user'));  
+        $sesi = DB::table('sesi')->select('sesi')->get();
+        return view('market',compact('data','user','sesi'));  
     }
 
     function marketBeli(Request $request){

@@ -68,3 +68,6 @@ Route::post('/coba', 'MesinController@coba')->name('coba');
 Route::post('/konfirmasi_1', 'AnalisisController@insert')->name('konfirmasi_1');
 Route::post('/konfirmasi_2', 'AnalisisController@insert')->name('konfirmasi_2');
 Route::post('/konfirmasi_3', 'AnalisisController@insert')->name('konfirmasi_3');
+
+Route::get('/admin/analisis','AnalisisController@admin')->name('analisis.admin');
+Route::post('/admin/analisis/update','AnalisisController@updateSesi')->name('analisis.update');
