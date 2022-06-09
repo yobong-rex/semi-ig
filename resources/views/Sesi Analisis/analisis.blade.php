@@ -56,23 +56,24 @@
                         @for($j=1;$j<=9;$j++)
                         <td>
                             <select name="proses" id="proses_{{$i}}_{{$j}}">
-                                <option value="">-Select-</option>
-                                <option value="sorting">Sorting</option>
-                                <option value="cutting">Cutting</option>
-                                <option value="bending">Bending</option>
-                                <option value="assembling">Assembling</option>
-                                <option value="packing">Packing</option>
-                                <option value="drilling">Drilling</option>
-                                <option value="molding">Molding</option>
+                                <option value="-">-Select-</option>
+                                <option value="Sorting">Sorting</option>
+                                <option value="Cutting">Cutting</option>
+                                <option value="Bending">Bending</option>
+                                <option value="Assembling">Assembling</option>
+                                <option value="Packing">Packing</option>
+                                <option value="Drilling">Drilling</option>
+                                <option value="Molding">Molding</option>
+                                <option value="Wrapping">Wrapping</option>
                             </select>
                         </td>
                         @endfor
-                        <td><button class="btn btn-success" id="button_{{$i}}" onclick="konfirmasi($i, length)">Konfirmasi</button></td>
+                        <td><button class="btn btn-success" id="button_{{$i}}" onclick="konfirmasi({{$i}}, 2)">Konfirmasi</button></td>
                     </tr>
                     @endfor
                 </tbody>
             </table>
-            <button type="button" class="btn btn-success" id="coba" onclick="coba_konfirmasi()">Coba</button>
+            <button type="button" class="btn btn-success" id="coba" onclick="coba_konfirmasi(1, 5)">Coba</button>
             <p id="coba-text"></p> 
         </form>
     </div>
@@ -96,34 +97,171 @@
         });
     }
 
-    function coba_konfirmasi(){
-        $.ajax({
-            type: "POST",
-            url: "{{route('coba')}}",
-            data:{
-                '_token': '<?php echo csrf_token()?>'
-            },
-            success: function(data){
-                1;
-            }
-        });
+    function coba_konfirmasi(produksi, length){
+        console.log(produksi);
+        console.log(length);
+        // $.ajax({
+        //     type: "POST",
+        //     url: "{{route('coba')}}",
+        //     data:{
+        //         '_token': '<?php echo csrf_token()?>'
+        //     },
+        //     success: function(data){
+        //         1;
+        //     }
+        // });
     }
 
     function konfirmasi(produksi, length){
         console.log(produksi);
         console.log(length);
-        $.ajax({
-            type: "POST",
-            url: "{{route('konfirmasi_1')}}",
-            data:{
-                '_token': '<?php echo csrf_token()?>',
-                'produksi': produksi,
-                'length': length
-            },
-            success: function(data){
+        // $.ajax({
+        //     type: "POST",
+        //     url: "{{route('konfirmasi_1')}}",
+        //     data:{
+        //         '_token': '<?php echo csrf_token()?>',
+        //         'produksi': produksi,
+        //         'length': length
+        //     },
+        //     success: function(data){
                 
-            }
-        });
+        //     }
+        // });
     }
+    
+    $('#button_1').click(function(){
+        var notEfficient = ['Sorting', 'Cutting', 'Drilling', 'Assembling', 'Cutting', 'Assembling', 'Sorting', 'Wrapping', 'Packing'];
+        var efficient = ['Sorting', 'Cutting', 'Bending', 'Assembling', 'Packing'];
+        var arrProses = [];
+        for(var j=1; j<=9; j++){
+            var proses = $("#proses_1_"+j).val();
+            arrProses.push(proses);
+            console.log("proses_1_"+j+" = "+ proses);
+        }
+
+        // console.log(arrProses);
+
+        arrProses = jQuery.grep(arrProses, function(value) {
+            return value != '-';
+        })
+
+        // console.log(arrProses);
+
+        var helper = true;
+        if(efficient.length == arrProses.length){
+            for(var x=0; x<efficient.length; x++){
+                if(efficient[x] != arrProses[x]){
+                    // helper = false;
+                }
+            }
+            alert('Efficient');
+        }else if(notEfficient.length == arrProses.length){
+            for(var x=0; x<notEfficient.length; x++){
+                if(efficient[x] != arrProses[x]){
+                    // helper = false;
+                }
+            }
+            alert('Not Efficient');
+        }else{
+            // helper = false;
+            alert('Defected')
+        }
+
+        // console.log(helper);
+        // console.log(notEfficient);
+        // console.log(efficient);
+        // alert("You clicked button_1");
+    });
+
+    $('#button_2').click(function(){
+        var notEfficient = ['Sorting', 'Cutting', 'Assembling', 'Drilling', 'Assembling', 'Wrapping', 'Packing'];
+        var efficient = ['Sorting', 'Cutting', 'Drilling', 'Assembling', 'Packing'];
+        var arrProses = [];
+        for(var j=1; j<=9; j++){
+            var proses = $("#proses_2_"+j).val();
+            arrProses.push(proses);
+            console.log("proses_2_"+j+" = "+ proses);
+        }
+
+        // console.log(arrProses);
+
+        arrProses = jQuery.grep(arrProses, function(value) {
+            return value != '-';
+        })
+
+        // console.log(arrProses);
+
+        var helper = true;
+        if(efficient.length == arrProses.length){
+            for(var x=0; x<efficient.length; x++){
+                if(efficient[x] != arrProses[x]){
+                    // helper = false;
+                }
+            }
+            alert('Efficient');
+        }else if(notEfficient.length == arrProses.length){
+            for(var x=0; x<notEfficient.length; x++){
+                if(efficient[x] != arrProses[x]){
+                    // helper = false;
+                }
+            }
+            alert('Not Efficient');
+        }else{
+            // helper = false;
+            alert('Defected');
+        }
+
+        // console.log(helper);
+        // console.log(notEfficient);
+        // console.log(efficient);
+        // alert("You clicked button_2");
+    });
+
+    $('#button_3').click(function(){
+        var notEfficient = ['Sorting', 'Molding', 'Assembling', 'Sorting', 'Wrapping', 'Packing'];
+        var efficient = ['Sorting', 'Molding', 'Assembling', 'Packing'];
+        var arrProses = [];
+        for(var j=1; j<=9; j++){
+            var proses = $("#proses_3_"+j).val();
+            arrProses.push(proses);
+            console.log("proses_3_"+j+" = "+ proses);
+        }
+
+        console.log(arrProses);
+
+        arrProses = jQuery.grep(arrProses, function(value) {
+            return value != '-';
+        })
+
+        console.log(arrProses);
+        // console.log(efficient.length);
+        // console.log(arrProses.length);
+        // console.log(notEfficient.length);
+
+        var helper = true;
+        if(efficient.length == arrProses.length){
+            for(var x=0; x<efficient.length; x++){
+                if(efficient[x] != arrProses[x]){
+                    // helper = false;
+                }
+            }
+            alert("Efficient");
+        }else if(notEfficient.length == arrProses.length){
+            for(var x=0; x<notEfficient.length; x++){
+                if(efficient[x] != arrProses[x]){
+                    // helper = false;
+                }
+            }
+            alert("Not Efficient");
+        }else{
+            // helper = false;
+            alert("Defected");
+        }
+
+        // console.log(helper);
+        // console.log(notEfficient);
+        // console.log(efficient);
+        // alert("You clicked button_3");
+    });
 </script>
 @endsection

@@ -86,7 +86,7 @@ class MesinController extends Controller
     }
 
     function coba(){
-        $mesin = FacadesDB::table('mesin')->get();
+        $mesin = DB::table('mesin')->get();
         return response()->json(array(
             'mesin'=>$mesin
         ),200);

@@ -49,16 +49,6 @@
         }
     </style>
 
-    @php
-        $sesi=1;
-        $dana=10000;
-        $namaTeam="apapun namanya";
-        $nomorSesi=1;   
-        $sisaInventory=1000;
-        $demandTerpenuhi=400;
-        $customerValue=0.6;
-        $timer="00:00";
-    @endphp
 
 {{-- DOKUMENTASI ID --}}
 {{-- 
@@ -79,7 +69,16 @@
 <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
     
     <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
-
+        @php
+        $sesi=1;
+        $dana=10000;
+        $namaTeam="apapun namanya";
+        $nomorSesi=1;   
+        $sisaInventory=1000;
+        $demandTerpenuhi=400;
+        $customerValue=0.6;
+        $timer="00:00";
+        @endphp
         {{--Nama Team dan Timer--}}
         <div class="row align-items-center rounded heading">
             <div class="col-9 nama_team">
@@ -187,7 +186,17 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php
+                    $arrbahan = array('Steel', 'Iron', 'Aluminium Alloy', 'ABS Plastic', 'PP Plastic', 'PC Plastic', 'SBR Rubber', 'PU Rubber', 'NBR Rubber', 'Silicone', 'Acrylic', 'Cable', 'EVA Glue', 'PVA Glue'); 
+                    @endphp
+                    @for($i=1;$i<=count($arrbahan);$i++)
                     <tr>
+                        <th class="nomor_inventory" scope="row">{{$i}}</th>
+                        <td>{{$arrbahan[$i-1]}}</td>
+                        <td id="inv_{{$i}}">0</td>
+                    </tr>
+                    @endfor
+                    {{-- <tr>
                         <th class="nomor_inventory" scope="row">1</th>
                         <td>Steel</td>
                         <td id="inv_1">0</td>
@@ -256,7 +265,7 @@
                         <th class="nomor_inventory" scope="row">14</th>
                         <td>PVA Glue</td>
                         <td id="inv_14">0</td>
-                    </tr>
+                    </tr> --}}
                 </tbody>
             </table>
         </div>
@@ -267,16 +276,31 @@
         <div class="card-body pemenuhan rounded">
             <h1>Pemenuhan Demand</h1>
             <table class="table table-bordered" style="vertical-align: middle;">
+                @php
+                    $arrproduk = array('Scooter', 'Hoverboard', 'Skateboard', 'Bicycle', 'Claw Machine', 'RC Car', 'RC Helicopter', 'Trampoline', 'Robot', 'Airsoft Gun', 'Rubber Ball', 'Fidget Spinner', 'Bowling Set', 'Action Figure');
+                    $col=3;
+                @endphp
                 <thead class="thead">
                     <tr>
                         <th class="nomor_demand" scope="col">No.</th>
                         <th scope="col">Produk</th>
-                        <th scope="col" colspan="3" style="text-align:center;">Memenuhi Demand</th>
+                        <th scope="col" colspan={{$col}} style="text-align:center;">Memenuhi Demand</th>
                         <th scope="col">Total</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @for($i=1; $i<=count($arrproduk);$i++)
                     <tr>
+                        <th class="nomor_demand" scope="row">{{$i}}</th>
+                        <td>{{$arrproduk[$i-1]}}</td>
+                        @for($j=1; $j<=$col;$j++)
+                        <td id="demand-{{$i}}_{{$j}}">0</td>
+                        @endfor
+                        <td id="total-{{$i}}">0</td>
+
+                    </tr>
+                    @endfor
+                    {{-- <tr>
                         <th class="nomor_demand" scope="row">1</th>
                         <td>Scooter</td>
                         <td id="demand-1_1">0</td>
@@ -292,7 +316,6 @@
                         <td id="demand-2_2">0</td>
                         <td id="demand-2_3">0</td>
                         <td id="total-2">0</td>
-
                     </tr>
                     <tr>
                         <th class="nomor_demand" scope="row">3</th>
@@ -389,7 +412,7 @@
                         <td id="demand-14_2">0</td>
                         <td id="demand-14_3">0</td>
                         <td id="total-14">0</td>
-                    </tr>
+                    </tr> --}}
                 </tbody>
              </table>
         </div>

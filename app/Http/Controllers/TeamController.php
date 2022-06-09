@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Team;
 use Illuminate\Http\Request;
+use DB;
 
 class TeamController extends Controller
 {
@@ -14,7 +15,9 @@ class TeamController extends Controller
      */
     public function index()
     {
-        //
+        $teams = DB::table('teams')->get();
+        dd($teams);
+        return view('dashboard.dashboard', compact('teams'));
     }
 
     /**

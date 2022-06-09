@@ -53,7 +53,7 @@ Route::get('/kapasitas', function () {
     return view ('mesin.kapasitas');
 })->name('kapasitas');
 
-//Route Controller
+//Route coba-coba
 Route::resource('team', 'TeamController');
 Route::resource('mesin', 'MesinController');
 Route::resource('komponen', 'KomponenController');
