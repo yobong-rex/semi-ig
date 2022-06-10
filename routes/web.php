@@ -37,7 +37,7 @@ Route::post('/market/beli','MarketController@marketBeli')->name('market.beli');
 
 // Analisis Bahan Baku
 Route::get('/bahan', function () {
-    return view ('analisis bahan baku.bahan');
+    return view ('analisis_bahan_baku.bahan');
 })->name('bahan');
 
 //prduksi
@@ -46,7 +46,7 @@ Route::get('/produksi', function () {
 })->name('produksi');
 
 Route::get('/prosesbahan', function () {
-    return view ('analisis bahan baku.prosesbahan');
+    return view ('analisis_bahan_baku.prosesbahan');
 })->name('prosesbahan');
 
 // Mesin
