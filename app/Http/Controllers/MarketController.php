@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use Auth;
 
 class MarketController extends Controller
 {
     function market(){
-        $user = DB::table('teams')->select('nama','dana','idteam')->where('idteam',1)->get();
+        $team = Auth::user()->teams_idteam;
+        $user = DB::table('teams')->select('nama','dana','idteam')->where('idteam',$team)->get();
         $data = DB::table('ig_markets')->where('sesi','1')->get();
         $sesi = DB::table('sesi')->select('sesi')->get();
         return view('market',compact('data','user','sesi'));  
@@ -73,7 +75,7 @@ class MarketController extends Controller
                 }
             }
             
-            DB::table('invoice')->insert(['teams_idteam'=>$team, 'total_bahan'=> $total_bahan, 'total'=> $total, 'sesi'=> '1']);
+            DB::table('invoice')->insert(['teams_idteam'=>$team, 'total_bahan'=> $total_bahan, 'total'=> $total, 'sesi'=> $sesi]);
             $idInvoice = DB::getPdo()->lastInsertId();
             foreach ($insert as $key => $val){
                 $insert[$key]['invoice'] = $idInvoice;
@@ -84,17 +86,19 @@ class MarketController extends Controller
             DB::table('teams')->where('idteam',$team)->update(['dana'=> $sisa_dana, 'inventory'=> $sisaInv]);
             
             $team_has_inventory = DB::table('inventory')->whereIn('ig_markets', $item_id)->where('teams',$team)->get();
-            
             $insertStok = [];
             if(count($team_has_inventory)>0){
-                foreach($item as $key => $val){
-                    $stok = $team_has_inventory[$key]->stock + $val['quantity'];
-                    DB::table('inventory')->where('ig_markets',$val['item'])->where('teams',$team)->update([
-                        'stock' => $stok
-                    ]);
+                foreach($team_has_inventory as $key => $val){
+                    if($val->ig_markets == $item[$key]['item']){
+                        $stok = $val->stock + $item[$key]['quantity'];
+                        DB::table('inventory')->where('ig_markets',$item[$key]['item'])->where('teams',$team)->update([
+                            'stock' => $stok
+                        ]);
+                        unset($item[$key]);
+                    }
                 }
             }
-            else{
+            if (count($item)>0){
                 foreach($item as $key => $val){
                     $data = [
                         'ig_markets' => $val['item'],
@@ -111,7 +115,7 @@ class MarketController extends Controller
             ), 200); 
         } catch (\PDOException $e) {
             return response()->json(array(
-                'msg'=>'maaf ada kesalahan koneksi dengan server',
+                'msg'=>'maaf ada kesalahan koneksi dengan server'.$e,
                 'code'=> '401'
             ), 401);
         }

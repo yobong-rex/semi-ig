@@ -17,6 +17,13 @@ use Illuminate\Support\Facades\Route;
 //     return view('');
 // })->name('');
 
+
+Route::middleware(['auth'])->group(function(){
+    // IG Market
+    Route::get('/market','MarketController@market')->name('market');
+    Route::post('/market/beli','MarketController@marketBeli')->name('market.beli');
+});
+
 // Dashboard
 Route::get('/', function () {
     return view('dashboard.dashboard');
@@ -31,9 +38,7 @@ Route::get('/analisis', function () {
     return view ('sesi analisis.analisis');
 })->name('analisis');
 
-// IG Market
-Route::get('/market','MarketController@market')->name('market');
-Route::post('/market/beli','MarketController@marketBeli')->name('market.beli');
+
 
 // Analisis Bahan Baku
 Route::get('/bahan', function () {
@@ -71,3 +76,6 @@ Route::post('/konfirmasi_3', 'AnalisisController@insert')->name('konfirmasi_3');
 
 Route::get('/admin/analisis','AnalisisController@admin')->name('analisis.admin');
 Route::post('/admin/analisis/update','AnalisisController@updateSesi')->name('analisis.update');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

@@ -250,6 +250,7 @@
         })
 
         $(document).on('click','#reload', function(){
+            let value=$(this).val();
             location.reload()
         })
     </script>

@@ -7,11 +7,11 @@
     <title>Document</title>
 </head>
 <body>
-@if(session('status'))
+<!-- @if(session('status'))
             <div class="alert alert-success" id="status">
                 {{session('status')}}
             </div>
-@endif
+@endif -->
     <form action="{{route('analisis.update')}}" method="post">
         @csrf
         @if($data[0]->analisis == false)
