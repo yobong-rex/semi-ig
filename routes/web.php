@@ -27,15 +27,17 @@ Route::middleware(['auth'])->group(function(){
 // Dashboard
 Route::get('/', 'TeamController@dashboard')->name('dashboard');
 
+
 // Sesi Analisis
 Route::get('/admin', function () {
-    return view ('sesi analisis.admin');
+    return view ('Sesi_Analisis.admin');
 })->name('admin');
 
 Route::get('/analisis', function () {
-    return view ('sesi analisis.analisis');
+    return view ('Sesi_Analisis.analisis');
 })->name('analisis');
 
+Route::post('/analisis/proses','AnalisisController@insertProses')->name('analisis.proses');
 
 
 // Analisis Bahan Baku
@@ -43,14 +45,14 @@ Route::get('/bahan', function () {
     return view ('Analisis_Bahan_Baku.bahan');
 })->name('bahan');
 
-//prduksi
-Route::get('/produksi', function () {
-    return view ('produksi.produksi');
-})->name('produksi');
+
+//produksi
+Route::get('/produksi','ProduksiController@produksi')->name('produksi');
 
 Route::get('/prosesbahan', function () {
     return view ('Analisis_Bahan_Baku.prosesbahan');
 })->name('prosesbahan');
+
 
 // Mesin
 Route::get('/komponen-mesin', function () {
@@ -60,10 +62,7 @@ Route::get('/komponen-mesin', function () {
 Route::get('/kapasitas','KapasitasController@index')->name('kapasitas');
 
 //Route coba-coba
-Route::resource('team', 'TeamController');
-Route::resource('mesin', 'MesinController');
-Route::resource('komponen', 'KomponenController');
-Route::resource('kapasitas', 'KapasitasController');
+
 
 Route::post('/coba', 'MesinController@coba')->name('coba');
 // Route::get('/upgradeKomponen', 'MesinController')->name('upgrade');

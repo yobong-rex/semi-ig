@@ -7,12 +7,27 @@ use DB;
 
 class AnalisisController extends Controller
 {
-    function insert(Request $request){
-        $produksi = $request('produksi');
-        $length = $request('length');
+    function analisi(){
+        $user = DB::table('teams')->select('nama','dana','idteam')->where('idteam',1)->get();
+        $sesi = DB::table('sesi')->select('sesi')->get();
+        // $cycleTime = DB::
+    }
+
+    function insertProses(Request $request){
+        $produksi = $request->get('produksi');
+        $length = $request->get('panjang');
+        $proses = $request->get('proses');
+        $user = DB::table('teams')->select('nama','dana','idteam')->where('idteam',1)->get();
         DB::table('analisis')->insert([
             'produksi' => $produksi,
             'length' => $length
+        ]);
+        // buat dapetin id terakhir yang diinsert
+        $idanalisis = DB::getPdo()->lastInsertId();
+        DB::table('teams_has_analisis')->insert([
+            'teams_idteam' => $user[0]->idteam,
+            'analisis_idanalisis'=> $idanalisis,
+            'proses'=> $proses
         ]);
     }
 

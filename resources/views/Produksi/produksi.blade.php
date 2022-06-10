@@ -60,9 +60,9 @@
         {{--Nama Team dan Timer--}}
         <div class="row align-items-center rounded heading">
             <div class="col-9 nama_team">
-                <h1 id="namaTeam">Team {{$namaTeam}}</h1> 
+                <h1 id="namaTeam">Team {{$user[0]->nama}}</h1> 
             </div>
-            <div class="col-1"><h3 id="nomorSesi">Sesi {{$nomorSesi}}</h3></div>
+            <div class="col-1"><h3 id="nomorSesi">Sesi <span id='sesi'>1</span></h3></div>
             <div class="col-1 text-center align-self-end timer rounded-2"  style="font-family:TT Norms Regular;">
                 <h3>Timer</h3>
                 <h4 id="timer">{{$timer}}</h4>   
@@ -77,10 +77,13 @@
                 <thead class="thead">
                     <tr>
                         <th scope="col"> </th>
-                        <th scope="col" colspan="9" style="text-align:center;">Urutan Produksi Produk</th>
+                        <th scope="col"> </th>
+                        <th scope="col" colspan="8" style="text-align:center;">Urutan Produksi Produk</th>
                         <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;">Konfirmasi</th>
                     </tr>
                     <tr>
+                        <th>Produk</th>
+                        <th>Jumlah Produk</th>
                         <th class="nomor" scope="col">Nomor</th>
                         @for ($i=1;$i<=9;$i++)
                         <th class="penomoran" scope="col">{{$i}}</th>
@@ -91,6 +94,31 @@
                     {{-- id proses_(prosesId) --}}
                     @for($i=1;$i<=3;$i++)
                     <tr id="tr_{{$i}}">
+                        <td>
+                            <select name="" id="">
+                                <option value="">pilih produk</option>
+                                @if($i == 1)
+                                    <option value="scooter">Scooter</option>
+                                    <option value="hoverboard">Hoverboard</option>
+                                    <option value="skateboard">Skateboard</option>
+                                    <option value="bicycle">Bicycle</option>
+                                    <option value="claw machine">Claw Machine</option>
+                                @elseif ($i == 2)
+                                    <option value="RC Car">RC Car</option>
+                                    <option value="RC Helicopter">RC Helicopter</option>
+                                    <option value="Trampoline">Trampoline</option>
+                                    <option value="Robot">Robot</option>
+                                    <option value="Airsoft Gun">Airsoft Gun</option>
+                                    <option value="Playstation">Playstation</option>
+                                @else
+                                    <option value="RC Car">Rubber Ball</option>
+                                    <option value="RC Helicopter">Fidget Spiner</option>
+                                    <option value="Trampoline">Bowling Set</option>
+                                    <option value="Robot">Action Figure</option>
+                                @endif
+                            </select>
+                        </td>
+                        <td><input type="number" name='jumlah' id='jumlah'></td>
                         <th class="nomor" scope="row">Proses Produksi {{$i}}</th>
                         @for($j=1;$j<=9;$j++)
                         <td>

@@ -55,7 +55,7 @@
                                 @for ($j = 1; $j <= 9; $j++)
                                     <td>
                                         <select name="proses" id="proses_{{ $i }}_{{ $j }}">
-                                            <option value="-">-Select-</option>
+                                            <option value="">-Select-</option>
                                             <option value="Sorting">Sorting</option>
                                             <option value="Cutting">Cutting</option>
                                             <option value="Bending">Bending</option>
@@ -67,7 +67,7 @@
                                         </select>
                                     </td>
                                 @endfor
-                                <td><button class="btn btn-success" id="button_{{ $i }}">Konfirmasi</button></td>
+                                <td><button type="button" class="btn btn-success" id="button_{{ $i }}">Konfirmasi</button></td>
                             </tr>
                         @endfor
                     </tbody>
@@ -125,58 +125,68 @@
             //     }
             // });
         }
-        $(document).on('click', '#button_1', function())
+
         $('#button_1').click(function() {
+            var arrProses = [];
+            var prosesInsert = '';
+            for (var x = 1; x <= 9; x++) {
+                var proses = $("#proses_1_" + x).val();
+                arrProses.push(proses);
+                console.log("proses_1_" + x + " = " + proses);
+            }
+
+            arrProses1 = jQuery.grep(arrProses, function(value) {
+                return value != '';
+            });
+
+            for(var x = 0; x<arrProses.length; x++){
+                prosesInsert += arrProses[x] + ";";
+                console.log(prosesInsert);
+            }
+            var panjang = arrProses1.length;
+            console.log(panjang);
+            console.log(arrProses.length);
+
             $.ajax({
                 type: "POST",
-                url: "{{ route('coba') }}",
+                url: "{{ route('analisis.proses') }}",
                 data: {
-                    '_token': '<?php echo csrf_token(); ?>'
+                    '_token': '<?php echo csrf_token(); ?>',
+                    'produksi': 1,
+                    'panjang': panjang,
+                    'proses': prosesInsert
                 },
                 success: function() {
                     var notEfficient = ['Sorting', 'Cutting', 'Drilling', 'Assembling', 'Cutting',
                         'Assembling', 'Sorting', 'Wrapping', 'Packing'
                     ];
                     var efficient = ['Sorting', 'Cutting', 'Bending', 'Assembling', 'Packing'];
-                    var arrProses = [];
-                    for (var j = 1; j <= 9; j++) {
-                        var proses = $("#proses_1_" + j).val();
-                        arrProses.push(proses);
-                        console.log("proses_1_" + j + " = " + proses);
-                    }
-
-                    // console.log(arrProses);
-
-                    arrProses = jQuery.grep(arrProses, function(value) {
-                        return value != '-';
-                    })
-
-                    // console.log(arrProses);
-
-                    var helper = true;
-                    if (efficient.length == arrProses.length) {
+                    
+                    var status = true;
+                    if (efficient.length == panjang) {
                         for (var x = 0; x < efficient.length; x++) {
                             if (efficient[x] != arrProses[x]) {
-                                // helper = false;
+                                status = false;
                             }
                         }
-                        alert('Efficient');
-                    } else if (notEfficient.length == arrProses.length) {
+                    } else if (notEfficient.length == panjang) {
                         for (var x = 0; x < notEfficient.length; x++) {
                             if (efficient[x] != arrProses[x]) {
-                                // helper = false;
+                                status = false;
                             }
                         }
-                        alert('Not Efficient');
                     } else {
-                        helper = false;
-                        alert('Defected');
+                        status = false;
                     }
 
-                    // console.log(helper);
-                    // console.log(notEfficient);
-                    // console.log(efficient);
-                    // alert("You clicked button_1");
+                    if(status == false){
+                        alert('Not Efficient');
+                    }else{
+                        alert('Efficient');
+                    }
+                },
+                error: function(){
+                    alert('error');
                 }
             });
         });
