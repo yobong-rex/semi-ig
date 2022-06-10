@@ -20,10 +20,7 @@
     .dana{
         text-align:right;
     }
-    .spacing{
-        margin:15px;
-        padding:10px;
-    }
+    
     .nomor{
         width:50px;
         text-align:center;
@@ -32,6 +29,10 @@
         width:110px;
         text-align: center;
     }
+    .kartu_Home{
+            background-color:#faf0dc;
+            box-shadow: 0 6px 10px rgba(0,0,0,.08);
+        }
 </style>
 
 @php
@@ -48,6 +49,8 @@
     timer : string timer
     dana : dana masing-masing team
     nomorSesi : nomor sesi
+    cycleTime : cycle time
+    totalDefect : jumlah akhir defect
     --}}
 
 <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
@@ -108,62 +111,44 @@
                     @endfor
                 </tbody>
             </table>
-
-            {{--Coba--}}
-            <button type="button" class="btn btn-success" id="coba" onclick="coba_konfirmasi()">Coba</button>
-            <p id="coba-text"></p> 
         </form>
-    </div>
 
-    <div class="row"> 
-        {{--Card Inventory--}} 
-        <div class="col">
-            <div class="card-body rounded text-center kartu_Home">
-                <div class="col">
-                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="auto" fill="currentColor" class="bi bi-safe" viewBox="0 0 16 16">
-<path d="M1 1.5A1.5 1.5 0 0 1 2.5 0h12A1.5 1.5 0 0 1 16 1.5v13a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 1 14.5V13H.5a.5.5 0 0 1 0-1H1V8.5H.5a.5.5 0 0 1 0-1H1V4H.5a.5.5 0 0 1 0-1H1V1.5zM2.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h12a.5.5 0 0 0 .5-.5v-13a.5.5 0 0 0-.5-.5h-12z"/>
-<path d="M13.5 6a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zM4.828 4.464a.5.5 0 0 1 .708 0l1.09 1.09a3.003 3.003 0 0 1 3.476 0l1.09-1.09a.5.5 0 1 1 .707.708l-1.09 1.09c.74 1.037.74 2.44 0 3.476l1.09 1.09a.5.5 0 1 1-.707.708l-1.09-1.09a3.002 3.002 0 0 1-3.476 0l-1.09 1.09a.5.5 0 1 1-.708-.708l1.09-1.09a3.003 3.003 0 0 1 0-3.476l-1.09-1.09a.5.5 0 0 1 0-.708zM6.95 6.586a2 2 0 1 0 2.828 2.828A2 2 0 0 0 6.95 6.586z"/>
-</svg>
-                </div>
-                <div class="col">
-                    <h2>Sisa Inventory</h2>
-                </div>
-                <div class="col">
-                    <h3 id="sisaInventory">0</h3>
+        <div class="row spacing"></div>
+
+        {{--Kartu bawah--}}
+        <div class="row"> 
+            {{--Card Cycle Time--}} 
+            <div class="col">
+                <div class="card-body rounded text-center kartu_Home">
+                    <div class="col">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-hourglass-split" viewBox="0 0 16 16">
+                            <path d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z"/>
+                          </svg>
+                    </div>
+                    <div class="col">
+                        <h2>Cycle Time</h2>
+                    </div>
+                    <div class="col">
+                        <h3 id="cycleTime">00:00</h3>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        {{--Card Demand--}}
-        <div class="col">
-            <div class="card-body rounded text-center kartu_Home">
-                <div class="col">
-                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
-<path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-</svg>
-                </div>
-                <div class="col">
-                    <h2>Demand Terpenuhi</h2>
-                </div>
-                <div class="col">
-                    <h3 id="demandTerpenuhi">0</h3>
-                </div>
-            </div>
-        </div>
-
-        {{--Card Customer--}}
-        <div class="col">
-            <div class="card-body rounded text-center kartu_Home">
-                <div class="col">
-                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
-<path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
-</svg>
-                </div>
-                <div class="col">
-                    <h2>Customer Value</h2>
-                </div>
-                <div class="col">
-                    <h3 id="customerValue">0</h3>
+    
+            {{--Card Defect--}}
+            <div class="col">
+                <div class="card-body rounded text-center kartu_Home">
+                    <div class="col">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
+                            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                          </svg>
+                    </div>
+                    <div class="col">
+                        <h2>Jumlah Defect</h2>
+                    </div>
+                    <div class="col">
+                        <h3 id="totalDefect">0</h3>
+                    </div>
                 </div>
             </div>
         </div>

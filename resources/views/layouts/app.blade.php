@@ -53,6 +53,10 @@
             background-color: #ea435e;
             border-radius: 5px;
         }
+        .spacing{
+        margin:15px;
+        padding:10px;
+    }
         
         
     </style>

@@ -73,8 +73,8 @@
                     @endfor
                 </tbody>
             </table>
-            <button type="button" class="btn btn-success" id="coba" onclick="coba_konfirmasi(1, 5)">Coba</button>
-            <p id="coba-text"></p> 
+            {{-- <button type="button" class="btn btn-success" id="coba" onclick="coba_konfirmasi(1, 5)">Coba</button>
+            <p id="coba-text"></p>  --}}
         </form>
     </div>
 </body>
