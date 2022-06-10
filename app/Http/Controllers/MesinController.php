@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Mesin;
 use Illuminate\Http\Request;
 use DB;
-use Illuminate\Support\Facades\DB as FacadesDB;
 
 class MesinController extends Controller
 {

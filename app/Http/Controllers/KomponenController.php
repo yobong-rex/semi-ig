@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Komponen;
 use Illuminate\Http\Request;
+use DB;
 
 class KomponenController extends Controller
 {
@@ -14,7 +15,8 @@ class KomponenController extends Controller
      */
     public function index()
     {
-        
+        $komponen = DB::table('komponen')->get();
+        dd($komponen);
     }
 
     /**
@@ -81,5 +83,9 @@ class KomponenController extends Controller
     public function destroy(Komponen $komponen)
     {
         //
+    }
+
+    function upgrade(){
+        
     }
 }

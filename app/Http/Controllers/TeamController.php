@@ -15,9 +15,7 @@ class TeamController extends Controller
      */
     public function index()
     {
-        $teams = DB::table('teams')->get();
-        dd($teams);
-        return view('dashboard.dashboard', compact('teams'));
+        
     }
 
     /**
@@ -84,5 +82,11 @@ class TeamController extends Controller
     public function destroy(Team $team)
     {
         //
+    }
+
+    function dashboard(){
+        $teams = DB::table('teams')->where('nama','team 1')->get();
+        // dd($teams);
+        return view('dashboard.dashboard', compact('teams'));
     }
 }

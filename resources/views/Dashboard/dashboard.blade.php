@@ -68,8 +68,8 @@
     <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
         @php
         $sesi=1;
-        $dana=10000;
-        $namaTeam="apapun namanya";
+        // $dana={{$teams->dana}};
+        // $namaTeam={{$teams->nama}};
         $nomorSesi=1;   
         $sisaInventory=1000;
         $demandTerpenuhi=400;
@@ -79,7 +79,7 @@
         {{--Nama Team dan Timer--}}
         <div class="row align-items-center rounded heading">
             <div class="col-9 nama_team">
-                <h1 id="namaTeam">Team {{$namaTeam}}</h1> 
+                <h1 id="namaTeam">Team {{$teams[0] -> nama}}</h1> 
             </div>
             <div class="col-1"><h3 id="nomorSesi">Sesi {{$nomorSesi}}</h3></div>
             <div class="col-1 text-center align-self-end timer rounded-2"  style="font-family:TT Norms Regular;">
@@ -102,7 +102,7 @@
                         <h1>Dana : </h1>
                     </div>
                     <div class="col-9 dana">
-                        <h1 id="dana">{{number_format($dana)}} TC</h1>
+                        <h1 id="dana">{{number_format($teams[0] -> dana)}} TC</h1>
                     </div>
                 </div>
             </div>
@@ -126,7 +126,7 @@
                             <h2>Sisa Inventory</h2>
                         </div>
                         <div class="col">
-                            <h3 id="sisaInventory">{{$sisaInventory}}</h3>
+                            <h3 id="sisaInventory">{{$sisaInventory-$teams[0]->inventory}}</h3>
                         </div>
                     </div>
                 </div>
@@ -193,6 +193,77 @@
                         <td id="inv_{{$i}}">0</td>
                     </tr>
                     @endfor
+                    {{-- JANGAN DIHAPUS DULU --}}
+                    {{-- <tr>
+                        <th class="nomor_inventory" scope="row">1</th>
+                        <td>Steel</td>
+                        <td id="inv_1">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">2</th>
+                        <td>Iron</td>
+                        <td id="inv_2">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">3</th>
+                        <td>Aluminum Alloy</td>
+                        <td id="inv_3">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">4</th>
+                        <td>ABS Plastic</td>
+                        <td id="inv_4">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">5</th>
+                        <td>PP Plastic</td>
+                        <td id="inv_5">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">6</th>
+                        <td>PC Plastic</td>
+                        <td id="inv_6">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">7</th>
+                        <td>SBR Rubber</td>
+                        <td id="inv_7">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">8</th>
+                        <td>PU Rubber</td>
+                        <td id="inv_8">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">9</th>
+                        <td>NBR Rubber</td>
+                        <td id="inv_9">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">10</th>
+                        <td>Silicone</td>
+                        <td id="inv_10">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">11</th>
+                        <td>Acrylic</td>
+                        <td id="inv_11">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">12</th>
+                        <td>Cable</td>
+                        <td id="inv_12">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">13</th>
+                        <td>EVA Glue</td>
+                        <td id="inv_13">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_inventory" scope="row">14</th>
+                        <td>PVA Glue</td>
+                        <td id="inv_14">0</td>
+                    </tr> --}}
                 </tbody>
             </table>
         </div>
@@ -224,10 +295,122 @@
                         <td id="demand-{{$i}}_{{$j}}">0</td>
                         @endfor
                         <td id="total-{{$i}}">0</td>
-
                     </tr>
                     @endfor
-                    
+                    {{-- JANGAN DIHAPUS DULU --}}
+                    {{-- <tr>
+                        <th class="nomor_demand" scope="row">1</th>
+                        <td>Scooter</td>
+                        <td id="demand-1_1">0</td>
+                        <td id="demand-1_2">0</td>
+                        <td id="demand-1_3">0</td>
+                        <td id="total-1">0</td>
+
+                    </tr>
+                    <tr>
+                        <th class="nomor_demand" scope="row">2</th>
+                        <td>Hoverboard</td>
+                        <td id="demand-2_1">0</td>
+                        <td id="demand-2_2">0</td>
+                        <td id="demand-2_3">0</td>
+                        <td id="total-2">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_demand" scope="row">3</th>
+                        <td>Skateboard</td>
+                        <td id="demand-3_1">0</td>
+                        <td id="demand-3_2">0</td>
+                        <td id="demand-3_3">0</td>
+                        <td id="total-3">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_demand" scope="row">4</th>
+                        <td>Bicycle</td>
+                        <td id="demand-4_1">0</td>
+                        <td id="demand-4_2">0</td>
+                        <td id="demand-4_3">0</td>
+                        <td id="total-4">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_demand" scope="row">5</th>
+                        <td>Claw Machine</td>
+                        <td id="demand-5_1">0</td>
+                        <td id="demand-5_2">0</td>
+                        <td id="demand-5_3">0</td>
+                        <td id="total-5">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_demand" scope="row">6</th>
+                        <td>RC Car</td>
+                        <td id="demand-6_1">0</td>
+                        <td id="demand-6_2">0</td>
+                        <td id="demand-6_3">0</td>
+                        <td id="total-6">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_demand" scope="row">7</th>
+                        <td>RC Helicopter</td>
+                        <td id="demand-7_1">0</td>
+                        <td id="demand-7_2">0</td>
+                        <td id="demand-7_3">0</td>
+                        <td id="total-7">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_demand" scope="row">8</th>
+                        <td>Trampoline</td>
+                        <td id="demand-8_1">0</td>
+                        <td id="demand-8_2">0</td>
+                        <td id="demand-8_3">0</td>
+                        <td id="total-8">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_demand" scope="row">9</th>
+                        <td>Robot</td>
+                        <td id="demand-9_1">0</td>
+                        <td id="demand-9_2">0</td>
+                        <td id="demand-9_3">0</td>
+                        <td id="total-9">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_demand" scope="row">10</th>
+                        <td>Airsoft Gun</td>
+                        <td id="demand-10_1">0</td>
+                        <td id="demand-10_2">0</td>
+                        <td id="demand-10_3">0</td>
+                        <td id="total-10">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_demand" scope="row">11</th>
+                        <td>Rubber Ball</td>
+                        <td id="demand-11_1">0</td>
+                        <td id="demand-11_2">0</td>
+                        <td id="demand-11_3">0</td>
+                        <td id="total-11">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_demand" scope="row">12</th>
+                        <td>Fidget Spinner</td>
+                        <td id="demand-12_1">0</td>
+                        <td id="demand-12_2">0</td>
+                        <td id="demand-12_3">0</td>
+                        <td id="total-12">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_demand" scope="row">13</th>
+                        <td>Bowling set</td>
+                        <td id="demand-13_1">0</td>
+                        <td id="demand-13_2">0</td>
+                        <td id="demand-13_3">0</td>
+                        <td id="total-13">0</td>
+                    </tr>
+                    <tr>
+                        <th class="nomor_demand" scope="row">14</th>
+                        <td>Action Figure</td>
+                        <td id="demand-14_1">0</td>
+                        <td id="demand-14_2">0</td>
+                        <td id="demand-14_3">0</td>
+                        <td id="total-14">0</td>
+                    </tr> --}}
                 </tbody>
              </table>
         </div>

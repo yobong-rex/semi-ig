@@ -16,8 +16,8 @@ class KapasitasController extends Controller
     public function index()
     {
         //search all
-        // $kapasitas = DB::table('kapasitas')->get();
-
+        $kapasitas = DB::table('kapasitas')->get();
+        
         //search where
         // $kapasitas = DB::table('kapasitas')->where('level','1')->get();        
 
@@ -32,7 +32,7 @@ class KapasitasController extends Controller
         //          ->where('kapasitas.level', '<', 2);
         // })->get();    
 
-        // return view('mesin.kapasitas', compact('kapasitas'));
+        return view('mesin.kapasitas', compact('kapasitas'));
     }
 
     /**

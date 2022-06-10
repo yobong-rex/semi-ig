@@ -7,9 +7,9 @@ use DB;
 
 class AnalisisController extends Controller
 {
-    function insert(Request $Request){
-        $produksi = $Request('produksi');
-        $length = $Request('length');
+    function insert(Request $request){
+        $produksi = $request('produksi');
+        $length = $request('length');
         DB::table('analisis')->insert([
             'produksi' => $produksi,
             'length' => $length
