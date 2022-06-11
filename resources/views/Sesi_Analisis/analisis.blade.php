@@ -57,12 +57,14 @@
                                         <select name="proses" id="proses_{{ $i }}_{{ $j }}">
                                             <option value="">-Select-</option>
                                             @foreach ($mesin as $m)
-                                                <option value='{{$m->nama}}' kapasitas='{{$m->kapasitas}}' time='{{$m->cycle}}'>{{$m->nama}}</option>
+                                                <option value='{{ $m->nama }}' kapasitas='{{ $m->kapasitas }}'
+                                                    time='{{ $m->cycle }}'>{{ $m->nama }}</option>
                                             @endforeach
                                         </select>
                                     </td>
                                 @endfor
-                                <td><button type="button" class="btn btn-success" id="button_{{ $i }}">Konfirmasi</button></td>
+                                <td><button type="button" class="btn btn-success"
+                                        id="button_{{ $i }}">Konfirmasi</button></td>
                             </tr>
                         @endfor
                     </tbody>
@@ -142,7 +144,7 @@
                 return value != '';
             });
 
-            for(var x = 0; x<arrProses.length; x++){
+            for (var x = 0; x < arrProses.length; x++) {
                 prosesInsert += arrProses[x] + ";";
                 // console.log(prosesInsert);
             }
@@ -162,11 +164,11 @@
                     'cycle': arrCycle
                 },
                 success: function() {
-                    var notEfficient = ['Sorting', 'Cutting', 'Drilling', 'Assembling', 'Cutting',
-                        'Assembling', 'Sorting', 'Wrapping', 'Packing'
+                    var notEfficient = ['Sorting', 'Cutting', 'Bending', 'Assembling', 'Delay',
+                        'Cutting', 'Assembling', 'Sorting', 'Packing'
                     ];
                     var efficient = ['Sorting', 'Cutting', 'Bending', 'Assembling', 'Packing'];
-                    
+
                     var status = true;
                     if (efficient.length == panjang) {
                         for (var x = 0; x < efficient.length; x++) {
@@ -184,123 +186,166 @@
                         status = false;
                     }
 
-                    if(status == false){
+                    if (status == false) {
                         alert('Not Efficient');
-                    }else{
+                    } else {
                         alert('Efficient');
                     }
                 },
-                error: function(){
+                error: function() {
                     alert('error');
                 }
             });
         });
 
         $('#button_2').click(function() {
-            var notEfficient = ['Sorting', 'Cutting', 'Assembling', 'Drilling', 'Assembling', 'Wrapping',
-                'Packing'
-            ];
-            var efficient = ['Sorting', 'Cutting', 'Drilling', 'Assembling', 'Packing'];
             var arrProses = [];
-
             let arrKapasitas = [];
             let arrCycle = [];
-
-            for (var j = 1; j <= 9; j++) {
-                var proses = $("#proses_2_" + j).val();
-                var kapasitas = $('option:selected', "#proses_1_" + x).attr('kapasitas');
-                var cycle = $('option:selected', "#proses_1_" + x).attr('time');
+            var prosesInsert = '';
+            for (var x = 1; x <= 9; x++) {
+                var proses = $("#proses_2_" + x).val();
+                var kapasitas = $('option:selected', "#proses_2_" + x).attr('kapasitas');
+                var cycle = $('option:selected', "#proses_2_" + x).attr('time');
                 arrProses.push(proses);
                 arrKapasitas.push(kapasitas);
                 arrCycle.push(cycle);
-                console.log("proses_2_" + j + " = " + proses);
+                // console.log("proses_2_" + x + " = " + proses);
             }
+            // console.log(arrKapasitas);
+            // console.log(arrCycle);
 
-            // console.log(arrProses);
+            arrProses1 = jQuery.grep(arrProses, function(value) {
+                return value != '';
+            });
 
-            arrProses = jQuery.grep(arrProses, function(value) {
-                return value != '-';
-            })
-
-            // console.log(arrProses);
-
-            var helper = true;
-            if (efficient.length == arrProses.length) {
-                for (var x = 0; x < efficient.length; x++) {
-                    if (efficient[x] != arrProses[x]) {
-                        // helper = false;
-                    }
-                }
-                alert('Efficient');
-            } else if (notEfficient.length == arrProses.length) {
-                for (var x = 0; x < notEfficient.length; x++) {
-                    if (efficient[x] != arrProses[x]) {
-                        // helper = false;
-                    }
-                }
-                alert('Not Efficient');
-            } else {
-                // helper = false;
-                alert('Defected');
+            for (var x = 0; x < arrProses.length; x++) {
+                prosesInsert += arrProses[x] + ";";
+                // console.log(prosesInsert);
             }
+            var panjang = arrProses1.length;
+            // console.log(panjang);
+            // console.log(arrProses.length);
 
-            // console.log(helper);
-            // console.log(notEfficient);
-            // console.log(efficient);
-            // alert("You clicked button_2");
+            $.ajax({
+                type: "POST",
+                url: "{{ route('analisis.proses') }}",
+                data: {
+                    '_token': '<?php echo csrf_token(); ?>',
+                    'produksi': 2,
+                    'panjang': panjang,
+                    'proses': prosesInsert,
+                    'kapasitas': arrKapasitas,
+                    'cycle': arrCycle
+                },
+                success: function() {
+                    var notEfficient = ['Sorting', 'Cutting', 'Assembling', 'Drilling', 'Delay',
+                        'Cutting', 'Assembling', 'Idle', 'Packing'
+                    ];
+                    var efficient = ['Sorting', 'Cutting', 'Assembling', 'Drilling', 'Packing'];
+
+                    var status = true;
+                    if (efficient.length == panjang) {
+                        for (var x = 0; x < efficient.length; x++) {
+                            if (efficient[x] != arrProses[x]) {
+                                status = false;
+                            }
+                        }
+                    } else if (notEfficient.length == panjang) {
+                        for (var x = 0; x < notEfficient.length; x++) {
+                            if (efficient[x] != arrProses[x]) {
+                                status = false;
+                            }
+                        }
+                    } else {
+                        status = false;
+                    }
+
+                    if (status == false) {
+                        alert('Not Efficient');
+                    } else {
+                        alert('Efficient');
+                    }
+                },
+                error: function() {
+                    alert('error');
+                }
+            });
         });
 
         $('#button_3').click(function() {
-            var notEfficient = ['Sorting', 'Molding', 'Assembling', 'Sorting', 'Wrapping', 'Packing'];
-            var efficient = ['Sorting', 'Molding', 'Assembling', 'Packing'];
             var arrProses = [];
             let arrKapasitas = [];
             let arrCycle = [];
-            for (var j = 1; j <= 9; j++) {
-                var proses = $("#proses_3_" + j).val();
-                var kapasitas = $('option:selected', "#proses_1_" + x).attr('kapasitas');
-                var cycle = $('option:selected', "#proses_1_" + x).attr('time');
+            var prosesInsert = '';
+            for (var x = 1; x <= 9; x++) {
+                var proses = $("#proses_3_" + x).val();
+                var kapasitas = $('option:selected', "#proses_3_" + x).attr('kapasitas');
+                var cycle = $('option:selected', "#proses_3_" + x).attr('time');
                 arrProses.push(proses);
                 arrKapasitas.push(kapasitas);
                 arrCycle.push(cycle);
-                console.log("proses_3_" + j + " = " + proses);
+                // console.log("proses_3_" + x + " = " + proses);
             }
+            // console.log(arrKapasitas);
+            // console.log(arrCycle);
 
-            // console.log(arrProses);
+            arrProses1 = jQuery.grep(arrProses, function(value) {
+                return value != '';
+            });
 
-            arrProses = jQuery.grep(arrProses, function(value) {
-                return value != '-';
-            })
-
-            // console.log(arrProses);
-            // console.log(efficient.length);
+            for (var x = 0; x < arrProses.length; x++) {
+                prosesInsert += arrProses[x] + ";";
+                // console.log(prosesInsert);
+            }
+            var panjang = arrProses1.length;
+            // console.log(panjang);
             // console.log(arrProses.length);
-            // console.log(notEfficient.length);
 
-            var helper = true;
-            if (efficient.length == arrProses.length) {
-                for (var x = 0; x < efficient.length; x++) {
-                    if (efficient[x] != arrProses[x]) {
-                        // helper = false;
-                    }
-                }
-                alert("Efficient");
-            } else if (notEfficient.length == arrProses.length) {
-                for (var x = 0; x < notEfficient.length; x++) {
-                    if (efficient[x] != arrProses[x]) {
-                        // helper = false;
-                    }
-                }
-                alert("Not Efficient");
-            } else {
-                // helper = false;
-                alert("Defected");
-            }
+            $.ajax({
+                type: "POST",
+                url: "{{ route('analisis.proses') }}",
+                data: {
+                    '_token': '<?php echo csrf_token(); ?>',
+                    'produksi': 3,
+                    'panjang': panjang,
+                    'proses': prosesInsert,
+                    'kapasitas': arrKapasitas,
+                    'cycle': arrCycle
+                },
+                success: function() {
+                    var notEfficient = ['Sorting', 'Molding', 'Idle', 'Assembling', 'Sorting', 'Delay',
+                        'Assembling', 'Packing'
+                    ];
+                    var efficient = ['Sorting', 'Molding', 'Assembling', 'Packing'];
 
-            // console.log(helper);
-            // console.log(notEfficient);
-            // console.log(efficient);
-            // alert("You clicked button_3");
+                    var status = true;
+                    if (efficient.length == panjang) {
+                        for (var x = 0; x < efficient.length; x++) {
+                            if (efficient[x] != arrProses[x]) {
+                                status = false;
+                            }
+                        }
+                    } else if (notEfficient.length == panjang) {
+                        for (var x = 0; x < notEfficient.length; x++) {
+                            if (efficient[x] != arrProses[x]) {
+                                status = false;
+                            }
+                        }
+                    } else {
+                        status = false;
+                    }
+
+                    if (status == false) {
+                        alert('Not Efficient');
+                    } else {
+                        alert('Efficient');
+                    }
+                },
+                error: function() {
+                    alert('error');
+                }
+            });
         });
     </script>
 @endsection
