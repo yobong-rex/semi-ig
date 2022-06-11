@@ -124,7 +124,7 @@
                                 @endif
                             </select>
                         </td>
-                        <td><input class="inputJumlahProduk" type="number" name='jumlah' id='jumlah' min="0" oninput="this.value = 
+                        <td><input class="inputJumlahProduk" type="number" name='jumlah' id='jumlahProduk' min="0" oninput="this.value = 
                             !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                         <th class="nomor" scope="row">Proses Produksi {{$i}}</th>
                         @for($j=1;$j<=9;$j++)

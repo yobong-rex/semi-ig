@@ -77,6 +77,6 @@ Route::post('/demand/konfrim','DemandController@konfrim')->name('demand.konfrim'
 
 // Route::get('/komponentes', 'KomponenController@komponen')->name('komponestes');
 
-Route::get('/komponentes', function () {
-    return view ('mesin.komponentes');
-})->name('komponestes');
+Route::get('/adminkomponen', function () {
+    return view ('mesin.adminkomponen');
+})->name('adminkomponen');

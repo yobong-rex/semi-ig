@@ -76,14 +76,12 @@
 
         <div class="row spacing"></div>
 
-        <div class="row">
             {{-- Table Komponen --}}
-            <div clas="col">
                 <table class="table" style="width:fit-content;">
                     {{-- Heading --}}
                     <thead class="thead">
                         <th><h4>Mesin : </h4></th>
-                        <th>
+                        <th style="vertical-align:middle;">
                             <select name="mesin">
                             <option value="sorting">Sorting</option>
                             <option value="cutting">Cutting</option>
@@ -122,66 +120,69 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
 
             {{-- Informasi Mesin + Upgrade Kapasitas --}}
-            <div class="col">
                 <table class="table table-bordered" style="width:fit-content;">
                     {{-- Heading --}}
                     <thead class="thead">
                         <th>Nama Mesin</th>
                         <th>Level</th>
-                        <th class="class_kapasitasMesin">Kapasitas</th>
                         <th class="class_defectMesin">Defect</th>
+                        <th class="class_kapasitasMesin">Kapasitas</th>
+                        <th style="text-align:center;">Konfirmasi</th>
                     </thead>
                     <tbody>
                         <tr class="rowMesin">
                             <td id="namaMesin">Sorting</td>
                             <td class="noLevel" id="levelMesin_">1</td>
-                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
                             <td class="class_defectMesin" id="defect_mesin">1</td>
+                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                            <td><button type="button" class="btn btn-success" id="button_1">Konfirmasi</button></td>
                         </tr>
                         <tr class="rowMesin">
                             <td id="namaMesin">Cutting</td>
                             <td class="noLevel" id="levelMesin_">1</td>
-                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
                             <td class="class_defectMesin" id="defect_mesin">1</td>
+                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                            <td><button type="button" class="btn btn-success" id="button_2">Konfirmasi</button></td>                           
                         </tr>
                         <tr class="rowMesin">
                             <td id="namaMesin">Bending</td>
                             <td class="noLevel" id="levelMesin_">1</td>
-                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
-                            <td class="class_defectMesin" id="defect_mesin">1</td>
+                             <td class="class_defectMesin" id="defect_mesin">1</td>
+                             <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                             <td><button type="button" class="btn btn-success" id="button_3">Konfirmasi</button></td>
                         </tr>
                         <tr class="rowMesin">
                             <td id="namaMesin">Assembling</td>
                             <td class="noLevel" id="levelMesin_">1</td>
-                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
                             <td class="class_defectMesin" id="defect_mesin">1</td>
+                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                            <td><button type="button" class="btn btn-success" id="button_4">Konfirmasi</button></td>
                         </tr>
                         <tr class="rowMesin">
                             <td id="namaMesin">Packing</td>
                             <td class="noLevel" id="levelMesin_">1</td>
-                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
                             <td class="class_defectMesin" id="defect_mesin">1</td>
+                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                            <td><button type="button" class="btn btn-success" id="button_5">Konfirmasi</button></td>
                         </tr>
                         <tr class="rowMesin">
                             <td id="namaMesin">Drilling</td>
                             <td class="noLevel" id="levelMesin_">1</td>
-                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
                             <td class="class_defectMesin" id="defect_mesin">1</td>
+                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                            <td><button type="button" class="btn btn-success" id="button_6">Konfirmasi</button></td>
                         </tr>
                         <tr class="rowMesin">
                             <td id="namaMesin">Molding</td>
                             <td class="noLevel" id="levelMesin_">1</td>
-                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
                             <td class="class_defectMesin" id="defect_mesin">1</td>
+                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                            <td><button type="button" class="btn btn-success" id="button_7">Konfirmasi</button></td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
-
     </div>
 @php
             $a = 1;

@@ -56,7 +56,11 @@
         .spacing{
         margin:15px;
         padding:10px;
-    }
+        }
+        .logOut{
+            background-color:#6868ac;
+            border-radius: 5px;
+        }
         
         
     </style>
@@ -71,7 +75,7 @@
 <body>
     {{-- NavBar --}}
     <nav class="navbar navbar-expand-lg" style="background-color: #ffff; box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);">
-        <div class="container fluid gap-5">
+        <div class="container-fluid gap-5">
             <a class="navbar-brand" href="/">
                 <img src="{{ asset('assets') }}/logo/Logo_IG_Header.png" alt="Logo IGXXX" style="max-height: 40px">
             </a>
@@ -95,6 +99,15 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('bahan') }}">Analisis Bahan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route('demand') }}">Demand</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route('kapasitas') }}">Kapasitas</a>
+                    </li>
+                    <li class="nav-item logOut">
+                        <a class="nav-link active" style="color:#ffff;" aria-current="page" href="{{ route('dashboard') }}">Log Out</a>
                     </li>
                 </ul>
             </div>

@@ -26,13 +26,39 @@ class DemandController extends Controller
             $demand = $request->get('demand');
             $team = $request->get('team');
             $sesi = $request->get('sesi');
+            $totalJual = 0;
+            $countDemand = 0;
 
-            $produk_id = [];
             foreach ($demand as $d){
-                array_push($produk_id, $d['produk']);
+                $produkDemand = DB::table('demand')->where('sesi',$sesi)->where('produk_idproduk',$d['produk'])->get();
+                if(count($produkDemand)>0){
+                    $hargaProduk = DB::table('produk')->select('harga_jual')->where('idproduk',$d['produk'])->get();
+                    $hargaJual = $d['total'] * $hargaProduk[0]->harga_jual;
+                    DB::table('team_demand')->updateOrInsert(
+                        ['idproduk'=>$d['produk'], 'idteam'=>$team, 'sesi'=>$sesi],
+                        ['jumlah'=>$d['total']]
+                    );
+                    $totalJual += $hargaJual;
+                    $countDemand +=1;
+                }
             }
 
-            
+            if($countDemand> 0){
+                $teamDana = DB::table('teams')->select('dana')->where('idteam', $team)->get();
+                $danaBaru = $teamDana[0]->dana + $totalJual;
+                DB::table('teams')->where('idteam', $team)->update(['dana'=>$danaBaru]);
+    
+                return response()->json(array(
+                    'msg'=>'selamat team anda berhasil memenuhi demand',
+                    'code'=> '200'
+                ), 200); 
+            }
+            else {
+                return response()->json(array(
+                    'msg'=>'maaf team anda gagal memenuhi demand',
+                    'code'=> '200'
+                ), 200); 
+            }
 
         } catch (\PDOException $e) {
             return response()->json(array(
