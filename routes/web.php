@@ -58,7 +58,7 @@ Route::get('/komponen-mesin', function () {
 })->name('komponenMesin');
 
 Route::get('/kapasitas','KapasitasController@kapasitas')->name('kapasitas');
-Route::get('/kapasitas/upgrade', 'KapasitasController@kapasitasUpgrade')->name('upgrade.kapasitas');
+Route::post('/kapasitas/upgrade', 'KapasitasController@kapasitasUpgrade')->name('upgrade.kapasitas');
 
 
 //Route coba-coba

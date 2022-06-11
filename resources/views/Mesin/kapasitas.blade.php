@@ -35,33 +35,35 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($arrProses as $proses)
-                <tr>
-                    <td>
-                        {{$proses}}
-                    </td>
-                    <td>level</td>
-                    <td>kapasitas</td>
-                    <td>
-                        <button type='button' id='upgrade_{{$proses}}'>Upgrade</button>
-                    </td>
-                </tr>
+                @foreach ($data as $d)
+                    <tr>
+                        <td>
+                            {{ $d->nama }}
+                        </td>
+                        <td>{{$d->level}}</td>
+                        <td>{{$d->kapasitas}}</td>
+                        <td>
+                            <button type='button' class='upgrade' value={{$d->nama}}>Upgrade</button>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
     </body>
     <script>
-        $('#upgrade_Sorting').click(function(){
+        $('.upgrade').click(function() {
+            alert($(this).val());
             $.ajax({
                 type: 'POST',
-                url: "{{route('upgrade.kapasitas')}}",
+                url: "{{ route('upgrade.kapasitas') }}",
                 data: {
-                    '_token': '<?php echo csrf_token(); ?>'
+                    '_token': '<?php echo csrf_token(); ?>',
+                    'namaMesin': $(this).val()
                 },
-                success: function(){
+                success: function() {
                     alert('success');
                 },
-                error: function(){
+                error: function() {
                     alert('error');
                 }
             })

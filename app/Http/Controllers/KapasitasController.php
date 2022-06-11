@@ -17,7 +17,7 @@ class KapasitasController extends Controller
     {
         //search all
         // $kapasitas = DB::table('kapasitas')->get();
-        
+
         //search where
         // $kapasitas = DB::table('kapasitas')->where('level','1')->get();        
 
@@ -101,13 +101,48 @@ class KapasitasController extends Controller
         //
     }
 
-    function kapasitas(){
-        $kapasitas = DB::table('kapasitas')->get();
-        return view('Mesin.kapasitas', compact('kapasitas'));
+    function kapasitas()
+    {
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', 1)->get();
+        $data = DB::table('mesin as m')
+            ->join('kapasitas as k', 'm.idmesin', '=', 'k.mesin_idmesin')
+            ->join('kapasitas_has_teams as kht', 'k.idkapasitas', '=', 'kht.kapasitas_idkapasitas')
+            ->select('kht.teams_idteam', 'm.nama', 'k.level', 'k.kapasitas')
+            ->where('kht.teams_idteam', $user[0]->idteam)
+            ->orderBy('m.idmesin', 'asc')
+            ->get();
+        // dd($data);
+        return view('Mesin.kapasitas', compact('data'));
     }
 
-    function kapasitasUpgrade(){
-        $kapasitas = DB::table('kapasitas')->get();
-        return view('Mesin.kapasitas', compact('kapasitas'));
+    function kapasitasUpgrade(Request $request)
+    {
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', 1)->get();
+        $namaMesin = $request->get('namaMesin');
+        $idmesin = DB::table('mesin')->where('nama', 'like', '%'.$namaMesin.'%')->get();
+        $upgrade = DB::table('kapasitas_has_teams')
+            ->select('kapasitas_idkapasitas')
+            ->where('teams_idteam', $user[0]->idteam)
+            ->where('kapasitas_mesin_idmesin', $idmesin)
+            ->get();
+        
+        // $upgrade+=1;
+
+        // DB::table('kapasitas_has_teams as kht')
+        //     ->join('kapasitas as k', 'kht.kapasitas_idkapasitas', '=', 'k.idkapasitas')
+        //     ->join('mesin as m', 'k.mesin_idmesin', '=', 'm.idmesin')
+        //     ->where('kht.teams_idteam', $user[0]->idteam)
+        //     ->where('m.nama', $namaMesin)
+        //     ->update(['kht.kapasitas_idkapasitas' => $upgrade]);
+
+        // $data = DB::table('mesin as m')
+        //     ->join('kapasitas as k', 'm.idmesin', '=', 'k.mesin_idmesin')
+        //     ->join('kapasitas_has_teams as kht', 'k.idkapasitas', '=', 'kht.kapasitas_idkapasitas')
+        //     ->select('k.level', 'k.kapasitas')
+        //     ->where('kht.teams_idteam', $user[0]->idteam)
+        //     ->where('m.nama', $namaMesin)
+        //     ->get();
+        
+        // return view('Mesin.kapasitas', compact('data'));
     }
 }
