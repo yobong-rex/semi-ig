@@ -56,14 +56,9 @@
                                     <td>
                                         <select name="proses" id="proses_{{ $i }}_{{ $j }}">
                                             <option value="">-Select-</option>
-                                            <option value="Sorting">Sorting</option>
-                                            <option value="Cutting">Cutting</option>
-                                            <option value="Bending">Bending</option>
-                                            <option value="Assembling">Assembling</option>
-                                            <option value="Packing">Packing</option>
-                                            <option value="Drilling">Drilling</option>
-                                            <option value="Molding">Molding</option>
-                                            <option value="Wrapping">Wrapping</option>
+                                            @foreach ($mesin as $m)
+                                                <option value='{{$m->nama}}' kapasitas='{{$m->kapasitas}}' time='{{$m->cycle}}'>{{$m->nama}}</option>
+                                            @endforeach
                                         </select>
                                     </td>
                                 @endfor
@@ -128,12 +123,20 @@
 
         $('#button_1').click(function() {
             var arrProses = [];
+            let arrKapasitas = [];
+            let arrCycle = [];
             var prosesInsert = '';
             for (var x = 1; x <= 9; x++) {
                 var proses = $("#proses_1_" + x).val();
+                var kapasitas = $('option:selected', "#proses_1_" + x).attr('kapasitas');
+                var cycle = $('option:selected', "#proses_1_" + x).attr('time');
                 arrProses.push(proses);
-                console.log("proses_1_" + x + " = " + proses);
+                arrKapasitas.push(kapasitas);
+                arrCycle.push(cycle);
+                // console.log("proses_1_" + x + " = " + proses);
             }
+            // console.log(arrKapasitas);
+            // console.log(arrCycle);
 
             arrProses1 = jQuery.grep(arrProses, function(value) {
                 return value != '';
@@ -141,11 +144,11 @@
 
             for(var x = 0; x<arrProses.length; x++){
                 prosesInsert += arrProses[x] + ";";
-                console.log(prosesInsert);
+                // console.log(prosesInsert);
             }
             var panjang = arrProses1.length;
-            console.log(panjang);
-            console.log(arrProses.length);
+            // console.log(panjang);
+            // console.log(arrProses.length);
 
             $.ajax({
                 type: "POST",
@@ -154,7 +157,9 @@
                     '_token': '<?php echo csrf_token(); ?>',
                     'produksi': 1,
                     'panjang': panjang,
-                    'proses': prosesInsert
+                    'proses': prosesInsert,
+                    'kapasitas': arrKapasitas,
+                    'cycle': arrCycle
                 },
                 success: function() {
                     var notEfficient = ['Sorting', 'Cutting', 'Drilling', 'Assembling', 'Cutting',
@@ -197,9 +202,17 @@
             ];
             var efficient = ['Sorting', 'Cutting', 'Drilling', 'Assembling', 'Packing'];
             var arrProses = [];
+
+            let arrKapasitas = [];
+            let arrCycle = [];
+
             for (var j = 1; j <= 9; j++) {
                 var proses = $("#proses_2_" + j).val();
+                var kapasitas = $('option:selected', "#proses_1_" + x).attr('kapasitas');
+                var cycle = $('option:selected', "#proses_1_" + x).attr('time');
                 arrProses.push(proses);
+                arrKapasitas.push(kapasitas);
+                arrCycle.push(cycle);
                 console.log("proses_2_" + j + " = " + proses);
             }
 
@@ -241,9 +254,15 @@
             var notEfficient = ['Sorting', 'Molding', 'Assembling', 'Sorting', 'Wrapping', 'Packing'];
             var efficient = ['Sorting', 'Molding', 'Assembling', 'Packing'];
             var arrProses = [];
+            let arrKapasitas = [];
+            let arrCycle = [];
             for (var j = 1; j <= 9; j++) {
                 var proses = $("#proses_3_" + j).val();
+                var kapasitas = $('option:selected', "#proses_1_" + x).attr('kapasitas');
+                var cycle = $('option:selected', "#proses_1_" + x).attr('time');
                 arrProses.push(proses);
+                arrKapasitas.push(kapasitas);
+                arrCycle.push(cycle);
                 console.log("proses_3_" + j + " = " + proses);
             }
 

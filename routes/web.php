@@ -33,9 +33,7 @@ Route::get('/admin', function () {
     return view ('Sesi_Analisis.admin');
 })->name('admin');
 
-Route::get('/analisis', function () {
-    return view ('Sesi_Analisis.analisis');
-})->name('analisis');
+Route::get('/analisis', 'AnalisisController@analisi')->name('analisis');
 
 Route::post('/analisis/proses','AnalisisController@insertProses')->name('analisis.proses');
 
@@ -71,3 +69,6 @@ Route::get('/admin/analisis','AnalisisController@admin')->name('analisis.admin')
 Route::post('/admin/analisis/update','AnalisisController@updateSesi')->name('analisis.update');
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/demand','DemandController@demand')->name('demand');
+Route::post('/demand/konfrim','DemandController@konfrim')->name('demand.konfrim');

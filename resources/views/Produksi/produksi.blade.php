@@ -78,12 +78,12 @@
                     <tr>
                         <th scope="col"> </th>
                         <th scope="col"> </th>
-                        <th scope="col" colspan="8" style="text-align:center;">Urutan Produksi Produk</th>
+                        <th scope="col" colspan="10" style="text-align:center;">Urutan Produksi Produk</th>
                         <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;">Konfirmasi</th>
                     </tr>
                     <tr>
-                        <th>Produk</th>
-                        <th>Jumlah Produk</th>
+                        <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;">Produk</th>
+                        <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;">Jumlah Produk</th>
                         <th class="nomor" scope="col">Nomor</th>
                         @for ($i=1;$i<=9;$i++)
                         <th class="penomoran" scope="col">{{$i}}</th>
@@ -122,7 +122,7 @@
                         <th class="nomor" scope="row">Proses Produksi {{$i}}</th>
                         @for($j=1;$j<=9;$j++)
                         <td>
-                            <select name="proses" id="proses_{{$i}}_{{$j}}">
+                            <!-- <select name="proses" id="proses_{{$i}}_{{$j}}">
                                 <option value="">-Select-</option>
                                 <option value="sorting">Sorting</option>
                                 <option value="cutting">Cutting</option>
@@ -131,7 +131,14 @@
                                 <option value="packing">Packing</option>
                                 <option value="drilling">Drilling</option>
                                 <option value="molding">Molding</option>
-                            </select>
+                            </select> -->
+                            @if($i == 1)
+                                <input type="text" value='{{$splitProses1[$j-1]}}' disabled>
+                            @elseif ($i == 2)
+                                 <input type="text" value='{{$splitProses2[$j-1]}}' disabled>
+                            @else
+                                <input type="text" value='{{$splitProses3[$j-1]}}' disabled>
+                            @endif
                         </td>
                         @endfor
                         <td><button class="btn btn-success" id="button_{{$i}}" onclick="konfirmasi($i, length)">Konfirmasi</button></td>
