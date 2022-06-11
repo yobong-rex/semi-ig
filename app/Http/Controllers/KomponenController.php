@@ -15,8 +15,7 @@ class KomponenController extends Controller
      */
     public function index()
     {
-        $komponen = DB::table('komponen')->get();
-        dd($komponen);
+        
     }
 
     /**
@@ -85,7 +84,8 @@ class KomponenController extends Controller
         //
     }
 
-    function upgrade(){
-        
+    function komponen(){
+        $komponen = DB::table('komponen')->get();
+        return view('Mesin.komponen', compact('komponen'));
     }
 }

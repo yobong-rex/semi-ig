@@ -3,9 +3,187 @@
 @section('title', 'Mesin')
 
 @section('content')
+<style>
+    .heading{
+        box-shadow: 0 6px 10px rgba(0,0,0,.08);
+        padding:5px;
+    }
+    .nama_team{
+        color:#ea435e;
+    }
+    .timer{
+        background-color:#77dd77; /* misal waktu habis background jadi #ea435e */
+         width:150px;
+        box-shadow: 0 6px 10px rgba(0,0,0,.08);
+    }
+    .dana{
+        text-align:right;
+    }
+    .noLevel{
+        width:60px;
+        text-align:center;
+        vertical-align: middle;
+    }
+    .namaKomponen{
+        width:140px;
+        vertical-align: middle;
+    }
+    .class_kapasitasMesin{
+        text-align:center;
+        vertical-align: middle;
+    }
+    .class_defectMesin{
+        text-align:center;
+        vertical-align: middle;
+    }
 
-    <body>
-        @php
+</style>
+<body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
+        
+
+    <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
+                
+        {{--Nama Team dan Timer--}}
+        <div class="row align-items-center rounded heading">
+            <div class="col-9 nama_team">
+                <h1 id="namaTeam">Team</h1> 
+            </div>
+            <div class="col-1"><h3 id="nomorSesi">Sesi 1</h3></div>
+            <div class="col-1 text-center align-self-end timer rounded-2"  style="font-family:TT Norms Regular;">
+                <h3>Timer</h3>
+                <h4 id="timer">00:00</h4>   
+            </div>
+        </div>
+
+        <div class="row spacing"></div>
+
+        {{-- Card Dana --}}
+        <div class="card-header rounded" style="background-color:#faf0dc;">
+            <div class="row align-items-center">
+                <div class="col-1 text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
+                    <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"/>
+                </svg>
+                </div>
+                <div class="col-2 label_dana">
+                    <h1>Dana : </h1>
+                </div>
+                <div class="col-9 dana">
+                    <h1 id="dana">TC</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="row spacing"></div>
+
+        <div class="row">
+            {{-- Table Komponen --}}
+            <div clas="col">
+                <table class="table" style="width:fit-content;">
+                    {{-- Heading --}}
+                    <thead class="thead">
+                        <th><h4>Mesin : </h4></th>
+                        <th>
+                            <select name="mesin">
+                            <option value="sorting">Sorting</option>
+                            <option value="cutting">Cutting</option>
+                            <option value="bending">Bending</option>
+                            <option value="assembling">Assembling</option>
+                            <option value="packing">Packing</option>
+                            <option value="drilling">Drilling</option>
+                            <option value="molding">Molding</option>
+                        </select>
+                        </th>
+                    </thead>
+                    <tbody>
+                        <tr style="background-color:#faf0dc;">
+                            <td>Level Mesin : </td>
+                            <td class="noLevel" id="levelMesin_">1</td>
+                        </tr>
+                        <tr>
+                            <td class="namaKomponen">Komponen A : </td>
+                            <td class="noLevel" id="komponenA_mesin">1</td>
+                            <td><button type="button" class="btn btn-warning" id="upgradeA_mesin">Upgrade A</button></td>
+                        </tr>
+                        <tr>
+                            <td class="namaKomponen">Komponen B : </td>
+                            <td class="noLevel" id="komponenB_mesin">1</td>
+                            <td><button type="button" class="btn btn-warning" id="upgradeB_mesin">Upgrade B</button></td>
+                        </tr>
+                        <tr>
+                            <td class="namaKomponen">Komponen C : </td>
+                            <td class="noLevel" id="komponenB_mesin">1</td>
+                            <td><button type="button" class="btn btn-warning" id="upgradeC_mesin">Upgrade C</button></td>
+                        </tr>
+                        <tr>
+                            <td class="namaKomponen">Komponen D : </td>
+                            <td class="noLevel" id="komponenB_mesin">1</td>
+                            <td><button type="button" class="btn btn-warning" id="upgradeD_mesin">Upgrade D</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            {{-- Informasi Mesin + Upgrade Kapasitas --}}
+            <div class="col">
+                <table class="table table-bordered" style="width:fit-content;">
+                    {{-- Heading --}}
+                    <thead class="thead">
+                        <th>Nama Mesin</th>
+                        <th>Level</th>
+                        <th class="class_kapasitasMesin">Kapasitas</th>
+                        <th class="class_defectMesin">Defect</th>
+                    </thead>
+                    <tbody>
+                        <tr class="rowMesin">
+                            <td id="namaMesin">Sorting</td>
+                            <td class="noLevel" id="levelMesin_">1</td>
+                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                            <td class="class_defectMesin" id="defect_mesin">1</td>
+                        </tr>
+                        <tr class="rowMesin">
+                            <td id="namaMesin">Cutting</td>
+                            <td class="noLevel" id="levelMesin_">1</td>
+                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                            <td class="class_defectMesin" id="defect_mesin">1</td>
+                        </tr>
+                        <tr class="rowMesin">
+                            <td id="namaMesin">Bending</td>
+                            <td class="noLevel" id="levelMesin_">1</td>
+                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                            <td class="class_defectMesin" id="defect_mesin">1</td>
+                        </tr>
+                        <tr class="rowMesin">
+                            <td id="namaMesin">Assembling</td>
+                            <td class="noLevel" id="levelMesin_">1</td>
+                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                            <td class="class_defectMesin" id="defect_mesin">1</td>
+                        </tr>
+                        <tr class="rowMesin">
+                            <td id="namaMesin">Packing</td>
+                            <td class="noLevel" id="levelMesin_">1</td>
+                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                            <td class="class_defectMesin" id="defect_mesin">1</td>
+                        </tr>
+                        <tr class="rowMesin">
+                            <td id="namaMesin">Drilling</td>
+                            <td class="noLevel" id="levelMesin_">1</td>
+                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                            <td class="class_defectMesin" id="defect_mesin">1</td>
+                        </tr>
+                        <tr class="rowMesin">
+                            <td id="namaMesin">Molding</td>
+                            <td class="noLevel" id="levelMesin_">1</td>
+                            <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                            <td class="class_defectMesin" id="defect_mesin">1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+@php
             $a = 1;
             $b = 1;
             $c = 1;
@@ -71,7 +249,7 @@
             function upgrade_a() {
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('upgrade') }}",
+                    url: "{{ route('coba') }}",
                     data: {
                         '_token': '<?php echo csrf_token(); ?>'
                     },
@@ -84,5 +262,5 @@
                 });
             }
         </script>
-    </body>
+</body>
 @endsection

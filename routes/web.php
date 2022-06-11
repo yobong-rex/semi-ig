@@ -57,7 +57,9 @@ Route::get('/komponen-mesin', function () {
     return view ('mesin.komponen');
 })->name('komponenMesin');
 
-Route::get('/kapasitas','KapasitasController@index')->name('kapasitas');
+Route::get('/kapasitas','KapasitasController@kapasitas')->name('kapasitas');
+Route::get('/kapasitas/upgrade', 'KapasitasController@kapasitasUpgrade')->name('upgrade.kapasitas');
+
 
 //Route coba-coba
 
@@ -73,6 +75,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/demand','DemandController@demand')->name('demand');
 Route::post('/demand/konfrim','DemandController@konfrim')->name('demand.konfrim');
 
-Route::get('/produksites', function () {
-    return view ('produksi.produksites');
-})->name('produksites');
+// Route::get('/komponentes', 'KomponenController@komponen')->name('komponestes');
+
+Route::get('/komponentes', function () {
+    return view ('mesin.komponentes');
+})->name('komponestes');

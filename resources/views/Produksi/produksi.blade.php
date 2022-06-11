@@ -36,6 +36,9 @@
     .inputJumlahProduk{
             width:70px;
     }
+    .urutanProduksi{
+        width:100px;
+    }
 </style>
 
 @php
@@ -58,7 +61,7 @@
 
 <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
     
-    <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
+    <div class="px-4 py-5" style="font-family:TT Norms Bold;">
 
         {{--Nama Team dan Timer--}}
         <div class="row align-items-center rounded heading">
@@ -121,7 +124,8 @@
                                 @endif
                             </select>
                         </td>
-                        <td><input class="inputJumlahProduk" type="number" name='jumlah' id='jumlah'></td>
+                        <td><input class="inputJumlahProduk" type="number" name='jumlah' id='jumlah' min="0" oninput="this.value = 
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                         <th class="nomor" scope="row">Proses Produksi {{$i}}</th>
                         @for($j=1;$j<=9;$j++)
                         <td>
@@ -136,11 +140,11 @@
                                 <option value="molding">Molding</option>
                             </select> -->
                             @if($i == 1)
-                                <input type="text" value='{{$splitProses1[$j-1]}}' disabled>
+                                <input class="urutanProduksi" type="text" value='{{$splitProses1[$j-1]}}' disabled>
                             @elseif ($i == 2)
-                                 <input type="text" value='{{$splitProses2[$j-1]}}' disabled>
+                                 <input class="urutanProduksi" type="text" value='{{$splitProses2[$j-1]}}' disabled>
                             @else
-                                <input type="text" value='{{$splitProses3[$j-1]}}' disabled>
+                                <input class="urutanProduksi" type="text" value='{{$splitProses3[$j-1]}}' disabled>
                             @endif
                         </td>
                         @endfor
