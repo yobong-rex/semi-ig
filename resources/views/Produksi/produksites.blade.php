@@ -1,6 +1,6 @@
 @extends('layouts.template')
 
-@section("title", "Produksi")
+@section("title", "Dashboard")
 
 @section('content')
 
@@ -32,10 +32,10 @@
     .kartu_Home{
             background-color:#faf0dc;
             box-shadow: 0 6px 10px rgba(0,0,0,.08);
-    }
-    .inputJumlahProduk{
+        }
+        .inputJumlahProduk{
             width:70px;
-    }
+        }
 </style>
 
 @php
@@ -58,12 +58,12 @@
 
 <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
     
-    <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
+    <div class="px-4 py-5" style="font-family:TT Norms Bold;">
 
         {{--Nama Team dan Timer--}}
         <div class="row align-items-center rounded heading">
             <div class="col-9 nama_team">
-                <h1 id="namaTeam">Team {{$user[0]->nama}}</h1> 
+                <h1 id="namaTeam">Team </h1> 
             </div>
             <div class="col-1"><h3 id="nomorSesi">Sesi <span id='sesi'>1</span></h3></div>
             <div class="col-1 text-center align-self-end timer rounded-2"  style="font-family:TT Norms Regular;">
@@ -82,11 +82,12 @@
                         <th scope="col"> </th>
                         <th scope="col"> </th>
                         <th scope="col" colspan="10" style="text-align:center;">Urutan Produksi Produk</th>
+                        {{-- <th scope="col" style="text-align:center;">Jumlah</th> --}}
                         <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;">Konfirmasi</th>
                     </tr>
                     <tr>
                         <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;">Produk</th>
-                        <th scope="col" class="inputJumlahProduk" rowspan="2" style="vertical-align: middle;text-align:center;">Jumlah Produk</th>
+                        <th scope="col" rowspan="2" class="inputJumlahProduk" style="vertical-align: middle;text-align:center;">Jumlah Produk</th>
                         <th class="nomor" scope="col">Nomor</th>
                         @for ($i=1;$i<=9;$i++)
                         <th class="penomoran" scope="col">{{$i}}</th>
@@ -125,7 +126,7 @@
                         <th class="nomor" scope="row">Proses Produksi {{$i}}</th>
                         @for($j=1;$j<=9;$j++)
                         <td>
-                            <!-- <select name="proses" id="proses_{{$i}}_{{$j}}">
+                            <select name="proses" id="proses_{{$i}}_{{$j}}">
                                 <option value="">-Select-</option>
                                 <option value="sorting">Sorting</option>
                                 <option value="cutting">Cutting</option>
@@ -134,14 +135,14 @@
                                 <option value="packing">Packing</option>
                                 <option value="drilling">Drilling</option>
                                 <option value="molding">Molding</option>
-                            </select> -->
-                            @if($i == 1)
+                            </select>
+                            {{-- @if($i == 1)
                                 <input type="text" value='{{$splitProses1[$j-1]}}' disabled>
                             @elseif ($i == 2)
                                  <input type="text" value='{{$splitProses2[$j-1]}}' disabled>
                             @else
                                 <input type="text" value='{{$splitProses3[$j-1]}}' disabled>
-                            @endif
+                            @endif --}}
                         </td>
                         @endfor
                         <td><button class="btn btn-success" id="button_{{$i}}" onclick="konfirmasi($i, length)">Konfirmasi</button></td>

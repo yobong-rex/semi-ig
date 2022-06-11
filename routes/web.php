@@ -72,3 +72,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/demand','DemandController@demand')->name('demand');
 Route::post('/demand/konfrim','DemandController@konfrim')->name('demand.konfrim');
+
+Route::get('/produksites', function () {
+    return view ('produksi.produksites');
+})->name('produksites');
