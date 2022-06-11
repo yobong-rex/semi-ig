@@ -119,14 +119,14 @@ class KapasitasController extends Controller
     {
         $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', 1)->get();
         $namaMesin = $request->get('namaMesin');
-        $idmesin = DB::table('mesin')->where('nama', 'like', '%'.$namaMesin.'%')->get();
+        $idmesin = DB::table('mesin')->where('nama', 'like', '%' . $namaMesin . '%')->get();
 
         $idkap = DB::table('kapasitas_has_teams')
             ->select('kapasitas_idkapasitas')
             ->where('teams_idteam', $user[0]->idteam)
             ->where('kapasitas_mesin_idmesin', $idmesin[0]->idmesin)
             ->get();
-        
+
         $upgrade = $idkap[0]->kapasitas_idkapasitas;
         $level = DB::table('kapasitas')
             ->select('level')
@@ -135,15 +135,15 @@ class KapasitasController extends Controller
 
         // return $upgrade;
         // return $level[0]->level;
-        if($level[0]->level<5){
-            $upgrade+=1;
+        if ($level[0]->level < 5) {
+            $upgrade += 1;
             DB::table('kapasitas_has_teams')
                 ->where('teams_idteam', $user[0]->idteam)
                 ->where('kapasitas_mesin_idmesin', $idmesin[0]->idmesin)
                 ->update(['kapasitas_idkapasitas' => $upgrade]);
-        }else{
+        } else {
             return response()->json(array(
-                'msg'=>'LevelMaxed'
+                'msg' => 'Level Maxed'
             ), 200);
         }
 
@@ -154,7 +154,7 @@ class KapasitasController extends Controller
             ->where('kht.teams_idteam', $user[0]->idteam)
             ->where('m.idmesin', $idmesin[0]->idmesin)
             ->get();
-            // dd($data);
+        // dd($data);
         return view('Mesin.kapasitas', compact('data'));
     }
 }
