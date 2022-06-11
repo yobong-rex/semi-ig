@@ -28,6 +28,7 @@ class DemandController extends Controller
             $sesi = $request->get('sesi');
             $totalJual = 0;
             $countDemand = 0;
+            $totalDemand = 0;
 
             foreach ($demand as $d){
                 $produkDemand = DB::table('demand')->where('sesi',$sesi)->where('produk_idproduk',$d['produk'])->get();
@@ -40,13 +41,15 @@ class DemandController extends Controller
                     );
                     $totalJual += $hargaJual;
                     $countDemand +=1;
+                    $totalDemand += $d['total'];
                 }
             }
 
             if($countDemand> 0){
-                $teamDana = DB::table('teams')->select('dana')->where('idteam', $team)->get();
+                $teamDana = DB::table('teams')->select('dana','demand','customer_value','hibah')->where('idteam', $team)->get();
                 $danaBaru = $teamDana[0]->dana + $totalJual;
-                DB::table('teams')->where('idteam', $team)->update(['dana'=>$danaBaru]);
+                $demandBaru = $teamDana[0]->demand + $totalDemand;
+                DB::table('teams')->where('idteam', $team)->update(['dana'=>$danaBaru,'demand'=>$demandBaru]);
     
                 return response()->json(array(
                     'msg'=>'selamat team anda berhasil memenuhi demand',

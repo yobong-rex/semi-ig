@@ -44,13 +44,16 @@
                             @if(count($data) == 0)
                                 0
                             @else
+                                <?php $triger = 0; ?>
                                 @foreach($data as $d)
                                     @if($p->idproduk == $d->idproduk)
                                         {{$d->jumlah}}
-                                    @else
-                                        @continue
+                                        <?php $triger += 1 ?>
                                     @endif
                                 @endforeach
+                                @if($triger == 0)
+                                    {{$triger}}
+                                @endif
                             @endif
                         </td>
                     </tr>
