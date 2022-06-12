@@ -413,6 +413,45 @@
                     </tr> --}}
                 </tbody>
              </table>
+             {{-- Table Pemenuhan Demand --}}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="nomor_demand" scope="col">No.</th>
+                        <th scope="col">Produk</th>
+                        <th scope="col" style="text-align:center;">Memenuhi Demand</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @php
+                    $i=1
+                @endphp
+                @foreach ($produk as $p)
+                    <tr>
+                        <td class="nomor_demand" scope="row">{{$i++}}</td>
+                        <td>{{$p->nama}}</td>
+                        <td class="inputDemand">0</td>
+                        <td id='total_{{$p->idproduk}}'>
+                            @if(count($data) == 0)
+                                0
+                            @else
+                                <?php $triger = 0; ?>
+                                @foreach($data as $d)
+                                    @if($p->idproduk == $d->idproduk)
+                                        {{$d->jumlah}}
+                                        <?php $triger += 1 ?>
+                                    @endif
+                                @endforeach
+                                @if($triger == 0)
+                                    {{$triger}}
+                                @endif
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
         </div>
 
 </body>
