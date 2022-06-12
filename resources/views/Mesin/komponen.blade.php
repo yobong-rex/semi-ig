@@ -97,7 +97,9 @@
                     </th>
                     <th style="vertical-align:middle;">
                         <select id='mesin' name="mesin">
-                            <?php $arrMesin = ['Sorting', 'Cutting', 'Bending', 'Assembling', 'Packing', 'Drilling', 'Molding']; ?>
+                            @php
+                                $arrMesin = ['Sorting', 'Cutting', 'Bending', 'Assembling', 'Packing', 'Drilling', 'Molding'];
+                            @endphp
                             @foreach ($arrMesin as $mesin)
                                 <option value="{{ $mesin }}">{{ $mesin }}</option>
                             @endforeach
@@ -162,14 +164,18 @@
                     <th style="text-align:center;">Konfirmasi</th>
                 </thead>
                 <tbody>
-                    <tr class="rowMesin">
-                        <td id="namaMesin">Sorting</td>
-                        <td class="noLevel" id="levelMesin_">1</td>
-                        <td class="class_defectMesin" id="defect_mesin">1</td>
-                        <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
-                        <td><button type="button" class="btn btn-success" id="button_1">Konfirmasi</button></td>
-                    </tr>
-                    <tr class="rowMesin">
+                    @for ($x = 0; $x < count($listMesin); $x++)
+                        <tr class="rowMesin">
+                            <td id="namaMesin_{{ $x }}">{{ $listMesin[$x]->nama_mesin }}</td>
+                            <td id="levelMesin_{{ $x }}" class="noLevel">{{ $listMesin[$x]->level }}
+                            </td>
+                            <td id="defect_mesin_{{ $x }}" class="class_defectMesin">0</td>
+                            <td id="kapasitas_mesin_{{ $x }}" class="class_kapasitasMesin">
+                                {{ $listMesin[$x]->kapasitas }}</td>
+                            {{-- <td><button type="button" class="btn btn-success" id="button_{{$x}}">Konfirmasi</button></td> --}}
+                        </tr>
+                    @endfor
+                    {{-- <tr class="rowMesin">
                         <td id="namaMesin">Cutting</td>
                         <td class="noLevel" id="levelMesin_">1</td>
                         <td class="class_defectMesin" id="defect_mesin">1</td>
@@ -210,7 +216,7 @@
                         <td class="class_defectMesin" id="defect_mesin">1</td>
                         <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
                         <td><button type="button" class="btn btn-success" id="button_7">Konfirmasi</button></td>
-                    </tr>
+                    </tr> --}}
                 </tbody>
             </table>
         </div>
@@ -265,8 +271,8 @@
                         if (data.msg == 'Level Maxed') {
                             alert(data.msg);
                         }
-                        $.each(data.data, function(key, value){
-                            $('#komponen_'+key).html(data.data[key].level);
+                        $.each(data.data, function(key, value) {
+                            $('#komponen_' + key).html(data.data[key].level);
                         });
                         $('#levelMesin_').html(data.levelMesin[0].level);
                         // alert('success');

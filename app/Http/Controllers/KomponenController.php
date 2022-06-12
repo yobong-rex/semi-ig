@@ -90,7 +90,7 @@ class KomponenController extends Controller
         $data = DB::table('mesin as m')
             ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
             ->join('level_komponen as lk', 'k.idkomponen', '=', 'lk.komponen_idkomponen')
-            ->select('m.nama as nama_mesin', 'k.nama as nama_komponen', 'k.level', 'k.defect')
+            ->select('m.nama as nama_mesin', 'k.nama as nama_komponen', 'k.level')
             ->where('lk.teams_idteam', $user[0]->idteam)
             ->where('m.idmesin', $idmesin[0]->idmesin)
             ->orderBy('k.idkomponen', 'asc')
@@ -104,15 +104,17 @@ class KomponenController extends Controller
             ->where('m.idmesin', $idmesin[0]->idmesin)
             ->get();
 
-        $dataMesin = DB::table('mesin as m')
-            ->join('komponen as kom', 'm.idmesin', '=', 'kom.mesin_idmesin')
-            ->join('kapasitas as kap', 'm.idmesin', '=', 'kap.mesin_idmesin')
+        $listMesin = DB::table('kapasitas as kap')
+            ->join('mesin as m', 'kap.mesin_idmesin', '=', 'm.idmesin')
             ->join('mesin_has_teams as mht', 'm.idmesin', '=', 'mht.mesin_idmesin')
-            ->where(mht.)
+            ->select('m.nama as nama_mesin', 'mht.level', 'kap.kapasitas')
+            ->where('mht.teams_idteam', $user[0]->idteam)
+            ->where('kap.level', 1)
+            ->orderBy('idmesin', 'asc')
             ->get();
 
-        dd($dataMesin);
-        return view('Mesin.komponen', compact('data', 'user', 'levelMesin'));
+        // dd($listMesin);
+        return view('Mesin.komponen', compact('data', 'user', 'levelMesin', 'listMesin'));
     }
 
     function komponenAjax(Request $request)
@@ -126,7 +128,7 @@ class KomponenController extends Controller
         $data = DB::table('mesin as m')
             ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
             ->join('level_komponen as lk', 'k.idkomponen', '=', 'lk.komponen_idkomponen')
-            ->select('m.nama as nama_mesin', 'k.nama as nama_komponen', 'k.level', 'k.defect')
+            ->select('m.nama as nama_mesin', 'k.nama as nama_komponen', 'k.level')
             ->where('lk.teams_idteam', $user[0]->idteam)
             ->where('m.idmesin', $idmesin[0]->idmesin)
             ->orderBy('k.idkomponen', 'asc')
@@ -182,7 +184,7 @@ class KomponenController extends Controller
         $data = DB::table('mesin as m')
             ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
             ->join('level_komponen as lk', 'k.idkomponen', '=', 'lk.komponen_idkomponen')
-            ->select('k.nama', 'k.level', 'k.defect')
+            ->select('k.nama', 'k.level')
             ->where('lk.teams_idteam', $user[0]->idteam)
             ->where('m.idmesin', $idmesin[0]->idmesin)
             ->orderBy('k.idkomponen', 'asc')
