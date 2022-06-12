@@ -18,24 +18,12 @@
     </style>
 
     <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
-        @php
-            $harga = ['200', '500', '1000', '2000', '3000'];
-            // $harga = array();
-            // $harga['Sorting'] = array('200', '500', '1000', '2000', '3000');
-            // $harga['Cutting'] = array('200', '500', '1000', '2000', '3000');
-            // $harga['Bending'] = array('200', '500', '1000', '2000', '3000');
-            // $harga['Assembling'] = array('200', '500', '1000', '2000', '3000');
-            // $harga['Packing'] = array('200', '500', '1000', '2000', '3000');
-            // $harga['Drilling'] = array('200', '500', '1000', '2000', '3000');
-            // $harga['Molding'] = array('200', '500', '1000', '2000', '3000');
-            $arrProses = ['Sorting', 'Cutting', 'Bending', 'Assembling', 'Packing', 'Drilling', 'Molding'];
-        @endphp
         <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
 
             {{--Nama Team dan Timer--}}
             <div class="row align-items-center rounded heading">
                 <div class="col-9 nama_team">
-                    <h1 id="namaTeam">Team {{--{{$teams[0] -> nama}}--}}</h1> 
+                    <h1 id="namaTeam">Team {{--{{$user[0] -> nama}}--}}</h1> 
                 </div>
                 <div class="col-1"><h3 id="nomorSesi">Sesi {{--{{$nomorSesi}}--}}</h3></div>
             </div>
@@ -56,15 +44,14 @@
                     <tbody>
                         @foreach ($data as $d)
                             <tr>
-                                <td>
+                                <td id='nama_mesin'>
                                     {{ $d->nama }}
                                 </td>
-                                <td style="text-align:center;">{{ $d->level }}</td>
-                                <td style="text-align:center;">{{ $d->kapasitas }}</td>
+                                <td id='level_kapasitas' style="text-align:center;">{{ $d->level }}</td>
+                                <td id='kapasitas_kapasitas' style="text-align:center;">{{ $d->kapasitas }}</td>
                                 <td style="text-align:center;">
                                     <button class='upgrade' value={{ $d->nama }}>Upgrade</button>
-                                    <button type="button" class="btn btn-warning upgrade"
-                                        value={{ $d->nama }}>Upgrade</button>
+                                    {{-- <button type="button" class="btn btn-warning upgrade" value={{ $d->nama }}>Upgrade</button> --}}
                                 </td>
                             </tr>
                         @endforeach
@@ -87,12 +74,16 @@
                     if (data.msg == 'Level Maxed') {
                         alert(data.msg);
                     }
-                    
-                    location.reload()
+                    $.each(data.data, function(key, value){
+                        $('#nama_mesin').html(data.data[key].nama);
+                        $('#level_kapasitas').html(data.data[key].level);
+                        $('#kapasitas_kapasitas').html(data.data[key].kapasitas);
+                    });
+                    // location.reload()
                 },
                 error: function() {
                     
-                    location.reload();
+                    // location.reload();
                 }
             })
         })

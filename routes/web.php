@@ -59,6 +59,7 @@ Route::get('/prosesbahan', function () {
 // })->name('komponenMesin');
 
 Route::get('/komponen', 'KomponenController@komponen')->name('komponen');
+Route::get('/komponen/ajax', 'KomponenController@komponenAjax')->name('komponen.ajax');
 Route::post('/komponen/upgrade', 'KomponenController@komponenUpgrade')->name('upgrade.komponen');
 
 Route::get('/kapasitas','KapasitasController@kapasitas')->name('kapasitas');

@@ -263,7 +263,7 @@ $timer="00:00";
                             'sesi': 1,
                         },
                         success: function(data){
-                            alert('berhasil melakukan demand');
+                            alert(data.msg);
                             location.reload();
                         }
                     });

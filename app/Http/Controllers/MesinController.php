@@ -84,10 +84,11 @@ class MesinController extends Controller
         //
     }
 
-    function coba(){
+    function coba()
+    {
         $mesin = DB::table('mesin')->get();
         return response()->json(array(
-            'mesin'=>$mesin
-        ),200);
+            'mesin' => $mesin
+        ), 200);
     }
 }

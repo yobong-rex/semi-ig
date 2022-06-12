@@ -78,7 +78,8 @@
 
         <h1>Produksi</h1>
         {{--Form produksi--}}
-        <form action="">
+        <form action="" method='post'>
+            @csrf
             <table class="table table-bordered" style="vertical-align: middle;">
                 <thead class="thead">
                     <tr>
@@ -101,7 +102,7 @@
                     @for($i=1;$i<=3;$i++)
                     <tr id="tr_{{$i}}">
                         <td>
-                            <select name="" id="">
+                            <select name="produk_$i" id="">
                                 <option value="">pilih produk</option>
                                 @if($i == 1)
                                     <option value="scooter">Scooter</option>

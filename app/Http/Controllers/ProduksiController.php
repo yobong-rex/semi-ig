@@ -7,13 +7,36 @@ use DB;
 
 class ProduksiController extends Controller
 {
+
+    function getDefect($proses,$user){
+        $defect = [];
+        $tempDefect = [];
+        $defectDefault = 10;
+        foreach ($proses as $p){
+            $data = DB::table('mesin as m')
+            ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
+            ->join('level_komponen as lk', 'k.idkomponen', '=', 'lk.komponen_idkomponen')
+            ->select('k.level','k.defect')
+            ->where('lk.teams_idteam', $user[0]->idteam)
+            ->where('m.nama', $p)
+            ->orderBy('k.idkomponen', 'asc')
+            ->get();
+            foreach ($data as $d){
+                array_push($tempDefect,$d->defect);
+            }
+            $minDefect = min($tempDefect);
+            $newDefect = $defectDefault - $minDefect;
+            array_push($defect,$newDefect);
+        }
+        return $defect;
+    }
+
     function produksi(){
         $user = DB::table('teams')->select('nama','dana','idteam')->where('idteam',1)->get();
         $sesi = DB::table('sesi')->select('sesi')->get();
         $proses1 ='';
         $proses2 ='';
         $proses3 ='';
-    
         if($sesi[0]->sesi == 1){
             $proses1 ='Sorting;Cutting;Bending;Assembling;Delay;Cutting;Assembling;Sorting;Packing';
             $proses2 ='Sorting;Cutting;Assembling;Drilling;Delay;Cutting;Assembling;Idle;Packing';
@@ -50,7 +73,9 @@ class ProduksiController extends Controller
         $splitProses2 = explode(';',$proses2);
         $splitProses3 = explode(';',$proses3);
 
-    
-        return view('Produksi.produksi',compact('splitProses1','splitProses2','splitProses3','user','sesi'));  
+       $defect1 = $this->getDefect($splitProses1,$user);
+       $defect2 = $this->getDefect($splitProses2,$user);
+       $defect3 = $this->getDefect($splitProses3,$user);
+        return view('Produksi.produksi',compact('splitProses1','splitProses2','splitProses3','defect1','defect2','defect3','user','sesi'));  
     }
 }

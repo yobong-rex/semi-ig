@@ -112,7 +112,7 @@ class KapasitasController extends Controller
             ->orderBy('m.idmesin', 'asc')
             ->get();
         // dd($data);
-        return view('Mesin.kapasitas', compact('data'));
+        return view('Mesin.kapasitas', compact('data', 'user'));
     }
 
     function kapasitasUpgrade(Request $request)
@@ -121,21 +121,17 @@ class KapasitasController extends Controller
         $namaMesin = $request->get('namaMesin');
         $idmesin = DB::table('mesin')->where('nama', 'like', '%' . $namaMesin . '%')->get();
 
-        $idkap = DB::table('kapasitas_has_teams')
-            ->select('kapasitas_idkapasitas')
-            ->where('teams_idteam', $user[0]->idteam)
-            ->where('kapasitas_mesin_idmesin', $idmesin[0]->idmesin)
+        $idkap = DB::table('kapasitas_has_teams as kht')
+            ->join('kapasitas as k', 'kht.kapasitas_idkapasitas', '=', 'k.idkapasitas')
+            ->select('kht.kapasitas_idkapasitas', 'k.level')
+            ->where('kht.teams_idteam', $user[0]->idteam)
+            ->where('kht.kapasitas_mesin_idmesin', $idmesin[0]->idmesin)
             ->get();
 
         $upgrade = $idkap[0]->kapasitas_idkapasitas;
-        $level = DB::table('kapasitas')
-            ->select('level')
-            ->where('idkapasitas', $upgrade)
-            ->get();
+        $level = $idkap[0]->level;
 
-        // return $upgrade;
-        // return $level[0]->level;
-        if ($level[0]->level < 5) {
+        if ($level < 5) {
             $upgrade += 1;
             DB::table('kapasitas_has_teams')
                 ->where('teams_idteam', $user[0]->idteam)
@@ -154,7 +150,10 @@ class KapasitasController extends Controller
             ->where('kht.teams_idteam', $user[0]->idteam)
             ->where('m.idmesin', $idmesin[0]->idmesin)
             ->get();
-        // dd($data);
-        return view('Mesin.kapasitas', compact('data'));
+
+        return response()->json(array(
+            'data' => $data
+        ), 200);
+        // return view('Mesin.kapasitas', compact('data'));
     }
 }

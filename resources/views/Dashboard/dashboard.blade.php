@@ -272,10 +272,10 @@
         {{--Pemenuhan Demand--}}
         <div class="card-body pemenuhan rounded">
             <h1>Pemenuhan Demand</h1>
-            {{-- <table class="table table-bordered" style="vertical-align: middle;">
+            <table class="table table-bordered" style="vertical-align: middle;">
                 @php
                     $arrproduk = array('Scooter', 'Hoverboard', 'Skateboard', 'Bicycle', 'Claw Machine', 'RC Car', 'RC Helicopter', 'Trampoline', 'Robot', 'Airsoft Gun', 'Rubber Ball', 'Fidget Spinner', 'Bowling Set', 'Action Figure');
-                    $col=3;
+                    $col=1;
                 @endphp
                 <thead class="thead">
                     <tr>
@@ -295,7 +295,7 @@
                         @endfor
                         <td id="total-{{$i}}">0</td>
                     </tr>
-                    @endfor --}}
+                    @endfor
                     {{-- JANGAN DIHAPUS DULU --}}
                     {{-- <tr>
                         <th class="nomor_demand" scope="row">1</th>
@@ -413,8 +413,8 @@
                 </tbody>
              </table>
 
-             {{-- Table Pemenuhan Demand --}}
-            <table class="table table-bordered">
+             {{-- Table Pemenuhan Demand Baru--}}
+             <!-- <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th class="nomor_demand" scope="col">No.</th>
@@ -451,7 +451,7 @@
                     </tr>
                 @endforeach
                 </tbody>
-            </table>
+            </table> -->
         </div>
 
 </body>

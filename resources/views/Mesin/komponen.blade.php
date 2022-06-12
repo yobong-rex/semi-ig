@@ -97,45 +97,57 @@
                     </th>
                     <th style="vertical-align:middle;">
                         <select id='mesin' name="mesin">
-                            <option value="Sorting">Sorting</option>
-                            <option value="Cutting">Cutting</option>
-                            <option value="Bending">Bending</option>
-                            <option value="Assembling">Assembling</option>
-                            <option value="Packing">Packing</option>
-                            <option value="Drilling">Drilling</option>
-                            <option value="Molding">Molding</option>
+                            <?php $arrMesin = ['Sorting', 'Cutting', 'Bending', 'Assembling', 'Packing', 'Drilling', 'Molding']; ?>
+                            @foreach ($arrMesin as $mesin)
+                                <option value="{{ $mesin }}">{{ $mesin }}</option>
+                            @endforeach
                         </select>
                     </th>
                 </thead>
                 <tbody>
                     <tr style="background-color:#faf0dc;">
                         <td>Level Mesin : </td>
-                        <td class="noLevel" id="levelMesin_">1</td>
+                        <td class="noLevel" id="levelMesin_">{{ $levelMesin[0]->level }}</td>
+                    </tr>
+                    @for ($x = 0; $x < count($data); $x++)
+                        <tr>
+                            <td id="nama_komponen_{{ $x }}" class="namaKomponen">
+                                {{ $data[$x]->nama_komponen }} : </td>
+                            <td id="komponen_{{ $x }}" class='noLevel'> {{ $data[$x]->level }} </td>
+                            <td><button type="button" id="upgrade_{{ $x }}" class="upgrade"
+                                    value='{{ $data[$x]->nama_komponen }}'>Upgrade</button></td>
+                            {{-- <td><button type="button" class="btn btn-warning" id="upgradeA_mesin">Upgrade</button></td> --}}
+                        </tr>
+                    @endfor
+                    {{-- Jangan dihapus dulu sapatau perlu buat template --}}
+                    {{-- <tr>
+                        <td class='namaKomponen' id="nama_komponen_0">{{ $data[0]->nama_komponen }} : </td>
+                        <td id="komponen_0">{{ $data[0]->level }}</td>
+                        <td><button type="button" class="upgrade" id="upgrade_0"
+                                value='{{ $data[0]->nama_komponen }}'>Upgrade</button></td>
+                        <td><button type="button" class="btn btn-warning" id="upgradeA_mesin">Upgrade</button></td>
                     </tr>
                     <tr>
-                        <td class="namaKomponen">Komponen A : </td>
-                        <td class="noLevel" id="komponenA_mesin">1</td>
-                        <td><button type="button" class="upgrade" id="upgradeA_mesin">Upgrade A</button></td>
-                        <td><button type="button" class="btn btn-warning" id="upgradeA_mesin">Upgrade A</button></td>
+                        <td class='namaKomponen' id="nama_komponen_1">{{ $data[1]->nama_komponen }} : </td>
+                        <td id="komponen_1">{{ $data[1]->level }}</td>
+                        <td><button type="button" class="upgrade" id="upgrade_1"
+                                value='{{ $data[1]->nama_komponen }}'>Upgrade</button></td>
+                        <td><button type="button" class="btn btn-warning" id="upgradeB_mesin">Upgrade</button></td>
                     </tr>
                     <tr>
-                        <td class="namaKomponen">Komponen B : </td>
-                        <td class="noLevel" id="komponenB_mesin">1</td>
-                        <td><button type="button" class="upgrade" id="upgradeA_mesin">Upgrade B</button></td>
-                        <td><button type="button" class="btn btn-warning" id="upgradeB_mesin">Upgrade B</button></td>
+                        <td class='namaKomponen' id="nama_komponen_2">{{ $data[2]->nama_komponen }} : </td>
+                        <td id="komponen_2">{{ $data[2]->level }}</td>
+                        <td><button type="button" class="upgrade" id="upgrade_2"
+                                value='{{ $data[2]->nama_komponen }}'>Upgrade</button></td>
+                        <td><button type="button" class="btn btn-warning" id="upgradeC_mesin">Upgrade</button></td>
                     </tr>
                     <tr>
-                        <td class="namaKomponen">Komponen C : </td>
-                        <td class="noLevel" id="komponenB_mesin">1</td>
-                        <td><button type="button" class="upgrade" id="upgradeA_mesin">Upgrade C</button></td>
-                        <td><button type="button" class="btn btn-warning" id="upgradeC_mesin">Upgrade C</button></td>
-                    </tr>
-                    <tr>
-                        <td class="namaKomponen">Komponen D : </td>
-                        <td class="noLevel" id="komponenB_mesin">1</td>
-                        <td><button type="button" class="upgrade" id="upgradeA_mesin">Upgrade D</button></td>
-                        <td><button type="button" class="btn btn-warning" id="upgradeD_mesin">Upgrade D</button></td>
-                    </tr>
+                        <td class='namaKomponen' id="nama_komponen_3">{{ $data[3]->nama_komponen }} : </td>
+                        <td id="komponen_3">{{ $data[3]->level }}</td>
+                        <td><button type="button" class="upgrade" id="upgrade_3"
+                                value='{{ $data[3]->nama_komponen }}'>Upgrade</button></td>
+                        <td><button type="button" class="btn btn-warning" id="upgradeD_mesin">Upgrade</button></td>
+                    </tr> --}}
                 </tbody>
             </table>
 
@@ -203,82 +215,64 @@
             </table>
         </div>
         @php
-            $a = 1;
-            $b = 1;
-            $c = 1;
-            $d = 1;
-            
-            $level = 1;
-            $a_defect = -1;
-            $b_defect = -1;
-            $c_defect = -1;
-            $d_defect = -1;
-            
             // Check Level
-            if ($a == 10 && $b == 10 && $c == 10 && $d == 10) {
-                $level = 6;
-            } elseif ($a >= 8 && $b >= 8 && $c >= 8 && $d >= 8) {
-                $level = 5;
-            } elseif ($a >= 6 && $b >= 6 && $c >= 6 && $d >= 6) {
-                $level = 4;
-            } elseif ($a >= 4 && $b >= 4 && $c >= 4 && $d >= 4) {
-                $level = 3;
-            } elseif ($a >= 2 && $b >= 2 && $c >= 2 && $d >= 2) {
-                $level = 2;
-            }
-            
-            // Check defect component A
-            if ($a > 7) {
-                $a_defect = -3;
-            } elseif ($a > 3) {
-                $a_defect = -2;
-            }
-            
-            // Check defect component B
-            if ($b > 7) {
-                $b_defect = -3;
-            } elseif ($b > 3) {
-                $b_defect = -2;
-            }
-            
-            // Check defect component C
-            if ($c > 7) {
-                $c_defect = -3;
-            } elseif ($c > 3) {
-                $c_defect = -2;
-            }
-            
-            // Check defect component D
-            if ($d > 7) {
-                $d_defect = -3;
-            } elseif ($d > 3) {
-                $d_defect = -2;
-            }
+            // if ($a == 10 && $b == 10 && $c == 10 && $d == 10) {
+            //     $level = 6;
+            // } elseif ($a >= 8 && $b >= 8 && $c >= 8 && $d >= 8) {
+            //     $level = 5;
+            // } elseif ($a >= 6 && $b >= 6 && $c >= 6 && $d >= 6) {
+            //     $level = 4;
+            // } elseif ($a >= 4 && $b >= 4 && $c >= 4 && $d >= 4) {
+            //     $level = 3;
+            // } elseif ($a >= 2 && $b >= 2 && $c >= 2 && $d >= 2) {
+            //     $level = 2;
+            // }
         @endphp
-        <p> Level = {{ $level }} </p>
-        <p id="a"> Level_a = {{ $a }} || Defect A = {{ $a_defect }} </p>
-        <p id="b"> Level_b = {{ $b }} || Defect B = {{ $b_defect }}</p>
-        <p id="c"> Level_c = {{ $c }} || Defect C = {{ $c_defect }}</p>
-        <p id="d"> Level_d = {{ $d }} || Defect D = {{ $d_defect }}</p>
-        <button onclick="upgrade_a()">Upgrade Komponen A</button><br>
-        <button onclick="upgrade_b()">Upgrade Komponen B</button><br>
-        <button onclick="upgrade_c()">Upgrade Komponen C</button><br>
-        <button onclick="upgrade_d()">Upgrade Komponen D</button><br>
         <script>
+            $('#mesin').change(function() {
+                // alert($('#mesin').val());
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ route('komponen.ajax') }}",
+                    data: {
+                        '_token': '<?php echo csrf_token(); ?>',
+                        'namaMesin': $('#mesin').val()
+                    },
+                    success: function(data) {
+                        $.each(data.data, function(key, value) {
+                            $('#nama_komponen_' + key).html(data.data[key].nama_komponen + ' :');
+                            $('#komponen_' + key).html(data.data[key].level);
+                            $('#upgrade_' + key).attr('value', data.data[key].nama_komponen);
+                        });
+                        $('#levelMesin_').html(data.levelMesin[0].level);
+                    },
+                    error: function() {
+
+                    }
+                })
+            })
+
             $('.upgrade').click(function() {
-                alert($('#mesin').val())
                 $.ajax({
                     type: 'POST',
                     url: "{{ route('upgrade.komponen') }}",
                     data: {
                         '_token': '<?php echo csrf_token(); ?>',
-                        'namaMesin': $('#mesin').val()
+                        'namaMesin': $('#mesin').val(),
+                        'namaKomponen': $(this).val()
                     },
-                    success: function() {
-                        alert('success');
+                    success: function(data) {
+                        if (data.msg == 'Level Maxed') {
+                            alert(data.msg);
+                        }
+                        $.each(data.data, function(key, value){
+                            $('#komponen_'+key).html(data.data[key].level);
+                        });
+                        $('#levelMesin_').html(data.levelMesin[0].level);
+                        // alert('success');
                     },
                     error: function() {
-                        alert('error');
+                        // alert('error');
                     }
                 })
             })
