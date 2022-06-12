@@ -89,7 +89,10 @@
                         <a class="nav-link active" aria-current="page" href="{{ route('market') }}">Market</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('komponenMesin') }}">Mesin</a>
+                        <a class="nav-link active" aria-current="page" href="{{ route('komponen') }}">Mesin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route('kapasitas') }}">Kapasitas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('produksi') }}">Produksi</a>
@@ -102,9 +105,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('demand') }}">Demand</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('kapasitas') }}">Kapasitas</a>
                     </li>
                     <li class="nav-item logOut">
                         <a class="nav-link active" style="color:#ffff;" aria-current="page" href="{{ route('dashboard') }}">Log Out</a>

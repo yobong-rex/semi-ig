@@ -15,7 +15,6 @@ class KomponenController extends Controller
      */
     public function index()
     {
-        
     }
 
     /**
@@ -25,7 +24,6 @@ class KomponenController extends Controller
      */
     public function create()
     {
-        
     }
 
     /**
@@ -47,7 +45,6 @@ class KomponenController extends Controller
      */
     public function show(Komponen $komponen)
     {
-        
     }
 
     /**
@@ -84,8 +81,36 @@ class KomponenController extends Controller
         //
     }
 
-    function komponen(){
-        $komponen = DB::table('komponen')->get();
-        return view('Mesin.komponen', compact('komponen'));
+    function komponen()
+    {
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', 1)->get();
+
+        $idmesin = DB::table('mesin')->where('nama', 'like', '%Sorting%')->get();
+
+        $data = DB::table('mesin as m')
+            ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
+            ->join('level_komponen as lk', 'k.idkomponen', '=', 'lk.komponen_idkomponen')
+            ->where('lk.teams_idteam', $user[0]->idteam)
+            ->where('m.idmesin' , $idmesin[0]->idmesin)
+            ->get();
+
+            // dd($data);
+        return view('Mesin.komponen', compact('data', 'user'));
+    }
+
+    function komponenUpgrade(Request $request)
+    {
+        $namaMesin = $request->get('namaMesin');
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', 1)->get();
+        $idmesin = DB::table('mesin')->where('nama', 'like', '%'.$namaMesin.'%')->get();
+        $data = DB::table('mesin as m')
+            ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
+            ->join('level_komponen as lk', 'k.idkomponen', '=', 'lk.komponen_idkomponen')
+            ->where('lk.teams_idteam', $user[0]->idteam)
+            ->where('m.idmesin' , $idmesin[0]->idmesin)
+            ->get();
+
+            // dd($data);
+        return view('Mesin.komponen', compact('data', 'user'));
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Komponen;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,9 +54,12 @@ Route::get('/prosesbahan', function () {
 
 
 // Mesin
-Route::get('/komponen-mesin', function () {
-    return view ('mesin.komponen');
-})->name('komponenMesin');
+// Route::get('/komponen-mesin', function () {
+//     return view ('mesin.komponen');
+// })->name('komponenMesin');
+
+Route::get('/komponen', 'KomponenController@komponen')->name('komponen');
+Route::post('/komponen/upgrade', 'KomponenController@komponenUpgrade')->name('upgrade.komponen');
 
 Route::get('/kapasitas','KapasitasController@kapasitas')->name('kapasitas');
 Route::post('/kapasitas/upgrade', 'KapasitasController@kapasitasUpgrade')->name('upgrade.kapasitas');
