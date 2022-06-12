@@ -9,24 +9,25 @@ class ProduksiController extends Controller
 {
 
     function getDefect($proses,$user){
-        $defect = [];
+        $defect = '';
         $tempDefect = [];
         $defectDefault = 10;
         foreach ($proses as $p){
             $data = DB::table('mesin as m')
             ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
             ->join('level_komponen as lk', 'k.idkomponen', '=', 'lk.komponen_idkomponen')
-            ->select('k.level','k.defect')
+            ->select('k.level')
             ->where('lk.teams_idteam', $user[0]->idteam)
             ->where('m.nama', $p)
             ->orderBy('k.idkomponen', 'asc')
             ->get();
             foreach ($data as $d){
-                array_push($tempDefect,$d->defect);
+                $lvlDefect = $d->level - 1;
+                array_push($tempDefect,$lvlDefect);
             }
             $minDefect = min($tempDefect);
             $newDefect = $defectDefault - $minDefect;
-            array_push($defect,$newDefect);
+            $defect = $defect.$newDefect.';';
         }
         return $defect;
     }
@@ -72,10 +73,66 @@ class ProduksiController extends Controller
         $splitProses1 = explode(';',$proses1);
         $splitProses2 = explode(';',$proses2);
         $splitProses3 = explode(';',$proses3);
-
-       $defect1 = $this->getDefect($splitProses1,$user);
-       $defect2 = $this->getDefect($splitProses2,$user);
-       $defect3 = $this->getDefect($splitProses3,$user);
+        $sesi = $sesi[0]->sesi;
+        $defect1 = $this->getDefect($splitProses1,$user);
+        $defect2 = $this->getDefect($splitProses2,$user);
+        $defect3 = $this->getDefect($splitProses3,$user);
         return view('Produksi.produksi',compact('splitProses1','splitProses2','splitProses3','defect1','defect2','defect3','user','sesi'));  
+    }
+
+    function buat(Request $request){
+        $btn = $request->get('submit');
+        $produk = $request->get('produk_'.$btn);
+        $jumlah = $request->get('jumlah_'.$btn);
+        $defect = $request->get('defect_'.$btn);
+        $sesi = $request->get('sesi'); 
+        $team = $request->get('team'); 
+        
+        if($sesi == 1){
+            if($jumlah > 80){
+                return redirect()->route('produksi')->with('error','jumlah yang ingin kamu produksi melebihi kapasitas produksi'); 
+            }
+        }
+        else{
+            $analisis = DB::table('teams_has_analisis')->select('maxProduct','cycleTime')->where('teams_idteam',$team)->get();
+            if(($jumlah>$analisis[0]->maxProduct) || ($jumlah > $analisis[0]->cycleTime)){
+                return redirect()->route('produksi')->with('error','jumlah yang ingin kamu produksi melebihi kapasitas produksi'); 
+            }
+        }
+
+        $bahanBaku = DB::table('produk')->select('bahan_baku')->where('idproduk',$produk)->get();
+        $bahanBaku_split = explode(';',$bahanBaku[0]->bahan_baku);
+        $teamStatus = DB::table('teams')->select('dana','inventory')->where('idteam'.$team)->get();
+        if($teamStatus[0]->dana < 100){
+            return redirect()->route('produksi')->with('error','maaf dana mu kurang untuk membuat product'); 
+        }
+        
+        foreach($bahanBaku_split as $bb){
+            $inv = DB::table('inventory')
+                            ->join('ig_markets','inventory.ig_markets','=','ig_markets.idig_markets')
+                            ->select('inventory.stock','ig_markets.idig_markets')
+                            ->where('inventory.teams',$team)
+                            ->where('ig_markets.bahan_baku','like',"%".$bb."%")
+                            ->get();
+
+            if(count($inv)>0){
+                if($jumlah > $inv[0]->stock){
+                    return redirect()->route('produksi')->with('error','maaf bahan baku mu kurang untuk membuat product'); 
+                }
+                else{
+                    $invBaru = $inv[0]->stock - $jumlah;
+                    DB::table('inventory')
+                        ->where('ig_markets', $inv[0]->idig_markets)
+                        ->where('teams', $team)
+                        ->update(['stock'=>$invBaru]);
+                }
+            }
+            else{
+                return redirect()->route('produksi')->with('error','maaf bahan baku mu kurang untuk membuat product'); 
+            }
+        }
+
+        //bagian penghitungan jml produk jadi
+        
     }
 }

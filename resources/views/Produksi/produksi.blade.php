@@ -60,7 +60,15 @@
     --}}
 
 <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
-    
+    @if(session('status'))
+            <div class="alert alert-success" id="status">
+                {{session('status')}}
+            </div>
+    @elseif (session('error'))
+            <div class="alert alert-danger" id="status">
+                {{session('error')}}
+            </div>
+    @endif
     <div class="px-4 py-5" style="font-family:TT Norms Bold;">
 
         {{--Nama Team dan Timer--}}
@@ -68,7 +76,7 @@
             <div class="col-9 nama_team">
                 <h1 id="namaTeam">Team {{$user[0]->nama}}</h1> 
             </div>
-            <div class="col-1"><h3 id="nomorSesi">Sesi <span id='sesi'>1</span></h3></div>
+            <div class="col-1"><h3 id="nomorSesi">Sesi <span id='sesi'>{{$sesi}}</span></h3></div>
             <div class="col-1 text-center align-self-end timer rounded-2"  style="font-family:TT Norms Regular;">
                 <h3>Timer</h3>
                 <h4 id="timer">{{$timer}}</h4>   
@@ -78,7 +86,9 @@
 
         <h1>Produksi</h1>
         {{--Form produksi--}}
-        <form action="" method='post'>
+        <form action="{{route('produksi.buat')}}" method='post'>
+            <input type="hidden" value='{{$sesi}}' name='sesi'>
+            <input type="hidden" value='{{$user[0]->idteam}}' name='team'>
             @csrf
             <table class="table table-bordered" style="vertical-align: middle;">
                 <thead class="thead">
@@ -101,45 +111,42 @@
                     {{-- id proses_(prosesId) --}}
                     @for($i=1;$i<=3;$i++)
                     <tr id="tr_{{$i}}">
+                        @if($i == 1)
+                            <input type="hidden" name='defect_{{$i}}' value='{{$defect1}}'>
+                        @elseif ($i ==2)
+                            <input type="hidden" name='defect_{{$i}}' value='{{$defect2}}'>
+                        @else
+                            <input type="hidden" name='defect_{{$i}}' value='{{$defect3}}'>
+                        @endif
                         <td>
-                            <select name="produk_$i" id="">
+                            <select name="produk_{{$i}}" id="">
                                 <option value="">pilih produk</option>
                                 @if($i == 1)
-                                    <option value="scooter">Scooter</option>
-                                    <option value="hoverboard">Hoverboard</option>
-                                    <option value="skateboard">Skateboard</option>
-                                    <option value="bicycle">Bicycle</option>
-                                    <option value="claw machine">Claw Machine</option>
+                                    <option value="1">Scooter</option>
+                                    <option value="12">Hoverboard</option>
+                                    <option value="9">Skateboard</option>
+                                    <option value="10">Bicycle</option>
+                                    <option value="15">Claw Machine</option>
                                 @elseif ($i == 2)
-                                    <option value="RC Car">RC Car</option>
-                                    <option value="RC Helicopter">RC Helicopter</option>
-                                    <option value="Trampoline">Trampoline</option>
-                                    <option value="Robot">Robot</option>
-                                    <option value="Airsoft Gun">Airsoft Gun</option>
-                                    <option value="Playstation">Playstation</option>
+                                    <option value="2">RC Car</option>
+                                    <option value="13">RC Helicopter</option>
+                                    <option value="3">Trampoline</option>
+                                    <option value="7">Robot</option>
+                                    <option value="11">Airsoft Gun</option>
+                                    <option value="6">Playstation</option>
                                 @else
-                                    <option value="RC Car">Rubber Ball</option>
-                                    <option value="RC Helicopter">Fidget Spiner</option>
-                                    <option value="Trampoline">Bowling Set</option>
-                                    <option value="Robot">Action Figure</option>
+                                    <option value="4">Rubber Ball</option>
+                                    <option value="5">Fidget Spiner</option>
+                                    <option value="14">Bowling Set</option>
+                                    <option value="8">Action Figure</option>
                                 @endif
                             </select>
                         </td>
-                        <td><input class="inputJumlahProduk" type="number" name='jumlah' id='jumlahProduk' min="0" oninput="this.value = 
+                        <td><input class="inputJumlahProduk" type="number" name='jumlah_{{$i}}' id='jumlahProduk' min="0" oninput="this.value = 
                             !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                         <th class="nomor" scope="row">Proses Produksi {{$i}}</th>
                         @for($j=1;$j<=9;$j++)
                         <td>
-                            <!-- <select name="proses" id="proses_{{$i}}_{{$j}}">
-                                <option value="">-Select-</option>
-                                <option value="sorting">Sorting</option>
-                                <option value="cutting">Cutting</option>
-                                <option value="bending">Bending</option>
-                                <option value="assembling">Assembling</option>
-                                <option value="packing">Packing</option>
-                                <option value="drilling">Drilling</option>
-                                <option value="molding">Molding</option>
-                            </select> -->
                             @if($i == 1)
                                 <input class="urutanProduksi" type="text" value='{{$splitProses1[$j-1]}}' disabled>
                             @elseif ($i == 2)
@@ -149,7 +156,7 @@
                             @endif
                         </td>
                         @endfor
-                        <td><button class="btn btn-success" id="button_{{$i}}" onclick="konfirmasi($i, length)">Konfirmasi</button></td>
+                        <td><button class="btn btn-success" name='submit' value='{{$i}}' id="button_{{$i}}" >Konfirmasi</button></td>
                     </tr>
                     @endfor
                 </tbody>

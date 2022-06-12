@@ -47,6 +47,7 @@ Route::get('/bahan', function () {
 
 //produksi
 Route::get('/produksi','ProduksiController@produksi')->name('produksi');
+Route::post('/produksi/buat','ProduksiController@buat')->name('produksi.buat');
 
 Route::get('/prosesbahan', function () {
     return view ('Analisis_Bahan_Baku.prosesbahan');
@@ -89,3 +90,6 @@ Route::get('/adminkomponen', function () {
 Route::get('/adminsesi', function () {
     return view ('adminsesi');
 })->name('adminsesi');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

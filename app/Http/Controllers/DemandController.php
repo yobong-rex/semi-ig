@@ -16,7 +16,6 @@ class DemandController extends Controller
                     ->where('sesi',$sesi[0]->sesi)
                     ->get();
         $produk = DB::table('produk')->select('idproduk','nama')->get();
-
         return view('demand',compact('data','produk','user','sesi'));  
         
     }
