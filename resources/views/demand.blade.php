@@ -5,6 +5,18 @@
 @section('content')
 
 <style>
+    .heading{
+        box-shadow: 0 6px 10px rgba(0,0,0,.08);
+        padding:5px;
+    }
+    .nama_team{
+        color:#ea435e;
+    }
+    .timer{
+        background-color:#77dd77; /* misal waktu habis background jadi #ea435e */
+        width:150px;
+        box-shadow: 0 6px 10px rgba(0,0,0,.08);
+    }
     .nomor_demand{
         width:50px;
         text-align:center;
@@ -15,8 +27,32 @@
     }
 </style>
 
+@php
+$sesi=1;
+// $dana={{$teams->dana}};
+// $namaTeam={{$teams->nama}};
+$nomorSesi=1;   
+
+$timer="00:00";
+@endphp
+
 <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
     <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
+
+        {{--Nama Team dan Timer--}}
+        <div class="row align-items-center rounded heading">
+            <div class="col-9 nama_team">
+                <h1 id="namaTeam">Team {{--{{$teams[0] -> nama}}--}}</h1> 
+            </div>
+            <div class="col-1"><h3 id="nomorSesi">Sesi {{$nomorSesi}}</h3></div>
+            <div class="col-1 text-center align-self-end timer rounded-2"  style="font-family:TT Norms Regular;">
+                <h3>Timer</h3>
+                <h4 id="timer">{{$timer}}</h4>   
+            </div>
+        </div>
+
+        <div class="row spacing"></div>
+
         <div class="card-body pemenuhan rounded">
             <h1>Pemenuhan Demand</h1>
 

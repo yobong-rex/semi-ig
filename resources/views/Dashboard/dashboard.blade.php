@@ -67,7 +67,6 @@
     
     <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
         @php
-        $sesi=1;
         // $dana={{$teams->dana}};
         // $namaTeam={{$teams->nama}};
         $nomorSesi=1;   
@@ -273,7 +272,7 @@
         {{--Pemenuhan Demand--}}
         <div class="card-body pemenuhan rounded">
             <h1>Pemenuhan Demand</h1>
-            <table class="table table-bordered" style="vertical-align: middle;">
+            {{-- <table class="table table-bordered" style="vertical-align: middle;">
                 @php
                     $arrproduk = array('Scooter', 'Hoverboard', 'Skateboard', 'Bicycle', 'Claw Machine', 'RC Car', 'RC Helicopter', 'Trampoline', 'Robot', 'Airsoft Gun', 'Rubber Ball', 'Fidget Spinner', 'Bowling Set', 'Action Figure');
                     $col=3;
@@ -296,7 +295,7 @@
                         @endfor
                         <td id="total-{{$i}}">0</td>
                     </tr>
-                    @endfor
+                    @endfor --}}
                     {{-- JANGAN DIHAPUS DULU --}}
                     {{-- <tr>
                         <th class="nomor_demand" scope="row">1</th>
@@ -413,6 +412,7 @@
                     </tr> --}}
                 </tbody>
              </table>
+
              {{-- Table Pemenuhan Demand --}}
             <table class="table table-bordered">
                 <thead>

@@ -35,10 +35,10 @@
             src: local('TT Norms Bold'), url('assets/font/TTNorms-Bold.woff') format('woff');
         }
         @font-face {
-        font-family: 'TT Norms Regular';
-        font-style: normal;
-        font-weight: normal;
-        src: local('TT Norms Regular'), url('assets/font/TTNorms-Regular.woff') format('woff');
+            font-family: 'TT Norms Regular';
+            font-style: normal;
+            font-weight: normal;
+            src: local('TT Norms Regular'), url('assets/font/TTNorms-Regular.woff') format('woff');
         }
         
         .nav-link,
@@ -81,7 +81,7 @@
             </a>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-5">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-4">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('dashboard') }}">Dashboard</a>
                     </li>

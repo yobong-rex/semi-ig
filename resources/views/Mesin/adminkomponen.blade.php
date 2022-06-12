@@ -54,5 +54,8 @@
         </tr>
     </tbody>
 </table>
+{{--tampilan dana--}}
+<h4>Dana: </h4>
+<h5 id="dana"> {{--{{ number_format($user[0]->dana) }}--}} TC</h5>
 
 @endsection

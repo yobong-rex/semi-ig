@@ -4,6 +4,13 @@
 
 @section('content')
     <style>
+        .heading{
+        box-shadow: 0 6px 10px rgba(0,0,0,.08);
+        padding:5px;
+        }
+        .nama_team{
+            color:#ea435e;
+        }
         .kapasitas {
             background-color: #ffffff;
             box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
@@ -24,6 +31,18 @@
             $arrProses = ['Sorting', 'Cutting', 'Bending', 'Assembling', 'Packing', 'Drilling', 'Molding'];
         @endphp
         <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
+
+            {{--Nama Team dan Timer--}}
+            <div class="row align-items-center rounded heading">
+                <div class="col-9 nama_team">
+                    <h1 id="namaTeam">Team {{--{{$teams[0] -> nama}}--}}</h1> 
+                </div>
+                <div class="col-1"><h3 id="nomorSesi">Sesi {{--{{$nomorSesi}}--}}</h3></div>
+            </div>
+
+            <div class="row spacing"></div>
+
+            {{-- Card Kapasitas --}}
             <div class="card-body kapasitas rounded">
                 <table class="table table">
                     <thead class="thead">
