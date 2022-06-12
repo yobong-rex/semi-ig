@@ -15,6 +15,15 @@
             background-color: #ffffff;
             box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
         }
+        .upgrade{
+            background-color: #ffc107;
+            border: 1px #ffc107;
+            border-radius: 5px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            padding-right: 12px;
+            padding-left: 12px;
+        }
     </style>
 
     <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
@@ -49,9 +58,9 @@
                                 </td>
                                 <td id='level_kapasitas' style="text-align:center;">{{ $d->level }}</td>
                                 <td id='kapasitas_kapasitas' style="text-align:center;">{{ $d->kapasitas }}</td>
-                                <td style="text-align:center;">
+                                <td style="text-align:center;vertical-align:center;">
                                     <button class='upgrade' value={{ $d->nama }}>Upgrade</button>
-                                    {{-- <button type="button" class="btn btn-warning upgrade" value={{ $d->nama }}>Upgrade</button> --}}
+                                    {{-- <button type="button" class="btn btn-warning " value={{ $d->nama }}>Upgrade</button> --}}
                                 </td>
                             </tr>
                         @endforeach
