@@ -4,18 +4,21 @@
 
 @section('content')
     <style>
-        .heading{
-        box-shadow: 0 6px 10px rgba(0,0,0,.08);
-        padding:5px;
+        .heading {
+            box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
+            padding: 5px;
         }
-        .nama_team{
-            color:#ea435e;
+
+        .nama_team {
+            color: #ea435e;
         }
+
         .kapasitas {
             background-color: #ffffff;
             box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
         }
-        .upgrade{
+
+        .upgrade {
             background-color: #ffc107;
             border: 1px #ffc107;
             border-radius: 5px;
@@ -29,12 +32,14 @@
     <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
         <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
 
-            {{--Nama Team dan Timer--}}
+            {{-- Nama Team dan Timer --}}
             <div class="row align-items-center rounded heading">
                 <div class="col-9 nama_team">
-                    <h1 id="namaTeam">Team {{--{{$user[0] -> nama}}--}}</h1> 
+                    <h1 id="namaTeam">Team {{-- {{$user[0] -> nama}} --}}</h1>
                 </div>
-                <div class="col-1"><h3 id="nomorSesi">Sesi {{--{{$nomorSesi}}--}}</h3></div>
+                <div class="col-1">
+                    <h3 id="nomorSesi">Sesi {{-- {{$nomorSesi}} --}}</h3>
+                </div>
             </div>
 
             <div class="row spacing"></div>
@@ -82,16 +87,19 @@
                 success: function(data) {
                     if (data.msg == 'Level Maxed') {
                         alert(data.msg);
+                    } else if (data.msg == 'Dana tidak mencukupi') {
+                        alert(data.msg);
                     }
-                    $.each(data.data, function(key, value){
-                        $('#nama_mesin').html(data.data[key].nama);
+                    $.each(data.data, function(key, value) {
+                        // $('#nama_mesin').html(data.data[key].nama);
                         $('#level_kapasitas').html(data.data[key].level);
                         $('#kapasitas_kapasitas').html(data.data[key].kapasitas);
                     });
+                    alert(data.user[0].dana);
                     // location.reload()
                 },
                 error: function() {
-                    
+
                     // location.reload();
                 }
             })

@@ -164,7 +164,7 @@
                     <th style="text-align:center;">Konfirmasi</th>
                 </thead>
                 <tbody>
-                    @for ($x = 0; $x < count($listMesin); $x++)
+                    {{-- @for ($x = 0; $x < count($listMesin); $x++)
                         <tr class="rowMesin">
                             <td id="namaMesin_{{ $x }}">{{ $listMesin[$x]->nama_mesin }}</td>
                             <td id="levelMesin_{{ $x }}" class="noLevel">{{ $listMesin[$x]->level }}
@@ -172,51 +172,58 @@
                             <td id="defect_mesin_{{ $x }}" class="class_defectMesin">0</td>
                             <td id="kapasitas_mesin_{{ $x }}" class="class_kapasitasMesin">
                                 {{ $listMesin[$x]->kapasitas }}</td>
-                            {{-- <td><button type="button" class="btn btn-success" id="button_{{$x}}">Konfirmasi</button></td> --}}
+                            <td><button type="button" class="btn btn-success" id="button_{{$x}}">Konfirmasi</button></td>
                         </tr>
-                    @endfor
-                    {{-- <tr class="rowMesin">
+                    @endfor --}}
+                    <tr class="rowMesin">
+                        <td id="namaMesin">Sorting</td>
+                        <td class="noLevel" id="levelMesin_">1</td>
+                        <td class="class_defectMesin" id="defect_mesin">0</td>
+                        <td class="class_kapasitasMesin" id="kapasitas_mesin">50</td>
+                        <td><button type="button" class="btn btn-success" id="button_2">Konfirmasi</button></td>
+                    </tr>
+                    <tr class="rowMesin">
                         <td id="namaMesin">Cutting</td>
                         <td class="noLevel" id="levelMesin_">1</td>
-                        <td class="class_defectMesin" id="defect_mesin">1</td>
-                        <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                        <td class="class_defectMesin" id="defect_mesin">0</td>
+                        <td class="class_kapasitasMesin" id="kapasitas_mesin">55</td>
                         <td><button type="button" class="btn btn-success" id="button_2">Konfirmasi</button></td>
                     </tr>
                     <tr class="rowMesin">
                         <td id="namaMesin">Bending</td>
                         <td class="noLevel" id="levelMesin_">1</td>
-                        <td class="class_defectMesin" id="defect_mesin">1</td>
-                        <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                        <td class="class_defectMesin" id="defect_mesin">0</td>
+                        <td class="class_kapasitasMesin" id="kapasitas_mesin">50</td>
                         <td><button type="button" class="btn btn-success" id="button_3">Konfirmasi</button></td>
                     </tr>
                     <tr class="rowMesin">
                         <td id="namaMesin">Assembling</td>
                         <td class="noLevel" id="levelMesin_">1</td>
-                        <td class="class_defectMesin" id="defect_mesin">1</td>
-                        <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                        <td class="class_defectMesin" id="defect_mesin">0</td>
+                        <td class="class_kapasitasMesin" id="kapasitas_mesin">50</td>
                         <td><button type="button" class="btn btn-success" id="button_4">Konfirmasi</button></td>
                     </tr>
                     <tr class="rowMesin">
                         <td id="namaMesin">Packing</td>
                         <td class="noLevel" id="levelMesin_">1</td>
-                        <td class="class_defectMesin" id="defect_mesin">1</td>
-                        <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                        <td class="class_defectMesin" id="defect_mesin">0</td>
+                        <td class="class_kapasitasMesin" id="kapasitas_mesin">55</td>
                         <td><button type="button" class="btn btn-success" id="button_5">Konfirmasi</button></td>
                     </tr>
                     <tr class="rowMesin">
                         <td id="namaMesin">Drilling</td>
                         <td class="noLevel" id="levelMesin_">1</td>
-                        <td class="class_defectMesin" id="defect_mesin">1</td>
-                        <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                        <td class="class_defectMesin" id="defect_mesin">0</td>
+                        <td class="class_kapasitasMesin" id="kapasitas_mesin">50</td>
                         <td><button type="button" class="btn btn-success" id="button_6">Konfirmasi</button></td>
                     </tr>
                     <tr class="rowMesin">
                         <td id="namaMesin">Molding</td>
                         <td class="noLevel" id="levelMesin_">1</td>
-                        <td class="class_defectMesin" id="defect_mesin">1</td>
-                        <td class="class_kapasitasMesin" id="kapasitas_mesin">20</td>
+                        <td class="class_defectMesin" id="defect_mesin">0</td>
+                        <td class="class_kapasitasMesin" id="kapasitas_mesin">50</td>
                         <td><button type="button" class="btn btn-success" id="button_7">Konfirmasi</button></td>
-                    </tr> --}}
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -270,11 +277,14 @@
                     success: function(data) {
                         if (data.msg == 'Level Maxed') {
                             alert(data.msg);
+                        } else if (data.msg == 'Dana tidak mencukupi') {
+                            alert(data.msg);
                         }
                         $.each(data.data, function(key, value) {
                             $('#komponen_' + key).html(data.data[key].level);
                         });
                         $('#levelMesin_').html(data.levelMesin[0].level);
+                        $('#dana').html(data.user[0].dana + ' TC' );
                         // alert('success');
                     },
                     error: function() {

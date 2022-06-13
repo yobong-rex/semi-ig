@@ -123,25 +123,39 @@ class KapasitasController extends Controller
 
         $idkap = DB::table('kapasitas_has_teams as kht')
             ->join('kapasitas as k', 'kht.kapasitas_idkapasitas', '=', 'k.idkapasitas')
-            ->select('kht.kapasitas_idkapasitas', 'k.level')
+            ->select('kht.kapasitas_idkapasitas', 'k.level', 'k.harga')
             ->where('kht.teams_idteam', $user[0]->idteam)
             ->where('kht.kapasitas_mesin_idmesin', $idmesin[0]->idmesin)
             ->get();
 
         $upgrade = $idkap[0]->kapasitas_idkapasitas;
         $level = $idkap[0]->level;
+        $dana = $user[0]->dana;
+        $harga = $idkap[0]->harga;
 
-        if ($level < 5) {
-            $upgrade += 1;
-            DB::table('kapasitas_has_teams')
-                ->where('teams_idteam', $user[0]->idteam)
-                ->where('kapasitas_mesin_idmesin', $idmesin[0]->idmesin)
-                ->update(['kapasitas_idkapasitas' => $upgrade]);
+        if ($dana >= $harga) {
+            if ($level < 5) {
+                $upgrade += 1;
+                DB::table('kapasitas_has_teams')
+                    ->where('teams_idteam', $user[0]->idteam)
+                    ->where('kapasitas_mesin_idmesin', $idmesin[0]->idmesin)
+                    ->update(['kapasitas_idkapasitas' => $upgrade]);
+
+                DB::table('teams')
+                    ->where('idteam', $user[0]->idteam)
+                    ->update(['dana' => ($dana - $harga)]);
+            } else {
+                return response()->json(array(
+                    'msg' => 'Level Maxed'
+                ), 200);
+            }
         } else {
             return response()->json(array(
-                'msg' => 'Level Maxed'
+                'msg' => 'Dana tidak mencukupi'
             ), 200);
         }
+
+        $updatedUser = DB::table('teams')->select('dana')->where('idteam', $user[0]->idteam)->get();
 
         $data = DB::table('mesin as m')
             ->join('kapasitas as k', 'm.idmesin', '=', 'k.mesin_idmesin')
@@ -152,7 +166,8 @@ class KapasitasController extends Controller
             ->get();
 
         return response()->json(array(
-            'data' => $data
+            'data' => $data,
+            'user' => $updatedUser
         ), 200);
         // return view('Mesin.kapasitas', compact('data'));
     }

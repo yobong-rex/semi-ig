@@ -85,7 +85,7 @@ class KomponenController extends Controller
     {
         $idmesin = DB::table('mesin')->where('nama', 'like', '%Sorting%')->get();
 
-        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', 1)->get();
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', 8)->get();
 
         $data = DB::table('mesin as m')
             ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
@@ -104,17 +104,8 @@ class KomponenController extends Controller
             ->where('m.idmesin', $idmesin[0]->idmesin)
             ->get();
 
-        $listMesin = DB::table('kapasitas as kap')
-            ->join('mesin as m', 'kap.mesin_idmesin', '=', 'm.idmesin')
-            ->join('mesin_has_teams as mht', 'm.idmesin', '=', 'mht.mesin_idmesin')
-            ->select('m.nama as nama_mesin', 'mht.level', 'kap.kapasitas')
-            ->where('mht.teams_idteam', $user[0]->idteam)
-            ->where('kap.level', 1)
-            ->orderBy('idmesin', 'asc')
-            ->get();
-
         // dd($listMesin);
-        return view('Mesin.komponen', compact('data', 'user', 'levelMesin', 'listMesin'));
+        return view('Mesin.komponen', compact('data', 'user', 'levelMesin'));
     }
 
     function komponenAjax(Request $request)
@@ -122,7 +113,7 @@ class KomponenController extends Controller
         $namaMesin = $request->get('namaMesin');
         $idmesin = DB::table('mesin')->where('nama', 'like', '%' . $namaMesin . '%')->get();
 
-        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', 1)->get();
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', 8)->get();
 
 
         $data = DB::table('mesin as m')
@@ -154,12 +145,12 @@ class KomponenController extends Controller
     {
         $namaMesin = $request->get('namaMesin');
         $namaKomponen = $request->get('namaKomponen');
-        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', 1)->get();
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', 8)->get();
         $idmesin = DB::table('mesin')->where('nama', 'like', '%' . $namaMesin . '%')->get();
 
         $idkom = DB::table('level_komponen as lk')
             ->join('komponen as k', 'lk.komponen_idkomponen', '=', 'k.idkomponen')
-            ->select('komponen_idkomponen', 'k.level')
+            ->select('komponen_idkomponen', 'k.level', 'k.harga')
             ->where('lk.teams_idteam', $user[0]->idteam)
             ->where('lk.komponen_mesin_idmesin', $idmesin[0]->idmesin)
             ->where('k.nama', $namaKomponen)
@@ -167,19 +158,33 @@ class KomponenController extends Controller
 
         $upgrade = $idkom[0]->komponen_idkomponen;
         $levelKomponen = $idkom[0]->level;
+        $dana = $user[0]->dana;
+        $harga = $idkom[0]->harga;
 
-        if ($levelKomponen < 10) {
-            $upgrade += 1;
-            DB::table('level_komponen')
-                ->where('teams_idteam', $user[0]->idteam)
-                ->where('komponen_mesin_idmesin', $idmesin[0]->idmesin)
-                ->where('komponen_idkomponen', $idkom[0]->komponen_idkomponen)
-                ->update(['komponen_idkomponen' => $upgrade]);
+        if ($dana >= $harga) {
+            if ($levelKomponen < 10) {
+                $upgrade += 1;
+                DB::table('level_komponen')
+                    ->where('teams_idteam', $user[0]->idteam)
+                    ->where('komponen_mesin_idmesin', $idmesin[0]->idmesin)
+                    ->where('komponen_idkomponen', $idkom[0]->komponen_idkomponen)
+                    ->update(['komponen_idkomponen' => $upgrade]);
+
+                DB::table('teams')
+                    ->where('idteam', $user[0]->idteam)
+                    ->update(['dana' => ($dana-$harga)]);
+            } else {
+                return response()->json(array(
+                    'msg' => 'Level Maxed'
+                ), 200);
+            }
         } else {
             return response()->json(array(
-                'msg' => 'Level Maxed'
+                'msg' => 'Dana tidak mencukupi'
             ), 200);
         }
+
+        $updatedUser = DB::table('teams')->select('dana')->where('idteam', $user[0]->idteam)->get();
 
         $data = DB::table('mesin as m')
             ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
@@ -234,6 +239,7 @@ class KomponenController extends Controller
         // dd($data);
         return response()->json(array(
             'data' => $data,
+            'user' => $updatedUser,
             'levelMesin' => $levelMesin
         ), 200);
         // return view('Mesin.komponen', compact('data', 'user', 'levelMesin'));
