@@ -20,13 +20,25 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware(['auth'])->group(function () {
+
+    // Dashboard
+    Route::get('/', 'TeamController@dashboard')->name('dashboard');
+
     // IG Market
     Route::get('/market', 'MarketController@market')->name('market');
     Route::post('/market/beli', 'MarketController@marketBeli')->name('market.beli');
+
+    // Mesin Komponen
+    Route::get('/komponen', 'KomponenController@komponen')->name('komponen');
+    Route::get('/komponen/ajax', 'KomponenController@komponenAjax')->name('komponen.ajax');
+    Route::post('/komponen/upgrade', 'KomponenController@komponenUpgrade')->name('upgrade.komponen');
+
+    // Mesin Kapasitas
+    Route::get('/kapasitas', 'KapasitasController@kapasitas')->name('kapasitas');
+    Route::post('/kapasitas/upgrade', 'KapasitasController@kapasitasUpgrade')->name('upgrade.kapasitas');
 });
 
-// Dashboard
-Route::get('/', 'TeamController@dashboard')->name('dashboard');
+
 
 
 // Sesi Analisis
@@ -59,9 +71,7 @@ Route::get('/prosesbahan', function () {
 //     return view ('mesin.komponen');
 // })->name('komponenMesin');
 
-Route::get('/komponen', 'KomponenController@komponen')->name('komponen');
-Route::get('/komponen/ajax', 'KomponenController@komponenAjax')->name('komponen.ajax');
-Route::post('/komponen/upgrade', 'KomponenController@komponenUpgrade')->name('upgrade.komponen');
+
 
 Route::get('/kapasitas', 'KapasitasController@kapasitas')->name('kapasitas');
 Route::post('/kapasitas/upgrade', 'KapasitasController@kapasitasUpgrade')->name('upgrade.kapasitas');
@@ -96,3 +106,5 @@ Route::get('/maketeam', function () {
     return view('tesmaketeam');
 })->name('tesmaketeam');
 Route::post('/maketeam/maketeam', 'TeamController@makeTeam')->name('makeTeam');
+
+Auth::routes();

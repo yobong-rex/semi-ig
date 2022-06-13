@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Team;
 use Illuminate\Http\Request;
 use DB;
+use Auth;
 
 class TeamController extends Controller
 {
@@ -85,9 +86,20 @@ class TeamController extends Controller
 
     function dashboard()
     {
-        $teams = DB::table('teams')->where('nama', 'team 1')->get();
-        // dd($teams);
-        return view('dashboard.dashboard', compact('teams'));
+        $team = Auth::user()->teams_idteam;
+        $user = DB::table('teams')->select('nama','dana','idteam','inventory','demand','customer_value', 'hibah')->where('idteam',$team)->get();
+
+        $sesi = DB::table('sesi')->select('sesi')->get();
+
+        $data = DB::table('team_demand')
+                    ->join('produk','team_demand.idproduk','produk.idproduk')
+                    ->where('idteam',1)
+                    ->where('sesi',$sesi[0]->sesi)
+                    ->get();
+
+        $produk = DB::table('produk')->select('idproduk','nama')->get();
+        
+        return view('dashboard.dashboard', compact('user', 'sesi', 'data', 'produk'));
     }
 
     function makeTeam(Request $request)

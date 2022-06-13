@@ -116,7 +116,7 @@
                 <tr>
                     <th class="nomor_bahan" scope="row">{{$nomer}}</th>
                     <td>{{$d->bahan_baku}}</td>
-                    <td>{{$d->isi}}</td>
+                    <td id="isi_{{$nomer}}">{{$d->isi}}</td>
                     <td id="stok_{{$nomer}}">{{$d->stok}}</td>
                     <td id="harga_{{$nomer}}">{{$d->harga}}</td>
                     <td><input class="form-control quantity" id="input_{{$nomer}}" type="number" min="0" oninput="this.value = 
@@ -127,7 +127,7 @@
                 @endforeach
                 <tr>
                     <td colspan="6">Biaya Pengiriman:</td>
-                    <td id="biaya_pengiriman">0 TC</td>
+                    <td id="biaya_pengiriman">1500 TC</td>
                 </tr>
                 <tr>
                     <td colspan="6">Total Pembelian:</td>
@@ -207,14 +207,21 @@
                 let subtotal = parseInt($('#subtotal_'+i).text())
                 total += subtotal;
                 if(subtotal !== 0){
-                    count += 1
-                    item.push({'item': $('#item_'+i).val(), 'quantity': $('#input_'+i).val(), 'subtotal': $('#subtotal_'+i).text()});
-                    totalItem += parseInt($('#input_'+i).val())
+                    count += parseInt($('#input_'+i).val());
+                    item.push({'item': $('#item_'+i).val(), 'quantity': $('#input_'+i).val(), 'subtotal': $('#subtotal_'+i).text(), 'isi': $('#isi_'+i).text()  });
+                    totalUnit = (parseInt($('#input_'+i).val()) * parseInt($('#isi_'+i).text()));
+                    totalItem += totalUnit;
                 } 
             }
-            console.log(totalItem);
-            if(count>= 10){
-                total += (count-9)*200;
+            let temp = count - 100;
+            console.log(temp);
+            total+= parseInt($('#biaya_pengiriman').text());
+            if(temp >= 0){
+                let lebih = parseInt(temp/10);
+                lebih += parseInt(1);
+                let kirim = lebih*200
+                console.log(kirim);
+                total += kirim;
             }
             $('#total').text(total);
         }

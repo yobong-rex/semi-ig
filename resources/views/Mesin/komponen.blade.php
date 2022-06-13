@@ -156,7 +156,7 @@
             {{-- Informasi Mesin + Upgrade Kapasitas --}}
             <table class="table table-bordered" style="width:fit-content;">
                 {{-- Heading --}}
-                <thead class="thead">
+                {{-- <thead class="thead">
                     <th>Nama Mesin</th>
                     <th>Level</th>
                     <th class="class_defectMesin">Defect</th>
@@ -164,7 +164,7 @@
                     <th style="text-align:center;">Konfirmasi</th>
                 </thead>
                 <tbody>
-                    {{-- @for ($x = 0; $x < count($listMesin); $x++)
+                    @for ($x = 0; $x < count($listMesin); $x++)
                         <tr class="rowMesin">
                             <td id="namaMesin_{{ $x }}">{{ $listMesin[$x]->nama_mesin }}</td>
                             <td id="levelMesin_{{ $x }}" class="noLevel">{{ $listMesin[$x]->level }}
@@ -174,7 +174,7 @@
                                 {{ $listMesin[$x]->kapasitas }}</td>
                             <td><button type="button" class="btn btn-success" id="button_{{$x}}">Konfirmasi</button></td>
                         </tr>
-                    @endfor --}}
+                    @endfor
                     <tr class="rowMesin">
                         <td id="namaMesin">Sorting</td>
                         <td class="noLevel" id="levelMesin_">1</td>
@@ -224,7 +224,7 @@
                         <td class="class_kapasitasMesin" id="kapasitas_mesin">50</td>
                         <td><button type="button" class="btn btn-success" id="button_7">Konfirmasi</button></td>
                     </tr>
-                </tbody>
+                </tbody> --}}
             </table>
         </div>
         @php

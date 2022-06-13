@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Kapasitas;
 use Illuminate\Http\Request;
 use DB;
+use Auth;
 
 class KapasitasController extends Controller
 {
@@ -103,7 +104,8 @@ class KapasitasController extends Controller
 
     function kapasitas()
     {
-        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', 1)->get();
+        $team = Auth::user()->teams_idteam;
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
         $data = DB::table('mesin as m')
             ->join('kapasitas as k', 'm.idmesin', '=', 'k.mesin_idmesin')
             ->join('kapasitas_has_teams as kht', 'k.idkapasitas', '=', 'kht.kapasitas_idkapasitas')
@@ -117,7 +119,8 @@ class KapasitasController extends Controller
 
     function kapasitasUpgrade(Request $request)
     {
-        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', 1)->get();
+        $team = Auth::user()->teams_idteam;
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
         $namaMesin = $request->get('namaMesin');
         $idmesin = DB::table('mesin')->where('nama', 'like', '%' . $namaMesin . '%')->get();
 

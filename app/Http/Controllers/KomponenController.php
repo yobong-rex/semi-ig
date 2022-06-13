@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Komponen;
 use Illuminate\Http\Request;
 use DB;
+use Auth;
 
 class KomponenController extends Controller
 {
@@ -83,9 +84,11 @@ class KomponenController extends Controller
 
     function komponen()
     {
+        $team = Auth::user()->teams_idteam;
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
+
         $idmesin = DB::table('mesin')->where('nama', 'like', '%Sorting%')->get();
 
-        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', 8)->get();
 
         $data = DB::table('mesin as m')
             ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
@@ -113,7 +116,8 @@ class KomponenController extends Controller
         $namaMesin = $request->get('namaMesin');
         $idmesin = DB::table('mesin')->where('nama', 'like', '%' . $namaMesin . '%')->get();
 
-        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', 8)->get();
+        $team = Auth::user()->teams_idteam;
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
 
 
         $data = DB::table('mesin as m')
@@ -145,7 +149,8 @@ class KomponenController extends Controller
     {
         $namaMesin = $request->get('namaMesin');
         $namaKomponen = $request->get('namaKomponen');
-        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', 8)->get();
+        $team = Auth::user()->teams_idteam;
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
         $idmesin = DB::table('mesin')->where('nama', 'like', '%' . $namaMesin . '%')->get();
 
         $idkom = DB::table('level_komponen as lk')

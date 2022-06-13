@@ -110,7 +110,7 @@ class ProduksiController extends Controller
         foreach($bahanBaku_split as $bb){
             $inv = DB::table('inventory')
                             ->join('ig_markets','inventory.ig_markets','=','ig_markets.idig_markets')
-                            ->select('inventory.stock','ig_markets.idig_markets')
+                            ->select('inventory.stock','ig_markets.idig_markets','ig_markets.isi')
                             ->where('inventory.teams',$team)
                             ->where('ig_markets.bahan_baku','like',"%".$bb."%")
                             ->get();
@@ -133,6 +133,7 @@ class ProduksiController extends Controller
         }
 
         //bagian penghitungan jml produk jadi
+
         
     }
 }
