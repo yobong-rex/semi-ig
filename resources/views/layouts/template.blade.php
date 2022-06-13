@@ -76,12 +76,13 @@
     {{-- NavBar --}}
     <nav class="navbar navbar-expand-lg" style="background-color: #ffff; box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);">
         <div class="container-fluid gap-5">
+    
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent" style="justify-content:center;">
             <a class="navbar-brand" href="/">
                 <img src="{{ asset('assets') }}/logo/Logo_IG_Header.png" alt="Logo IGXXX" style="max-height: 40px">
             </a>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-4">
+                <ul class="navbar-nav mb-2 mb-lg-0 gap-4">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('dashboard') }}">Dashboard</a>
                     </li>
@@ -107,7 +108,8 @@
                         <a class="nav-link active" aria-current="page" href="{{ route('demand') }}">Demand</a>
                     </li>
                     <li class="nav-item logOut">
-                        <a class="nav-link active" style="color:#ffff;" aria-current="page" href="{{ route('dashboard') }}">Log Out</a>
+                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="text-light nav-link active" aria-current="page" style="text-decoration:none;"> {{ __('Logout') }}</a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
                     </li>
                 </ul>
             </div>

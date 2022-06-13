@@ -89,6 +89,7 @@ class KomponenController extends Controller
 
         $idmesin = DB::table('mesin')->where('nama', 'like', '%Sorting%')->get();
 
+        $sesi = DB::table('sesi')->select('sesi')->get();
 
         $data = DB::table('mesin as m')
             ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
@@ -108,7 +109,7 @@ class KomponenController extends Controller
             ->get();
 
         // dd($listMesin);
-        return view('Mesin.komponen', compact('data', 'user', 'levelMesin'));
+        return view('Mesin.komponen', compact('data', 'user', 'levelMesin', 'sesi'));
     }
 
     function komponenAjax(Request $request)

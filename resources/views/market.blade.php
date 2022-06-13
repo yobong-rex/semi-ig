@@ -67,7 +67,7 @@
             <div class="col-9 nama_team">
                 <h1 id="namaTeam" value="{{$user[0]->idteam}}">Team {{$user[0]->nama}}</h1> 
             </div>
-            <div class="col-1"><h3 id="nomorSesi">Sesi <span id='sesi'>{{$sesi[0]->sesi}}</span></h3></div>
+            <div class="col-1" style="color:#000;"><h3 id="nomorSesi">Sesi <span id='sesi'>{{$sesi[0]->sesi}}</span></h3></div>
             <div class="col-1 text-center align-self-end timer rounded-2"  style="font-family:TT Norms Regular;">
                 <h3>Timer</h3>
                 <h4 id="timer">{{$timer}}</h4>   
@@ -78,7 +78,7 @@
 
         <div class="row-12">
             {{--Card Dana--}}
-            <div class="card-header rounded" style="background-color:#faf0dc;">
+            <div class="card-header rounded" style="background-color:#faf0dc;box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
                 <div class="row align-items-center">
                     <div class="col-1 text-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
@@ -89,12 +89,14 @@
                         <h1>Dana : </h1>
                     </div>
                     <div class="col-9 dana">
-                        <h1 id="dana">{{number_format($user[0]->dana)}} TC</h1>
+                        <h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1>
                     </div>
                 </div>
             </div>
 
         <div class="row spacing"></div>
+
+        <div class="alert alert-danger" role="alert">Masukkan Pembelian sesuai Urutan !!!</div>
 
         {{--market table--}}
         <table class="table table-bordered" style="vertical-align: middle;">
@@ -177,12 +179,13 @@
                 </div>
                 <div class="modal-footer">
                     {{--button cancel--}}
-                    <button type="button" id='reload' class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id='reload' class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
                 </div>
                 </div>
             </div>
         </div>
     </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         let item = [];
@@ -208,7 +211,7 @@
                 total += subtotal;
                 if(subtotal !== 0){
                     count += parseInt($('#input_'+i).val());
-                    item.push({'item': $('#item_'+i).val(), 'quantity': $('#input_'+i).val(), 'subtotal': $('#subtotal_'+i).text(), 'isi': $('#isi_'+i).text()  });
+                    item.push({'item': $('#item_'+i).val(), 'quantity': $('#input_'+i).val(), 'subtotal': $('#subtotal_'+i).text(), 'isi': $('#isi_'+i).text()});
                     totalUnit = (parseInt($('#input_'+i).val()) * parseInt($('#isi_'+i).text()));
                     totalItem += totalUnit;
                 } 
@@ -220,7 +223,8 @@
                 let lebih = parseInt(temp/10);
                 lebih += parseInt(1);
                 let kirim = lebih*200
-                console.log(kirim);
+                let pengiriman = 1500 + kirim;
+                $('#biaya_pengiriman').text(pengiriman);
                 total += kirim;
             }
             $('#total').text(total);

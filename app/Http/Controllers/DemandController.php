@@ -16,7 +16,8 @@ class DemandController extends Controller
                     ->where('sesi',$sesi[0]->sesi)
                     ->get();
         $produk = DB::table('produk')->select('idproduk','nama')->get();
-        return view('demand',compact('data','produk','user','sesi'));  
+        $sesi1 = $sesi[0]->sesi;
+        return view('demand',compact('data','produk','user','sesi1'));  
         
     }
 
@@ -28,6 +29,7 @@ class DemandController extends Controller
             $totalJual = 0;
             $countDemand = 0;
             $totalDemand = 0;
+            $updtDemand = 0;
 
             //pengecean stok
             foreach ($demand as $d){
@@ -49,11 +51,16 @@ class DemandController extends Controller
                     $totalJual += $hargaJual;
                     $countDemand +=1;
                     $totalDemand += $d['total'];
+                    $updtDemand += $d['total'];
                 }
                 $sisaProduct = $invtProduct[0]->hasil - $d['total'];
+                $usrDemand = DB::table('team_demand')->where('idproduk',$d['produk'])->where('idteam',$team)->where('sesi',$sesi)->get();
+                if(count($usrDemand)>0){
+                    $updtDemand += $usrDemand[0]->jumlah;
+                }
                 DB::table('team_demand')->updateOrInsert(
                     ['idproduk'=>$d['produk'], 'idteam'=>$team, 'sesi'=>$sesi],
-                    ['jumlah'=>$d['total']]
+                    ['jumlah'=>$updtDemand]
                 );
                 DB::table('history_produksi')
                     ->where('teams_idteam',$team)
@@ -64,13 +71,13 @@ class DemandController extends Controller
             }
 
             if($countDemand> 0){
-                $teamDana = DB::table('teams')->select('dana','demand','customer_value','hibah','total_pendapat')->where('idteam', $team)->get();
+                $teamDana = DB::table('teams')->select('dana','demand','customer_value','hibah','total_pendapatan')->where('idteam', $team)->get();
                 $danaBaru = $teamDana[0]->dana + $totalJual;
                 $demandBaru = $teamDana[0]->demand + $totalDemand;
-                $pendapatanBaru = $teamDana[0]->total_pendapat + $totalJual;
+                $pendapatanBaru = $teamDana[0]->total_pendapatan + $totalJual;
                 $customerValue = $pendapatanBaru*$demandBaru;
                 $hibah = $customerValue/100;
-                DB::table('teams')->where('idteam', $team)->update(['dana'=>$danaBaru,'demand'=>$demandBaru,'total_pendapat'=>$pendapatanBaru,'customer_value'=> $customerValue,'hibah'=> $hibah]);
+                DB::table('teams')->where('idteam', $team)->update(['dana'=>$danaBaru,'demand'=>$demandBaru,'total_pendapatan'=>$pendapatanBaru,'customer_value'=> $customerValue,'hibah'=> $hibah]);
                 return response()->json(array(
                     'msg'=>'selamat team anda berhasil memenuhi demand',
                     'code'=> '200'

@@ -44,6 +44,19 @@
             text-align: center;
             vertical-align: middle;
         }
+
+        .upgrade,
+        .upgrade:focus {
+            background-color: #ffc107;
+            border: 1px #ffc107;
+            border-radius: 5px;
+            padding: 6px 12px 6px 12px;
+            transition: all 0.2s ease;
+        }
+
+        .upgrade:hover {
+            -webkit-transform: scale(1.07);
+        }
     </style>
 
     <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
@@ -57,18 +70,18 @@
                     <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
                 </div>
                 <div class="col-1">
-                    <h3 id="nomorSesi">Sesi 1</h3>
+                    <h3 id="nomorSesi">Sesi {{ $sesi[0]->sesi }}</h3>
                 </div>
                 <div class="col-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
                     <h3>Timer</h3>
-                    <h4 id="timer">00:00</h4>
+                    <h4 id="timer">- - : - -</h4>
                 </div>
             </div>
 
             <div class="row spacing"></div>
 
             {{-- Card Dana --}}
-            <div class="card-header rounded" style="background-color:#faf0dc;">
+            <div class="card-header rounded" style="background-color:#faf0dc;box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
                 <div class="row align-items-center">
                     <div class="col-1 text-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
@@ -81,7 +94,7 @@
                         <h1>Dana : </h1>
                     </div>
                     <div class="col-9 dana">
-                        <h1 id="dana"> {{ number_format($user[0]->dana) }} TC</h1>
+                        <h1> <span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1>
                     </div>
                 </div>
             </div>
@@ -113,7 +126,7 @@
                     </tr>
                     @for ($x = 0; $x < count($data); $x++)
                         <tr>
-                            <td id="nama_komponen_{{ $x }}" class="namaKomponen">
+                            <td id="nama_komponen_{{ $x }}" class="namaKomponen" style="width:150px;">
                                 {{ $data[$x]->nama_komponen }} : </td>
                             <td id="komponen_{{ $x }}" class='noLevel'> {{ $data[$x]->level }} </td>
                             <td><button type="button" id="upgrade_{{ $x }}" class="upgrade"
@@ -279,12 +292,13 @@
                             alert(data.msg);
                         } else if (data.msg == 'Dana tidak mencukupi') {
                             alert(data.msg);
+                        } else {
+                            $.each(data.data, function(key, value) {
+                                $('#komponen_' + key).html(data.data[key].level);
+                            });
+                            $('#levelMesin_').html(data.levelMesin[0].level);
+                            $('#dana').html(data.user[0].dana);
                         }
-                        $.each(data.data, function(key, value) {
-                            $('#komponen_' + key).html(data.data[key].level);
-                        });
-                        $('#levelMesin_').html(data.levelMesin[0].level);
-                        $('#dana').html(data.user[0].dana + ' TC' );
                         // alert('success');
                     },
                     error: function() {

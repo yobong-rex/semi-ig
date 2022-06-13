@@ -11,8 +11,8 @@ class MarketController extends Controller
     function market(){
         $team = Auth::user()->teams_idteam;
         $user = DB::table('teams')->select('nama','dana','idteam')->where('idteam',$team)->get();
-        $data = DB::table('ig_markets')->where('sesi','1')->get();
         $sesi = DB::table('sesi')->select('sesi')->get();
+        $data = DB::table('ig_markets')->where('sesi',$sesi[0]->sesi)->get();
         return view('market',compact('data','user','sesi'));  
     }
 
@@ -31,7 +31,7 @@ class MarketController extends Controller
                 return response()->json(array(
                     'msg'=>'maaf, sisa inventori mu tidak cukup untuk membeli bahan baku',
                     'code'=> '401'
-                ), 401);
+                ), 200);
             }
             else{
                $sisaInv =  $team_detail[0]->inventory - $totalItem;
@@ -41,7 +41,7 @@ class MarketController extends Controller
                 return response()->json(array(
                     'msg'=>'uang anda tidak cukup untuk membeli bahan baku',
                     'code'=> '401'
-                ), 401);
+                ), 200);
             }
             
             $item_id = [];
@@ -57,7 +57,7 @@ class MarketController extends Controller
                     return response()->json(array(
                         'msg'=>'maaf bahan baku yang ingin kamu beli sudah habis',
                         'code'=> '401'
-                    ), 401);
+                    ), 200);
                 }
                 else{
                     $sisaStok = $bahan_baku[$key]->stok - $val['quantity'];
@@ -90,7 +90,7 @@ class MarketController extends Controller
             if(count($team_has_inventory)>0){
                 foreach($team_has_inventory as $key => $val){
                     if($val->ig_markets == $item[$key]['item']){
-                        $stok = $val->stock + $item[$key]['quantity'];
+                        $stok = $val->stock + ($item[$key]['quantity'] * $item[$key]['isi']);  
                         DB::table('inventory')->where('ig_markets',$item[$key]['item'])->where('teams',$team)->update([
                             'stock' => $stok
                         ]);
@@ -103,7 +103,7 @@ class MarketController extends Controller
                     $data = [
                         'ig_markets' => $val['item'],
                         'teams'      => $team,
-                        'stock'      => $val['quantity']
+                        'stock'      => $val['quantity'] * $val['isi']
                     ];
                     array_push($insertStok,$data);
                 }
@@ -117,7 +117,7 @@ class MarketController extends Controller
             return response()->json(array(
                 'msg'=>'maaf ada kesalahan koneksi dengan server'.$e,
                 'code'=> '401'
-            ), 401);
+            ), 200);
         }
 
     }

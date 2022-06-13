@@ -87,19 +87,32 @@ class TeamController extends Controller
     function dashboard()
     {
         $team = Auth::user()->teams_idteam;
-        $user = DB::table('teams')->select('nama','dana','idteam','inventory','demand','customer_value', 'hibah')->where('idteam',$team)->get();
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam', 'inventory', 'demand', 'customer_value', 'hibah')->where('idteam', $team)->get();
 
         $sesi = DB::table('sesi')->select('sesi')->get();
 
         $data = DB::table('team_demand')
-                    ->join('produk','team_demand.idproduk','produk.idproduk')
-                    ->where('idteam',1)
-                    ->where('sesi',$sesi[0]->sesi)
-                    ->get();
+            ->join('produk', 'team_demand.idproduk', 'produk.idproduk')
+            ->where('idteam', 1)
+            ->where('sesi', $sesi[0]->sesi)
+            ->get();
 
-        $produk = DB::table('produk')->select('idproduk','nama')->get();
-        
-        return view('dashboard.dashboard', compact('user', 'sesi', 'data', 'produk'));
+        $bahanBaku = DB::table('ig_markets')->where('sesi', $sesi[0]->sesi)->get();
+        $bbTeam = DB::table('inventory')->where('teams', $team)->get();
+
+        $produk = DB::table('produk')->select('idproduk', 'nama')->get();
+
+        $produk_team = DB::table('history_produksi')->where('teams_idteam', $team)->get();
+
+        $analisisProses = DB::table('analisis as a')
+            ->join('teams_has_analisis as tha', 'a.idanalisis', '=', 'tha.analisis_idanalisis')
+            ->select('a.produksi', 'tha.maxProduct', 'tha.cycleTime')
+            ->where('tha.teams_idteam', $user[0]->idteam)
+            ->groupBy('a.produksi')
+            ->orderBy('a.idanalisis', 'asc')
+            ->get();
+            
+        return view('dashboard.dashboard', compact('user', 'sesi', 'data', 'produk', 'bahanBaku', 'bbTeam', 'produk_team', 'analisisProses'));
     }
 
     function makeTeam(Request $request)
@@ -151,7 +164,7 @@ class TeamController extends Controller
                         'komponen_idkomponen' => $idkomponen,
                         'komponen_mesin_idmesin' => $jenisMesin
                     ]);
-                $idkomponen+=10;
+                $idkomponen += 10;
             }
         }
     }

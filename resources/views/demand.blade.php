@@ -17,6 +17,9 @@
         width:150px;
         box-shadow: 0 6px 10px rgba(0,0,0,.08);
     }
+    .dana{
+        text-align:right;
+    }
     .nomor_demand{
         width:50px;
         text-align:center;
@@ -39,19 +42,39 @@ $timer="00:00";
 <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
     <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
 
-        {{--Nama Team dan Timer--}}
+    {{--Nama Team dan Timer--}}
         <div class="row align-items-center rounded heading">
             <div class="col-9 nama_team">
-                <h1 id="namaTeam">Team {{--{{$teams[0] -> nama}}--}}</h1> 
+                <h1 id="namaTeam" value='{{$user[0]->idteam}}'> Team {{$user[0]->nama}}</h1> 
             </div>
-            <div class="col-1"><h3 id="nomorSesi">Sesi {{$nomorSesi}}</h3></div>
+            <div class="col-1"><h3 id="sesi" value="{{$sesi}}">Sesi <span>{{$sesi1}}</span></h3></div>
             <div class="col-1 text-center align-self-end timer rounded-2"  style="font-family:TT Norms Regular;">
                 <h3>Timer</h3>
-                <h4 id="timer">{{$timer}}</h4>   
+                <h4 id="timer">- - : - -</h4>
+            </div>
+        </div>
+            
+        <div class="row spacing"></div>
+        {{--Card Dana--}}
+        <div class="card-header rounded" style="background-color:#faf0dc; box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
+            <div class="row align-items-center">
+                <div class="col-1 text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
+                        <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"/>
+                    </svg>
+                </div>
+                <div class="col-2 label_dana">
+                    <h1>Dana : </h1>
+                </div>
+                <div class="col-9 dana">
+                    <h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1>
+                </div>
             </div>
         </div>
 
         <div class="row spacing"></div>
+
+        <div class="alert alert-danger" role="alert"> Setiap produk hanya bisa dimasukkan 1x !!! </br> Jika salah lakukan refresh halaman.</div>
 
         <div class="card-body pemenuhan rounded">
             <h1>Pemenuhan Demand</h1>
@@ -63,7 +86,7 @@ $timer="00:00";
                         <th class="nomor_demand" scope="col">No.</th>
                         <th scope="col">Produk</th>
                         <th scope="col" style="text-align:center;">Memenuhi Demand</th>
-                        <th scope="col">Total</th>
+                        <th scope="col" style="width:165px;">Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -249,7 +272,7 @@ $timer="00:00";
                     total += val;
                     $('#total_'+id_split[1]).text(total);
                     $(this).attr("disabled", true);
-                    arrDemand.push({'produk': id_split[1], 'total': total});
+                    arrDemand.push({'produk': id_split[1], 'total': $(this).val()});
                 });
 
                 $(document).on('click','#konfrim',function(){
@@ -259,8 +282,8 @@ $timer="00:00";
                         data:{
                             '_token': '<?php echo csrf_token()?>',
                             'demand' : arrDemand,
-                            'team': 1,
-                            'sesi': 1,
+                            'team': $('#namaTeam').attr('value'),
+                            'sesi': $('#sesi').attr('value'),
                         },
                         success: function(data){
                             alert(data.msg);

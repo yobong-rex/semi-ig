@@ -4,24 +4,33 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use Auth;
 
 class AnalisisController extends Controller
 {
-    function analisi(){
-        $user = DB::table('teams')->select('nama','dana','idteam')->where('idteam',1)->get();
-        $sesi = DB::table('sesi')->select('sesi')->get();
-        $mesin = DB::table('mesin')
-            ->join('view_kapasitas_mesin','mesin.idmesin','=','view_kapasitas_mesin.mesin_id')
-            ->join('mesin_has_teams','mesin.idmesin','=','mesin_has_teams.mesin_idmesin')
-            ->select('mesin.idmesin','mesin.nama','mesin.cycle','view_kapasitas_mesin.kapasitas')
-            ->where('mesin_has_teams.teams_idteam',1)
-            ->where('view_kapasitas_mesin.team',1)
-            ->get();
-        
-        return view('Sesi_Analisis.analisis',compact('mesin','user','sesi')); 
+    function analisi()
+    {
+        $sesi = DB::table('sesi')->select('sesi','analisis')->get();
+        if($sesi[0]-> analisis == true){
+            $team = Auth::user()->teams_idteam;
+            $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
+            $mesin = DB::table('mesin')
+                ->join('view_kapasitas_mesin', 'mesin.idmesin', '=', 'view_kapasitas_mesin.mesin_id')
+                ->join('mesin_has_teams', 'mesin.idmesin', '=', 'mesin_has_teams.mesin_idmesin')
+                ->select('mesin.idmesin', 'mesin.nama', 'mesin.cycle', 'view_kapasitas_mesin.kapasitas')
+                ->where('mesin_has_teams.teams_idteam', $user[0]->idteam)
+                ->where('view_kapasitas_mesin.team', $user[0]->idteam)
+                ->get();
+    
+            return view('Sesi_Analisis.analisis', compact('mesin', 'user', 'sesi'));
+        }
+        else{
+            return redirect()->route('dashboard'); 
+        }
     }
 
-    function insertProses(Request $request){
+    function insertProses(Request $request)
+    {
         $produksi = $request->get('produksi');
         $length = $request->get('panjang');
         $proses = $request->get('proses');
@@ -33,33 +42,62 @@ class AnalisisController extends Controller
 
         //mencari cycletime
         $time = array_sum($cycle);
-        $cycleTime = intval($time/25);
+        $cycleTime = intval(9000 / $time);
+        //9000/cydle time
 
-        $user = DB::table('teams')->select('nama','dana','idteam')->where('idteam',1)->get();
+        $team = Auth::user()->teams_idteam;
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
         DB::table('analisis')->insert([
             'produksi' => $produksi,
             'length' => $length
         ]);
 
+        $x=4;
+        if($length<$x){
+            return response()->json(array(
+                'msg' => 'Proses Kurang Panjang, Minimal Proses = 4'
+            ), 200);
+        }
+
         // buat dapetin id terakhir yang diinsert
         $idanalisis = DB::getPdo()->lastInsertId();
         DB::table('teams_has_analisis')->insert([
             'teams_idteam' => $user[0]->idteam,
-            'analisis_idanalisis'=> $idanalisis,
-            'proses'=> $proses,
-            'maxProduct'    => $minKpasitas,
-            'cycleTime'     => $cycleTime
+            'analisis_idanalisis' => $idanalisis,
+            'proses' => $proses,
+            'maxProduct' => $minKpasitas,
+            'cycleTime' => $cycleTime
         ]);
+
+        $dana = $user[0]->dana;
+        $harga = 700;
+        if($dana >= $harga){
+            DB::table('teams')
+            ->where('idteam', $user[0]->idteam)
+            ->update(['dana' => ($dana-$harga)]);
+        }else{
+            return response()->json(array(
+                'msg' => 'Dana Tidak Mencukupi'
+            ), 200);
+        }
+
+        $updatedUser = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
+
+        return response()->json(array(
+            'user' => $updatedUser
+        ), 200);
     }
 
-    function admin(){
+    function admin()
+    {
         $data = DB::table('sesi')->select('analisis')->get();
-        return view('Analisis_Bahan_Baku.admin',compact('data')); 
+        return view('Analisis_Bahan_Baku.admin', compact('data'));
     }
 
-    function updateSesi(Request $request){
+    function updateSesi(Request $request)
+    {
         $status = $request->get('status');
-        DB::table('sesi')->where('idsesi',1)->update(['analisis' => $status]);
-        return redirect()->route('analisis.admin')->with('status','status sesi analisis berhasil diubah');
+        DB::table('sesi')->where('idsesi', 1)->update(['analisis' => $status]);
+        return redirect()->route('analisis.admin')->with('status', 'status sesi analisis berhasil diubah');
     }
 }

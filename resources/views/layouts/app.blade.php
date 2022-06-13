@@ -18,13 +18,32 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'TT Norms Bold';
+            font-style: normal;
+            font-weight: normal;
+            src: local('TT Norms Bold'), url('assets/font/TTNorms-Bold.woff') format('woff');
+        }
+        .nav-link,
+        .nav-link:focus {
+            font-family: 'TT Norms Bold';
+            color: #ea435e;
+            border-radius: 5px;
+        }
+        .nav-link:hover {
+            color: #ffff;
+            background-color: #ea435e;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    <img src="{{ asset('assets') }}/logo/Logo_IG_Header.png" alt="Logo IGXXX" style="max-height: 40px">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>

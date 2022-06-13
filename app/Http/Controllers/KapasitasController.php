@@ -106,6 +106,7 @@ class KapasitasController extends Controller
     {
         $team = Auth::user()->teams_idteam;
         $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
+        $sesi = DB::table('sesi')->select('sesi')->get();
         $data = DB::table('mesin as m')
             ->join('kapasitas as k', 'm.idmesin', '=', 'k.mesin_idmesin')
             ->join('kapasitas_has_teams as kht', 'k.idkapasitas', '=', 'kht.kapasitas_idkapasitas')
@@ -114,7 +115,7 @@ class KapasitasController extends Controller
             ->orderBy('m.idmesin', 'asc')
             ->get();
         // dd($data);
-        return view('Mesin.kapasitas', compact('data', 'user'));
+        return view('Mesin.kapasitas', compact('data', 'user', 'sesi'));
     }
 
     function kapasitasUpgrade(Request $request)
@@ -167,7 +168,7 @@ class KapasitasController extends Controller
             ->where('kht.teams_idteam', $user[0]->idteam)
             ->where('m.idmesin', $idmesin[0]->idmesin)
             ->get();
-
+        // dd($data);
         return response()->json(array(
             'data' => $data,
             'user' => $updatedUser

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use Auth;
 
 class ProduksiController extends Controller
 {
@@ -21,19 +22,22 @@ class ProduksiController extends Controller
             ->where('m.nama', $p)
             ->orderBy('k.idkomponen', 'asc')
             ->get();
-            foreach ($data as $d){
-                $lvlDefect = $d->level - 1;
-                array_push($tempDefect,$lvlDefect);
+            if(count($data)>0){
+                foreach ($data as $d){
+                    $lvlDefect = $d->level - 1;
+                    array_push($tempDefect,$lvlDefect);
+                }
+                $minDefect = min($tempDefect);
+                $newDefect = $defectDefault - $minDefect;
+                $defect = $defect.$newDefect.';';
             }
-            $minDefect = min($tempDefect);
-            $newDefect = $defectDefault - $minDefect;
-            $defect = $defect.$newDefect.';';
         }
         return $defect;
     }
 
     function produksi(){
-        $user = DB::table('teams')->select('nama','dana','idteam')->where('idteam',1)->get();
+        $team = Auth::user()->teams_idteam;
+        $user = DB::table('teams')->select('nama','dana','idteam')->where('idteam',$team)->get();
         $sesi = DB::table('sesi')->select('sesi')->get();
         $proses1 ='';
         $proses2 ='';
@@ -73,11 +77,11 @@ class ProduksiController extends Controller
         $splitProses1 = explode(';',$proses1);
         $splitProses2 = explode(';',$proses2);
         $splitProses3 = explode(';',$proses3);
-        $sesi = $sesi[0]->sesi;
+        $sesi1 = $sesi[0]->sesi;
         $defect1 = $this->getDefect($splitProses1,$user);
         $defect2 = $this->getDefect($splitProses2,$user);
         $defect3 = $this->getDefect($splitProses3,$user);
-        return view('Produksi.produksi',compact('splitProses1','splitProses2','splitProses3','defect1','defect2','defect3','user','sesi'));  
+        return view('Produksi.produksi',compact('splitProses1','splitProses2','splitProses3','defect1','defect2','defect3','user','sesi1'));  
     }
 
     function buat(Request $request){
@@ -102,7 +106,7 @@ class ProduksiController extends Controller
 
         $bahanBaku = DB::table('produk')->select('bahan_baku')->where('idproduk',$produk)->get();
         $bahanBaku_split = explode(';',$bahanBaku[0]->bahan_baku);
-        $teamStatus = DB::table('teams')->select('dana','inventory')->where('idteam'.$team)->get();
+        $teamStatus = DB::table('teams')->select('dana','inventory')->where('idteam',$team)->get();
         if($teamStatus[0]->dana < 100){
             return redirect()->route('produksi')->with('error','maaf dana mu kurang untuk membuat product'); 
         }
@@ -114,7 +118,6 @@ class ProduksiController extends Controller
                             ->where('inventory.teams',$team)
                             ->where('ig_markets.bahan_baku','like',"%".$bb."%")
                             ->get();
-
             if(count($inv)>0){
                 if($jumlah > $inv[0]->stock){
                     return redirect()->route('produksi')->with('error','maaf bahan baku mu kurang untuk membuat product'); 
@@ -133,7 +136,33 @@ class ProduksiController extends Controller
         }
 
         //bagian penghitungan jml produk jadi
+        $jmlTemp = $jumlah;
+        $defect_split = explode(';',$defect);
 
-        
+        foreach (array_keys($defect_split, '', true) as $key) {
+            unset($defect_split[$key]);
+        }
+        foreach($defect_split as $d) {
+            $persen = 100-(int)$d;
+            $jmlTemp = $jmlTemp * $persen / 100;
+        }
+        $hasil = floor($jmlTemp);
+        $histori = DB::table('history_produksi')->select('hasil')->where('teams_idteam',$team)->where('produk_idproduk',$produk)->get();
+        if(count($histori)>0){
+            $hasil += $histori[0]->hasil;
+        }
+        $totBahan = $jumlah * 3;
+        $newInv = $teamStatus[0]->inventory + $totBahan;
+        $newDana = $teamStatus[0]->dana - 100;
+        DB::table('history_produksi')
+            ->updateOrInsert(
+                ['teams_idteam'=>$team, 'produk_idproduk'=>$produk],
+                ['hasil'=>$hasil]
+            );
+        DB::table('teams')->where('idteam',$team)->update([
+            'dana'          => $newDana,
+            'inventory'     => $newInv
+        ]);
+        return redirect()->route('produksi')->with('status','selamat kamu berhasil melakukan produksi'); 
     }
 }

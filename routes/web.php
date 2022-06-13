@@ -36,26 +36,20 @@ Route::middleware(['auth'])->group(function () {
     // Mesin Kapasitas
     Route::get('/kapasitas', 'KapasitasController@kapasitas')->name('kapasitas');
     Route::post('/kapasitas/upgrade', 'KapasitasController@kapasitasUpgrade')->name('upgrade.kapasitas');
+
+    // Analisis Proses
+    Route::get('/analisis', 'AnalisisController@analisi')->name('analisis');
+    Route::post('/analisis/proses', 'AnalisisController@insertProses')->name('analisis.proses');
+
+    // Analisis Bahan Baku
+    Route::get('/bahan', 'BahanController@bahan')->name('bahan');
+    Route::post('/bahan', 'BahanController@analisisBahan')->name('analisis.bahan');
 });
-
-
-
 
 // Sesi Analisis
 Route::get('/admin', function () {
     return view('Sesi_Analisis.admin');
 })->name('admin');
-
-Route::get('/analisis', 'AnalisisController@analisi')->name('analisis');
-
-Route::post('/analisis/proses', 'AnalisisController@insertProses')->name('analisis.proses');
-
-
-// Analisis Bahan Baku
-Route::get('/bahan', function () {
-    return view('Analisis_Bahan_Baku.bahan');
-})->name('bahan');
-
 
 //produksi
 Route::get('/produksi', 'ProduksiController@produksi')->name('produksi');
@@ -65,17 +59,16 @@ Route::get('/prosesbahan', function () {
     return view('Analisis_Bahan_Baku.prosesbahan');
 })->name('prosesbahan');
 
+// Ganti Sesi
+Route::get('/adminsesi', 'SesiController@sesi')->name('adminsesi');
+Route::post('/adminsesi/gantisesi', 'SesiController@gantiSesi')->name('ganti.sesi');
+Route::post('/adminsesi/backsesi', 'SesiController@backSesi')->name('back.sesi');
+
 
 // Mesin
 // Route::get('/komponen-mesin', function () {
 //     return view ('mesin.komponen');
 // })->name('komponenMesin');
-
-
-
-Route::get('/kapasitas', 'KapasitasController@kapasitas')->name('kapasitas');
-Route::post('/kapasitas/upgrade', 'KapasitasController@kapasitasUpgrade')->name('upgrade.kapasitas');
-
 
 //Route coba-coba
 Route::post('/coba', 'MesinController@coba')->name('coba');
@@ -94,17 +87,16 @@ Route::post('/demand/konfrim', 'DemandController@konfrim')->name('demand.konfrim
 Route::get('/adminkomponen', function () {
     return view('mesin.adminkomponen');
 })->name('adminkomponen');
-
-Route::get('/adminsesi', function () {
-    return view('adminsesi');
-})->name('adminsesi');
 // Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/maketeam', function () {
-    return view('tesmaketeam');
-})->name('tesmaketeam');
+    return view('maketeam');
+})->name('maketeam');
+
 Route::post('/maketeam/maketeam', 'TeamController@makeTeam')->name('makeTeam');
 
 Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
