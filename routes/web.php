@@ -24,9 +24,7 @@ Route::middleware(['auth'])->group(function () {
     // Dashboard
     Route::get('/', 'TeamController@dashboard')->name('dashboard');
 
-    // IG Market
-    Route::get('/market', 'MarketController@market')->name('market');
-    Route::post('/market/beli', 'MarketController@marketBeli')->name('market.beli');
+   
 
     // Mesin Komponen
     Route::get('/komponen', 'KomponenController@komponen')->name('komponen');
@@ -45,6 +43,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/bahan', 'BahanController@bahan')->name('bahan');
     Route::post('/bahan', 'BahanController@analisisBahan')->name('analisis.bahan');
 });
+
+
+    // IG Market
+Route::get('/market', 'MarketController@market')->name('market');
+Route::post('/market/beli', 'MarketController@marketBeli')->name('market.beli');
 
 // Sesi Analisis
 Route::get('/admin', function () {
@@ -81,6 +84,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/demand', 'DemandController@demand')->name('demand');
 Route::post('/demand/konfrim', 'DemandController@konfrim')->name('demand.konfrim');
+Route::post('/demand/get', 'DemandController@getDemand')->name('demand.getDemand');
 
 // Route::get('/komponentes', 'KomponenController@komponen')->name('komponestes');
 

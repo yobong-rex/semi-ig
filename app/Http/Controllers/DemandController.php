@@ -9,16 +9,33 @@ class DemandController extends Controller
 {
     function demand(){
         $sesi = DB::table('sesi')->select('sesi')->get();
-        $user = DB::table('teams')->select('nama','dana','idteam')->where('idteam',1)->get();
-        $data = DB::table('team_demand')
-                    ->join('produk','team_demand.idproduk','produk.idproduk')
-                    ->where('idteam',1)
-                    ->where('sesi',$sesi[0]->sesi)
-                    ->get();
+        $user = DB::table('teams')->select('nama','idteam')->get();
+        // $data = DB::table('team_demand')
+        //             ->join('produk','team_demand.idproduk','produk.idproduk')
+        //             ->where('idteam',1)
+        //             ->where('sesi',$sesi[0]->sesi)
+        //             ->get();
         $produk = DB::table('produk')->select('idproduk','nama')->get();
         $sesi1 = $sesi[0]->sesi;
-        return view('demand',compact('data','produk','user','sesi1'));  
+        // return view('demand',compact('data','produk','user','sesi1'));  
+        return view('demand',compact('produk','user','sesi1'));  
         
+    }
+
+    function getDemand(Request $request){
+        $team = $request->get('team');
+        $sesi = $request->get('sesi');
+
+        $list = DB::table('team_demand')
+                    ->join('produk','team_demand.idproduk','produk.idproduk')
+                    ->where('idteam',$team)
+                    ->where('sesi',$sesi)
+                    ->get();
+        
+        return response()->json(array(
+            'list'=>$list,
+            'code'=> '200'
+        ), 200); 
     }
 
     function konfrim(Request $request){
@@ -30,6 +47,7 @@ class DemandController extends Controller
             $countDemand = 0;
             $totalDemand = 0;
             $updtDemand = 0;
+
 
             //pengecean stok
             foreach ($demand as $d){

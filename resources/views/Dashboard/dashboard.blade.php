@@ -191,13 +191,23 @@
                                     <h2>Proses {{ $i }}</h2>
                                 </div>
                                 <div class="col">
-                                    <h4>Max Product : <span
-                                            id="maxProduct_{{ $i }}">{{ $analisisProses[$i - 1][0] }}</span>
+                                    <h4>Max Product : <span id="maxProduct_{{ $i }}">
+                                            @if (isset($analisisProses[$i - 1][0]))
+                                                {{ $analisisProses[$i - 1][0] }}
+                                            @else
+                                                0
+                                            @endif
+                                        </span>
                                     </h4>
                                 </div>
                                 <div class="col">
-                                    <h4>Cycle Time : <span
-                                            id="cycleTime_{{ $i }}">{{ $analisisProses[$i - 1][1] }}</span>
+                                    <h4>Cycle Time : <span id="cycleTime_{{ $i }}">
+                                            @if (isset($analisisProses[$i - 1][1]))
+                                                {{ $analisisProses[$i - 1][1] }}
+                                            @else
+                                                0
+                                            @endif
+                                        </span>
                                     </h4>
                                 </div>
                             </div>

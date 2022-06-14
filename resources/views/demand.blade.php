@@ -45,7 +45,7 @@ $timer="00:00";
     {{--Nama Team dan Timer--}}
         <div class="row align-items-center rounded heading">
             <div class="col-9 nama_team">
-                <h1 id="namaTeam" value='{{$user[0]->idteam}}'> Team {{$user[0]->nama}}</h1> 
+                <!-- <h1 id="namaTeam" value='{{$user[0]->idteam}}'> Team </h1>  -->
             </div>
             <div class="col-1"><h3 id="sesi" value="{{$sesi}}">Sesi <span>{{$sesi1}}</span></h3></div>
             <div class="col-1 text-center align-self-end timer rounded-2"  style="font-family:TT Norms Regular;">
@@ -55,7 +55,24 @@ $timer="00:00";
         </div>
             
         <div class="row spacing"></div>
-        {{--Card Dana--}}
+
+        {{-- Card List Kelompok --}}
+        <div class="card-header rounded" style="background-color:#faf0dc;box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
+            <div class="row align-items-center">
+                <div class="col-1">
+                    <h5> Team : </h5>
+                </div>
+                <div class="col-5">
+                    <select id='selectedTeam' name="selectedTeam">
+                    <option value="">Pilih Team</option>
+                        @foreach ($user as $u)
+                            <option value="{{$u->idteam}}">{{ $u->nama }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+        <!-- {{--Card Dana--}}
         <div class="card-header rounded" style="background-color:#faf0dc; box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
             <div class="row align-items-center">
                 <div class="col-1 text-center">
@@ -67,10 +84,10 @@ $timer="00:00";
                     <h1>Dana : </h1>
                 </div>
                 <div class="col-9 dana">
-                    <h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1>
+                    {{--<h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1>--}}
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <div class="row spacing"></div>
 
@@ -99,21 +116,8 @@ $timer="00:00";
                         <td>{{$p->nama}}</td>
                         <td class="inputDemand"><input type="number" class='demand' id='input_{{$p->idproduk}}'min="0" oninput="this.value = 
                             !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                        <td id='total_{{$p->idproduk}}'>
-                            @if(count($data) == 0)
-                                0
-                            @else
-                                <?php $triger = 0; ?>
-                                @foreach($data as $d)
-                                    @if($p->idproduk == $d->idproduk)
-                                        {{$d->jumlah}}
-                                        <?php $triger += 1 ?>
-                                    @endif
-                                @endforeach
-                                @if($triger == 0)
-                                    {{$triger}}
-                                @endif
-                            @endif
+                        <td id='total_{{$p->idproduk}}' class="demand-total">
+                            0
                         </td>
                     </tr>
                 @endforeach
@@ -263,7 +267,32 @@ $timer="00:00";
 
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
             <script>
+
                 let arrDemand = [];
+
+                $(document).on('change','#selectedTeam',function(){
+                    let id = $(this).val();
+                    $.ajax({
+                        type: "POST",
+                        url: "{{route('demand.getDemand')}}",
+                        data:{
+                            '_token': '<?php echo csrf_token()?>',
+                            'team': id,
+                            'sesi': $('#sesi').attr('value'),
+                        },
+                        success: function(data){
+                            if(data.list.length> 0){
+                                $.each(data.list, function(key,value){
+                                    $('#total_'+data.list[key].idproduk).text(data.list[key].jumlah);
+                                });
+                            }
+                            else{
+                                $('.demand-total').text('0');
+                            }
+                        }
+                    });
+                });
+
                 $(document).on('change','.demand',function(){
                     let val = parseInt($(this).val());
                     let id = $(this).attr('id');
@@ -282,7 +311,7 @@ $timer="00:00";
                         data:{
                             '_token': '<?php echo csrf_token()?>',
                             'demand' : arrDemand,
-                            'team': $('#namaTeam').attr('value'),
+                            'team': $('#selectedTeam').val(),
                             'sesi': $('#sesi').attr('value'),
                         },
                         success: function(data){

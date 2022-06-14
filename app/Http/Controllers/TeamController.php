@@ -93,7 +93,7 @@ class TeamController extends Controller
 
         $data = DB::table('team_demand')
             ->join('produk', 'team_demand.idproduk', 'produk.idproduk')
-            ->where('idteam', 1)
+            ->where('idteam', $team)
             ->where('sesi', $sesi[0]->sesi)
             ->get();
 
@@ -176,5 +176,8 @@ class TeamController extends Controller
                 $idkomponen += 10;
             }
         }
+        return response()->json(array(
+            'msg' => 'berhasil'
+        ), 200);
     }
 }

@@ -87,7 +87,7 @@
                         <a class="nav-link active" aria-current="page" href="{{ route('dashboard') }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('market') }}">Market</a>
+                        <a class="nav-link active" aria-current="page" href="{{ route('dashboard') }}">Market</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('komponen') }}">Mesin</a>
@@ -105,7 +105,7 @@
                         <a class="nav-link active" aria-current="page" href="{{ route('bahan') }}">Analisis Bahan</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('demand') }}">Demand</a>
+                        <a class="nav-link active" aria-current="page" href="{{ route('dashboard') }}">Demand</a>
                     </li>
                     <li class="nav-item logOut">
                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="text-light nav-link active" aria-current="page" style="text-decoration:none;"> {{ __('Logout') }}</a>
