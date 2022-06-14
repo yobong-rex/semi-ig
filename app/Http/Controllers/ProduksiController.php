@@ -98,8 +98,26 @@ class ProduksiController extends Controller
             }
         }
         else{
-            $analisis = DB::table('teams_has_analisis')->select('maxProduct','cycleTime')->where('teams_idteam',$team)->get();
-            if(($jumlah>$analisis[0]->maxProduct) || ($jumlah > $analisis[0]->cycleTime)){
+            
+            $idanalisisProses = DB::table('analisis as a')
+            ->join('teams_has_analisis as tha', 'a.idanalisis', '=', 'tha.analisis_idanalisis')
+            ->select(DB::raw('MAX(a.idanalisis) as maxIdAnalisis'))
+            ->where('tha.teams_idteam', $team)
+            ->where('a.produksi', $btn)
+            ->groupBy('a.produksi')
+            ->orderBy('a.idanalisis')
+            ->get();
+            
+            $analisisProses = [];
+            foreach ($idanalisisProses as $idAP) {
+                $arrAP = DB::table('teams_has_analisis')
+                    ->select('maxProduct', 'cycleTime')
+                    ->where('analisis_idanalisis', $idAP->maxIdAnalisis)
+                    ->get();
+                $analisisProses[] = array($arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
+            }
+
+            if(($jumlah>$analisisProses[0][0]) || ($jumlah > $analisisProses[0][1])){
                 return redirect()->route('produksi')->with('error','jumlah yang ingin kamu produksi melebihi kapasitas produksi'); 
             }
         }
@@ -163,6 +181,6 @@ class ProduksiController extends Controller
             'dana'          => $newDana,
             'inventory'     => $newInv
         ]);
-        return redirect()->route('produksi')->with('status','selamat kamu berhasil melakukan produksi'); 
+        return redirect()->route('produksi')->with('status','selamat kamu berhasil melakukan produksi sebanyak '. $hasil); 
     }
 }

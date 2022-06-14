@@ -115,7 +115,7 @@ class MarketController extends Controller
             ), 200); 
         } catch (\PDOException $e) {
             return response()->json(array(
-                'msg'=>'maaf ada kesalahan koneksi dengan server'.$e,
+                'msg'=>'maaf ada kesalahan koneksi dengan server  '.$e,
                 'code'=> '401'
             ), 200);
         }
