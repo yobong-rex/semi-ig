@@ -102,7 +102,7 @@
                                 @for ($j = 1; $j <= 9; $j++)
                                     <td>
                                         <select name="proses" id="proses_{{ $i }}_{{ $j }}">
-                                            <option value="">-Select-</option>
+                                            <option value="" hidden>-Select-</option>
                                             @foreach ($mesin as $m)
                                                 <option value='{{ $m->nama }}' kapasitas='{{ $m->kapasitas }}'
                                                     time='{{ $m->cycle }}'>{{ $m->nama }}</option>

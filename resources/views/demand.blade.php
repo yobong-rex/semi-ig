@@ -64,7 +64,7 @@ $timer="00:00";
                 </div>
                 <div class="col-5">
                     <select id='selectedTeam' name="selectedTeam">
-                    <option value="">Pilih Team</option>
+                    <option value="" hidden>Pilih Team</option>
                         @foreach ($user as $u)
                             <option value="{{$u->idteam}}">{{ $u->nama }}</option>
                         @endforeach
