@@ -47,7 +47,7 @@ $timer="00:00";
             <div class="col-9 nama_team">
                 <!-- <h1 id="namaTeam" value='{{$user[0]->idteam}}'> Team </h1>  -->
             </div>
-            <div class="col-1"><h3 id="sesi" value="{{$sesi}}">Sesi <span>{{$sesi1}}</span></h3></div>
+            <div class="col-1"><h3 id="sesi" value="{{$sesi1}}">Sesi <span>{{$sesi1}}</span></h3></div>
             <div class="col-1 text-center align-self-end timer rounded-2"  style="font-family:TT Norms Regular;">
                 <h3>Timer</h3>
                 <h4 id="timer">- - : - -</h4>
@@ -302,9 +302,11 @@ $timer="00:00";
                     $('#total_'+id_split[1]).text(total);
                     $(this).attr("disabled", true);
                     arrDemand.push({'produk': id_split[1], 'total': $(this).val()});
+                    console.log(arrDemand);
                 });
 
                 $(document).on('click','#konfrim',function(){
+                    console.log($('#selectedTeam').val());
                     $.ajax({
                         type: "POST",
                         url: "{{route('demand.konfrim')}}",

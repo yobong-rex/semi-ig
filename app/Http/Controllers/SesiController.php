@@ -19,6 +19,7 @@ class SesiController extends Controller
     {
         $sekarang = $request->get('sesi');
 
+        $upSesi = $sekarang + 1;
         if ($sekarang == 6) {
             return response()->json(array(
                 'msg' => 'Sesi Sudah Max Woe!!'
@@ -26,12 +27,31 @@ class SesiController extends Controller
         } else {
             DB::table('sesi')
                 ->where('idsesi', 1)
-                ->update(['sesi' => ($sekarang + 1)]);
+                ->update(['sesi' => ($upSesi)]);
         }
 
         $updated = DB::table('sesi')
             ->where('idsesi', 1)
             ->get();
+
+        $team = DB::table('teams')
+            ->select('idteam', 'dana', 'hibah')
+            ->get();
+            
+        if ($upSesi == 3) {
+            foreach ($team as $t) {
+                $dblDana = (double)$t->dana;
+                $danaPlus = ($dblDana) + ($t->hibah);
+                $hibahBaru = ($t->hibah) - ($t->hibah);
+                $danaBaru = (int)floor($danaPlus);
+                DB::table('teams')
+                    ->where('idteam', $t->idteam)
+                    ->update([
+                        'dana' => ($danaBaru),
+                        'hibah' => ($hibahBaru)
+                    ]);
+            }
+        }
 
         return response()->json(array(
             'sesi' => $updated
@@ -51,7 +71,6 @@ class SesiController extends Controller
                 ->where('idsesi', 1)
                 ->update(['sesi' => ($sekarang - 1)]);
         }
-
 
         $updated = DB::table('sesi')
             ->where('idsesi', 1)

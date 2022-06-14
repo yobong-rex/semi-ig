@@ -39,7 +39,7 @@
     button_{nomor proses produksi} --}}
 
     <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
-        <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
+        <div class="px-4 py-5" style="font-family:TT Norms Bold;">
 
             {{-- Nama Team dan Timer --}}
             <div class="row align-items-center rounded heading">
@@ -85,7 +85,7 @@
                         <tr>
                             <th scope="col"> </th>
                             <th scope="col" colspan="9" style="text-align:center;">Urutan Produksi Produk</th>
-                            <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;">Konfirmasi</th>
+                            <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;width:80px;">Konfirmasi</th>
                         </tr>
                         <tr>
                             <th class="nomor" scope="col">Nomor</th>
@@ -112,7 +112,7 @@
                                         </select>
                                     </td>
                                 @endfor
-                                <td><button type="button" id="button_{{ $i }}" class="btn btn-success"
+                                <td style="vertical-align: middle;text-align: center"><button type="button" id="button_{{ $i }}" class="btn btn-success"
                                         value="{{ $i }}">Konfirmasi</button>
                                 </td>
                             </tr>

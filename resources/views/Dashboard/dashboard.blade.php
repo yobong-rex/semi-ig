@@ -166,7 +166,7 @@
                                 <h2>Customer Value</h2>
                             </div>
                             <div class="col">
-                                <h3 id="customerValue">{{ $user[0]->hibah }}</h3>
+                                <h3 id="customerValue">{{ $user[0]->customer_value }}</h3>
                             </div>
                         </div>
                     </div>

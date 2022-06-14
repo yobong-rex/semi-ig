@@ -48,7 +48,6 @@ class DemandController extends Controller
             $totalDemand = 0;
             $updtDemand = 0;
 
-
             //pengecean stok
             foreach ($demand as $d){
                 $invtProduct = DB::table('history_produksi')->where('teams_idteam',$team)->where('produk_idproduk',$d['produk'])->get();
@@ -110,7 +109,7 @@ class DemandController extends Controller
 
         } catch (\PDOException $e) {
             return response()->json(array(
-                'msg'=>'maaf ada kesalahan koneksi dengan server',
+                'msg'=>'maaf ada kesalahan koneksi dengan server'.$e,
                 'code'=> '401'
             ), 401);
         }

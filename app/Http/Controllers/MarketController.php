@@ -76,7 +76,6 @@ class MarketController extends Controller
             
             DB::table('invoice')->insert(['teams_idteam'=>$team, 'total_bahan'=> $total_bahan, 'total'=> $total, 'sesi'=> $sesi]);
             $idInvoice = DB::getPdo()->lastInsertId();
-            dd($idInvoice);
             foreach ($insert as $key => $val){
                 $insert[$key]['invoice'] = $idInvoice;
             }
