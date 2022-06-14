@@ -152,7 +152,7 @@
                         @endforeach
                         <tr>
                             <td colspan="6">Biaya Pengiriman:</td>
-                            <td id="biaya_pengiriman">1500 TC</td>
+                            <td id="biaya_pengiriman">200 TC</td>
                         </tr>
                         <tr>
                             <td colspan="6">Total Pembelian:</td>
@@ -256,13 +256,13 @@
                     if (temp >= 0) {
                         let lebih = parseInt(temp / 10);
                         lebih += parseInt(1);
-                        let kirim = lebih * 200
-                        let pengiriman = 1500 + kirim;
+                        let kirim = lebih * 50
+                        let pengiriman = 200 + kirim;
                         $('#biaya_pengiriman').text(pengiriman);
                         total += kirim;
                     }
                     else{
-                        $('#biaya_pengiriman').text('1500');
+                        $('#biaya_pengiriman').text('200');
                     }
                     $('#total').text(total);
                 }
