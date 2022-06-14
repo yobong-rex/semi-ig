@@ -62,7 +62,6 @@ class AnalisisController extends Controller
 
         // buat dapetin id terakhir yang diinsert
         $idanalisis = DB::getPdo()->lastInsertId();
-        return $idanalisis;
         DB::table('teams_has_analisis')->insert([
             'teams_idteam' => $user[0]->idteam,
             'analisis_idanalisis' => $idanalisis,
