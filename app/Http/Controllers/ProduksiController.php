@@ -39,6 +39,10 @@ class ProduksiController extends Controller
         $team = Auth::user()->teams_idteam;
         $user = DB::table('teams')->select('nama','dana','idteam')->where('idteam',$team)->get();
         $sesi = DB::table('sesi')->select('sesi')->get();
+        $sesi1 = $sesi[0]->sesi;
+        if($sesi1 == 2){
+            return redirect()->route('dashboard'); 
+        }
         $proses1 ='';
         $proses2 ='';
         $proses3 ='';
@@ -77,7 +81,7 @@ class ProduksiController extends Controller
         $splitProses1 = explode(';',$proses1);
         $splitProses2 = explode(';',$proses2);
         $splitProses3 = explode(';',$proses3);
-        $sesi1 = $sesi[0]->sesi;
+        
         $defect1 = $this->getDefect($splitProses1,$user);
         $defect2 = $this->getDefect($splitProses2,$user);
         $defect3 = $this->getDefect($splitProses3,$user);
