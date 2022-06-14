@@ -108,7 +108,6 @@ class KomponenController extends Controller
             ->where('m.idmesin', $idmesin[0]->idmesin)
             ->get();
 
-        // dd($listMesin);
         return view('Mesin.komponen', compact('data', 'user', 'levelMesin', 'sesi'));
     }
 

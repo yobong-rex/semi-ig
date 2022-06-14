@@ -23,9 +23,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Dashboard
     Route::get('/', 'TeamController@dashboard')->name('dashboard');
-
-   
-
+    
     // Mesin Komponen
     Route::get('/komponen', 'KomponenController@komponen')->name('komponen');
     Route::get('/komponen/ajax', 'KomponenController@komponenAjax')->name('komponen.ajax');
