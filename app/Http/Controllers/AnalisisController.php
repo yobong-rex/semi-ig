@@ -36,14 +36,14 @@ class AnalisisController extends Controller
         $kapasitas = $request->get('kapasitas');
         $cycle = $request->get('cycle');
         $arrProses = $request->get('arrProses');
-        
+
         //mencari kapasitas terkecil
         $minKpasitas = min($kapasitas);
 
         //mencari cycletime
         $time = array_sum($cycle);
+        //9000/cycle time
         $cycleTime = intval(9000 / $time);
-        //9000/cydle time
 
         $team = Auth::user()->teams_idteam;
         $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
@@ -62,6 +62,7 @@ class AnalisisController extends Controller
 
         // buat dapetin id terakhir yang diinsert
         $idanalisis = DB::getPdo()->lastInsertId();
+        return $idanalisis;
         DB::table('teams_has_analisis')->insert([
             'teams_idteam' => $user[0]->idteam,
             'analisis_idanalisis' => $idanalisis,
@@ -114,7 +115,7 @@ class AnalisisController extends Controller
         } else {
             $status = false;
         }
-        
+
         return response()->json(array(
             'user' => $updatedUser,
             'status' => $status

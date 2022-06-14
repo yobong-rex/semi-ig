@@ -104,14 +104,23 @@ class TeamController extends Controller
 
         $produk_team = DB::table('history_produksi')->where('teams_idteam', $team)->get();
 
-        $analisisProses = DB::table('analisis as a')
+        $idanalisisProses = DB::table('analisis as a')
             ->join('teams_has_analisis as tha', 'a.idanalisis', '=', 'tha.analisis_idanalisis')
-            ->select('a.produksi', 'tha.maxProduct', 'tha.cycleTime')
+            ->select(DB::raw('MAX(a.idanalisis) as maxIdAnalisis'))
             ->where('tha.teams_idteam', $user[0]->idteam)
             ->groupBy('a.produksi')
-            ->orderBy('a.idanalisis', 'asc')
+            ->orderBy('a.idanalisis')
             ->get();
             
+        $analisisProses = [];
+        foreach ($idanalisisProses as $idAP) {
+            $arrAP = DB::table('teams_has_analisis')
+                ->select('maxProduct', 'cycleTime')
+                ->where('analisis_idanalisis', $idAP->maxIdAnalisis)
+                ->get();
+            $analisisProses[] = array($arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
+        }
+        
         return view('dashboard.dashboard', compact('user', 'sesi', 'data', 'produk', 'bahanBaku', 'bbTeam', 'produk_team', 'analisisProses'));
     }
 

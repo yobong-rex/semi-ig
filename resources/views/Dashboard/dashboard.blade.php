@@ -192,12 +192,12 @@
                                 </div>
                                 <div class="col">
                                     <h4>Max Product : <span
-                                            id="maxProduct_{{ $i }}">{{ $analisisProses[$i - 1]->maxProduct }}</span>
+                                            id="maxProduct_{{ $i }}">{{ $analisisProses[$i - 1][0] }}</span>
                                     </h4>
                                 </div>
                                 <div class="col">
                                     <h4>Cycle Time : <span
-                                            id="cycleTime_{{ $i }}">{{ $analisisProses[$i - 1]->cycleTime }}</span>
+                                            id="cycleTime_{{ $i }}">{{ $analisisProses[$i - 1][1] }}</span>
                                     </h4>
                                 </div>
                             </div>
