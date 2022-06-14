@@ -10,8 +10,8 @@ class AnalisisController extends Controller
 {
     function analisi()
     {
-        $sesi = DB::table('sesi')->select('sesi','analisis')->get();
-        if($sesi[0]-> analisis == true){
+        $sesi = DB::table('sesi')->select('sesi', 'analisis')->get();
+        if ($sesi[0]->analisis == true) {
             $team = Auth::user()->teams_idteam;
             $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
             $mesin = DB::table('mesin')
@@ -21,11 +21,10 @@ class AnalisisController extends Controller
                 ->where('mesin_has_teams.teams_idteam', $user[0]->idteam)
                 ->where('view_kapasitas_mesin.team', $user[0]->idteam)
                 ->get();
-    
+
             return view('Sesi_Analisis.analisis', compact('mesin', 'user', 'sesi'));
-        }
-        else{
-            return redirect()->route('dashboard'); 
+        } else {
+            return redirect()->route('dashboard');
         }
     }
 
@@ -36,7 +35,8 @@ class AnalisisController extends Controller
         $proses = $request->get('proses');
         $kapasitas = $request->get('kapasitas');
         $cycle = $request->get('cycle');
-
+        $arrProses = $request->get('arrProses');
+        
         //mencari kapasitas terkecil
         $minKpasitas = min($kapasitas);
 
@@ -47,17 +47,18 @@ class AnalisisController extends Controller
 
         $team = Auth::user()->teams_idteam;
         $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
-        DB::table('analisis')->insert([
-            'produksi' => $produksi,
-            'length' => $length
-        ]);
 
-        $x=4;
-        if($length<$x){
+        $x = 4;
+        if ($length < $x) {
             return response()->json(array(
                 'msg' => 'Proses Kurang Panjang, Minimal Proses = 4'
             ), 200);
         }
+
+        DB::table('analisis')->insert([
+            'produksi' => $produksi,
+            'length' => $length
+        ]);
 
         // buat dapetin id terakhir yang diinsert
         $idanalisis = DB::getPdo()->lastInsertId();
@@ -71,11 +72,11 @@ class AnalisisController extends Controller
 
         $dana = $user[0]->dana;
         $harga = 700;
-        if($dana >= $harga){
+        if ($dana >= $harga) {
             DB::table('teams')
-            ->where('idteam', $user[0]->idteam)
-            ->update(['dana' => ($dana-$harga)]);
-        }else{
+                ->where('idteam', $user[0]->idteam)
+                ->update(['dana' => ($dana - $harga)]);
+        } else {
             return response()->json(array(
                 'msg' => 'Dana Tidak Mencukupi'
             ), 200);
@@ -83,8 +84,40 @@ class AnalisisController extends Controller
 
         $updatedUser = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
 
+        $notEfficient = [];
+        $efficient = [];
+        if ($produksi == 1) {
+            $notEfficient = ['Sorting', 'Cutting', 'Bending', 'Assembling', 'Delay', 'Cutting', 'Assembling', 'Sorting', 'Packing'];
+            $efficient = ['Sorting', 'Cutting', 'Bending', 'Assembling', 'Packing'];
+        } else if ($produksi == 2) {
+            $notEfficient = ['Sorting', 'Cutting', 'Assembling', 'Drilling', 'Delay', 'Cutting', 'Assembling', 'Idle', 'Packing'];
+            $efficient = ['Sorting', 'Cutting', 'Assembling', 'Drilling', 'Packing'];
+        } elseif ($produksi == 3) {
+            $notEfficient = ['Sorting', 'Molding', 'Idle', 'Assembling', 'Sorting', 'Delay', 'Assembling', 'Packing'];
+            $efficient = ['Sorting', 'Molding', 'Assembling', 'Packing'];
+        }
+
+
+        $status = true;
+        if (count($efficient) == $length) {
+            for ($x = 0; $x < count($efficient); $x++) {
+                if ($efficient[$x] != $arrProses[$x]) {
+                    $status = false;
+                }
+            }
+        } else if (count($notEfficient) == $length) {
+            for ($x = 0; $x < count($notEfficient); $x++) {
+                if ($efficient[$x] != $arrProses[$x]) {
+                    $status = false;
+                }
+            }
+        } else {
+            $status = false;
+        }
+        
         return response()->json(array(
-            'user' => $updatedUser
+            'user' => $updatedUser,
+            'status' => $status
         ), 200);
     }
 
