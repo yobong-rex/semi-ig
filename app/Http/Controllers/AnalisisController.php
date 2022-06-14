@@ -14,12 +14,21 @@ class AnalisisController extends Controller
         if ($sesi[0]->analisis == true) {
             $team = Auth::user()->teams_idteam;
             $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
-            $mesin = DB::table('mesin')
-                ->join('view_kapasitas_mesin', 'mesin.idmesin', '=', 'view_kapasitas_mesin.mesin_id')
-                ->join('mesin_has_teams', 'mesin.idmesin', '=', 'mesin_has_teams.mesin_idmesin')
-                ->select('mesin.idmesin', 'mesin.nama', 'mesin.cycle', 'view_kapasitas_mesin.kapasitas')
-                ->where('mesin_has_teams.teams_idteam', $user[0]->idteam)
-                ->where('view_kapasitas_mesin.team', $user[0]->idteam)
+            // $mesin = DB::table('mesin')
+            //     ->join('view_kapasitas_mesin', 'mesin.idmesin', '=', 'view_kapasitas_mesin.mesin_id')
+            //     ->join('mesin_has_teams', 'mesin.idmesin', '=', 'mesin_has_teams.mesin_idmesin')
+            //     ->select('mesin.idmesin', 'mesin.nama', 'mesin.cycle', 'view_kapasitas_mesin.kapasitas')
+            //     ->where('mesin_has_teams.teams_idteam', $user[0]->idteam)
+            //     ->where('view_kapasitas_mesin.team', $user[0]->idteam)
+            //     ->get();
+
+            $mesin = DB::table('mesin as m')
+                ->join('mesin_has_teams as mht', 'm.idmesin', '=', 'mht.mesin_idmesin')
+                ->join('kapasitas as k', 'm.idmesin', '=', 'k.mesin_idmesin')
+                ->join('kapasitas_has_teams as kht', 'k.idkapasitas', '=', 'kht.kapasitas_idkapasitas')
+                ->select('m.idmesin', 'm.nama', 'm.cycle', 'k.kapasitas')
+                ->where('mht.teams_idteam', $user[0]->idteam)
+                ->where('kht.teams_idteam', $user[0]->idteam)
                 ->get();
 
             return view('Sesi_Analisis.analisis', compact('mesin', 'user', 'sesi'));
