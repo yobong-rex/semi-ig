@@ -144,7 +144,7 @@ class TeamController extends Controller
         DB::table('teams')
             ->insert([
                 'nama' => $namaTeam,
-                'dana' => 10000,
+                'dana' => 15000,
                 'inventory' => 1000,
                 'total_pendapatan' => 0,
                 'demand' => 0,
