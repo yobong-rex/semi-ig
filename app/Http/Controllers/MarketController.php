@@ -85,29 +85,42 @@ class MarketController extends Controller
             DB::table('teams')->where('idteam',$team)->update(['dana'=> $sisa_dana, 'inventory'=> $sisaInv]);
             
             $team_has_inventory = DB::table('inventory')->whereIn('ig_markets', $item_id)->where('teams',$team)->get();
-            $insertStok = [];
-            if(count($team_has_inventory)>0){
-                foreach($team_has_inventory as $key => $val){
-                    if($val->ig_markets == $item[$key]['item']){
-                        $stok = $val->stock + ($item[$key]['quantity'] * $item[$key]['isi']);  
-                        DB::table('inventory')->where('ig_markets',$item[$key]['item'])->where('teams',$team)->update([
-                            'stock' => $stok
-                        ]);
-                        unset($item[$key]);
+            // $insertStok = [];
+            foreach($item as $key => $val){
+                // $stok = ($item[$key]['quantity'] * $item[$key]['isi']);
+                $stok = ($val['quantity'] * $val['isi']);
+                if(count($team_has_inventory)>0){
+                    foreach($team_has_inventory as $key2 => $val2){
+                        if($val2->ig_markets == $val['item']){
+                            $stok += $val2->stock; 
+                            // DB::table('inventory')->where('ig_markets',$item[$key]['item'])->where('teams',$team)->update([
+                                //     'stock' => $stok
+                                // ]);
+                                // unset($item[$key]);
+                            }
+                        }
                     }
-                }
+                    DB::table('inventory')->updateOrInsert(
+                        ['ig_markets' => $val['item'], 'teams' => $team],
+                        ['stock' => $stok]
+                    );
             }
-            if (count($item)>0){
-                foreach($item as $key => $val){
-                    $data = [
-                        'ig_markets' => $val['item'],
-                        'teams'      => $team,
-                        'stock'      => $val['quantity'] * $val['isi']
-                    ];
-                    array_push($insertStok,$data);
-                }
-                DB::table('inventory')->insert($insertStok);
-            }
+
+            // foreach($item as $key => $val){
+               
+            // }
+
+            // if (count($item)>0){
+            //     foreach($item as $key => $val){
+            //         $data = [
+            //             'ig_markets' => $val['item'],
+            //             'teams'      => $team,
+            //             'stock'      => $val['quantity'] * $val['isi']
+            //         ];
+            //         array_push($insertStok,$data);
+            //     }
+            //     DB::table('inventory')->insert($insertStok);
+            // }
             return response()->json(array(
                 'msg'=>'selamat team anda berhasil membeli bahan baku',
                 'code'=> '200'
