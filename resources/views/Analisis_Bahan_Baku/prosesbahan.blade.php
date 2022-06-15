@@ -15,7 +15,7 @@ $product['Bicycle'] = array('Steel', 'Aluminium Alloy', 'SBR Rubber');
 $product['Air Soft Gun'] = array('Aluminium Alloy', 'PP Plastic', 'Silicone');
 $product['Hoverboard'] = array('Steel', 'SBR Rubber', 'EVA Glue');
 $product['RC Helicopter'] = array('Iron', 'PC Plastic', 'PVA Glue');
-$product['Bowling Set'] = array('Iron', 'ABS Plastic', 'Acrylic');
+$product['Bowling Set'] = array('ABS Plastic', 'PU Rubber', 'NBR Rubber');
 $product['Claw Machine'] = array('Iron', 'ABS Plastic', 'Acrylic');
 // print_r($product);
 

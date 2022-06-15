@@ -116,7 +116,7 @@ class AnalisisController extends Controller
             }
         } else if (count($notEfficient) == $length) {
             for ($x = 0; $x < count($notEfficient); $x++) {
-                if ($efficient[$x] != $arrProses[$x]) {
+                if ($notEfficient[$x] != $arrProses[$x]) {
                     $status = false;
                 }
             }

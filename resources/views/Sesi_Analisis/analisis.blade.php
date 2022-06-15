@@ -107,8 +107,8 @@
                                                 <option value='{{ $m->nama }}' kapasitas='{{ $m->kapasitas }}'
                                                     time='{{ $m->cycle }}'>{{ $m->nama }}</option>
                                             @endforeach
-                                            <option value="Idle" kapasitas="0" time="0">Idle</option>
-                                            <option value="Delay" kapasitas="0" time="0">Delay</option>
+                                            <option value="Idle" kapasitas="" time="6">Idle</option>
+                                            <option value="Delay" kapasitas="" time="7">Delay</option>
                                         </select>
                                     </td>
                                 @endfor

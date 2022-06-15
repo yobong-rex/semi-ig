@@ -194,15 +194,44 @@
                                         @endif
                                     </td>
                                 @endfor
-                                <td><button class="btn btn-success" name='submit' value='{{ $i }}'
-                                        id="button_{{ $i }}">Konfirmasi</button></td>
+                                <td>
+                                    {{--Button Tampilin modal--}}
+                                    <button type="button" class="btn btn-success" id="button_PopupModal" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Konfirmasi</button>
+
+                                    {{--Button asli--}}
+                                    {{--<button class="btn btn-success" name='submit' value='{{ $i }}' id="button_{{ $i }}">Konfirmasi</button>--}}
+
+                                </td> 
                             </tr>
+                            
                         @endfor
                     </tbody>
                 </table>
             </form>
 
             <div class="row spacing"></div>
+
+            {{-- Pop Up Konfirmasi --}}
+            <!-- Modal -->
+                {{--<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Konfirmasi Produksi</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body flex">
+                                Apakah anda yakin untuk melakukan produksi {{$i}} ?
+                            </div>
+                            <div class="modal-footer">
+
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+ 
+                                <button class="btn btn-success" name='submit' value='{{ $i }}' id="button_{{ $i }}">Konfirmasi</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>--}}
 
             {{-- Kartu bawah --}}
             <!-- <div class="row">
