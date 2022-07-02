@@ -49,7 +49,6 @@ class MarketController extends Controller
                 array_push($item_id, $i['item']);
             }
 
-
             $bahan_baku = DB::table('ig_markets')->whereIn('idig_markets', $item_id)->get();
             $insert = [];
             foreach ($item as $key => $val) {
@@ -126,14 +125,12 @@ class MarketController extends Controller
                 'msg' => 'selamat team anda berhasil membeli bahan baku',
                 'code' => '200'
             ), 200);
-
         } catch (\PDOException $e) {
 
             return response()->json(array(
                 'msg' => 'maaf ada kesalahan koneksi dengan server  ' . $e,
                 'code' => '401'
             ), 200);
-            
         }
     }
 }

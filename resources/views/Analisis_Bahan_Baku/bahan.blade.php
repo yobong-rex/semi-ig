@@ -84,73 +84,67 @@
             <div class="row spacing"></div>
 
             <h1>Analisis Bahan Baku</h1>
-            <form action="prosesbahan" method="get">
-                <table class="table" style="width:100%;">
-                    <tbody>
-                        <tr>
-                            {{-- Tulisan Bahan Baku --}}
-                            <th class="header_bahanbaku" scope="col" colspan="2">Bahan Baku</th>
+            <table class="table" style="width:100%;">
+                <tbody>
+                    <tr>
+                        {{-- Tulisan Bahan Baku --}}
+                        <th class="header_bahanbaku" scope="col" colspan="2">Bahan Baku</th>
 
-                            {{-- combobox di kanan atas yang isinya produk --}}
-                            <th>
-                                <select name="produk" id="produk">
-                                    @php
-                                        $arrProduct = ['Scooter', 'RC Car', 'Trampoline', 'Rubber Ball', 'Fidget Spinner', 'Playstation', 'Robot', 'Action Figure', 'Skateboard', 'Bicycle'];
-                                        foreach ($arrProduct as $key => $product) {
-                                            if (isset($_SESSION['produk'])) {
-                                                if ($_SESSION['produk'] === $product) {
-                                                    echo "<option value=\"$product\" selected>$product</option>";
-                                                } else {
-                                                    echo "<option value=\"$product\">$product</option>";
-                                                }
-                                            } else {
-                                                echo "<option value=\"$product\">$product</option>";
-                                            }
-                                        }
-                                    @endphp
-                                </select>
-                            </th>
-                            <th scope="col">Status</th>
-                        </tr>
-                        <tr>
-                            {{-- 3 combobox di bawah yang isinya resource/bahan baku --}}
-                            @php
-                                for ($i = 0; $i < 3; $i++) {
-                                    echo "<td>
-                                            <select name=\"resource$i\" id=\"resource\">";
-                                    $arrResource = ['Steel', 'Iron', 'Aluminium Alloy', 'ABS Plastic', 'PP Plastic', 'PC Plastic', 'SBR Rubber', 'PU Rubber', 'NBR Rubber', 'Silicone', 'Acrylic', 'Cable', 'EVA Glue', 'PVA Glue'];
-                                    foreach ($arrResource as $key => $resource) {
-                                        if (isset($_SESSION['produk'])) {
-                                            if ($_SESSION['resource' . $i] === $resource) {
-                                                echo "<option value=\"$resource\" selected>$resource</option>";
-                                            } else {
-                                                echo "<option value=\"$resource\">$resource</option>";
-                                            }
-                                        } else {
-                                            echo "<option value=\"$resource\">$resource</option>";
-                                        }
-                                    }
-                                    echo "</select>
-                                        </td>";
-                                }
-                            @endphp
-                            {{-- Table kosong di kanan bawah buat tempat True/False --}}
+                        {{-- combobox di kanan atas yang isinya produk --}}
+                        <th>
+                            <select name="produk" id="produk">
+                                @for ($x = 0; $x < count($product); $x++)
+                                    <option value='{{ $product[$x]->nama }}'>{{ $product[$x]->nama }}</option>
+                                @endfor
+                            </select>
+                        </th>
+                        <th scope="col">Status</th>
+                    </tr>
+                    <tr>
+                        {{-- 3 combobox di bawah yang isinya resource/bahan baku --}}
+                        @for ($i = 1; $i <= 3; $i++)
                             <td>
                                 @php
-                                    if (isset($_GET['session'])) {
-                                        if ($_GET['session'] == 1) {
-                                            echo $_SESSION['status'];
-                                            $_SESSION['status'] = '';
-                                        }
-                                    }
+                                    $arrResource = ['Steel', 'Iron', 'Aluminium Alloy', 'ABS Plastic', 'PP Plastic', 'PC Plastic', 'SBR Rubber', 'PU Rubber', 'NBR Rubber', 'Silicone', 'Acrylic', 'Cable', 'EVA Glue', 'PVA Glue'];
                                 @endphp
+                                <select name="resource{{ $i }}" id="resource{{ $i }}">
+                                    @foreach ($arrResource as $key => $resource)
+                                        <option value='{{ $resource }}'>{{ $resource }}</option>
+                                    @endforeach
+                                </select>
                             </td>
-                        </tr>
-                    </tbody>
-                </table>
-                {{-- Button Submit --}}
-                <button id='analisisBahan' class="btn btn-primary" type="submit" value="submit">Submit</button>
-            </form>
+                        @endfor
+                        {{-- Table kosong di kanan bawah buat tempat True/False --}}
+                        <td>
+                            <span id="status"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            {{-- Button Submit --}}
+            <button id='analisisBahan' class="btn btn-primary" type="submit" value="submit">Submit</button>
+        </div>
+
+        {{-- Modal --}}
+        {{-- Modal Notif --}}
+        <div class="modal fade" id="Notif" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="NotifLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="NotifLabel">Notification</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body flex">
+                        <h4><span id='notifUpgrade'></span></h4>
+                    </div>
+                    <div class="modal-footer">
+                        {{-- button ok --}}
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
     <script>
         $('#analisisBahan').click(function() {
@@ -158,15 +152,21 @@
                 type: 'POST',
                 url: "{{ route('analisis.bahan') }}",
                 data: {
-                    '_token': '<?php echo csrf_token(); ?>'
+                    '_token': '<?php echo csrf_token(); ?>',
+                    'produk': $('#produk').val(),
+                    'resource1': $('#resource1').val(),
+                    'resource2': $('#resource2').val(),
+                    'resource3': $('#resource3').val()
                 },
                 success: function(data) {
+                    // alert('success');
                     if (data.msg == 'Dana Tidak Mencukupi') {
-                        alert(data.msg);
+                        $('#notifUpgrade').text(data.msg);
+                        $('#Notif').modal('show');
                     } else {
                         $('#dana').html(data.user[0].dana);
+                        $('#status').text(data.status);
                     }
-                    // alert('success');
                 },
                 error: function() {
                     alert('error');

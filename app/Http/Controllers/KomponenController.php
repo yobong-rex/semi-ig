@@ -181,7 +181,7 @@ class KomponenController extends Controller
                     ->update(['dana' => ($dana - $harga)]);
             } else {
                 return response()->json(array(
-                    'msg' => 'Dana tidak mencukupi'
+                    'msg' => 'Dana Tidak Mencukupi'
                 ), 200);
             }
         } else {

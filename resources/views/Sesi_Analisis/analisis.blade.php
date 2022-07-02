@@ -102,7 +102,7 @@
                                 @for ($j = 1; $j <= 9; $j++)
                                     <td>
                                         <select name="proses" id="proses_{{ $i }}_{{ $j }}">
-                                            <option value="" hidden>-Select-</option>
+                                            <option value="">-Select-</option>
                                             @foreach ($mesin as $m)
                                                 <option value='{{ $m->nama }}' kapasitas='{{ $m->kapasitas }}'
                                                     time='{{ $m->cycle }}'>{{ $m->nama }}</option>
@@ -121,26 +121,32 @@
                 </table>
             </form>
         </div>
+
+        {{-- Modal --}}
+        {{-- Modal Notif --}}
+        <div class="modal fade" id="Notif" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="NotifLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="NotifLabel">Notification</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body flex">
+                        <h4><span id='notifUpgrade'></span></h4>
+                    </div>
+                    <div class="modal-footer">
+                        {{-- button ok --}}
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 @endsection
 
 @section('ajaxquery')
     <script>
-        function coba_coba() {
-            $.ajax({
-                type: "POST",
-                url: "{{ route('coba') }}",
-                data: {
-                    '_token': '<?php echo csrf_token(); ?>'
-                },
-                success: function(data) {
-                    $.each(data.mesin, function(key, value) {
-                        $('#coba-text').html(data.mesin[key].nama)
-                    });
-                }
-            });
-        }
-
         $('.btn').click(function() {
             var arrProses = [];
             let arrKapasitas = [];
@@ -178,21 +184,25 @@
                 },
                 success: function(data) {
                     if (data.msg == 'Dana Tidak Mencukupi') {
-                        alert(data.msg);
-                    } else if (data.msg == 'Proses Kurang Panjang, Minimal Proses = 4') {
-                        alert(data.msg);
+                        $('#notifUpgrade').text(data.msg);
+                        $('#Notif').modal('show');
+                    } else if (data.msg == 'x') {
+                        $('#notifUpgrade').html('Proses Kurang Panjang<br>Minimal Proses = 4');
+                        $('#Notif').modal('show');
                     } else {
                         $('#dana').html(data.user[0].dana);
                         
                         if (data.status == false) {
-                            alert('Not Efficient');
+                            $('#notifUpgrade').text('Not Efficient');
+                        $('#Notif').modal('show');
                         } else {
-                            alert('Efficient');
+                            $('#notifUpgrade').text('Efficient');
+                        $('#Notif').modal('show');
                         }
                     }
                 },
                 error: function() {
-                    alert('error');
+                    // alert('error');
                 }
             });
         });

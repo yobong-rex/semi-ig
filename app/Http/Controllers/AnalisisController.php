@@ -46,6 +46,13 @@ class AnalisisController extends Controller
         $cycle = $request->get('cycle');
         $arrProses = $request->get('arrProses');
 
+        $x = 4;
+        if ($length < $x) {
+            return response()->json(array(
+                'msg' => 'x'
+            ), 200);
+        }
+
         //mencari kapasitas terkecil
         $minKpasitas = min($kapasitas);
 
@@ -57,12 +64,7 @@ class AnalisisController extends Controller
         $team = Auth::user()->teams_idteam;
         $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
 
-        $x = 4;
-        if ($length < $x) {
-            return response()->json(array(
-                'msg' => 'Proses Kurang Panjang, Minimal Proses = 4'
-            ), 200);
-        }
+
 
         DB::table('analisis')->insert([
             'produksi' => $produksi,

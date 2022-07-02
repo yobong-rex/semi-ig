@@ -242,7 +242,7 @@
                         if (data.msg == 'Level Maxed') {
                             $('#notifUpgrade').text(data.msg);
                             $('#Notif').modal('show');
-                        } else if (data.msg == 'Dana tidak mencukupi') {
+                        } else if (data.msg == 'Dana Tidak Mencukupi') {
                             $('#notifUpgrade').text(data.msg);
                             $('#Notif').modal('show');
                         } else {
@@ -256,7 +256,7 @@
                         }
                     },
                     error: function() {
-                        // alert('error');
+                        alert('error');
                     }
                 })
             })

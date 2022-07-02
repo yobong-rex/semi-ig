@@ -138,7 +138,7 @@ class ProduksiController extends Controller
                 ->join('ig_markets', 'inventory.ig_markets', '=', 'ig_markets.idig_markets')
                 ->select('inventory.stock', 'ig_markets.idig_markets', 'ig_markets.isi')
                 ->where('inventory.teams', $team)
-                ->where('ig_markets.bahan_baku', 'like', "%".$bb."%")
+                ->where('ig_markets.bahan_baku', 'like', "%" . $bb . "%")
                 ->where('ig_markets.sesi', $sesi)
                 ->get();
             if (count($inv) > 0) {

@@ -163,35 +163,6 @@
     </body>
 
     <script>
-        // $('.upgrade').click(function() {
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: "{{ route('upgrade.kapasitas') }}",
-        //         data: {
-        //             '_token': '<?php echo csrf_token(); ?>',
-        //             'namaMesin': $(this).val()
-        //         },
-        //         success: function(data) {
-        //             alert('success');
-        //             if (data.msg == 'Level Maxed') {
-        //                 alert(data.msg);
-        //             } else if (data.msg == 'Dana tidak mencukupi') {
-        //                 alert(data.msg);
-        //             }
-        //             $.each(data.data, function(key, value) {
-        //                 $('#level_kapasitas_' + data.data[key].nama).html(data.data[key].level);
-        //                 $('#kapasitas_kapasitas_' + data.data[key].nama).html(data.data[key]
-        //                     .kapasitas);
-        //             });
-        //             $('#dana').html(data.user[0].dana);
-
-        //         },
-        //         error: function() {
-        //             alert('error');
-        //         }
-        //     })
-        // })
-
         let namaMesin = "";
 
         $('.upgrade').click(function() {
@@ -212,7 +183,7 @@
                     if (data.msg == 'Level Maxed') {
                         $('#notifUpgrade').text(data.msg);
                         $('#Notif').modal('show');
-                    } else if (data.msg == 'Dana tidak mencukupi') {
+                    } else if (data.msg == 'Dana Tidak Mencukupi') {
                         $('#notifUpgrade').text(data.msg);
                         $('#Notif').modal('show');
                     } else {
@@ -228,7 +199,7 @@
                     $('#dana').html(data.user[0].dana);
                 },
                 error: function() {
-                    // alert('error');
+                    alert('error');
                 }
             })
         })
