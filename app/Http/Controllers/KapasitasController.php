@@ -136,9 +136,9 @@ class KapasitasController extends Controller
         $level = $idkap[0]->level;
         $dana = $user[0]->dana;
         $harga = $idkap[0]->harga;
-
-        if ($dana >= $harga) {
-            if ($level < 5) {
+        
+        if ($level < 5) {
+            if ($dana >= $harga) {
                 $upgrade += 1;
                 DB::table('kapasitas_has_teams')
                     ->where('teams_idteam', $user[0]->idteam)
@@ -150,12 +150,12 @@ class KapasitasController extends Controller
                     ->update(['dana' => ($dana - $harga)]);
             } else {
                 return response()->json(array(
-                    'msg' => 'Level Maxed'
+                    'msg' => 'Dana tidak mencukupi'
                 ), 200);
             }
         } else {
             return response()->json(array(
-                'msg' => 'Dana tidak mencukupi'
+                'msg' => 'Level Maxed'
             ), 200);
         }
 
@@ -171,7 +171,8 @@ class KapasitasController extends Controller
         // dd($data);
         return response()->json(array(
             'data' => $data,
-            'user' => $updatedUser
+            'user' => $updatedUser,
+            'msg' => 'Upgrade Successful'
         ), 200);
         // return view('Mesin.kapasitas', compact('data'));
     }

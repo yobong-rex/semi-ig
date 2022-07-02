@@ -108,10 +108,14 @@
                     <th>
                         <h4>Mesin : </h4>
                     </th>
+                    {{-- ComboBox Mesin --}}
                     <th style="vertical-align:middle;">
                         <select id='mesin' name="mesin">
                             @php
-                                $arrMesin = ['Sorting', 'Cutting', 'Bending', 'Assembling', 'Packing', 'Drilling', 'Molding'];
+                                $arrMesin = [];
+                                for ($a = 0; $a < count($namaMesin); $a++) {
+                                    array_push($arrMesin, $namaMesin[$a]->nama);
+                                }
                             @endphp
                             @foreach ($arrMesin as $mesin)
                                 <option value="{{ $mesin }}">{{ $mesin }}</option>
@@ -119,6 +123,7 @@
                         </select>
                     </th>
                 </thead>
+                {{-- Nama-nama Komponen --}}
                 <tbody>
                     <tr style="background-color:#faf0dc;">
                         <td>Level Mesin : </td>
@@ -127,133 +132,68 @@
                     @for ($x = 0; $x < count($data); $x++)
                         <tr>
                             <td id="nama_komponen_{{ $x }}" class="namaKomponen" style="width:150px;">
-                                {{ $data[$x]->nama_komponen }} : </td>
-                            <td id="komponen_{{ $x }}" class='noLevel'> {{ $data[$x]->level }} </td>
-                            <td><button type="button" id="upgrade_{{ $x }}" class="upgrade"
-                                    value='{{ $data[$x]->nama_komponen }}'>Upgrade</button></td>
-                            {{-- <td><button type="button" class="btn btn-warning" id="upgradeA_mesin">Upgrade</button></td> --}}
+                                {{ $data[$x]->nama_komponen }} :
+                            </td>
+                            <td id="komponen_{{ $x }}" class='noLevel'>
+                                {{ $data[$x]->level }}
+                            </td>
+                            <td>
+                                {{-- button Upgrade --}}
+                                <button type="button" id="upgrade_{{ $x }}" class="upgrade"
+                                    value='{{ $data[$x]->nama_komponen }}' data-bs-toggle="modal"
+                                    data-bs-target="#Konfirmasi">Upgrade</button>
+                            </td>
                         </tr>
                     @endfor
-                    {{-- Jangan dihapus dulu sapatau perlu buat template --}}
-                    {{-- <tr>
-                        <td class='namaKomponen' id="nama_komponen_0">{{ $data[0]->nama_komponen }} : </td>
-                        <td id="komponen_0">{{ $data[0]->level }}</td>
-                        <td><button type="button" class="upgrade" id="upgrade_0"
-                                value='{{ $data[0]->nama_komponen }}'>Upgrade</button></td>
-                        <td><button type="button" class="btn btn-warning" id="upgradeA_mesin">Upgrade</button></td>
-                    </tr>
-                    <tr>
-                        <td class='namaKomponen' id="nama_komponen_1">{{ $data[1]->nama_komponen }} : </td>
-                        <td id="komponen_1">{{ $data[1]->level }}</td>
-                        <td><button type="button" class="upgrade" id="upgrade_1"
-                                value='{{ $data[1]->nama_komponen }}'>Upgrade</button></td>
-                        <td><button type="button" class="btn btn-warning" id="upgradeB_mesin">Upgrade</button></td>
-                    </tr>
-                    <tr>
-                        <td class='namaKomponen' id="nama_komponen_2">{{ $data[2]->nama_komponen }} : </td>
-                        <td id="komponen_2">{{ $data[2]->level }}</td>
-                        <td><button type="button" class="upgrade" id="upgrade_2"
-                                value='{{ $data[2]->nama_komponen }}'>Upgrade</button></td>
-                        <td><button type="button" class="btn btn-warning" id="upgradeC_mesin">Upgrade</button></td>
-                    </tr>
-                    <tr>
-                        <td class='namaKomponen' id="nama_komponen_3">{{ $data[3]->nama_komponen }} : </td>
-                        <td id="komponen_3">{{ $data[3]->level }}</td>
-                        <td><button type="button" class="upgrade" id="upgrade_3"
-                                value='{{ $data[3]->nama_komponen }}'>Upgrade</button></td>
-                        <td><button type="button" class="btn btn-warning" id="upgradeD_mesin">Upgrade</button></td>
-                    </tr> --}}
                 </tbody>
             </table>
-
-            {{-- Informasi Mesin + Upgrade Kapasitas --}}
-            <table class="table table-bordered" style="width:fit-content;">
-                {{-- Heading --}}
-                {{-- <thead class="thead">
-                    <th>Nama Mesin</th>
-                    <th>Level</th>
-                    <th class="class_defectMesin">Defect</th>
-                    <th class="class_kapasitasMesin">Kapasitas</th>
-                    <th style="text-align:center;">Konfirmasi</th>
-                </thead>
-                <tbody>
-                    @for ($x = 0; $x < count($listMesin); $x++)
-                        <tr class="rowMesin">
-                            <td id="namaMesin_{{ $x }}">{{ $listMesin[$x]->nama_mesin }}</td>
-                            <td id="levelMesin_{{ $x }}" class="noLevel">{{ $listMesin[$x]->level }}
-                            </td>
-                            <td id="defect_mesin_{{ $x }}" class="class_defectMesin">0</td>
-                            <td id="kapasitas_mesin_{{ $x }}" class="class_kapasitasMesin">
-                                {{ $listMesin[$x]->kapasitas }}</td>
-                            <td><button type="button" class="btn btn-success" id="button_{{$x}}">Konfirmasi</button></td>
-                        </tr>
-                    @endfor
-                    <tr class="rowMesin">
-                        <td id="namaMesin">Sorting</td>
-                        <td class="noLevel" id="levelMesin_">1</td>
-                        <td class="class_defectMesin" id="defect_mesin">0</td>
-                        <td class="class_kapasitasMesin" id="kapasitas_mesin">50</td>
-                        <td><button type="button" class="btn btn-success" id="button_2">Konfirmasi</button></td>
-                    </tr>
-                    <tr class="rowMesin">
-                        <td id="namaMesin">Cutting</td>
-                        <td class="noLevel" id="levelMesin_">1</td>
-                        <td class="class_defectMesin" id="defect_mesin">0</td>
-                        <td class="class_kapasitasMesin" id="kapasitas_mesin">55</td>
-                        <td><button type="button" class="btn btn-success" id="button_2">Konfirmasi</button></td>
-                    </tr>
-                    <tr class="rowMesin">
-                        <td id="namaMesin">Bending</td>
-                        <td class="noLevel" id="levelMesin_">1</td>
-                        <td class="class_defectMesin" id="defect_mesin">0</td>
-                        <td class="class_kapasitasMesin" id="kapasitas_mesin">50</td>
-                        <td><button type="button" class="btn btn-success" id="button_3">Konfirmasi</button></td>
-                    </tr>
-                    <tr class="rowMesin">
-                        <td id="namaMesin">Assembling</td>
-                        <td class="noLevel" id="levelMesin_">1</td>
-                        <td class="class_defectMesin" id="defect_mesin">0</td>
-                        <td class="class_kapasitasMesin" id="kapasitas_mesin">50</td>
-                        <td><button type="button" class="btn btn-success" id="button_4">Konfirmasi</button></td>
-                    </tr>
-                    <tr class="rowMesin">
-                        <td id="namaMesin">Packing</td>
-                        <td class="noLevel" id="levelMesin_">1</td>
-                        <td class="class_defectMesin" id="defect_mesin">0</td>
-                        <td class="class_kapasitasMesin" id="kapasitas_mesin">55</td>
-                        <td><button type="button" class="btn btn-success" id="button_5">Konfirmasi</button></td>
-                    </tr>
-                    <tr class="rowMesin">
-                        <td id="namaMesin">Drilling</td>
-                        <td class="noLevel" id="levelMesin_">1</td>
-                        <td class="class_defectMesin" id="defect_mesin">0</td>
-                        <td class="class_kapasitasMesin" id="kapasitas_mesin">50</td>
-                        <td><button type="button" class="btn btn-success" id="button_6">Konfirmasi</button></td>
-                    </tr>
-                    <tr class="rowMesin">
-                        <td id="namaMesin">Molding</td>
-                        <td class="noLevel" id="levelMesin_">1</td>
-                        <td class="class_defectMesin" id="defect_mesin">0</td>
-                        <td class="class_kapasitasMesin" id="kapasitas_mesin">50</td>
-                        <td><button type="button" class="btn btn-success" id="button_7">Konfirmasi</button></td>
-                    </tr>
-                </tbody> --}}
-            </table>
         </div>
-        @php
-            // Check Level
-            // if ($a == 10 && $b == 10 && $c == 10 && $d == 10) {
-            //     $level = 6;
-            // } elseif ($a >= 8 && $b >= 8 && $c >= 8 && $d >= 8) {
-            //     $level = 5;
-            // } elseif ($a >= 6 && $b >= 6 && $c >= 6 && $d >= 6) {
-            //     $level = 4;
-            // } elseif ($a >= 4 && $b >= 4 && $c >= 4 && $d >= 4) {
-            //     $level = 3;
-            // } elseif ($a >= 2 && $b >= 2 && $c >= 2 && $d >= 2) {
-            //     $level = 2;
-            // }
-        @endphp
+
+        {{-- Modal --}}
+        {{-- Modal Konfirmasi Upgrade --}}
+        <div class="modal fade" id="Konfirmasi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="KonfirmasiLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="KonfirmasiLabel">Upgrade</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body flex">
+                        Apakah anda yakin ingin Upgrade Komponen <b><span id='komponenNama'></span></b> dari Mesin <b><span
+                                id='mesinNama'></span></b> ?
+                    </div>
+                    <div class="modal-footer">
+                        {{-- button cancel --}}
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        {{-- button konfirmasi upgrade --}}
+                        <button type="button" class="btn btn-success" id="konfirmasi_upgrade"
+                            data-bs-dismiss="modal">Upgrade</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Modal Notif --}}
+        <div class="modal fade" id="Notif" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="NotifLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="NotifLabel">Notification</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body flex">
+                        <h4><span id='notifUpgrade'></span></h4>
+                    </div>
+                    <div class="modal-footer">
+                        {{-- button ok --}}
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script>
             $('#mesin').change(function() {
                 // alert($('#mesin').val());
@@ -273,33 +213,47 @@
                         $('#levelMesin_').html(data.levelMesin[0].level);
                     },
                     error: function() {
-
+                        // alert('error');
                     }
                 })
             })
 
+            let namaMesin = "";
+            let namaKomponen = "";
+
             $('.upgrade').click(function() {
+                namaMesin = $('#mesin').val();
+                namaKomponen = $(this).val();
+                $('#mesinNama').text(namaMesin);
+                $('#komponenNama').text(namaKomponen);
+            })
+
+            $('#konfirmasi_upgrade').click(function() {
                 $.ajax({
                     type: 'POST',
                     url: "{{ route('upgrade.komponen') }}",
                     data: {
                         '_token': '<?php echo csrf_token(); ?>',
-                        'namaMesin': $('#mesin').val(),
-                        'namaKomponen': $(this).val()
+                        'namaMesin': namaMesin,
+                        'namaKomponen': namaKomponen
                     },
                     success: function(data) {
+                        // alert('success');
                         if (data.msg == 'Level Maxed') {
-                            alert(data.msg);
+                            $('#notifUpgrade').text(data.msg);
+                            $('#Notif').modal('show');
                         } else if (data.msg == 'Dana tidak mencukupi') {
-                            alert(data.msg);
+                            $('#notifUpgrade').text(data.msg);
+                            $('#Notif').modal('show');
                         } else {
+                            $('#notifUpgrade').text(data.msg);
+                            $('#Notif').modal('show');
                             $.each(data.data, function(key, value) {
                                 $('#komponen_' + key).html(data.data[key].level);
                             });
                             $('#levelMesin_').html(data.levelMesin[0].level);
                             $('#dana').html(data.user[0].dana);
                         }
-                        // alert('success');
                     },
                     error: function() {
                         // alert('error');

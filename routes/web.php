@@ -23,7 +23,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Dashboard
     Route::get('/', 'TeamController@dashboard')->name('dashboard');
-    
+
     // Mesin Komponen
     Route::get('/komponen', 'KomponenController@komponen')->name('komponen');
     Route::get('/komponen/ajax', 'KomponenController@komponenAjax')->name('komponen.ajax');
@@ -43,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-    // IG Market
+// IG Market
 Route::get('/market', 'MarketController@market')->name('market');
 Route::post('/market/beli', 'MarketController@marketBeli')->name('market.beli');
 

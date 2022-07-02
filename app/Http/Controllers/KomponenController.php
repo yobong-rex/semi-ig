@@ -88,6 +88,7 @@ class KomponenController extends Controller
         $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
 
         $idmesin = DB::table('mesin')->where('nama', 'like', '%Sorting%')->get();
+        $namaMesin = DB::table('mesin')->select('nama')->get();
 
         $sesi = DB::table('sesi')->select('sesi')->get();
 
@@ -108,7 +109,7 @@ class KomponenController extends Controller
             ->where('m.idmesin', $idmesin[0]->idmesin)
             ->get();
 
-        return view('Mesin.komponen', compact('data', 'user', 'levelMesin', 'sesi'));
+        return view('Mesin.komponen', compact('data', 'user', 'levelMesin', 'sesi', 'namaMesin'));
     }
 
     function komponenAjax(Request $request)
@@ -166,8 +167,8 @@ class KomponenController extends Controller
         $dana = $user[0]->dana;
         $harga = $idkom[0]->harga;
 
-        if ($dana >= $harga) {
-            if ($levelKomponen < 10) {
+        if ($levelKomponen < 10) {
+            if ($dana >= $harga) {
                 $upgrade += 1;
                 DB::table('level_komponen')
                     ->where('teams_idteam', $user[0]->idteam)
@@ -177,15 +178,15 @@ class KomponenController extends Controller
 
                 DB::table('teams')
                     ->where('idteam', $user[0]->idteam)
-                    ->update(['dana' => ($dana-$harga)]);
+                    ->update(['dana' => ($dana - $harga)]);
             } else {
                 return response()->json(array(
-                    'msg' => 'Level Maxed'
+                    'msg' => 'Dana tidak mencukupi'
                 ), 200);
             }
         } else {
             return response()->json(array(
-                'msg' => 'Dana tidak mencukupi'
+                'msg' => 'Level Maxed'
             ), 200);
         }
 
@@ -245,7 +246,8 @@ class KomponenController extends Controller
         return response()->json(array(
             'data' => $data,
             'user' => $updatedUser,
-            'levelMesin' => $levelMesin
+            'levelMesin' => $levelMesin,
+            'msg' => 'Upgrade Successful'
         ), 200);
         // return view('Mesin.komponen', compact('data', 'user', 'levelMesin'));
     }

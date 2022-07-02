@@ -86,6 +86,7 @@
             {{-- Card Kapasitas --}}
             <div class="card-body kapasitas rounded">
                 <table class="table table">
+                    {{-- Heading --}}
                     <thead class="thead">
                         <tr>
                             <th scope="col">Mesin</th>
@@ -94,6 +95,7 @@
                             <th scope="col" style="text-align:center;">Konfirmasi</th>
                         </tr>
                     </thead>
+                    {{-- Data Kapasitas --}}
                     <tbody>
                         @for ($x = 0; $x < count($data); $x++)
                             <tr style="vertical-align:middle;">
@@ -105,7 +107,8 @@
                                 <td id='kapasitas_kapasitas_{{ $data[$x]->nama }}' style="text-align:center;">
                                     {{ $data[$x]->kapasitas }}</td>
                                 <td style="text-align:center;vertical-align:center;">
-                                    <button class='upgrade' value={{ $data[$x]->nama }}>Upgrade</button>
+                                    <button class='upgrade' value={{ $data[$x]->nama }} data-bs-toggle="modal"
+                                        data-bs-target="#Konfirmasi">Upgrade</button>
                                 </td>
                             </tr>
                         @endfor
@@ -113,36 +116,119 @@
                 </table>
             </div>
         </div>
-    </body>
-    <script>
-        $('.upgrade').click(function() {
-            // alert($(this).val());
 
+        {{-- Modal --}}
+        {{-- Modal Konfirmasi Upgrade --}}
+        <div class="modal fade" id="Konfirmasi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="KonfirmasiLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="KonfirmasiLabel">Upgrade</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body flex">
+                        Apakah anda yakin ingin Upgrade Kapasitas Mesin <b><span id='mesinNama'></span></b> ?
+                    </div>
+                    <div class="modal-footer">
+                        {{-- button cancel --}}
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        {{-- button konfirmasi upgrade --}}
+                        <button type="button" class="btn btn-success" id="konfirmasi_upgrade"
+                            data-bs-dismiss="modal">Upgrade</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Modal Notif --}}
+        <div class="modal fade" id="Notif" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="NotifLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="NotifLabel">Notification</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body flex">
+                        <h4><span id='notifUpgrade'></span></h4>
+                    </div>
+                    <div class="modal-footer">
+                        {{-- button ok --}}
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script>
+        // $('.upgrade').click(function() {
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: "{{ route('upgrade.kapasitas') }}",
+        //         data: {
+        //             '_token': '<?php echo csrf_token(); ?>',
+        //             'namaMesin': $(this).val()
+        //         },
+        //         success: function(data) {
+        //             alert('success');
+        //             if (data.msg == 'Level Maxed') {
+        //                 alert(data.msg);
+        //             } else if (data.msg == 'Dana tidak mencukupi') {
+        //                 alert(data.msg);
+        //             }
+        //             $.each(data.data, function(key, value) {
+        //                 $('#level_kapasitas_' + data.data[key].nama).html(data.data[key].level);
+        //                 $('#kapasitas_kapasitas_' + data.data[key].nama).html(data.data[key]
+        //                     .kapasitas);
+        //             });
+        //             $('#dana').html(data.user[0].dana);
+
+        //         },
+        //         error: function() {
+        //             alert('error');
+        //         }
+        //     })
+        // })
+
+        let namaMesin = "";
+
+        $('.upgrade').click(function() {
+            namaMesin = $(this).val();
+            $('#mesinNama').text(namaMesin);
+        })
+
+        $('#konfirmasi_upgrade').click(function() {
             $.ajax({
                 type: 'POST',
                 url: "{{ route('upgrade.kapasitas') }}",
                 data: {
                     '_token': '<?php echo csrf_token(); ?>',
-                    'namaMesin': $(this).val()
+                    'namaMesin': namaMesin
                 },
                 success: function(data) {
+                    // alert('success');
                     if (data.msg == 'Level Maxed') {
-                        alert(data.msg);
+                        $('#notifUpgrade').text(data.msg);
+                        $('#Notif').modal('show');
                     } else if (data.msg == 'Dana tidak mencukupi') {
-                        alert(data.msg);
+                        $('#notifUpgrade').text(data.msg);
+                        $('#Notif').modal('show');
+                    } else {
+                        $('#notifUpgrade').text(data.msg);
+                        $('#Notif').modal('show');
                     }
                     $.each(data.data, function(key, value) {
-                        // $('#nama_mesin').html(data.data[key].nama);
-                        $('#level_kapasitas_' + data.data[key].nama).html(data.data[key].level);
-                        $('#kapasitas_kapasitas_' + data.data[key].nama).html(data.data[key].kapasitas);
+                        $('#level_kapasitas_' + data.data[key].nama).html(data.data[key]
+                            .level);
+                        $('#kapasitas_kapasitas_' + data.data[key].nama).html(data.data[key]
+                            .kapasitas);
                     });
                     $('#dana').html(data.user[0].dana);
-                    // alert(data.user[0].dana);
-                    // location.reload()
                 },
                 error: function() {
-
-                    // location.reload();
+                    // alert('error');
                 }
             })
         })

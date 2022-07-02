@@ -72,7 +72,7 @@
                 </div>
                 <div class="col-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
                     <h3>Timer</h3>
-                    <h4 id="timer">{{ $timer }}</h4>
+                    <h4 id="timer">{{--{{ $timer }}--}}- - : - -</h4>
                 </div>
             </div>
 
