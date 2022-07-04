@@ -72,8 +72,9 @@ Route::post('/adminsesi/backsesi', 'SesiController@backSesi')->name('back.sesi')
 // })->name('komponenMesin');
 
 //Route coba-coba
-Route::post('/coba', 'MesinController@coba')->name('coba');
-// Route::get('/upgradeKomponen', 'MesinController')->name('upgrade');
+Route::post('/coba/ajax', 'MesinController@cobaAjax')->name('coba.ajax');
+Route::post('/coba/pusher', 'MesinController@cobaPusher')->name('coba.pusher');
+//Route coba-coba
 
 Route::get('/admin/analisis', 'AnalisisController@admin')->name('analisis.admin');
 Route::post('/admin/analisis/update', 'AnalisisController@updateSesi')->name('analisis.update');
@@ -98,6 +99,10 @@ Route::get('/maketeam', function () {
 })->name('maketeam');
 
 Route::post('/maketeam/maketeam', 'TeamController@makeTeam')->name('makeTeam');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 

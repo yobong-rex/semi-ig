@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Mesin;
+use App\Events\TestPusher;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use DB;
 
 class MesinController extends Controller
@@ -84,11 +86,22 @@ class MesinController extends Controller
         //
     }
 
-    function coba()
+    function cobaAjax()
     {
         $mesin = DB::table('mesin')->get();
         return response()->json(array(
             'mesin' => $mesin
         ), 200);
+    }
+
+    function cobaPusher(Request $request)
+    {
+        $message = $request->get('test');
+
+        event(new TestPusher($message));
+
+        return response()->json(array(
+            'status' => true
+        ), 200); 
     }
 }
