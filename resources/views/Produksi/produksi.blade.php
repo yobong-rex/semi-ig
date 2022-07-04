@@ -119,8 +119,8 @@
             <div class="alert alert-danger" role="alert">Pastikan untuk MEMILIH Jenis Produk dan MENGINPUT Jumlah Produk SEBELUM Konfirmasi</div>
             {{-- Form produksi --}}
             <form action="{{ route('produksi.buat') }}" method='post'>
-                <input type="hidden" value='{{ $sesi1 }}' name='sesi'>
-                <input type="hidden" value='{{ $user[0]->idteam }}' name='team'>
+                <input type="hidden" id='sesi' value='{{ $sesi1 }}' name='sesi'>
+                <input type="hidden" id='team' value='{{ $user[0]->idteam }}' name='team'>
                 @csrf
                 <table class="table table-bordered" style="vertical-align: middle;">
                     <thead class="thead">
@@ -145,14 +145,14 @@
                         @for ($i = 1; $i <= 3; $i++)
                             <tr id="tr_{{ $i }}">
                                 @if ($i == 1)
-                                    <input type="hidden" name='defect_{{ $i }}' value='{{ $defect1 }}'>
+                                    <input type="hidden" id='defect_{{ $i }}' name='defect_{{ $i }}' value='{{ $defect1 }}'>
                                 @elseif ($i == 2)
-                                    <input type="hidden" name='defect_{{ $i }}' value='{{ $defect2 }}'>
+                                    <input type="hidden" id="defect_{{ $i }}" name='defect_{{ $i }}' value='{{ $defect2 }}'>
                                 @else
-                                    <input type="hidden" name='defect_{{ $i }}' value='{{ $defect3 }}'>
+                                    <input type="hidden" id='defect_{{ $i }}' name='defect_{{ $i }}' value='{{ $defect3 }}'>
                                 @endif
                                 <td>
-                                    <select name="produk_{{ $i }}" id="">
+                                    <select name="produk_{{ $i }}" id="produk_{{ $i }}">
                                         <option value="">pilih produk</option>
                                         @if ($i == 1)
                                             <option value="1">Scooter</option>
@@ -176,7 +176,7 @@
                                     </select>
                                 </td>
                                 <td><input class="inputJumlahProduk" type="number" name='jumlah_{{ $i }}'
-                                        id='jumlahProduk' min="0" oninput="this.value =
+                                        id='jumlahProduk_{{ $i }}' min="0" oninput="this.value =
                                 !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0>
                                 </td>
                                 <th class="nomor" scope="row">Proses Produksi {{ $i }}</th>
@@ -196,7 +196,7 @@
                                 @endfor
                                 <td>
                                     {{--Button Tampilin modal--}}
-                                    <button type="button" class="btn btn-success" id="button_PopupModal" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Konfirmasi</button>
+                                    <button type="button" class="btn btn-success btn-modal" id="button_PopupModal" btn='{{$i}}' data-bs-toggle="modal" data-bs-target="#staticBackdrop">Konfirmasi</button>
 
                                     {{--Button asli--}}
                                     {{--<button class="btn btn-success" name='submit' value='{{ $i }}' id="button_{{ $i }}">Konfirmasi</button>--}}
@@ -213,7 +213,7 @@
 
             {{-- Pop Up Konfirmasi --}}
             <!-- Modal -->
-                {{--<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -231,7 +231,7 @@
                             </div>
                         </div>
                     </div>
-                </div>--}}
+                </div>
 
             {{-- Kartu bawah --}}
             <!-- <div class="row">
@@ -272,5 +272,36 @@
             </div> -->
 
         </div>
+
+        <script>
+            $(document).on('click','.btn-modal', function(){
+                let btn = $(this).attr('btn');
+                let defect = $('#defect_'+btn).attr('value');
+                let sesi = $('#sesi').attr('value');
+                let team = $('#team').attr('value');
+                let product = $('#produk_'+btn).val();
+                let jumlah = $('#jumlahProduk_'+btn).val();
+                // console.log(jumlah);
+                $.ajax({
+                type: "POST",
+                url: "{{ route('produksi.buat') }}",
+                data: {
+                    '_token': '<?php echo csrf_token(); ?>',
+                    'sesi': sesi,
+                    'team': team,
+                    'defect' : defect,
+                    'produk' : product,
+                    'jumlah' : jumlah,
+                },
+                success: function(data) {
+                    
+                },
+                error: function() {
+                    // alert('error');
+                }
+            });
+            })
+        </script>
     </body>
 @endsection
+ 
