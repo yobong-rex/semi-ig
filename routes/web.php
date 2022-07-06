@@ -74,6 +74,13 @@ Route::post('/adminsesi/backsesi', 'SesiController@backSesi')->name('back.sesi')
 //Route coba-coba
 Route::post('/coba/ajax', 'MesinController@cobaAjax')->name('coba.ajax');
 Route::post('/coba/pusher', 'MesinController@cobaPusher')->name('coba.pusher');
+Route::get('/coba1', function(){
+    return view('testPusher1');
+})->name('coba.pusher');
+
+Route::get('/coba2', function(){
+    return view('testPusher2');
+})->name('coba.pusher');
 //Route coba-coba
 
 Route::get('/admin/analisis', 'AnalisisController@admin')->name('analisis.admin');
