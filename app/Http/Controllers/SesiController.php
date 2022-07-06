@@ -37,6 +37,8 @@ class SesiController extends Controller
         $team = DB::table('teams')
             ->select('idteam', 'dana', 'hibah')
             ->get();
+
+        
             
         if ($upSesi == 3) {
             foreach ($team as $t) {

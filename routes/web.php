@@ -24,6 +24,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Dashboard
     Route::get('/', 'TeamController@dashboard')->name('dashboard');
+    // Analisis Proses
+    Route::get('/analisis', 'AnalisisController@analisi')->name('analisis');
+    Route::post('/analisis/proses', 'AnalisisController@insertProses')->name('analisis.proses');
     Route::middleware([CheckSesi::class])->group(function(){
         // Mesin Kapasitas
         Route::get('/kapasitas', 'KapasitasController@kapasitas')->name('kapasitas');
@@ -34,13 +37,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/komponen/ajax', 'KomponenController@komponenAjax')->name('komponen.ajax');
         Route::post('/komponen/upgrade', 'KomponenController@komponenUpgrade')->name('upgrade.komponen');
 
-        // Analisis Proses
-        Route::get('/analisis', 'AnalisisController@analisi')->name('analisis');
-        Route::post('/analisis/proses', 'AnalisisController@insertProses')->name('analisis.proses');
-        
+
         // Analisis Bahan Baku
         Route::get('/bahan', 'BahanController@bahan')->name('bahan');
         Route::post('/bahan', 'BahanController@analisisBahan')->name('analisis.bahan');
+
+        //produksi
+        Route::get('/produksi', 'ProduksiController@produksi')->name('produksi');
+        Route::post('/produksi/buat', 'ProduksiController@buat')->name('produksi.buat');
     });
 
 
@@ -57,9 +61,6 @@ Route::get('/admin', function () {
     return view('Sesi_Analisis.admin');
 })->name('admin');
 
-//produksi
-Route::get('/produksi', 'ProduksiController@produksi')->name('produksi');
-Route::post('/produksi/buat', 'ProduksiController@buat')->name('produksi.buat');
 
 Route::get('/prosesbahan', function () {
     return view('Analisis_Bahan_Baku.prosesbahan');

@@ -11,8 +11,8 @@ class MarketController extends Controller
     function market()
     {
         $user = DB::table('teams')->select('nama', 'idteam')->get();
-        $sesi = DB::table('sesi')->select('sesi')->get();
-        $data = DB::table('ig_markets')->where('sesi', $sesi[0]->sesi)->get();
+        $sesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
+        $data = DB::table('ig_markets')->where('sesi', $sesi[0]->nama)->get();
         return view('market', compact('data', 'user', 'sesi'));
     }
 
@@ -21,9 +21,9 @@ class MarketController extends Controller
         try {
             $item = $request->get('item');
             $total = $request->get('total');
-            $getSesi = DB::table('sesi')->select('sesi')->get();
-            $sesi = $getSesi[0]->sesi;
-            $team = Auth::user()->teams_idteam;
+            $getSesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
+            $sesi = $getSesi[0]->nama;
+            $team = $request->get('team');
             $total_bahan = $request->get('total_bahan');
             $totalItem = $request->get('totalItem');
             $sisaInv = 0;

@@ -20,6 +20,9 @@ class CheckSesi
         if($checkSesi[0]->nama == 'Cooldown'){
             return redirect('/');
         }
+         if($checkSesi[0]->nama == '2'){
+            return redirect('analisis');
+        }
         return $next($request);
     }
 }

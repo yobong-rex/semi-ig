@@ -40,8 +40,9 @@ class ProduksiController extends Controller
     {
         $team = Auth::user()->teams_idteam;
         $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
-        $sesi = DB::table('sesi')->select('sesi')->get();
-        $sesi1 = $sesi[0]->sesi;
+        $getSesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
+        $sesi1 = $getSesi[0]->nama;
+        // $sesi1 = $sesi[0]->sesi;
         if ($sesi1 == 2) {
             return redirect()->route('dashboard');
         }
@@ -94,8 +95,8 @@ class ProduksiController extends Controller
         $produk = $request->get('produk');
         $jumlah = $request->get('jumlah');
         $defect = $request->get('defect');
-        $getSesi = DB::table('sesi')->select('sesi')->get();
-        $sesi = $getSesi[0]->sesi;
+        $getSesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
+        $sesi = $getSesi[0]->nama;
         $team = Auth::user()->teams_idteam;
         $name = $request->get('name');
 
@@ -185,6 +186,7 @@ class ProduksiController extends Controller
             $jmlTemp = $jmlTemp * $persen / 100;
         }
         $hasil = floor($jmlTemp);
+        $hasil_user = $hasil;
         $histori = DB::table('history_produksi')->select('hasil')->where('teams_idteam', $team)->where('produk_idproduk', $produk)->get();
         if (count($histori) > 0) {
             $hasil += $histori[0]->hasil;
@@ -194,7 +196,7 @@ class ProduksiController extends Controller
         $newDana = $teamStatus[0]->dana - 100;
         DB::table('history_produksi')
             ->updateOrInsert(
-                ['teams_idteam' => $team, 'produk_idproduk' => $produk],
+                ['teams_idteam' => $team, 'produk_idproduk' => $produk,'sesi'=> $sesi],
                 ['hasil' => $hasil]
             );
         DB::table('teams')->where('idteam', $team)->update([
@@ -202,7 +204,7 @@ class ProduksiController extends Controller
             'inventory'     => $newInv
         ]);
         return response()->json(array(
-            'msg' => 'selamat kamu berhasil melakukan produksi '.$name.' sebanyak '. $hasil,
+            'msg' => 'selamat kamu berhasil melakukan produksi '.$name.' sebanyak '. $hasil_user,
             'code' => '401'
         ), 200);
     }

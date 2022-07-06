@@ -68,7 +68,7 @@
                     <h1 id="namaTeam" value="{{ $user[0]->idteam }}">Team {{-- {{ $user[0]->nama }} --}}</h1>
                 </div>
                 <div class="col-1" style="color:#000;">
-                    <h3 id="nomorSesi">Sesi <span id='sesi'>{{ $sesi[0]->sesi }}</span></h3>
+                    <h3 id="nomorSesi">Sesi <span id='sesi'>{{ $sesi[0]->nama }}</span></h3>
                 </div>
                 <div class="col-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
                     <h3>Timer</h3>

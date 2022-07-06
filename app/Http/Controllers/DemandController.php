@@ -8,7 +8,7 @@ use DB;
 class DemandController extends Controller
 {
     function demand(){
-        $sesi = DB::table('sesi')->select('sesi')->get();
+        $sesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
         $user = DB::table('teams')->select('nama','idteam')->get();
         // $data = DB::table('team_demand')
         //             ->join('produk','team_demand.idproduk','produk.idproduk')
@@ -16,7 +16,7 @@ class DemandController extends Controller
         //             ->where('sesi',$sesi[0]->sesi)
         //             ->get();
         $produk = DB::table('produk')->select('idproduk','nama')->get();
-        $sesi1 = $sesi[0]->sesi;
+        $sesi1 = $sesi[0]->nama;
         // return view('demand',compact('data','produk','user','sesi1'));  
         return view('demand',compact('produk','user','sesi1'));  
         
@@ -24,8 +24,8 @@ class DemandController extends Controller
 
     function getDemand(Request $request){
         $team = $request->get('team');
-        $sesi = $request->get('sesi');
-
+        $sesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
+        $sesi = $sesi[0]->nama;
         $list = DB::table('team_demand')
                     ->join('produk','team_demand.idproduk','produk.idproduk')
                     ->where('idteam',$team)
@@ -41,8 +41,8 @@ class DemandController extends Controller
     function konfrim(Request $request){
         try {
             $demand = $request->get('demand');
-            $getSesi = DB::table('sesi')->select('sesi')->get();
-            $sesi = $getSesi[0]->sesi;
+            $getSesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
+            $sesi = $getSesi[0]->nama;
             $team = Auth::user()->teams_idteam;
             $totalJual = 0;
             $countDemand = 0;
