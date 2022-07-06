@@ -2,6 +2,7 @@
 
 use App\Komponen;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CheckSesi;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,23 +24,27 @@ Route::middleware(['auth'])->group(function () {
 
     // Dashboard
     Route::get('/', 'TeamController@dashboard')->name('dashboard');
+    Route::middleware([CheckSesi::class])->group(function(){
+        // Mesin Kapasitas
+        Route::get('/kapasitas', 'KapasitasController@kapasitas')->name('kapasitas');
+        Route::post('/kapasitas/upgrade', 'KapasitasController@kapasitasUpgrade')->name('upgrade.kapasitas');
 
-    // Mesin Komponen
-    Route::get('/komponen', 'KomponenController@komponen')->name('komponen');
-    Route::get('/komponen/ajax', 'KomponenController@komponenAjax')->name('komponen.ajax');
-    Route::post('/komponen/upgrade', 'KomponenController@komponenUpgrade')->name('upgrade.komponen');
+        // Mesin Komponen
+        Route::get('/komponen', 'KomponenController@komponen')->name('komponen');
+        Route::get('/komponen/ajax', 'KomponenController@komponenAjax')->name('komponen.ajax');
+        Route::post('/komponen/upgrade', 'KomponenController@komponenUpgrade')->name('upgrade.komponen');
 
-    // Mesin Kapasitas
-    Route::get('/kapasitas', 'KapasitasController@kapasitas')->name('kapasitas');
-    Route::post('/kapasitas/upgrade', 'KapasitasController@kapasitasUpgrade')->name('upgrade.kapasitas');
+        // Analisis Proses
+        Route::get('/analisis', 'AnalisisController@analisi')->name('analisis');
+        Route::post('/analisis/proses', 'AnalisisController@insertProses')->name('analisis.proses');
+        
+        // Analisis Bahan Baku
+        Route::get('/bahan', 'BahanController@bahan')->name('bahan');
+        Route::post('/bahan', 'BahanController@analisisBahan')->name('analisis.bahan');
+    });
 
-    // Analisis Proses
-    Route::get('/analisis', 'AnalisisController@analisi')->name('analisis');
-    Route::post('/analisis/proses', 'AnalisisController@insertProses')->name('analisis.proses');
 
-    // Analisis Bahan Baku
-    Route::get('/bahan', 'BahanController@bahan')->name('bahan');
-    Route::post('/bahan', 'BahanController@analisisBahan')->name('analisis.bahan');
+
 });
 
 
