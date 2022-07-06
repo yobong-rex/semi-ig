@@ -90,16 +90,21 @@ class ProduksiController extends Controller
 
     function buat(Request $request)
     {
-        $btn = $request->get('submit');
-        $produk = $request->get('produk_' . $btn);
-        $jumlah = $request->get('jumlah_' . $btn);
-        $defect = $request->get('defect_' . $btn);
-        $sesi = $request->get('sesi');
-        $team = $request->get('team');
+        $btn = $request->get('btn');
+        $produk = $request->get('produk');
+        $jumlah = $request->get('jumlah');
+        $defect = $request->get('defect');
+        $getSesi = DB::table('sesi')->select('sesi')->get();
+        $sesi = $getSesi[0]->sesi;
+        $team = Auth::user()->teams_idteam;
+        $name = $request->get('name');
 
         if ($sesi == 1) {
             if ($jumlah > 80) {
-                return redirect()->route('produksi')->with('error', 'jumlah yang ingin kamu produksi melebihi kapasitas produksi');
+                return response()->json(array(
+                    'msg' => 'maaf, jumlah yang ingin kamu produksi melebihi kapasitas produksi',
+                    'code' => '401'
+                ), 200);
             }
         } else {
 
@@ -122,7 +127,10 @@ class ProduksiController extends Controller
             }
 
             if (($jumlah > $analisisProses[0][0]) || ($jumlah > $analisisProses[0][1])) {
-                return redirect()->route('produksi')->with('error', 'jumlah yang ingin kamu produksi melebihi kapasitas produksi');
+                return response()->json(array(
+                    'msg' => 'maaf, jumlah yang ingin kamu produksi melebihi kapasitas produksi',
+                    'code' => '401'
+                ), 200);
             }
         }
 
@@ -130,7 +138,10 @@ class ProduksiController extends Controller
         $bahanBaku_split = explode(';', $bahanBaku[0]->bahan_baku);
         $teamStatus = DB::table('teams')->select('dana', 'inventory')->where('idteam', $team)->get();
         if ($teamStatus[0]->dana < 100) {
-            return redirect()->route('produksi')->with('error', 'maaf dana mu kurang untuk membuat product');
+            return response()->json(array(
+                'msg' => 'maaf, maaf dana mu kurang untuk membuat product',
+                'code' => '401'
+            ), 200);
         }
 
         foreach ($bahanBaku_split as $bb) {
@@ -143,7 +154,10 @@ class ProduksiController extends Controller
                 ->get();
             if (count($inv) > 0) {
                 if ($jumlah > $inv[0]->stock) {
-                    return redirect()->route('produksi')->with('error', 'maaf bahan baku mu kurang untuk membuat product');
+                    return response()->json(array(
+                        'msg' => 'maaf, bahan baku mu kurang untuk membuat product',
+                        'code' => '401'
+                    ), 200);
                 } else {
                     $invBaru = $inv[0]->stock - $jumlah;
                     DB::table('inventory')
@@ -152,7 +166,10 @@ class ProduksiController extends Controller
                         ->update(['stock' => $invBaru]);
                 }
             } else {
-                return redirect()->route('produksi')->with('error', 'maaf bahan baku mu kurang untuk membuat product');
+                return response()->json(array(
+                    'msg' => 'maaf, bahan baku mu kurang untuk membuat product',
+                    'code' => '401'
+                ), 200);
             }
         }
 
@@ -184,6 +201,9 @@ class ProduksiController extends Controller
             'dana'          => $newDana,
             'inventory'     => $newInv
         ]);
-        return redirect()->route('produksi')->with('status', 'selamat kamu berhasil melakukan produksi sebanyak ' . $hasil);
+        return response()->json(array(
+            'msg' => 'selamat kamu berhasil melakukan produksi '.$name.' sebanyak '. $hasil,
+            'code' => '401'
+        ), 200);
     }
 }

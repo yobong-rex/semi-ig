@@ -21,9 +21,10 @@ class MarketController extends Controller
         try {
             $item = $request->get('item');
             $total = $request->get('total');
-            $team = $request->get('team');
+            $getSesi = DB::table('sesi')->select('sesi')->get();
+            $sesi = $getSesi[0]->sesi;
+            $team = Auth::user()->teams_idteam;
             $total_bahan = $request->get('total_bahan');
-            $sesi = $request->get('sesi');
             $totalItem = $request->get('totalItem');
             $sisaInv = 0;
 

@@ -196,7 +196,7 @@
                                 @endfor
                                 <td>
                                     {{--Button Tampilin modal--}}
-                                    <button type="button" class="btn btn-success btn-modal" id="button_PopupModal" btn='{{$i}}' data-bs-toggle="modal" data-bs-target="#staticBackdrop">Konfirmasi</button>
+                                    <button type="button" class="btn btn-success " id="button_PopupModal" btn='{{$i}}' data-bs-toggle="modal" data-bs-target="#staticBackdrop">Konfirmasi</button>
 
                                     {{--Button asli--}}
                                     {{--<button class="btn btn-success" name='submit' value='{{ $i }}' id="button_{{ $i }}">Konfirmasi</button>--}}
@@ -221,17 +221,35 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body flex">
-                                Apakah anda yakin untuk melakukan produksi {{$i}} ?
+                                Apakah anda yakin untuk melakukan produksi <span id='no-konfrim'></span> ?
                             </div>
                             <div class="modal-footer">
 
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Cancel</button>
  
-                                <button class="btn btn-success" name='submit' value='{{ $i }}' id="button_{{ $i }}">Konfirmasi</button>
+                                <button class="btn btn-success btn-modal" name='button'>Konfirmasi</button>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- modal info -->
+                <div class="modal fade" id="modalInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Informasi</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body flex" id='info-body'>
+                                
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end modal info -->
 
             {{-- Kartu bawah --}}
             <!-- <div class="row">
@@ -274,14 +292,22 @@
         </div>
 
         <script>
+            let btn = '';
+            $(document).on('click','#button_PopupModal', function(){
+                btn = $(this).attr('btn');
+                $('#no-konfrim').text(btn);
+            })
+
             $(document).on('click','.btn-modal', function(){
-                let btn = $(this).attr('btn');
+                // alert(btn);
                 let defect = $('#defect_'+btn).attr('value');
                 let sesi = $('#sesi').attr('value');
                 let team = $('#team').attr('value');
                 let product = $('#produk_'+btn).val();
+                let product_name = $('#produk_'+btn+" option:selected").text();
                 let jumlah = $('#jumlahProduk_'+btn).val();
-                // console.log(jumlah);
+                console.log(product_name);
+                // alert(product_name)
                 $.ajax({
                 type: "POST",
                 url: "{{ route('produksi.buat') }}",
@@ -292,9 +318,15 @@
                     'defect' : defect,
                     'produk' : product,
                     'jumlah' : jumlah,
+                    'name'  : product_name,
+                    'btn'   : btn
                 },
                 success: function(data) {
-                    
+                    $('#staticBackdrop').modal('hide');
+                    $('#info-body').text(data.msg);
+                    $('#modalInfo').modal('show');
+                    $('#produk_'+btn).val("").change();
+                    $('#jumlahProduk_'+btn).val(0);
                 },
                 error: function() {
                     // alert('error');

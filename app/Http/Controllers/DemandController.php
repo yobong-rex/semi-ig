@@ -41,8 +41,9 @@ class DemandController extends Controller
     function konfrim(Request $request){
         try {
             $demand = $request->get('demand');
-            $team = $request->get('team');
-            $sesi = $request->get('sesi');
+            $getSesi = DB::table('sesi')->select('sesi')->get();
+            $sesi = $getSesi[0]->sesi;
+            $team = Auth::user()->teams_idteam;
             $totalJual = 0;
             $countDemand = 0;
             $totalDemand = 0;
