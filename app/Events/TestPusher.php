@@ -14,12 +14,13 @@ class TestPusher implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    // field
-    public $test;
+    // Fields
+    public $field;
 
-    public function __construct($test)
+    // Constructors
+    public function __construct($parameter)
     {
-        $this->test = $test;
+        $this->field = $parameter;
     }
 
     // kirim ke user tertentu
@@ -29,12 +30,18 @@ class TestPusher implements ShouldBroadcast
     // }
 
     // kirim ke semua user
+    // public function broadcastOn()
+    // {
+    //     return new CHannel('channel-name');
+    // }
+
     public function broadcastOn()
     {
         return new Channel('testPusher');
     }
 
-    public function broadcastAs(){
+    public function broadcastAs()
+    {
         return "public";
     }
 }

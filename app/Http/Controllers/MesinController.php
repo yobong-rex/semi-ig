@@ -94,14 +94,12 @@ class MesinController extends Controller
         ), 200);
     }
 
-    function cobaPusher(Request $request)
+    public function cobaPusher(Request $request)
     {
-        $message = $request->get('test');
+        $message = $request->get('message');
 
         event(new TestPusher($message));
 
-        return response()->json(array(
-            'status' => true
-        ), 200); 
+        return ['success' => true];
     }
 }

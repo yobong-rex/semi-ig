@@ -5,23 +5,22 @@
 @section('content')
 
     <body>
-        <h1>Test Pusher 1</h1>
-        <form action="" method="post">
-            <input type="text" name="line" id="line" placeholder="test pusher">
-            <button id="send" type="button">Send Pusher</button>
-        </form>
+        <h1>Sender Pusher</h1>
+        <h2>Test</h2>
+        <input type="text" id="line" placeholder="test pusher">
+        <button type="button" id="send">Send Pusher</button>
         <script>
             $('#send').click(function() {
                 $.ajax({
-                    type: "POST",
+                    type: 'POST',
                     url: "{{ route('coba.pusher') }}",
                     data: {
                         '_token': '<?php echo csrf_token(); ?>',
-                        'test': $('#line').val()
+                        'message': $('#line').val()
                     },
                     success: function(data) {
-                        if (data.status) {
-                            alert('success');
+                        if (data.success) {
+                            $('#line').val();
                         }
                     },
                     error: function() {
