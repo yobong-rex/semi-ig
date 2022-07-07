@@ -19,7 +19,7 @@ use App\Http\Middleware\CheckSesi;
 //     return view('');
 // })->name('');
 
-
+// route masukkan sini kalau sebelum masuk halaman web user harus login dahulu
 Route::middleware(['auth'])->group(function () {
 
     // Dashboard
@@ -78,8 +78,17 @@ Route::post('/adminsesi/backsesi', 'SesiController@backSesi')->name('back.sesi')
 // })->name('komponenMesin');
 
 //Route coba-coba
-Route::post('/coba', 'MesinController@coba')->name('coba');
-// Route::get('/upgradeKomponen', 'MesinController')->name('upgrade');
+Route::post('/ajax', 'MesinController@cobaAjax')->name('coba.ajax');
+Route::post('/pusher', 'MesinController@cobaPusher')->name('coba.pusher');
+
+Route::get('/sender', function(){
+    return view('senderPusher');
+})->name('sender');
+
+Route::get('/receiver', function(){
+    return view('receiverPusher');
+})->name('receiver');
+//Route coba-coba
 
 Route::get('/admin/analisis', 'AnalisisController@admin')->name('analisis.admin');
 Route::post('/admin/analisis/update', 'AnalisisController@updateSesi')->name('analisis.update');
@@ -89,8 +98,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/demand', 'DemandController@demand')->name('demand');
 Route::post('/demand/konfrim', 'DemandController@konfrim')->name('demand.konfrim');
 Route::post('/demand/get', 'DemandController@getDemand')->name('demand.getDemand');
-
-// Route::get('/komponentes', 'KomponenController@komponen')->name('komponestes');
 
 Route::get('/adminkomponen', function () {
     return view('mesin.adminkomponen');
@@ -104,6 +111,10 @@ Route::get('/maketeam', function () {
 })->name('maketeam');
 
 Route::post('/maketeam/maketeam', 'TeamController@makeTeam')->name('makeTeam');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 

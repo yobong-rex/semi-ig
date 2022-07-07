@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Sesi;
 use App\Team;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use DB;
 use Auth;
 
@@ -111,7 +113,7 @@ class TeamController extends Controller
             ->groupBy('a.produksi')
             ->orderBy('a.idanalisis')
             ->get();
-            
+
         $analisisProses = [];
         foreach ($idanalisisProses as $idAP) {
             $arrAP = DB::table('teams_has_analisis')
@@ -120,7 +122,9 @@ class TeamController extends Controller
                 ->get();
             $analisisProses[] = array($arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
         }
-        
+
+        event(new Sesi($sesi[0]->sesi));
+
         return view('Dashboard.dashboard', compact('user', 'sesi', 'data', 'produk', 'bahanBaku', 'bbTeam', 'produk_team', 'analisisProses'));
     }
 
@@ -151,6 +155,7 @@ class TeamController extends Controller
                 'customer_value' => 0,
                 'hibah' => 0
             ]);
+
         $idteam = DB::getPdo()->lastInsertId();
         $idkomponen = 1;
         for ($jenisMesin = 1; $jenisMesin <= 7; $jenisMesin++) {
