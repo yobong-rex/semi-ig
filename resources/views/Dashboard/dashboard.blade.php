@@ -78,7 +78,7 @@
                     <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
                 </div>
                 <div class="col-1">
-                    <h3 id="nomorSesi">Sesi <span id="sesi"></span></h3>
+                    <h3 id="nomorSesi">Sesi <span id="sesi">{{$sesi[0]->sesi}}</span></h3>
                 </div>
                 <div class="col-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
                     <h3>Timer</h3>
@@ -325,6 +325,8 @@
     <script src="../../js/app.js"></script>
     <script>
         window.Echo.channel('sesiPusher').listen('.sesi', (e) => {
+            // alert('dar');
+            console.log(e.sesi);
             $('#sesi').text(e.sesi);
         })
     </script>
