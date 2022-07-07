@@ -20,7 +20,7 @@
                     },
                     success: function(data) {
                         if (data.success) {
-                            $('#line').val();
+
                         }
                     },
                     error: function() {

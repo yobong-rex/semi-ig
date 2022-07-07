@@ -29,6 +29,7 @@
         </div>
     </body>
 
+    <script src="../js/app.js"></script>
     <script>
         window.Echo.channel('testPusher').listen('.public', (e) => {
             $('#notif').text(e.field);

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Sesi;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use DB;
 
 class SesiController extends Controller
@@ -37,10 +39,10 @@ class SesiController extends Controller
         $team = DB::table('teams')
             ->select('idteam', 'dana', 'hibah')
             ->get();
-            
+
         if ($upSesi == 3) {
             foreach ($team as $t) {
-                $dblDana = (double)$t->dana;
+                $dblDana = (float)$t->dana;
                 $danaPlus = ($dblDana) + ($t->hibah);
                 $hibahBaru = ($t->hibah) - ($t->hibah);
                 $danaBaru = (int)floor($danaPlus);

@@ -10,9 +10,11 @@
         <button type="button" class="btn btn-success" id="button_gantiSesi">Ganti Sesi</button>
         <button type="button" class="btn btn-success" id="button_back">Back Sesi</button>
     </body>
+
+    {{-- Ajax/Pusher --}}
     <script>
+        // buat ganti sesi
         $('#button_gantiSesi').click(function() {
-            // alert($('#nomorSesi').html());
             $.ajax({
                 type: 'POST',
                 url: "{{ route('ganti.sesi') }}",
@@ -35,8 +37,8 @@
             });
         });
 
+        // buat back sesi
         $('#button_back').click(function() {
-            // alert($('#nomorSesi').html());
             $.ajax({
                 type: 'POST',
                 url: "{{ route('back.sesi') }}",
