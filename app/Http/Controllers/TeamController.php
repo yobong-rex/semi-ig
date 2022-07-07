@@ -145,6 +145,9 @@ class TeamController extends Controller
                 'msg' => 'Nama Team Sudah Terpakai'
             ), 200);
         }
+
+        $mesin = DB::table('mesin')->get();
+
         DB::table('teams')
             ->insert([
                 'nama' => $namaTeam,
@@ -163,7 +166,8 @@ class TeamController extends Controller
                 ->insert([
                     'mesin_idmesin' => $jenisMesin,
                     'teams_idteam' => $idteam,
-                    'level' => 1
+                    'level' => 1,
+                    'cycleTime' => $mesin[$jenisMesin-1]->cycle
                 ]);
             DB::table('kapasitas_has_teams')
                 ->insert([
@@ -181,6 +185,7 @@ class TeamController extends Controller
                 $idkomponen += 10;
             }
         }
+
         return response()->json(array(
             'msg' => 'berhasil'
         ), 200);

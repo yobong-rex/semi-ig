@@ -106,6 +106,7 @@ Route::get('/adminkomponen', function () {
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+// make team
 Route::get('/maketeam', function () {
     return view('maketeam');
 })->name('maketeam');
