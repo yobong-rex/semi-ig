@@ -55,8 +55,14 @@ class SesiController extends Controller
             }
         }
 
+        $getSesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
+        $sesi = $getSesi[0]->nama;
+
+        event(new Sesi($sesi));
+
         return response()->json(array(
-            'sesi' => $updated
+            "success"=>true,
+            'sesi' => $sesi
         ), 200);
     }
 
@@ -78,8 +84,24 @@ class SesiController extends Controller
             ->where('idsesi', 1)
             ->get();
 
+       
+            $getSesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
+            $sesi = $getSesi[0]->nama;
+    
+            event(new Sesi($sesi));
+    
+            return response()->json(array(
+                "success"=>true,
+                'sesi' => $sesi
+            ), 200);
+    }
+
+    public function getSesi(Request $request){
+        
+        $getSesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
+        $sesi = $getSesi[0]->nama;
         return response()->json(array(
-            'sesi' => $updated
+            'sesi' => $sesi
         ), 200);
     }
 }

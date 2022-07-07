@@ -123,7 +123,7 @@ class TeamController extends Controller
             $analisisProses[] = array($arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
         }
 
-        event(new Sesi($sesi[0]->sesi));
+        // event(new Sesi($sesi[0]->sesi));
 
         return view('Dashboard.dashboard', compact('user', 'sesi', 'data', 'produk', 'bahanBaku', 'bbTeam', 'produk_team', 'analisisProses'));
     }
