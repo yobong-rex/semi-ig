@@ -199,8 +199,71 @@
             /* Pusher */
             window.Echo.channel('sesiPusher').listen('.sesi', (e) => {
                 console.log(e.sesi);
+                console.log(e.waktu);
                 $('#sesi').text(e.sesi);
+                let waktu = e.waktu;
+                let time = waktu * 1000;
+                let timer = time;
+
+                /* Timer */
+                // Jalan per milidetik yang disetting di akhir (1000)
+                var x = setInterval(function() {
+                    // kalau masih ada waktu, maka kurangi
+                    if (timer > 0) {
+                        //kurangi per 1000 milisecond
+                        timer -= 1000;
+
+                        // jadikan minutes : second
+                        let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 * 60));
+                        let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+
+                        // kalau tidak double digit jadikan double digit
+                        if (minutes < 10) {
+                            minutes = '0' + minutes;
+                        }
+                        if (seconds < 10) {
+                            seconds = '0' + seconds;
+                        }
+
+                        // tampilkan timer
+                        $('#timer').text(minutes + " : " + seconds);
+                    }
+                    // kalau sudah habis, maka selesai 
+                    else {
+                        clearInterval(x);
+                        $('#timer').text('- - : - -');
+                    }
+                }, 1000)
             })
+
+            // function setupInterval(callback, interval, name) {
+            //     var key = '_timeInMs_' + (name || '');
+            //     var now = Date.now();
+            //     var timeInMs = localStorage.getItem(key);
+            //     var executeCallback = function() {
+            //         localStorage.setItem(key, Date.now());
+            //         callback();
+            //     }
+            //     if (timeInMs) { // User has visited
+            //         var time = parseInt(timeInMs);
+            //         var delta = now - time;
+            //         if (delta > interval) { // User has been away longer than interval
+            //             setInterval(executeCallback, interval);
+            //         } else { // Execute callback when we reach the next interval
+            //             setTimeout(function() {
+            //                 setInterval(executeCallback, interval);
+            //                 executeCallback();
+            //             }, interval - delta);
+            //         }
+            //     } else {
+            //         setInterval(executeCallback, interval);
+            //     }
+            //     localStorage.setItem(key, now);
+            // }
+
+            // setupInterval(function() {
+            //     console.log("test"); // function is called here
+            // }, 10000);
 
             /* Ajax */
             $('#mesin').change(function() {

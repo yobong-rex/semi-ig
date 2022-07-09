@@ -15,18 +15,21 @@ class Sesi implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $sesi;
+    public $waktu;
 
-    public function __construct($sesi)
+    public function __construct($sesi, $waktu)
     {
-        $this->sesi=$sesi;
+        $this->sesi = $sesi;
+        $this->waktu = $waktu;
     }
-    
+
     public function broadcastOn()
     {
         return new Channel('sesiPusher');
     }
 
-    public function broadcastAs(){
+    public function broadcastAs()
+    {
         return 'sesi';
     }
 }
