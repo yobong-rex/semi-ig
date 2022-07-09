@@ -15,7 +15,7 @@ class MarketController extends Controller
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
             ->select('s.sesi', 'ws.nama')
             ->get();
-        $data = DB::table('ig_markets')->where('sesi', $sesi[0]->sesi)->get();
+        $data = DB::table('ig_markets')->where('sesi', $sesi[0]->nama)->get();
         return view('market', compact('data', 'user', 'sesi'));
     }
 
