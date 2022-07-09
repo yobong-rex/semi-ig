@@ -91,15 +91,18 @@ class TeamController extends Controller
         $team = Auth::user()->teams_idteam;
         $user = DB::table('teams')->select('nama', 'dana', 'idteam', 'inventory', 'demand', 'customer_value', 'hibah')->where('idteam', $team)->get();
 
-        $sesi = DB::table('sesi')->select('sesi')->get();
+        $sesi = DB::table('sesi as s')
+            ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
+            ->select('s.sesi', 'ws.nama')
+            ->get();
 
         $data = DB::table('team_demand')
             ->join('produk', 'team_demand.idproduk', 'produk.idproduk')
             ->where('idteam', $team)
-            ->where('sesi', $sesi[0]->sesi)
+            ->where('sesi', $sesi[0]->nama)
             ->get();
 
-        $bahanBaku = DB::table('ig_markets')->where('sesi', $sesi[0]->sesi)->get();
+        $bahanBaku = DB::table('ig_markets')->where('sesi', $sesi[0]->nama)->get();
         $bbTeam = DB::table('inventory')->where('teams', $team)->get();
 
         $produk = DB::table('produk')->select('idproduk', 'nama')->get();
@@ -122,8 +125,6 @@ class TeamController extends Controller
                 ->get();
             $analisisProses[] = array($arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
         }
-
-        // event(new Sesi($sesi[0]->sesi));
 
         return view('Dashboard.dashboard', compact('user', 'sesi', 'data', 'produk', 'bahanBaku', 'bbTeam', 'produk_team', 'analisisProses'));
     }

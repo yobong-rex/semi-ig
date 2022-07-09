@@ -10,17 +10,14 @@ class AnalisisController extends Controller
 {
     function analisi()
     {
-        $sesi = DB::table('sesi')->select('sesi', 'analisis')->get();
+        $sesi = DB::table('sesi as s')
+            ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
+            ->select('s.sesi', 's.analisis', 'ws.nama')
+            ->get();
+
         if ($sesi[0]->analisis == true) {
             $team = Auth::user()->teams_idteam;
             $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
-            // $mesin = DB::table('mesin')
-            //     ->join('view_kapasitas_mesin', 'mesin.idmesin', '=', 'view_kapasitas_mesin.mesin_id')
-            //     ->join('mesin_has_teams', 'mesin.idmesin', '=', 'mesin_has_teams.mesin_idmesin')
-            //     ->select('mesin.idmesin', 'mesin.nama', 'mesin.cycle', 'view_kapasitas_mesin.kapasitas')
-            //     ->where('mesin_has_teams.teams_idteam', $user[0]->idteam)
-            //     ->where('view_kapasitas_mesin.team', $user[0]->idteam)
-            //     ->get();
 
             $mesin = DB::table('mesin as m')
                 ->join('mesin_has_teams as mht', 'm.idmesin', '=', 'mht.mesin_idmesin')

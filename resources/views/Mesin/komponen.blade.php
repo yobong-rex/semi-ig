@@ -70,7 +70,7 @@
                     <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
                 </div>
                 <div class="col-1">
-                    <h3 id="nomorSesi">Sesi {{ $sesi[0]->sesi }}</h3>
+                    <h3 id="nomorSesi">Sesi <span id="sesi">{{ $sesi[0]->nama }}</span></h3>
                 </div>
                 <div class="col-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
                     <h3>Timer</h3>
@@ -194,7 +194,15 @@
             </div>
         </div>
 
+        <script src="../../js/app.js"></script>
         <script>
+            /* Pusher */
+            window.Echo.channel('sesiPusher').listen('.sesi', (e) => {
+                console.log(e.sesi);
+                $('#sesi').text(e.sesi);
+            })
+
+            /* Ajax */
             $('#mesin').change(function() {
                 // alert($('#mesin').val());
                 $.ajax({

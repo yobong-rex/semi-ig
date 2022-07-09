@@ -40,8 +40,11 @@ class ProduksiController extends Controller
     {
         $team = Auth::user()->teams_idteam;
         $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
-        $sesi = DB::table('sesi')->select('sesi')->get();
-        $sesi1 = $sesi[0]->sesi;
+        $sesi = DB::table('sesi as s')
+            ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
+            ->select('s.sesi', 'ws.nama')
+            ->get();
+        $sesi1 = $sesi[0]->nama;
         if ($sesi1 == 2) {
             return redirect()->route('dashboard');
         }

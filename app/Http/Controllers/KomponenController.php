@@ -90,7 +90,10 @@ class KomponenController extends Controller
         $idmesin = DB::table('mesin')->where('nama', 'like', '%Sorting%')->get();
         $namaMesin = DB::table('mesin')->select('nama')->get();
 
-        $sesi = DB::table('sesi')->select('sesi')->get();
+        $sesi = DB::table('sesi as s')
+            ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
+            ->select('s.sesi', 'ws.nama')
+            ->get();
 
         $data = DB::table('mesin as m')
             ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
