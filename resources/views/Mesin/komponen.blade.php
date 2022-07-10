@@ -70,11 +70,26 @@
                     <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
                 </div>
                 <div class="col-1">
-                    <h3 id="nomorSesi">Sesi <span id="sesi">{{ $sesi[0]->nama }}</span></h3>
+                    <h3 id="nomorSesi" value="{{ $sesi[0]->sesi }}">Sesi <span id="sesi">{{ $sesi[0]->nama }}</span>
+                    </h3>
                 </div>
                 <div class="col-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
+                    {{-- @php
+                        $timer = $sesi[0]->waktu * 1000;
+                        // jadikan minutes : second
+                        $minutes = floor(($timer % (1000 * 60 * 60)) / (1000 * 60));
+                        $seconds = floor(($timer % (1000 * 60)) / 1000);
+                        
+                        // kalau tidak double digit jadikan double digit
+                        if ($minutes < 10) {
+                            $minutes = '0'.$minutes;
+                        }
+                        if ($seconds < 10) {
+                            $seconds = '0'.$seconds;
+                        }
+                    @endphp --}}
                     <h3>Timer</h3>
-                    <h4 id="timer">- - : - -</h4>
+                    <h4 id="timer">- - : - -{{-- {{ $minutes.' : '.$seconds }} --}}</h4>
                 </div>
             </div>
 
@@ -196,18 +211,84 @@
 
         <script src="../../js/app.js"></script>
         <script>
+            $(document).ready(function() {
+                // alert($('#sesi').text());
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('timer') }}",
+                    data: {
+                        '_token': '<?php echo csrf_token(); ?>',
+                        'namaSesi': $('#sesi').text()
+                    },
+                    success: function(data) {
+                        // alert('success');
+                        let timer = data.waktu[0].waktu * 1000 + 1000;
+                        // alert(timer);
+
+                        /* Timer */
+                        let x = setInterval(function() {
+                            // kalau masih ada waktu, maka kurangi
+                            if (timer > 0) {
+                                //kurangi per 1000 milisecond
+                                timer -= 1000;
+
+                                // jadikan minutes : second
+                                let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 * 60));
+                                let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+
+                                // kalau tidak double digit jadikan double digit
+                                if (minutes < 10) {
+                                    minutes = '0' + minutes;
+                                }
+                                if (seconds < 10) {
+                                    seconds = '0' + seconds;
+                                }
+
+                                // tampilkan timer
+                                $('#timer').text(minutes + " : " + seconds);
+                            }
+                            // kalau sudah habis, maka selesai 
+                            else {
+                                // hapus timer sekarang
+                                clearInterval(x);
+                                // $('#timer').text('- - : - -');
+
+                                // lanjut sesi berikutnya
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "{{ route('ganti.sesi') }}",
+                                    data: {
+                                        '_token': '<?php echo csrf_token(); ?>',
+                                        'sesi': $('#nomorSesi').attr('value')
+                                    },
+                                    success: function() {
+                                        // alert('success');
+                                    },
+                                    error: function() {
+                                        alert('error');
+                                    }
+                                })
+                            }
+                        }, 1000)
+                    },
+                    error: function() {
+                        alert('error');
+                    }
+                })
+            })
+
             /* Pusher */
             window.Echo.channel('sesiPusher').listen('.sesi', (e) => {
+                console.log(e.id);
                 console.log(e.sesi);
                 console.log(e.waktu);
+                $('#nomorSesi').attr('value', e.id);
                 $('#sesi').text(e.sesi);
-                let waktu = e.waktu;
-                let time = waktu * 1000;
-                let timer = time;
+                let timer = e.waktu * 1000 + 1000;
 
                 /* Timer */
                 // Jalan per milidetik yang disetting di akhir (1000)
-                var x = setInterval(function() {
+                let x = setInterval(function() {
                     // kalau masih ada waktu, maka kurangi
                     if (timer > 0) {
                         //kurangi per 1000 milisecond
@@ -230,8 +311,25 @@
                     }
                     // kalau sudah habis, maka selesai 
                     else {
+                        // hapus timer sekarang
                         clearInterval(x);
-                        $('#timer').text('- - : - -');
+                        // $('#timer').text('- - : - -');
+
+                        // lanjut sesi berikutnya
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('ganti.sesi') }}",
+                            data: {
+                                '_token': '<?php echo csrf_token(); ?>',
+                                'sesi': $('#nomorSesi').attr('value')
+                            },
+                            success: function() {
+                                // alert('success');
+                            },
+                            error: function() {
+                                alert('error');
+                            }
+                        })
                     }
                 }, 1000)
             })
@@ -265,7 +363,6 @@
             //     console.log("test"); // function is called here
             // }, 10000);
 
-            /* Ajax */
             $('#mesin').change(function() {
                 // alert($('#mesin').val());
                 $.ajax({

@@ -14,11 +14,13 @@ class Sesi implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $id;
     public $sesi;
     public $waktu;
 
-    public function __construct($sesi, $waktu)
+    public function __construct($id, $sesi, $waktu)
     {
+        $this->id = $id;
         $this->sesi = $sesi;
         $this->waktu = $waktu;
     }

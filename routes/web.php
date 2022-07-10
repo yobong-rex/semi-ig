@@ -65,6 +65,8 @@ Route::get('/adminsesi', 'SesiController@sesi')->name('adminsesi');
 Route::post('/adminsesi/gantisesi', 'SesiController@gantiSesi')->name('ganti.sesi');
 Route::post('/adminsesi/backsesi', 'SesiController@backSesi')->name('back.sesi');
 
+// Timer
+route::post('/timer', 'SesiController@Timer')->name('timer');
 
 // Mesin
 // Route::get('/komponen-mesin', function () {
