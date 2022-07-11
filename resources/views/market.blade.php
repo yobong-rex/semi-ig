@@ -141,7 +141,7 @@
                                 <th class="nomor_bahan" scope="row">{{ $nomer }}</th>
                                 <td>{{ $d->bahan_baku }}</td>
                                 <td id="isi_{{ $nomer }}">{{ $d->isi }}</td>
-                                <td id="stok_{{ $nomer }}">{{ $d->stok }}</td>
+                                <td id="stok_{{ $d->idig_markets }}">{{ $d->stok }}</td>
                                 <td id="harga_{{ $nomer }}">{{ $d->harga }}</td>
                                 <td><input class="form-control quantity" id="input_{{ $nomer }}" type="number"
                                         min="0"
@@ -219,11 +219,18 @@
                 </div>
             </div>
 
+            <script src="../../js/app.js"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
             <script>
                 let item = [];
                 let count = 0;
                 let totalItem = 0;
+
+                window.Echo.channel('stockChannel').listen('.stock', (e) => {
+                    console.log(e);
+                    // $()
+                    $('#sesi').text(e);
+                })
                 $(document).on('change', '.quantity', function() {
                     let quantity = $(this).val();
                     let id = $(this).attr('id');
@@ -302,7 +309,7 @@
 
                 $(document).on('click', '#reload', function() {
                     let value = $(this).val();
-                    location.reload()
+                    // location.reload()
                 })
             </script>
     </body>

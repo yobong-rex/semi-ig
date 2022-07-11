@@ -49,12 +49,18 @@ class DemandController extends Controller
             $totalDemand = 0;
             $updtDemand = 0;
 
-            //pengecean stok
+            //pengecean stok dan sisa demand
             foreach ($demand as $d){
+                $msg = '';
                 $invtProduct = DB::table('history_produksi')->where('teams_idteam',$team)->where('produk_idproduk',$d['produk'])->get();
+                $checkSisa = DB::table('team_demand')->where('idteam ',$team)->where('idproduk',$d['produk'])->where('sisa',0)->get();
                 if( count($invtProduct)==0 || $invtProduct[0]->hasil < $d['total']){
+                    $msg = 'maaf salah satu jumlah produk team kalian kurang untuk memenuhi demand';
+                }
+                if(count($checkSisa) >0) $msg = 'maaf salah satu demand mu sudah mencapai batas terpenuhi';
+                if ($msg != ''){
                     return response()->json(array(
-                        'msg'=>'maaf salah satu jumlah produk team kalian kurang untuk memenuhi demand',
+                        'msg'=>$msg,
                         'code'=> '200'
                     ), 200); 
                 }
@@ -63,7 +69,8 @@ class DemandController extends Controller
             foreach ($demand as $d){
                 $produkDemand = DB::table('demand')->where('sesi',$sesi)->where('produk_idproduk',$d['produk'])->get();
                 $invtProduct = DB::table('history_produksi')->where('teams_idteam',$team)->where('produk_idproduk',$d['produk'])->get();
-                if(count($produkDemand)>0){
+                
+                if(count($produkDemand)>0 ){
                     $hargaProduk = DB::table('produk')->select('harga_jual')->where('idproduk',$d['produk'])->get();
                     $hargaJual = $d['total'] * $hargaProduk[0]->harga_jual;
                     $totalJual += $hargaJual;

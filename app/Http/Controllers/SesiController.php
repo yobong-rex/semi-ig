@@ -37,7 +37,7 @@ class SesiController extends Controller
             ->get();
 
         $team = DB::table('teams')
-            ->select('idteam', 'dana', 'hibah')
+            ->select('idteam', 'dana', 'hibah','total_pendapatan')
             ->get();
 
         if ($upSesi == 3) {
@@ -52,6 +52,21 @@ class SesiController extends Controller
                         'dana' => ($danaBaru),
                         'hibah' => ($hibahBaru)
                     ]);
+            }
+        }
+
+        foreach ($team as $t){
+            $overProd = DB::table('history_produksi')->where('teams_idteam',$t->idteam)->where('sesi', $sekarang)->where('hasil','>',0)->get();
+            $temp = 0;
+            if(count($overProd)>0){
+                foreach ($overProd as $op){
+                    $hargaProduk = DB::table('produk')->select('harga_jual')->where('idproduk',$op->produk_idproduk)->get();
+                    $temp += ($op->hasil * floor($hargaProduk[0]->harga_jual * 40 /100)); 
+                }
+                $danaBaru = $t->dana + $temp;
+                $totalPendapatanBaru = $t->total_pendapatan + $temp;
+    
+                DB::table('teams')->where('idteam', $t->idteam)->update(['dana'=>$danaBaru, 'total_pendapatan'=>$totalPendapatanBaru]);
             }
         }
 
