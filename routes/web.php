@@ -68,10 +68,6 @@ Route::post('/adminsesi/backsesi', 'SesiController@backSesi')->name('back.sesi')
 // Timer
 route::post('/timer', 'SesiController@Timer')->name('timer');
 
-// Mesin
-// Route::get('/komponen-mesin', function () {
-//     return view ('mesin.komponen');
-// })->name('komponenMesin');
 
 //Route coba-coba
 Route::post('/ajax', 'MesinController@cobaAjax')->name('coba.ajax');
@@ -84,6 +80,10 @@ Route::get('/sender', function(){
 Route::get('/receiver', function(){
     return view('receiverPusher');
 })->name('receiver');
+
+Route::get('/test/timer', function(){
+    return view('testTimer');
+})->name('test.timer');
 //Route coba-coba
 
 Route::get('/admin/analisis', 'AnalisisController@admin')->name('analisis.admin');

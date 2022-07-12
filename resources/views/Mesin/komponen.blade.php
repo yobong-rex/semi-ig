@@ -74,22 +74,8 @@
                     </h3>
                 </div>
                 <div class="col-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
-                    {{-- @php
-                        $timer = $sesi[0]->waktu * 1000;
-                        // jadikan minutes : second
-                        $minutes = floor(($timer % (1000 * 60 * 60)) / (1000 * 60));
-                        $seconds = floor(($timer % (1000 * 60)) / 1000);
-                        
-                        // kalau tidak double digit jadikan double digit
-                        if ($minutes < 10) {
-                            $minutes = '0'.$minutes;
-                        }
-                        if ($seconds < 10) {
-                            $seconds = '0'.$seconds;
-                        }
-                    @endphp --}}
                     <h3>Timer</h3>
-                    <h4 id="timer">- - : - -{{-- {{ $minutes.' : '.$seconds }} --}}</h4>
+                    <h4 id="timer">- - : - -</h4>
                 </div>
             </div>
 
@@ -222,54 +208,135 @@
                     },
                     success: function(data) {
                         // alert('success');
-                        let timer = data.waktu[0].waktu * 1000 + 1000;
-                        // alert(timer);
+                        let waktu = data.waktu[0].waktu;
 
                         /* Timer */
-                        let x = setInterval(function() {
-                            // kalau masih ada waktu, maka kurangi
-                            if (timer > 0) {
-                                //kurangi per 1000 milisecond
-                                timer -= 1000;
 
-                                // jadikan minutes : second
-                                let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 * 60));
-                                let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+                        // variable used to continue timer
+                        const key = 'timer'
+                        var timeInMs = localStorage.getItem(key);
 
-                                // kalau tidak double digit jadikan double digit
-                                if (minutes < 10) {
-                                    minutes = '0' + minutes;
-                                }
-                                if (seconds < 10) {
-                                    seconds = '0' + seconds;
-                                }
+                        // kalau sudah pernah buka web ini
+                        if (timeInMs) {
+                            // hitung waktu yang hilang saat reload
+                            // let delta = Date.now() - localStorage.getItem('now');
 
-                                // tampilkan timer
-                                $('#timer').text(minutes + " : " + seconds);
-                            }
-                            // kalau sudah habis, maka selesai 
-                            else {
-                                // hapus timer sekarang
-                                clearInterval(x);
-                                // $('#timer').text('- - : - -');
+                            // timer lanjut dari waktu sebelum reload
+                            timer = timeInMs;
 
-                                // lanjut sesi berikutnya
-                                $.ajax({
-                                    type: 'POST',
-                                    url: "{{ route('ganti.sesi') }}",
-                                    data: {
-                                        '_token': '<?php echo csrf_token(); ?>',
-                                        'sesi': $('#nomorSesi').attr('value')
-                                    },
-                                    success: function() {
-                                        // alert('success');
-                                    },
-                                    error: function() {
-                                        alert('error');
+                            let x = setInterval(function() {
+                                // kalau masih ada waktu, maka kurangi
+                                if (timer > 0) {
+                                    // jadikan minutes : second
+                                    let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 *
+                                        60));
+                                    let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+
+                                    // kalau tidak double digit jadikan double digit
+                                    if (minutes < 10) {
+                                        minutes = '0' + minutes;
                                     }
-                                })
-                            }
-                        }, 1000)
+                                    if (seconds < 10) {
+                                        seconds = '0' + seconds;
+                                    }
+
+                                    // tampilkan timer
+                                    $('#timer').text(minutes + " : " + seconds);
+
+                                    //kurangi per 1000 milisecond
+                                    timer -= 1000;
+
+                                    // masukkan timer dan tanggal sekarang ke localStorage per detik
+                                    localStorage.setItem(key, timer);
+                                    // localStorage.setItem('now', Date.now());
+                                    console.log(localStorage.getItem(key));
+                                    // console.log(localStorage.getItem('now'));
+                                }
+                                // kalau sudah habis, maka selesai 
+                                else {
+                                    // hapus timer sekarang
+                                    clearInterval(x);
+                                    localStorage.clear();
+                                    $('#timer').text('00 : 00');
+
+                                    // lanjut sesi berikutnya
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: "{{ route('ganti.sesi') }}",
+                                        data: {
+                                            '_token': '<?php echo csrf_token(); ?>',
+                                            'sesi': $('#nomorSesi').attr('value')
+                                        },
+                                        success: function() {
+                                            // alert('success');
+                                            // masuk pusher
+                                        },
+                                        error: function() {
+                                            alert('error');
+                                        }
+                                    })
+                                }
+                            }, 1000)
+                        }
+                        // kalau belum pernah buka web ini
+                        else {
+                            let timer = waktu * 1000;
+
+                            // buat timer baru
+                            let x = setInterval(function() {
+                                // kalau masih ada waktu, maka kurangi
+                                if (timer > 0) {
+                                    // jadikan minutes : second
+                                    let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 *
+                                        60));
+                                    let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+
+                                    // kalau tidak double digit jadikan double digit
+                                    if (minutes < 10) {
+                                        minutes = '0' + minutes;
+                                    }
+                                    if (seconds < 10) {
+                                        seconds = '0' + seconds;
+                                    }
+
+                                    // tampilkan timer
+                                    $('#timer').text(minutes + " : " + seconds);
+
+                                    //kurangi per 1000 milisecond
+                                    timer -= 1000;
+
+                                    // masukkan timer dan tanggal sekarang ke localStorage per detik
+                                    localStorage.setItem(key, timer);
+                                    // localStorage.setItem('now', Date.now());
+                                    console.log(localStorage.getItem(key));
+                                    // console.log(localStorage.getItem('now'));
+                                }
+                                // kalau sudah habis, maka selesai 
+                                else {
+                                    // hapus timer sekarang
+                                    clearInterval(x);
+                                    localStorage.clear();
+                                    $('#timer').text('00 : 00');
+
+                                    // lanjut sesi berikutnya
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: "{{ route('ganti.sesi') }}",
+                                        data: {
+                                            '_token': '<?php echo csrf_token(); ?>',
+                                            'sesi': $('#nomorSesi').attr('value')
+                                        },
+                                        success: function() {
+                                            // alert('success');
+                                            // masuk pusher
+                                        },
+                                        error: function() {
+                                            alert('error');
+                                        }
+                                    })
+                                }
+                            }, 1000)
+                        }
                     },
                     error: function() {
                         alert('error');
@@ -284,84 +351,135 @@
                 console.log(e.waktu);
                 $('#nomorSesi').attr('value', e.id);
                 $('#sesi').text(e.sesi);
-                let timer = e.waktu * 1000 + 1000;
+                let waktu = e.waktu;
 
                 /* Timer */
-                // Jalan per milidetik yang disetting di akhir (1000)
-                let x = setInterval(function() {
-                    // kalau masih ada waktu, maka kurangi
-                    if (timer > 0) {
-                        //kurangi per 1000 milisecond
-                        timer -= 1000;
+                // variable used to continue timer
+                const key = 'timer'
+                var timeInMs = localStorage.getItem(key);
 
-                        // jadikan minutes : second
-                        let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 * 60));
-                        let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+                // kalau sudah pernah buka web ini
+                if (timeInMs) {
+                    // hitung waktu yang hilang saat reload
+                    // let delta = Date.now() - localStorage.getItem('now');
 
-                        // kalau tidak double digit jadikan double digit
-                        if (minutes < 10) {
-                            minutes = '0' + minutes;
-                        }
-                        if (seconds < 10) {
-                            seconds = '0' + seconds;
-                        }
+                    // timer lanjut dari waktu sebelum reload
+                    timer = timeInMs;
 
-                        // tampilkan timer
-                        $('#timer').text(minutes + " : " + seconds);
-                    }
-                    // kalau sudah habis, maka selesai 
-                    else {
-                        // hapus timer sekarang
-                        clearInterval(x);
-                        // $('#timer').text('- - : - -');
+                    let x = setInterval(function() {
+                        // kalau masih ada waktu, maka kurangi
+                        if (timer > 0) {
+                            // jadikan minutes : second
+                            let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 *
+                                60));
+                            let seconds = Math.floor((timer % (1000 * 60)) / 1000);
 
-                        // lanjut sesi berikutnya
-                        $.ajax({
-                            type: 'POST',
-                            url: "{{ route('ganti.sesi') }}",
-                            data: {
-                                '_token': '<?php echo csrf_token(); ?>',
-                                'sesi': $('#nomorSesi').attr('value')
-                            },
-                            success: function() {
-                                // alert('success');
-                            },
-                            error: function() {
-                                alert('error');
+                            // kalau tidak double digit jadikan double digit
+                            if (minutes < 10) {
+                                minutes = '0' + minutes;
                             }
-                        })
-                    }
-                }, 1000)
+                            if (seconds < 10) {
+                                seconds = '0' + seconds;
+                            }
+
+                            // tampilkan timer
+                            $('#timer').text(minutes + " : " + seconds);
+
+                            //kurangi per 1000 milisecond
+                            timer -= 1000;
+
+                            // masukkan timer dan tanggal sekarang ke localStorage per detik
+                            localStorage.setItem(key, timer);
+                            // localStorage.setItem('now', Date.now());
+                            console.log(localStorage.getItem(key));
+                            // console.log(localStorage.getItem('now'));
+                        }
+                        // kalau sudah habis, maka selesai 
+                        else {
+                            // hapus timer sekarang
+                            clearInterval(x);
+                            localStorage.clear();
+                            $('#timer').text('00 : 00');
+
+                            // lanjut sesi berikutnya
+                            $.ajax({
+                                type: 'POST',
+                                url: "{{ route('ganti.sesi') }}",
+                                data: {
+                                    '_token': '<?php echo csrf_token(); ?>',
+                                    'sesi': $('#nomorSesi').attr('value')
+                                },
+                                success: function() {
+                                    // alert('success');
+                                    // masuk pusher
+                                },
+                                error: function() {
+                                    alert('error');
+                                }
+                            })
+                        }
+                    }, 1000)
+                }
+                // kalau belum pernah buka web ini
+                else {
+                    let timer = waktu * 1000;
+
+                    // buat timer baru
+                    let x = setInterval(function() {
+                        // kalau masih ada waktu, maka kurangi
+                        if (timer > 0) {
+                            // jadikan minutes : second
+                            let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 *
+                                60));
+                            let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+
+                            // kalau tidak double digit jadikan double digit
+                            if (minutes < 10) {
+                                minutes = '0' + minutes;
+                            }
+                            if (seconds < 10) {
+                                seconds = '0' + seconds;
+                            }
+
+                            // tampilkan timer
+                            $('#timer').text(minutes + " : " + seconds);
+
+                            //kurangi per 1000 milisecond
+                            timer -= 1000;
+
+                            // masukkan timer dan tanggal sekarang ke localStorage per detik
+                            localStorage.setItem(key, timer);
+                            // localStorage.setItem('now', Date.now());
+                            console.log(localStorage.getItem(key));
+                            // console.log(localStorage.getItem('now'));
+                        }
+                        // kalau sudah habis, maka selesai 
+                        else {
+                            // hapus timer sekarang
+                            clearInterval(x);
+                            localStorage.clear();
+                            $('#timer').text('00 : 00');
+
+                            // lanjut sesi berikutnya
+                            $.ajax({
+                                type: 'POST',
+                                url: "{{ route('ganti.sesi') }}",
+                                data: {
+                                    '_token': '<?php echo csrf_token(); ?>',
+                                    'sesi': $('#nomorSesi').attr('value')
+                                },
+                                success: function() {
+                                    // alert('success');
+                                    // masuk pusher
+                                },
+                                error: function() {
+                                    alert('error');
+                                }
+                            })
+                        }
+                    }, 1000)
+                }
             })
-
-            // function setupInterval(callback, interval, name) {
-            //     var key = '_timeInMs_' + (name || '');
-            //     var now = Date.now();
-            //     var timeInMs = localStorage.getItem(key);
-            //     var executeCallback = function() {
-            //         localStorage.setItem(key, Date.now());
-            //         callback();
-            //     }
-            //     if (timeInMs) { // User has visited
-            //         var time = parseInt(timeInMs);
-            //         var delta = now - time;
-            //         if (delta > interval) { // User has been away longer than interval
-            //             setInterval(executeCallback, interval);
-            //         } else { // Execute callback when we reach the next interval
-            //             setTimeout(function() {
-            //                 setInterval(executeCallback, interval);
-            //                 executeCallback();
-            //             }, interval - delta);
-            //         }
-            //     } else {
-            //         setInterval(executeCallback, interval);
-            //     }
-            //     localStorage.setItem(key, now);
-            // }
-
-            // setupInterval(function() {
-            //     console.log("test"); // function is called here
-            // }, 10000);
 
             $('#mesin').change(function() {
                 // alert($('#mesin').val());
