@@ -197,6 +197,7 @@
 
         <script src="../../js/app.js"></script>
         <script>
+            // buat menjalankan timer pas buka webpage
             $(document).ready(function() {
                 // alert($('#sesi').text());
                 $.ajax({
