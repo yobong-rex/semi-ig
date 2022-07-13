@@ -45,7 +45,7 @@ $timer="00:00";
     {{--Nama Team dan Timer--}}
         <div class="row align-items-center rounded heading">
             <div class="col-9 nama_team">
-                <!-- <h1 id="namaTeam" value='{{$user[0]->idteam}}'> Team </h1>  -->
+                <h1 id="namaTeam" value=''> Team </h1> 
             </div>
             <div class="col-1"><h3 id="sesi" value="{{$sesi1}}">Sesi <span>{{$sesi1}}</span></h3></div>
             <div class="col-1 text-center align-self-end timer rounded-2"  style="font-family:TT Norms Regular;">
@@ -57,37 +57,7 @@ $timer="00:00";
         <div class="row spacing"></div>
 
         {{-- Card List Kelompok --}}
-        <div class="card-header rounded" style="background-color:#faf0dc;box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
-            <div class="row align-items-center">
-                <div class="col-1">
-                    <h5> Team : </h5>
-                </div>
-                <div class="col-5">
-                    <select id='selectedTeam' name="selectedTeam">
-                    <option value="" hidden>Pilih Team</option>
-                        @foreach ($user as $u)
-                            <option value="{{$u->idteam}}">{{ $u->nama }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-        </div>
-        <!-- {{--Card Dana--}}
-        <div class="card-header rounded" style="background-color:#faf0dc; box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
-            <div class="row align-items-center">
-                <div class="col-1 text-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
-                        <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"/>
-                    </svg>
-                </div>
-                <div class="col-2 label_dana">
-                    <h1>Dana : </h1>
-                </div>
-                <div class="col-9 dana">
-                    {{--<h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1>--}}
-                </div>
-            </div>
-        </div> -->
+        
 
         <div class="row spacing"></div>
 
@@ -104,6 +74,7 @@ $timer="00:00";
                         <th scope="col">Produk</th>
                         <th scope="col" style="text-align:center;">Memenuhi Demand</th>
                         <th scope="col" style="width:165px;">Total</th>
+                        <th scope="col" style="width:165px;">Sisa</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -117,7 +88,36 @@ $timer="00:00";
                         <td class="inputDemand"><input type="number" class='demand' id='input_{{$p->idproduk}}'min="0" oninput="this.value = 
                             !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                         <td id='total_{{$p->idproduk}}' class="demand-total">
-                            0
+                            @if (count($data) == 0)
+                                0
+                            @else
+                                <?php $triger = 0; ?>
+                                @foreach ($data as $d)
+                                    @if ($p->idproduk == $d->idproduk)
+                                        {{ $d->jumlah }}
+                                        <?php $triger += 1; ?>
+                                    @endif
+                                @endforeach
+                                @if ($triger == 0)
+                                    {{ $triger }}
+                                @endif
+                            @endif
+                        </td>
+                        <td>
+                            @if (count($data) == 0)
+                                3
+                            @else
+                                <?php $triger = 0; ?>
+                                @foreach ($data as $d)
+                                    @if ($p->idproduk == $d->idproduk)
+                                        {{ $d->sisa }}
+                                        <?php $triger += 1; ?>
+                                    @endif
+                                @endforeach
+                                @if ($triger == 0)
+                                    {{ $triger }}
+                                @endif
+                            @endif
                         </td>
                     </tr>
                 @endforeach

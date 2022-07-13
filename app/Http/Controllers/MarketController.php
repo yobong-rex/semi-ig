@@ -111,22 +111,6 @@ class MarketController extends Controller
 
             }
 
-            // foreach($item as $key => $val){
-
-            // }
-
-            // if (count($item)>0){
-            //     foreach($item as $key => $val){
-            //         $data = [
-            //             'ig_markets' => $val['item'],
-            //             'teams'      => $team,
-            //             'stock'      => $val['quantity'] * $val['isi']
-            //         ];
-            //         array_push($insertStok,$data);
-            //     }
-            //     DB::table('inventory')->insert($insertStok);
-            // }
-
             return response()->json(array(
                 "success"=>true,
                 'msg' => 'selamat team anda berhasil membeli bahan baku',

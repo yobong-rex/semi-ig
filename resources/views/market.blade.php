@@ -219,14 +219,15 @@
                 </div>
             </div>
 
-            <script src="../../js/app.js"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+            <script src="../../js/app.js"></script>
             <script>
                 let item = [];
                 let count = 0;
                 let totalItem = 0;
 
-                window.Echo.channel('stockChannel').listen('.stock', (e) => {
+                window.Echo.channel('stockChannel').listen('.market', (e) => {
+                    alert('dar');
                     console.log(e);
                     // $()
                     $('#sesi').text(e);
@@ -262,7 +263,7 @@
                         }
                     }
                     let temp = count - 100;
-                    console.log(temp);
+                    // console.log(temp);
                     total += parseInt($('#biaya_pengiriman').text());
                     if (temp >= 0) {
                         let lebih = parseInt(temp / 10);
@@ -285,7 +286,7 @@
                 $(document).on('click', '#konfirmasi_pembelian', function() {
                     let total = $('#total').text();
                     let idteam = $('#selectedTeam').val();
-                    console.log(idteam)
+                    // console.log(idteam)
                     let sesi = $('sesi').text();
                     $.ajax({
                         type: "POST",

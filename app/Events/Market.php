@@ -14,18 +14,18 @@ class Market implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $stock;
-    public function __construct($stock)
+    public $market;
+    public function __construct($market)
     {
-        $this->stock=$stock;
+        $this->market=$market;
     }
 
     public function broadcastOn()
     {
-        return new PrivateChannel('stockChannel');
+        return new Channel('stockChannel');
     }
 
     public function broadcastAs(){
-        return 'stock';
+        return 'market';
     }
 }

@@ -4,21 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use Auth;
 
 class DemandController extends Controller
 {
     function demand(){
+        $team = Auth::user()->teams_idteam;
         $sesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
-        $user = DB::table('teams')->select('nama','idteam')->get();
-        // $data = DB::table('team_demand')
-        //             ->join('produk','team_demand.idproduk','produk.idproduk')
-        //             ->where('idteam',1)
-        //             ->where('sesi',$sesi[0]->sesi)
-        //             ->get();
+        // $user = DB::table('teams')->select('nama','idteam')->get();
+        $data = DB::table('team_demand')
+                    ->join('produk','team_demand.idproduk','produk.idproduk')
+                    ->where('idteam',$team)
+                    ->where('sesi',$sesi[0]->nama)
+                    ->get();
         $produk = DB::table('produk')->select('idproduk','nama')->get();
         $sesi1 = $sesi[0]->nama;
-        // return view('demand',compact('data','produk','user','sesi1'));  
-        return view('demand',compact('produk','user','sesi1'));  
+        return view('demand',compact('data','produk','sesi1','team'));  
+        // return view('demand',compact('produk','user','sesi1'));  
         
     }
 
@@ -67,8 +69,20 @@ class DemandController extends Controller
             }
 
             foreach ($demand as $d){
+                $sisa = 3;
                 $produkDemand = DB::table('demand')->where('sesi',$sesi)->where('produk_idproduk',$d['produk'])->get();
                 $invtProduct = DB::table('history_produksi')->where('teams_idteam',$team)->where('produk_idproduk',$d['produk'])->get();
+                $usrDemand = DB::table('team_demand')->where('idproduk',$d['produk'])->where('idteam',$team)->where('sesi',$sesi)->get();
+                //cek sisa
+                if($usrDemand[0]->sisa == 0){
+                    return response()->json(array(
+                        'msg'=>'maaf team anda sudah memenuhi batas demand pada sesi ini',
+                        'code'=> '200'
+                    ), 200);
+                }
+                else if($usrDemand[0]->sisa < 3){
+                    $sisa = $usrDemand[0]->sisa - 1;
+                }
                 
                 if(count($produkDemand)>0 ){
                     $hargaProduk = DB::table('produk')->select('harga_jual')->where('idproduk',$d['produk'])->get();
@@ -79,13 +93,12 @@ class DemandController extends Controller
                     $updtDemand += $d['total'];
                 }
                 $sisaProduct = $invtProduct[0]->hasil - $d['total'];
-                $usrDemand = DB::table('team_demand')->where('idproduk',$d['produk'])->where('idteam',$team)->where('sesi',$sesi)->get();
                 if(count($usrDemand)>0){
                     $updtDemand += $usrDemand[0]->jumlah;
                 }
                 DB::table('team_demand')->updateOrInsert(
                     ['idproduk'=>$d['produk'], 'idteam'=>$team, 'sesi'=>$sesi],
-                    ['jumlah'=>$updtDemand]
+                    ['jumlah'=>$updtDemand, 'sisa'=>$sisa]
                 );
                 DB::table('history_produksi')
                     ->where('teams_idteam',$team)
