@@ -83,7 +83,7 @@
                     <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
                 </div>
                 <div class="col-1">
-                    <h3 id="nomorSesi">Sesi <span id="sesi">{{ $sesi1 }}</span></h3>
+                    <h3 id="nomorSesi" value="{{ $sesi[0]->sesi }}">Sesi <span id="sesi">{{ $sesi[0]->nama }}</span></h3>
                 </div>
                 <div class="col-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
                     <h3>Timer</h3>
@@ -120,7 +120,7 @@
                 SEBELUM Konfirmasi</div>
             {{-- Form produksi --}}
             <form action="{{ route('produksi.buat') }}" method='post'>
-                <input type="hidden" value='{{ $sesi1 }}' name='sesi'>
+                <input type="hidden" value='{{ $sesi[0]->nama }}' name='sesi'>
                 <input type="hidden" value='{{ $user[0]->idteam }}' name='team'>
                 @csrf
                 <table class="table table-bordered" style="vertical-align: middle;">
@@ -240,50 +240,330 @@
 
             {{-- Kartu bawah --}}
             <!-- <div class="row">
-                    {{-- Card Cycle Time --}}
-                    <div class="col">
-                        <div class="card-body rounded text-center kartu_Home">
-                            <div class="col">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-hourglass-split" viewBox="0 0 16 16">
-                                    <path d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z"/>
-                                  </svg>
-                            </div>
-                            <div class="col">
-                                <h2>Cycle Time</h2>
-                            </div>
-                            <div class="col">
-                                <h3 id="cycleTime">00:00</h3>
-                            </div>
-                        </div>
-                    </div>
-            
-                    {{-- Card Defect --}}
-                    <div class="col">
-                        <div class="card-body rounded text-center kartu_Home">
-                            <div class="col">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
-                                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                  </svg>
-                            </div>
-                            <div class="col">
-                                <h2>Jumlah Defect</h2>
-                            </div>
-                            <div class="col">
-                                <h3 id="totalDefect">0</h3>
+                        {{-- Card Cycle Time --}}
+                        <div class="col">
+                            <div class="card-body rounded text-center kartu_Home">
+                                <div class="col">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-hourglass-split" viewBox="0 0 16 16">
+                                        <path d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z"/>
+                                      </svg>
+                                </div>
+                                <div class="col">
+                                    <h2>Cycle Time</h2>
+                                </div>
+                                <div class="col">
+                                    <h3 id="cycleTime">00:00</h3>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div> -->
+                
+                        {{-- Card Defect --}}
+                        <div class="col">
+                            <div class="card-body rounded text-center kartu_Home">
+                                <div class="col">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
+                                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                      </svg>
+                                </div>
+                                <div class="col">
+                                    <h2>Jumlah Defect</h2>
+                                </div>
+                                <div class="col">
+                                    <h3 id="totalDefect">0</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
 
         </div>
     </body>
+
     <script src="../../js/app.js"></script>
     <script>
+        // buat menjalankan timer pas buka webpage
+        $(document).ready(function() {
+            // alert($('#sesi').text());
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('timer') }}",
+                data: {
+                    '_token': '<?php echo csrf_token(); ?>',
+                    'namaSesi': $('#sesi').text()
+                },
+                success: function(data) {
+                    // alert('success');
+                    let waktu = data.waktu[0].waktu;
+
+                    /* Timer */
+
+                    // variable used to continue timer
+                    const key = 'timer'
+                    var timeInMs = localStorage.getItem(key);
+
+                    // kalau sudah pernah buka web ini
+                    if (timeInMs) {
+                        // hitung waktu yang hilang saat reload
+                        // let delta = Date.now() - localStorage.getItem('now');
+
+                        // timer lanjut dari waktu sebelum reload
+                        timer = timeInMs;
+
+                        let x = setInterval(function() {
+                            // kalau masih ada waktu, maka kurangi
+                            if (timer > 0) {
+                                // jadikan minutes : second
+                                let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 *
+                                    60));
+                                let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+
+                                // kalau tidak double digit jadikan double digit
+                                if (minutes < 10) {
+                                    minutes = '0' + minutes;
+                                }
+                                if (seconds < 10) {
+                                    seconds = '0' + seconds;
+                                }
+
+                                // tampilkan timer
+                                $('#timer').text(minutes + " : " + seconds);
+
+                                //kurangi per 1000 milisecond
+                                timer -= 1000;
+
+                                // masukkan timer dan tanggal sekarang ke localStorage per detik
+                                localStorage.setItem(key, timer);
+                                // localStorage.setItem('now', Date.now());
+                                console.log(localStorage.getItem(key));
+                                // console.log(localStorage.getItem('now'));
+                            }
+                            // kalau sudah habis, maka selesai 
+                            else {
+                                // hapus timer sekarang
+                                clearInterval(x);
+                                localStorage.clear();
+                                $('#timer').text('00 : 00');
+
+                                // lanjut sesi berikutnya
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "{{ route('ganti.sesi') }}",
+                                    data: {
+                                        '_token': '<?php echo csrf_token(); ?>',
+                                        'sesi': $('#nomorSesi').attr('value')
+                                    },
+                                    success: function() {
+                                        // alert('success');
+                                        // masuk pusher
+                                    },
+                                    error: function() {
+                                        alert('error');
+                                    }
+                                })
+                            }
+                        }, 1000)
+                    }
+                    // kalau belum pernah buka web ini
+                    else {
+                        let timer = waktu * 1000;
+
+                        // buat timer baru
+                        let x = setInterval(function() {
+                            // kalau masih ada waktu, maka kurangi
+                            if (timer > 0) {
+                                // jadikan minutes : second
+                                let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 *
+                                    60));
+                                let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+
+                                // kalau tidak double digit jadikan double digit
+                                if (minutes < 10) {
+                                    minutes = '0' + minutes;
+                                }
+                                if (seconds < 10) {
+                                    seconds = '0' + seconds;
+                                }
+
+                                // tampilkan timer
+                                $('#timer').text(minutes + " : " + seconds);
+
+                                //kurangi per 1000 milisecond
+                                timer -= 1000;
+
+                                // masukkan timer dan tanggal sekarang ke localStorage per detik
+                                localStorage.setItem(key, timer);
+                                // localStorage.setItem('now', Date.now());
+                                console.log(localStorage.getItem(key));
+                                // console.log(localStorage.getItem('now'));
+                            }
+                            // kalau sudah habis, maka selesai 
+                            else {
+                                // hapus timer sekarang
+                                clearInterval(x);
+                                localStorage.clear();
+                                $('#timer').text('00 : 00');
+
+                                // lanjut sesi berikutnya
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "{{ route('ganti.sesi') }}",
+                                    data: {
+                                        '_token': '<?php echo csrf_token(); ?>',
+                                        'sesi': $('#nomorSesi').attr('value')
+                                    },
+                                    success: function() {
+                                        // alert('success');
+                                        // masuk pusher
+                                    },
+                                    error: function() {
+                                        alert('error');
+                                    }
+                                })
+                            }
+                        }, 1000)
+                    }
+                },
+                error: function() {
+                    alert('error');
+                }
+            })
+        })
+
         /* Pusher */
         window.Echo.channel('sesiPusher').listen('.sesi', (e) => {
+            console.log(e.id);
             console.log(e.sesi);
+            console.log(e.waktu);
+            $('#nomorSesi').attr('value', e.id);
             $('#sesi').text(e.sesi);
+            let waktu = e.waktu;
+
+            /* Timer */
+            // variable used to continue timer
+            const key = 'timer'
+            var timeInMs = localStorage.getItem(key);
+
+            // kalau sudah pernah buka web ini
+            if (timeInMs) {
+                // hitung waktu yang hilang saat reload
+                // let delta = Date.now() - localStorage.getItem('now');
+
+                // timer lanjut dari waktu sebelum reload
+                timer = timeInMs;
+
+                let x = setInterval(function() {
+                    // kalau masih ada waktu, maka kurangi
+                    if (timer > 0) {
+                        // jadikan minutes : second
+                        let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 *
+                            60));
+                        let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+
+                        // kalau tidak double digit jadikan double digit
+                        if (minutes < 10) {
+                            minutes = '0' + minutes;
+                        }
+                        if (seconds < 10) {
+                            seconds = '0' + seconds;
+                        }
+
+                        // tampilkan timer
+                        $('#timer').text(minutes + " : " + seconds);
+
+                        //kurangi per 1000 milisecond
+                        timer -= 1000;
+
+                        // masukkan timer dan tanggal sekarang ke localStorage per detik
+                        localStorage.setItem(key, timer);
+                        // localStorage.setItem('now', Date.now());
+                        console.log(localStorage.getItem(key));
+                        // console.log(localStorage.getItem('now'));
+                    }
+                    // kalau sudah habis, maka selesai 
+                    else {
+                        // hapus timer sekarang
+                        clearInterval(x);
+                        localStorage.clear();
+                        $('#timer').text('00 : 00');
+
+                        // lanjut sesi berikutnya
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('ganti.sesi') }}",
+                            data: {
+                                '_token': '<?php echo csrf_token(); ?>',
+                                'sesi': $('#nomorSesi').attr('value')
+                            },
+                            success: function() {
+                                // alert('success');
+                                // masuk pusher
+                            },
+                            error: function() {
+                                alert('error');
+                            }
+                        })
+                    }
+                }, 1000)
+            }
+            // kalau belum pernah buka web ini
+            else {
+                let timer = waktu * 1000;
+
+                // buat timer baru
+                let x = setInterval(function() {
+                    // kalau masih ada waktu, maka kurangi
+                    if (timer > 0) {
+                        // jadikan minutes : second
+                        let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 *
+                            60));
+                        let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+
+                        // kalau tidak double digit jadikan double digit
+                        if (minutes < 10) {
+                            minutes = '0' + minutes;
+                        }
+                        if (seconds < 10) {
+                            seconds = '0' + seconds;
+                        }
+
+                        // tampilkan timer
+                        $('#timer').text(minutes + " : " + seconds);
+
+                        //kurangi per 1000 milisecond
+                        timer -= 1000;
+
+                        // masukkan timer dan tanggal sekarang ke localStorage per detik
+                        localStorage.setItem(key, timer);
+                        // localStorage.setItem('now', Date.now());
+                        console.log(localStorage.getItem(key));
+                        // console.log(localStorage.getItem('now'));
+                    }
+                    // kalau sudah habis, maka selesai 
+                    else {
+                        // hapus timer sekarang
+                        clearInterval(x);
+                        localStorage.clear();
+                        $('#timer').text('00 : 00');
+
+                        // lanjut sesi berikutnya
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('ganti.sesi') }}",
+                            data: {
+                                '_token': '<?php echo csrf_token(); ?>',
+                                'sesi': $('#nomorSesi').attr('value')
+                            },
+                            success: function() {
+                                // alert('success');
+                                // masuk pusher
+                            },
+                            error: function() {
+                                alert('error');
+                            }
+                        })
+                    }
+                }, 1000)
+            }
         })
     </script>
 @endsection

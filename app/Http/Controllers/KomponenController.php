@@ -92,7 +92,7 @@ class KomponenController extends Controller
 
         $sesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
-            ->select('s.sesi', 'ws.nama', 'ws.waktu')
+            ->select('s.sesi', 'ws.nama')
             ->get();
 
         $data = DB::table('mesin as m')

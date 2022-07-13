@@ -78,7 +78,7 @@
                     <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
                 </div>
                 <div class="col-1">
-                    <h3 id="nomorSesi">Sesi <span id="sesi">{{$sesi[0]->nama}}</span></h3>
+                    <h3 id="nomorSesi" value="{{ $sesi[0]->sesi }}">Sesi <span id="sesi">{{$sesi[0]->nama}}</span></h3>
                 </div>
                 <div class="col-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
                     <h3>Timer</h3>
@@ -324,7 +324,7 @@
 
     <script src="../../js/app.js"></script>
     <script>
-        // buat menjalankan timer pas buka webpage
+        // buat menjalankan / melanjutkan timer pas buka webpage
         $(document).ready(function() {
                 // alert($('#sesi').text());
                 $.ajax({
