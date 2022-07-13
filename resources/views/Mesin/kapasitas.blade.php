@@ -48,13 +48,13 @@
 
             {{-- Nama Team dan Timer --}}
             <div class="row align-items-center rounded heading">
-                <div class="col-9 nama_team">
+                <div class="col-md-9 nama_team">
                     <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
                 </div>
-                <div class="col-1">
-                    <h3 id="nomorSesi">Sesi {{ $sesi[0]->sesi }}</h3>
+                <div class="col-md-1">
+                    <h3 id="nomorSesi">Sesi <span id="sesi">{{$sesi[0]->sesi}}</span></h3>
                 </div>
-                <div class="col-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
+                <div class="col-md-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
                     <h3>Timer</h3>
                     <h4 id="timer">- - : - -</h4>
                 </div>
@@ -65,17 +65,17 @@
             {{-- Card Dana --}}
             <div class="card-header rounded" style="background-color:#faf0dc;box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
                 <div class="row align-items-center">
-                    <div class="col-1 text-center">
+                    <div class="col-md-1 text-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
                             class="bi bi-wallet2" viewBox="0 0 16 16">
                             <path
                                 d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z" />
                         </svg>
                     </div>
-                    <div class="col-2 label_dana">
-                        <h1>Dana : </h1>
+                    <div class="col-md-2 label_dana text-center">
+                        <h1>Dana :</h1> 
                     </div>
-                    <div class="col-9 dana">
+                    <div class="col-md-9 dana">
                         <h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1>
                     </div>
                 </div>
