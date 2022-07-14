@@ -74,6 +74,9 @@ class ProduksiController extends Controller
                 ->where('analisis.produksi', 3)
                 ->orderBy('teams_has_analisis.analisis_idanalisis', 'desc')
                 ->limit(1)->get();
+            if(count($proses1) == 0 || count($proses2) == 0 || count($proses3) == 0){
+                return redirect()->route('analisis')->with('error','tolong isi terlebih dahulu proses produksi 1,2,dan 3');
+            }
             $proses1 = $proses1[0]->proses;
             $proses2 = $proses2[0]->proses;
             $proses3 = $proses3[0]->proses;
@@ -91,6 +94,7 @@ class ProduksiController extends Controller
 
     function buat(Request $request)
     {
+        $this->authorize('isProduction_Manager');
         $btn = $request->get('btn');
         $produk = $request->get('produk');
         $jumlah = $request->get('jumlah');
@@ -99,6 +103,13 @@ class ProduksiController extends Controller
         $sesi = $getSesi[0]->nama;
         $team = Auth::user()->teams_idteam;
         $name = $request->get('name');
+
+        if($produk == ''){
+            return response()->json(array(
+                'msg' => 'maaf, tolong pilih produk yang ingin diproduksi terlebih dahulu',
+                'code' => '401'
+            ), 200);
+        }
 
         if ($sesi == 1) {
             if ($jumlah > 80) {

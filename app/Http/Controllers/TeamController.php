@@ -89,6 +89,9 @@ class TeamController extends Controller
     function dashboard()
     {
         $team = Auth::user()->teams_idteam;
+        if($team == null){
+            return redirect()->route('market');
+        }
         $user = DB::table('teams')->select('nama', 'dana', 'idteam', 'inventory', 'demand', 'customer_value', 'hibah')->where('idteam', $team)->get();
 
         $sesi = DB::table('sesi')->select('sesi')->get();

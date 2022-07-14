@@ -83,7 +83,7 @@
                     <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
                 </div>
                 <div class="col-md-1">
-                    <h3 id="nomorSesi">Sesi <span id="sesi">{{$sesi[0]->sesi}}</span></h3>
+                    <h3 id="nomorSesi">Sesi <span id="sesi">sesi1</span></h3>
                 </div>
                 <div class="col-md-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
                     <h3>Timer</h3>
@@ -171,7 +171,7 @@
                                             <option value="4">Rubber Ball</option>
                                             <option value="5">Fidget Spiner</option>
                                             <option value="14">Bowling Set</option>
-                                            <option value="8">Action Figure</option>
+                                            <option value="8">Action Figure (Gundam)</option>
                                         @endif
                                     </select>
                                 </td>
@@ -232,8 +232,9 @@
                         </div>
                     </div>
                 </div>
+            <!-- end modal -->
 
-                <!-- modal info -->
+            <!-- modal info -->
                 <div class="modal fade" id="modalInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -249,7 +250,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- end modal info -->
+            <!-- end modal info -->
 
             {{-- Kartu bawah --}}
             <!-- <div class="row">

@@ -120,6 +120,7 @@ class KapasitasController extends Controller
 
     function kapasitasUpgrade(Request $request)
     {
+        $this->authorize('isProduction_Manager');
         $team = Auth::user()->teams_idteam;
         $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
         $namaMesin = $request->get('namaMesin');

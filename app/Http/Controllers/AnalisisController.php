@@ -39,6 +39,7 @@ class AnalisisController extends Controller
 
     function insertProses(Request $request)
     {
+        $this->authorize('isProduction_Manager');
         $produksi = $request->get('produksi');
         $length = $request->get('panjang');
         $proses = $request->get('proses');

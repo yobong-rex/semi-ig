@@ -20,6 +20,7 @@ class MarketController extends Controller
 
     function marketBeli(Request $request)
     {
+        $this->authorize('isAdmin');
         try {
             $item = $request->get('item');
             $total = $request->get('total');
@@ -29,6 +30,13 @@ class MarketController extends Controller
             $total_bahan = $request->get('total_bahan');
             $totalItem = $request->get('totalItem');
             $sisaInv = 0;
+
+            if($team == ""){
+                return response()->json(array(
+                    'msg' => 'tolong pilih team terlebih dahulu',
+                    'code' => '401'
+                ), 200);
+            }
 
             $team_detail = DB::table('teams')->select('dana', 'inventory')->where('idteam', $team)->get();
             if ($team_detail[0]->inventory < $totalItem) {
@@ -54,6 +62,7 @@ class MarketController extends Controller
 
             $bahan_baku = DB::table('ig_markets')->whereIn('idig_markets', $item_id)->get();
             $insert = [];
+            $stokPusser = array();
             foreach ($item as $key => $val) {
                 if ($bahan_baku[$key]->stok < $val['quantity']) {
                     return response()->json(array(
@@ -71,8 +80,11 @@ class MarketController extends Controller
                     DB::table('ig_markets')->where('idig_markets', $val['item'])->update([
                         'stok' => $sisaStok
                     ]);
+                    $temp['idItem'] = $val['item'];
+                    $temp['stock'] = $sisaStok;
 
                     array_push($insert, $data);
+                    array_push($stokPusser,$temp);
                 }
             }
 
@@ -106,7 +118,6 @@ class MarketController extends Controller
                     ['ig_markets' => $val['item'], 'teams' => $team],
                     ['stock' => $stok]
                 );
-                $stokPusser = ['idItem'=> $val['item'], 'stock'=>$stok ];
                 event(new Market($stokPusser));
 
             }

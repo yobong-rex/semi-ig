@@ -39,6 +39,15 @@
     button_{nomor proses produksi} --}}
 
     <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
+        @if (session('status'))
+            <div class="alert alert-success" id="status">
+                {{ session('status') }}
+            </div>
+        @elseif (session('error'))
+            <div class="alert alert-danger" id="status">
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="px-4 py-5" style="font-family:TT Norms Bold;">
 
             {{-- Nama Team dan Timer --}}

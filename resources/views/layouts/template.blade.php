@@ -87,27 +87,28 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('dashboard') }}">Dashboard</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('dashboard') }}">Market</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('komponen') }}">Mesin</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('kapasitas') }}">Kapasitas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('produksi') }}">Produksi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('analisis') }}">Analisis Produksi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('bahan') }}">Analisis Bahan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('dashboard') }}">Demand</a>
-                    </li>
+                    @can('isMarketing')
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('komponen') }}">Mesin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('demand') }}">Demand</a>
+                        </li>
+                    @elsecan('isResearcher')
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('bahan') }}">Analisis Bahan</a>
+                        </li>
+                    @elsecan('isProduction_Manager')
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('kapasitas') }}">Kapasitas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('produksi') }}">Produksi</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('analisis') }}">Analisis Produksi</a>
+                        </li>
+                    @endcan
                     <li class="nav-item logOut">
                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="text-light nav-link active" aria-current="page" style="text-decoration:none;"> {{ __('Logout') }}</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>

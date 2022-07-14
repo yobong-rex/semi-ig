@@ -21,40 +21,43 @@ use App\Http\Middleware\CheckSesi;
 
 // route masukkan sini kalau sebelum masuk halaman web user harus login dahulu
 Route::middleware(['auth'])->group(function () {
-
     // Dashboard
     Route::get('/', 'TeamController@dashboard')->name('dashboard');
     // Analisis Proses
-    Route::get('/analisis', 'AnalisisController@analisi')->name('analisis');
+    Route::get('/analisis', 'AnalisisController@analisi')->middleware('can:isProduction_Manager')->name('analisis');
     Route::post('/analisis/proses', 'AnalisisController@insertProses')->name('analisis.proses');
     Route::middleware([CheckSesi::class])->group(function(){
         // Mesin Kapasitas
-        Route::get('/kapasitas', 'KapasitasController@kapasitas')->name('kapasitas');
+        Route::get('/kapasitas', 'KapasitasController@kapasitas')->middleware('can:isProduction_Manager')->name('kapasitas');
         Route::post('/kapasitas/upgrade', 'KapasitasController@kapasitasUpgrade')->name('upgrade.kapasitas');
 
         // Mesin Komponen
-        Route::get('/komponen', 'KomponenController@komponen')->name('komponen');
+        Route::get('/komponen', 'KomponenController@komponen')->middleware('can:isMarketing')->name('komponen');
         Route::get('/komponen/ajax', 'KomponenController@komponenAjax')->name('komponen.ajax');
         Route::post('/komponen/upgrade', 'KomponenController@komponenUpgrade')->name('upgrade.komponen');
 
-
+        
         // Analisis Bahan Baku
-        Route::get('/bahan', 'BahanController@bahan')->name('bahan');
+        Route::get('/bahan', 'BahanController@bahan')->middleware('can:isResearcher')->name('bahan');
         Route::post('/bahan', 'BahanController@analisisBahan')->name('analisis.bahan');
-
+        
         //produksi
-        Route::get('/produksi', 'ProduksiController@produksi')->name('produksi');
+        Route::get('/produksi', 'ProduksiController@produksi')->middleware('can:isProduction_Manager')->name('produksi');
         Route::post('/produksi/buat', 'ProduksiController@buat')->name('produksi.buat');
+
+        //demand
+        Route::get('/demand', 'DemandController@demand')->middleware('can:isMarketing')->name('demand');
+        Route::post('/demand/konfrim', 'DemandController@konfrim')->name('demand.konfrim');
+        Route::post('/demand/get', 'DemandController@getDemand')->name('demand.getDemand');
     });
 
 
-
+    // IG Market
+    Route::get('/market', 'MarketController@market')->middleware('can:isAdmin')->name('market');
+    Route::post('/market/beli', 'MarketController@marketBeli')->name('market.beli');
 });
 
 
-// IG Market
-Route::get('/market', 'MarketController@market')->name('market');
-Route::post('/market/beli', 'MarketController@marketBeli')->name('market.beli');
 
 // Sesi Analisis
 Route::get('/admin', function () {
@@ -95,9 +98,6 @@ Route::post('/admin/analisis/update', 'AnalisisController@updateSesi')->name('an
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/demand', 'DemandController@demand')->name('demand');
-Route::post('/demand/konfrim', 'DemandController@konfrim')->name('demand.konfrim');
-Route::post('/demand/get', 'DemandController@getDemand')->name('demand.getDemand');
 
 Route::get('/adminkomponen', function () {
     return view('mesin.adminkomponen');

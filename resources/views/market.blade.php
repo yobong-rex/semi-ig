@@ -226,11 +226,10 @@
                 let count = 0;
                 let totalItem = 0;
 
-                window.Echo.channel('stockChannel').listen('.market', (e) => {
-                    alert('dar');
-                    console.log(e);
-                    // $()
-                    $('#sesi').text(e);
+                window.Echo.channel('stockChannel').listen('.market', (e) => { 
+                    $.each(e.market, function(key, value) {
+                        $('#stok_'+value.idItem).text(value.stock);
+                    });
                 })
                 $(document).on('change', '.quantity', function() {
                     let quantity = $(this).val();
@@ -309,8 +308,8 @@
                 })
 
                 $(document).on('click', '#reload', function() {
-                    let value = $(this).val();
-                    // location.reload()
+                    // let value = $(this).val();
+                    location.reload()
                 })
             </script>
     </body>

@@ -114,6 +114,7 @@ class KomponenController extends Controller
 
     function komponenAjax(Request $request)
     {
+        $this->authorize('isMarketing');
         $namaMesin = $request->get('namaMesin');
         $idmesin = DB::table('mesin')->where('nama', 'like', '%' . $namaMesin . '%')->get();
 
@@ -148,6 +149,7 @@ class KomponenController extends Controller
 
     function komponenUpgrade(Request $request)
     {
+        $this->authorize('isMarketing');
         $namaMesin = $request->get('namaMesin');
         $namaKomponen = $request->get('namaKomponen');
 

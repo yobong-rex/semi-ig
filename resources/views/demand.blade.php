@@ -45,7 +45,7 @@ $timer="00:00";
     {{--Nama Team dan Timer--}}
         <div class="row align-items-center rounded heading">
             <div class="col-9 nama_team">
-                <h1 id="namaTeam" value=''> Team </h1> 
+                <h1 id="namaTeam" value=''> {{$user[0]->nama}} </h1> 
             </div>
             <div class="col-1"><h3 id="sesi" value="{{$sesi1}}">Sesi <span>{{$sesi1}}</span></h3></div>
             <div class="col-1 text-center align-self-end timer rounded-2"  style="font-family:TT Norms Regular;">
@@ -115,7 +115,7 @@ $timer="00:00";
                                     @endif
                                 @endforeach
                                 @if ($triger == 0)
-                                    {{ $triger }}
+                                    3
                                 @endif
                             @endif
                         </td>
@@ -123,145 +123,48 @@ $timer="00:00";
                 @endforeach
                 </tbody>
             </table>
-            <button type="button" class="btn btn-success" id="konfrim">Konfirmasi</button>
-            {{-- <table class="table table-bordered" style="vertical-align: middle;">
-                @php
-                    $arrproduk = array('Scooter', 'Hoverboard', 'Skateboard', 'Bicycle', 'Claw Machine', 'RC Car', 'RC Helicopter', 'Trampoline', 'Robot', 'Airsoft Gun', 'Rubber Ball', 'Fidget Spinner', 'Bowling Set', 'Action Figure');
-                    $col=1;
-                @endphp
-                <thead class="thead">
-                    <tr>
-                        <th class="nomor_demand" scope="col">No.</th>
-                        <th scope="col">Produk</th>
-                        <th scope="col" colspan={{$col}} style="text-align:center;">Memenuhi Demand</th>
-                        <th scope="col">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for($i=1; $i<=count($arrproduk);$i++)
-                    <tr>
-                        <th class="nomor_demand" scope="row">{{$i}}</th>
-                        <td>{{$arrproduk[$i-1]}}</td>
-                        <td id="demand-{{$i}}"><input class="inputDemand" type="number" name='jumlah' id='jumlahDemand' min="0" oninput="this.value = 
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                        <td id="total-{{$i}}">0</td>
-                    </tr>
-                    @endfor
-                    <tr>
-                        <th class="nomor_demand" scope="row">1</th>
-                        <td>Scooter</td>
-                        <td id="demand-1_1">0</td>
-                        <td id="demand-1_2">0</td>
-                        <td id="demand-1_3">0</td>
-                        <td id="total-1">0</td>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal" >Pemuhi Demand</button>
 
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">2</th>
-                        <td>Hoverboard</td>
-                        <td id="demand-2_1">0</td>
-                        <td id="demand-2_2">0</td>
-                        <td id="demand-2_3">0</td>
-                        <td id="total-2">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">3</th>
-                        <td>Skateboard</td>
-                        <td id="demand-3_1">0</td>
-                        <td id="demand-3_2">0</td>
-                        <td id="demand-3_3">0</td>
-                        <td id="total-3">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">4</th>
-                        <td>Bicycle</td>
-                        <td id="demand-4_1">0</td>
-                        <td id="demand-4_2">0</td>
-                        <td id="demand-4_3">0</td>
-                        <td id="total-4">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">5</th>
-                        <td>Claw Machine</td>
-                        <td id="demand-5_1">0</td>
-                        <td id="demand-5_2">0</td>
-                        <td id="demand-5_3">0</td>
-                        <td id="total-5">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">6</th>
-                        <td>RC Car</td>
-                        <td id="demand-6_1">0</td>
-                        <td id="demand-6_2">0</td>
-                        <td id="demand-6_3">0</td>
-                        <td id="total-6">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">7</th>
-                        <td>RC Helicopter</td>
-                        <td id="demand-7_1">0</td>
-                        <td id="demand-7_2">0</td>
-                        <td id="demand-7_3">0</td>
-                        <td id="total-7">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">8</th>
-                        <td>Trampoline</td>
-                        <td id="demand-8_1">0</td>
-                        <td id="demand-8_2">0</td>
-                        <td id="demand-8_3">0</td>
-                        <td id="total-8">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">9</th>
-                        <td>Robot</td>
-                        <td id="demand-9_1">0</td>
-                        <td id="demand-9_2">0</td>
-                        <td id="demand-9_3">0</td>
-                        <td id="total-9">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">10</th>
-                        <td>Airsoft Gun</td>
-                        <td id="demand-10_1">0</td>
-                        <td id="demand-10_2">0</td>
-                        <td id="demand-10_3">0</td>
-                        <td id="total-10">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">11</th>
-                        <td>Rubber Ball</td>
-                        <td id="demand-11_1">0</td>
-                        <td id="demand-11_2">0</td>
-                        <td id="demand-11_3">0</td>
-                        <td id="total-11">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">12</th>
-                        <td>Fidget Spinner</td>
-                        <td id="demand-12_1">0</td>
-                        <td id="demand-12_2">0</td>
-                        <td id="demand-12_3">0</td>
-                        <td id="total-12">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">13</th>
-                        <td>Bowling set</td>
-                        <td id="demand-13_1">0</td>
-                        <td id="demand-13_2">0</td>
-                        <td id="demand-13_3">0</td>
-                        <td id="total-13">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">14</th>
-                        <td>Action Figure</td>
-                        <td id="demand-14_1">0</td>
-                        <td id="demand-14_2">0</td>
-                        <td id="demand-14_3">0</td>
-                        <td id="total-14">0</td>
-                    </tr>
-                </tbody>
-             </table>--}}
+            <!-- Modal -->
+                <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Konfirmasi Produksi</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body flex">
+                                Apakah anda yakin untuk melakukan pemenuhan demand ?
+                            </div>
+                            <div class="modal-footer">
+
+                                <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Cancel</button>
+
+                                <button class="btn btn-success btn-modal" id="konfrim" name='button'>Konfirmasi</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- end modal -->
+            
+            <!-- modal info -->
+                <div class="modal fade" id="modalInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Informasi</h5>
+                                <button type="button" class="btn-close mdl-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body flex" id='info-body'>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary mdl-close" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- end modal info -->
             
             
 
@@ -306,22 +209,25 @@ $timer="00:00";
                 });
 
                 $(document).on('click','#konfrim',function(){
-                    console.log($('#selectedTeam').val());
                     $.ajax({
                         type: "POST",
                         url: "{{route('demand.konfrim')}}",
                         data:{
                             '_token': '<?php echo csrf_token()?>',
                             'demand' : arrDemand,
-                            'team': $('#selectedTeam').val(),
-                            'sesi': $('#sesi').attr('value'),
                         },
                         success: function(data){
-                            alert(data.msg);
-                            location.reload();
+                            $("#modal").modal('hide');
+                            $('#info-body').text(data.msg);
+                            $('#modalInfo').modal('show');
+                           
                         }
                     });
                 });
+
+                $(document).on('click','.mdl-close',function(){
+                   location.reload();
+                })
             </script>
         </div>
     </div>
