@@ -62,6 +62,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/adminsesi', 'SesiController@sesi')->middleware('can:isAdmin')->name('adminsesi');
     Route::post('/adminsesi/gantisesi', 'SesiController@gantiSesi')->name('ganti.sesi');
     Route::post('/adminsesi/backsesi', 'SesiController@backSesi')->name('back.sesi');
+
+    //admin analisis
+    Route::get('/admin/analisis', 'AnalisisController@admin')->name('analisis.admin');
+    Route::post('/admin/analisis/update', 'AnalisisController@updateSesi')->name('analisis.update');
 });
 
 
@@ -96,8 +100,6 @@ Route::get('/receiver', function(){
 })->name('receiver');
 //Route coba-coba
 
-Route::get('/admin/analisis', 'AnalisisController@admin')->name('analisis.admin');
-Route::post('/admin/analisis/update', 'AnalisisController@updateSesi')->name('analisis.update');
 
 // Route::get('/home', 'HomeController@index')->name('home');
 

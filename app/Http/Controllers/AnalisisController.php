@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
+use App\Events\Analisis;
+use Illuminate\Http\Response;
 
 class AnalisisController extends Controller
 {
@@ -14,6 +16,9 @@ class AnalisisController extends Controller
         if ($sesi[0]->analisis == true) {
             $team = Auth::user()->teams_idteam;
             $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
+            $proses1 = '';
+            $proses2 = '';
+            $proses3 = '';
             // $mesin = DB::table('mesin')
             //     ->join('view_kapasitas_mesin', 'mesin.idmesin', '=', 'view_kapasitas_mesin.mesin_id')
             //     ->join('mesin_has_teams', 'mesin.idmesin', '=', 'mesin_has_teams.mesin_idmesin')
@@ -31,26 +36,40 @@ class AnalisisController extends Controller
                 ->where('kht.teams_idteam', $user[0]->idteam)
                 ->get();
 
-            // $idanalisisProses = DB::table('analisis as a')
-            //     ->join('teams_has_analisis as tha', 'a.idanalisis', '=', 'tha.analisis_idanalisis')
-            //     ->select(DB::raw('MAX(a.idanalisis) as maxIdAnalisis'))
-            //     ->where('tha.teams_idteam', $user[0]->idteam)
-            //     ->groupBy('a.produksi')
-            //     ->orderBy('a.idanalisi')
-            //     ->get();
+            
 
-            // $analisisProses = [];
-            // foreach ($idanalisisProses as $idAP) {
-            //     $arrAP = DB::table('teams_has_analisis')
-            //         ->select('maxProduct', 'cycleTime')
-            //         ->where('analisis_idanalisis', $idAP->maxIdAnalisis)
-            //         ->get();
-            //     $analisisProses[] = array($arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
-            // }
+            $proses1DB = DB::table('teams_has_analisis')
+                ->join('analisis', 'teams_has_analisis.analisis_idanalisis', '=', 'analisis.idanalisis')
+                ->select('teams_has_analisis.proses')->where('teams_has_analisis.teams_idteam', $team)
+                ->where('analisis.produksi', 1)
+                ->orderBy('teams_has_analisis.analisis_idanalisis', 'desc')
+                ->limit(1)->get();
+            $proses2DB = DB::table('teams_has_analisis')
+                ->join('analisis', 'teams_has_analisis.analisis_idanalisis', '=', 'analisis.idanalisis')
+                ->select('teams_has_analisis.proses')
+                ->where('teams_has_analisis.teams_idteam', $team)
+                ->where('analisis.produksi', 2)
+                ->orderBy('teams_has_analisis.analisis_idanalisis', 'desc')
+                ->limit(1)->get();
+            $proses3DB = DB::table('teams_has_analisis')
+                ->join('analisis', 'teams_has_analisis.analisis_idanalisis', '=', 'analisis.idanalisis')
+                ->select('teams_has_analisis.proses')
+                ->where('teams_has_analisis.teams_idteam', $team)
+                ->where('analisis.produksi', 3)
+                ->orderBy('teams_has_analisis.analisis_idanalisis', 'desc')
+                ->limit(1)->get();
 
-            // $userAnalisis =DB::table('');
+            if(count($proses1DB)>0){
+                $proses1 = $proses1DB[0]->proses;
+            }
+            if(count($proses2DB)>0){
+                $proses2 = $proses2DB[0]->proses;
+            }
+            if(count($proses3DB)>0){
+                $proses3 = $proses3DB[0]->proses;
+            }
 
-            return view('Sesi_Analisis.analisis', compact('mesin', 'user', 'sesi'));
+            return view('Sesi_Analisis.analisis', compact('mesin', 'user', 'sesi','proses1','proses2','proses3'));
         } else {
             return redirect()->route('dashboard');
         }
@@ -162,6 +181,10 @@ class AnalisisController extends Controller
     {
         $status = $request->get('status');
         DB::table('sesi')->where('idsesi', 1)->update(['analisis' => $status]);
+        $sesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
+        $sesi = $sesi[0]->nama;
+        $pusher = ['status'=>$status, 'sesi'=> $sesi];
+        event(new Analisis($pusher));
         return redirect()->route('analisis.admin')->with('status', 'status sesi analisis berhasil diubah');
     }
 }

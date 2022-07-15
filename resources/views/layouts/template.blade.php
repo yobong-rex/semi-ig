@@ -122,12 +122,54 @@
     <div class="container-fluid p-0">
         @yield('content')
     </div>
+
+    <!-- modal info analisis-->
+        <div class="modal fade" id="modalInfoAnalisis" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Informasi</h5>
+                    </div>
+                    <div class="modal-body flex" id='info-body-analisis'>
+                        Sesi analisis telah <span id='analisis-status'></span>
+                    </div>
+                    <div class="modal-footer" id='footer-analisis'>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- end modal info analisis-->
     
     @yield('ajaxquery')
     
     {{-- CDN Bootstrap --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        window.Echo.channel('analisisChannel').listen('.analisis', (e) => { 
+            console.log(e.analisis.sesi);
+           if(e.analisis.sesi == "2"){
+                console.log('a')
+                $('footer-analisis').html(`<a href="{{ route('analisis') }}" class="btn btn-secondary mdl-close"
+                                    data-bs-dismiss="modal">OK!</a>`);
+           }
+           else{
+                $('footer-analisis').html('<button type="button" class="btn btn-secondary mdl-close" data-bs-dismiss="modal">Close</button>');
+           }
+
+           if(e.analisis.status == true){
+                $('#analisis-status').text('dibuka');
+           }
+           else{
+                $('#analisis-status').text('ditutup');
+           }
+
+           $('#modalInfoAnalisis').modal('show');
+        });
     </script>
 </body>
 </html>

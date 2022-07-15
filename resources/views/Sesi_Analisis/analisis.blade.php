@@ -156,6 +156,32 @@
 
 @section('ajaxquery')
     <script>
+        function setProses($nomer,$proses){
+            let triger = 1;
+            let splitProses = $proses.split(";")
+            $.each(splitProses, function(key, value){
+                console.log(value);
+                $('#proses_'+$nomer+'_'+triger).val(value);
+                triger +=1;
+            })
+        }
+
+        $(document).ready(function(){
+            let proses1 = "<?php echo $proses1 ?>";
+            let proses2 = "<?php echo $proses2 ?>";
+            let proses3 = "<?php echo $proses3 ?>";
+
+            if(proses1 != ''){
+                setProses(1,proses1);
+            }
+            if(proses2 != ''){
+                setProses(2,proses2);
+            }
+            if(proses3 != ''){
+                setProses(3,proses3);
+            }
+            
+        });
         $('.btn').click(function() {
             var arrProses = [];
             let arrKapasitas = [];
