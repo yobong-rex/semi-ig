@@ -31,6 +31,25 @@ class AnalisisController extends Controller
                 ->where('kht.teams_idteam', $user[0]->idteam)
                 ->get();
 
+            // $idanalisisProses = DB::table('analisis as a')
+            //     ->join('teams_has_analisis as tha', 'a.idanalisis', '=', 'tha.analisis_idanalisis')
+            //     ->select(DB::raw('MAX(a.idanalisis) as maxIdAnalisis'))
+            //     ->where('tha.teams_idteam', $user[0]->idteam)
+            //     ->groupBy('a.produksi')
+            //     ->orderBy('a.idanalisi')
+            //     ->get();
+
+            // $analisisProses = [];
+            // foreach ($idanalisisProses as $idAP) {
+            //     $arrAP = DB::table('teams_has_analisis')
+            //         ->select('maxProduct', 'cycleTime')
+            //         ->where('analisis_idanalisis', $idAP->maxIdAnalisis)
+            //         ->get();
+            //     $analisisProses[] = array($arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
+            // }
+
+            // $userAnalisis =DB::table('');
+
             return view('Sesi_Analisis.analisis', compact('mesin', 'user', 'sesi'));
         } else {
             return redirect()->route('dashboard');

@@ -23,9 +23,11 @@ use App\Http\Middleware\CheckSesi;
 Route::middleware(['auth'])->group(function () {
     // Dashboard
     Route::get('/', 'TeamController@dashboard')->name('dashboard');
+
     // Analisis Proses
     Route::get('/analisis', 'AnalisisController@analisi')->middleware('can:isProduction_Manager')->name('analisis');
     Route::post('/analisis/proses', 'AnalisisController@insertProses')->name('analisis.proses');
+
     Route::middleware([CheckSesi::class])->group(function(){
         // Mesin Kapasitas
         Route::get('/kapasitas', 'KapasitasController@kapasitas')->middleware('can:isProduction_Manager')->name('kapasitas');
@@ -55,6 +57,11 @@ Route::middleware(['auth'])->group(function () {
     // IG Market
     Route::get('/market', 'MarketController@market')->middleware('can:isAdmin')->name('market');
     Route::post('/market/beli', 'MarketController@marketBeli')->name('market.beli');
+
+    // Ganti Sesi
+    Route::get('/adminsesi', 'SesiController@sesi')->middleware('can:isAdmin')->name('adminsesi');
+    Route::post('/adminsesi/gantisesi', 'SesiController@gantiSesi')->name('ganti.sesi');
+    Route::post('/adminsesi/backsesi', 'SesiController@backSesi')->name('back.sesi');
 });
 
 
@@ -69,10 +76,6 @@ Route::get('/prosesbahan', function () {
     return view('Analisis_Bahan_Baku.prosesbahan');
 })->name('prosesbahan');
 
-// Ganti Sesi
-Route::get('/adminsesi', 'SesiController@sesi')->name('adminsesi');
-Route::post('/adminsesi/gantisesi', 'SesiController@gantiSesi')->name('ganti.sesi');
-Route::post('/adminsesi/backsesi', 'SesiController@backSesi')->name('back.sesi');
 
 
 // Mesin
@@ -96,7 +99,7 @@ Route::get('/receiver', function(){
 Route::get('/admin/analisis', 'AnalisisController@admin')->name('analisis.admin');
 Route::post('/admin/analisis/update', 'AnalisisController@updateSesi')->name('analisis.update');
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
 
 
 Route::get('/adminkomponen', function () {
@@ -104,7 +107,7 @@ Route::get('/adminkomponen', function () {
 })->name('adminkomponen');
 // Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
 
 // make team
 Route::get('/maketeam', function () {
