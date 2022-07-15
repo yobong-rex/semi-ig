@@ -324,7 +324,7 @@
                 <!-- modal info -->
                 <div class="modal fade" id="modalInfoTimer" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="staticBackdropLabel">Informasi</h5>
@@ -334,7 +334,7 @@
                             </div>
                             <div class="modal-footer">
                                 <a href="{{ route('dashboard') }}" class="btn btn-secondary mdl-close"
-                                    data-bs-dismiss="modal">Close</a>
+                                    data-bs-dismiss="modal">OK!</a>
                             </div>
                         </div>
                     </div>
@@ -425,8 +425,11 @@
                                             'sesi': $('#nomorSesi').attr('value')
                                         },
                                         success: function() {
-                                            // alert('success');
                                             // masuk pusher
+                                            // alert('success');
+
+                                            // tampilkan modal
+                                            $('#modalInfoTimer').modal('show');
                                         },
                                         error: function() {
                                             alert('error');
@@ -485,8 +488,11 @@
                                             'sesi': $('#nomorSesi').attr('value')
                                         },
                                         success: function() {
-                                            // alert('success');
                                             // masuk pusher
+                                            // alert('success');
+
+                                            // tampilkan modal
+                                            $('#modalInfoTimer').modal('show');
                                         },
                                         error: function() {
                                             alert('error');
@@ -593,8 +599,11 @@
                                     'sesi': $('#nomorSesi').attr('value')
                                 },
                                 success: function() {
-                                    // alert('success');
                                     // masuk pusher
+                                    // alert('success');
+
+                                    // tampilkan modal
+                                    $('#modalInfoTimer').modal('show');
                                 },
                                 error: function() {
                                     alert('error');
@@ -653,8 +662,11 @@
                                     'sesi': $('#nomorSesi').attr('value')
                                 },
                                 success: function() {
-                                    // alert('success');
                                     // masuk pusher
+                                    // alert('success');
+
+                                    // tampilkan modal
+                                    $('#modalInfoTimer').modal('show');
                                 },
                                 error: function() {
                                     alert('error');
@@ -683,6 +695,9 @@
             }
             // kalau ganti sesi
             else if (condition == 'ganti') {
+                // tampilkan modal
+                $('#modalInfoTimer').modal('show');
+
                 console.log('masuk ganti');
                 clearInterval(x);
 
@@ -734,8 +749,11 @@
                                 'sesi': $('#nomorSesi').attr('value')
                             },
                             success: function() {
-                                // alert('success');
                                 // masuk pusher
+                                // alert('success');
+
+                                // tampilkan modal
+                                $('#modalInfoTimer').modal('show');
                             },
                             error: function() {
                                 alert('error');
@@ -749,6 +767,9 @@
             }
             // kalau ganti sesi
             else if (condition == 'back') {
+                // tampilkan modal
+                $('#modalInfoTimer').modal('show');
+
                 console.log('masuk back');
                 clearInterval(x);
 
@@ -800,8 +821,11 @@
                                 'sesi': $('#nomorSesi').attr('value')
                             },
                             success: function() {
-                                // alert('success');
                                 // masuk pusher
+                                // alert('success');
+
+                                // tampilkan modal
+                                $('#modalInfoTimer').modal('show');
                             },
                             error: function() {
                                 alert('error');
