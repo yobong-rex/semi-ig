@@ -7,7 +7,7 @@
     <body>
         <h1>Admin Sesi</h1>
         <h3>Sesi : <span id="nomorSesi" value="{{ $sesi[0]->sesi }}"> {{ $sesi[0]->nama }} </span></h3>
-        <h3>Detail : <span id="detailSesi"></span></h3>
+        <h3>Detail : <span id="detailSesi">{{ $detail }}</span></h3>
         <h3>Status : <span id="status">Paused</span></h3>
         <button type="button" class="btn btn-success" id="button_start">Start</button>
         <button type="button" class="btn btn-success" id="button_pause">Pause</button>
@@ -116,6 +116,7 @@
                     } else {
                         $('#nomorSesi').attr('value', data.sesi[0].sesi);
                         $('#nomorSesi').text(data.sesi[0].nama);
+                        $('#detailSesi').text(data.detail);
                     }
                     // alert('success');
                 },
@@ -140,6 +141,8 @@
                     } else {
                         $('#nomorSesi').attr('value', data.sesi[0].sesi);
                         $('#nomorSesi').text(data.sesi[0].nama);
+                        $('#detailSesi').text(data.detail);
+
                     }
                     // alert('success');
                 },

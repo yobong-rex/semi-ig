@@ -16,7 +16,22 @@ class SesiController extends Controller
             ->select('s.sesi', 'ws.nama')
             ->get();
 
-        return view('adminsesi', compact('sesi'));
+        $sesiAtas = $sesi[0]->sesi - 1;
+        $sesiBawah = $sesi[0]->sesi + 1;
+
+        if ($sesiAtas < 1 || $sesiBawah > 11 || $sesi[0]->nama != 'Cooldown') {
+            $detail = $sesi[0]->nama;
+        } else {
+            $namaAtas = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiAtas)
+                ->get();
+            $namaBawah = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiBawah)
+                ->get();
+            $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
+        }
+
+        return view('adminsesi', compact('sesi', 'detail'));
     }
 
     function startSesi()
@@ -106,9 +121,25 @@ class SesiController extends Controller
 
         event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, true));
 
+        $sesiAtas = $sesi[0]->sesi - 1;
+        $sesiBawah = $sesi[0]->sesi + 1;
+
+        if ($sesiAtas < 1 || $sesiBawah > 11 || $sesi[0]->nama != 'Cooldown') {
+            $detail = $sesi[0]->nama;
+        } else {
+            $namaAtas = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiAtas)
+                ->get();
+            $namaBawah = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiBawah)
+                ->get();
+            $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
+        }
+
         return response()->json(array(
             "success" => true,
-            "sesi" => $sesi
+            "sesi" => $sesi,
+            'detail' => $detail
         ), 200);
     }
 
@@ -130,9 +161,25 @@ class SesiController extends Controller
 
         event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, true));
 
+        $sesiAtas = $sesi[0]->sesi - 1;
+        $sesiBawah = $sesi[0]->sesi + 1;
+
+        if ($sesiAtas < 1 || $sesiBawah > 11 || $sesi[0]->nama != 'Cooldown') {
+            $detail = $sesi[0]->nama;
+        } else {
+            $namaAtas = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiAtas)
+                ->get();
+            $namaBawah = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiBawah)
+                ->get();
+            $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
+        }
+
         return response()->json(array(
             "success" => true,
-            "sesi" => $sesi
+            "sesi" => $sesi,
+            'detail' => $detail
         ), 200);
     }
 
