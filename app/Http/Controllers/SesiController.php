@@ -41,7 +41,22 @@ class SesiController extends Controller
             ->select('s.sesi', 'ws.nama', 'ws.waktu')
             ->get();
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'start'));
+        $sesiAtas = $sesi[0]->sesi - 1;
+        $sesiBawah = $sesi[0]->sesi + 1;
+
+        if ($sesiAtas < 1 || $sesiBawah > 11 || $sesi[0]->nama != 'Cooldown') {
+            $detail = $sesi[0]->nama;
+        } else {
+            $namaAtas = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiAtas)
+                ->get();
+            $namaBawah = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiBawah)
+                ->get();
+            $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
+        }
+
+        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'start', $detail));
 
         return response()->json(array(
             "success" => true,
@@ -56,7 +71,22 @@ class SesiController extends Controller
             ->select('s.sesi', 'ws.nama', 'ws.waktu')
             ->get();
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'pause'));
+        $sesiAtas = $sesi[0]->sesi - 1;
+        $sesiBawah = $sesi[0]->sesi + 1;
+
+        if ($sesiAtas < 1 || $sesiBawah > 11 || $sesi[0]->nama != 'Cooldown') {
+            $detail = $sesi[0]->nama;
+        } else {
+            $namaAtas = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiAtas)
+                ->get();
+            $namaBawah = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiBawah)
+                ->get();
+            $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
+        }
+
+        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'pause', $detail));
 
         return response()->json(array(
             "success" => true,
@@ -71,7 +101,22 @@ class SesiController extends Controller
             ->select('s.sesi', 'ws.nama', 'ws.waktu')
             ->get();
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'stop'));
+        $sesiAtas = $sesi[0]->sesi - 1;
+        $sesiBawah = $sesi[0]->sesi + 1;
+
+        if ($sesiAtas < 1 || $sesiBawah > 11 || $sesi[0]->nama != 'Cooldown') {
+            $detail = $sesi[0]->nama;
+        } else {
+            $namaAtas = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiAtas)
+                ->get();
+            $namaBawah = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiBawah)
+                ->get();
+            $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
+        }
+
+        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'stop', $detail));
 
         return response()->json(array(
             "success" => true,
@@ -119,8 +164,6 @@ class SesiController extends Controller
             ->select('s.sesi', 'ws.nama', 'ws.waktu')
             ->get();
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, true));
-
         $sesiAtas = $sesi[0]->sesi - 1;
         $sesiBawah = $sesi[0]->sesi + 1;
 
@@ -136,10 +179,13 @@ class SesiController extends Controller
             $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
         }
 
+        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'ganti', $detail));
+
         return response()->json(array(
             "success" => true,
             "sesi" => $sesi,
-            'detail' => $detail
+            'detail' => $detail,
+            'status' => 'Started'
         ), 200);
     }
 
@@ -159,8 +205,6 @@ class SesiController extends Controller
 
         $sesi = DB::table('sesi as s')->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')->select('s.sesi', 'ws.nama', 'ws.waktu')->get();
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, true));
-
         $sesiAtas = $sesi[0]->sesi - 1;
         $sesiBawah = $sesi[0]->sesi + 1;
 
@@ -176,10 +220,13 @@ class SesiController extends Controller
             $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
         }
 
+        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'back', $detail));
+
         return response()->json(array(
             "success" => true,
             "sesi" => $sesi,
-            'detail' => $detail
+            'detail' => $detail,
+            'status' => 'Started'
         ), 200);
     }
 

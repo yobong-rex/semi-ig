@@ -17,16 +17,18 @@ class Sesi implements ShouldBroadcast
     public $id;
     public $sesi;
     public $waktu;
-    public $mulai;
+    public $condition;
+    public $detailSesi;
 
-    public function __construct($id, $sesi, $waktu, $mulai)
+    public function __construct($id, $sesi, $waktu, $condition, $detailSesi)
     {
         $this->id = $id;
         $this->sesi = $sesi;
         $this->waktu = $waktu;
         // buat mengetahui game sedang berjalan, behenti, pause
         // start || pause || stop
-        $this->mulai = $mulai;
+        $this->condition = $condition;
+        $this->detailSesi = $detailSesi;
     }
 
     public function broadcastOn()

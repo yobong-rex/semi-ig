@@ -321,13 +321,36 @@
                     </table>
                 </div>
 
+                <!-- modal info -->
+                <div class="modal fade" id="modalInfoTimer" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Informasi</h5>
+                            </div>
+                            <div class="modal-body flex" id='info-body'>
+                                Sesi telah berganti!!
+                            </div>
+                            <div class="modal-footer">
+                                <a href="{{ route('dashboard') }}" class="btn btn-secondary mdl-close"
+                                    data-bs-dismiss="modal">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end modal info -->
+
+
     </body>
 
     <script src="../../js/app.js"></script>
     <script>
+        let x = null;
+
         // buat menjalankan / melanjutkan timer pas buka webpage
         $(document).ready(function() {
-            let condition = localStorage.getItem('mulai');
+            let condition = localStorage.getItem('condition');
 
             // kalau game start
             if (condition == 'start') {
@@ -343,6 +366,7 @@
                         let waktu = data.waktu[0].waktu;
 
                         /* Timer */
+                        clearInterval(x);
 
                         // variable used to continue timer
                         const key = 'timer'
@@ -356,7 +380,7 @@
                             // timer lanjut dari waktu sebelum reload
                             timer = timeInMs;
 
-                            let x = setInterval(function() {
+                            x = setInterval(function() {
                                 // kalau masih ada waktu, maka kurangi
                                 if (timer > 0) {
                                     // jadikan minutes : second
@@ -409,14 +433,14 @@
                                         }
                                     })
                                 }
-                            }, 1000)
+                            }, 1000);
                         }
                         // kalau belum pernah buka web ini
                         else {
                             let timer = waktu * 1000;
 
                             // buat timer baru
-                            let x = setInterval(function() {
+                            x = setInterval(function() {
                                 // kalau masih ada waktu, maka kurangi
                                 if (timer > 0) {
                                     // jadikan minutes : second
@@ -469,7 +493,7 @@
                                         }
                                     })
                                 }
-                            }, 1000)
+                            }, 1000);
                         }
                     },
                     error: function() {
@@ -477,13 +501,15 @@
                     }
                 })
             }
-            // kalau game pause
+            //  kalau game pause
             else if (condition == 'pause') {
-
+                console.log('masuk pause');
+                clearInterval(x);
             }
-            // kalau game stop
+            //  kalau game stop
             else if (condition == 'stop') {
-
+                console.log('masuk stop');
+                clearInterval(x);
             }
         })
 
@@ -492,7 +518,7 @@
             console.log(e.id);
             console.log(e.sesi);
             console.log(e.waktu);
-            console.log(e.mulai);
+            console.log(e.condition);
 
             // setting sesi
             $('#nomorSesi').attr('value', e.id);
@@ -501,9 +527,9 @@
             // setting timer
             let waktu = e.waktu;
 
-            localStorage.setItem('mulai', e.mulai);
-            let condition = localStorage.getItem('mulai');
-            console.log(localStorage.getItem('mulai'));
+            localStorage.setItem('condition', e.condition);
+            let condition = localStorage.getItem('condition');
+            console.log(localStorage.getItem('condition'));
 
             /* Timer */
             // variable used to continue timer
@@ -512,6 +538,7 @@
 
             // kalau game berjalan
             if (condition == 'start') {
+                clearInterval(x);
                 console.log('masuk start');
                 // kalau sudah pernah buka web ini
                 if (timeInMs) {
@@ -521,11 +548,12 @@
                     // timer lanjut dari waktu sebelum reload
                     timer = timeInMs;
 
-                    let x = setInterval(function() {
+                    x = setInterval(function() {
                         // kalau masih ada waktu, maka kurangi
                         if (timer > 0) {
                             // jadikan minutes : second
-                            let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 *
+                            let minutes = Math.floor((timer % (1000 * 60 * 60)) / (
+                                1000 *
                                 60));
                             let seconds = Math.floor((timer % (1000 * 60)) / 1000);
 
@@ -580,11 +608,12 @@
                     let timer = waktu * 1000;
 
                     // buat timer baru
-                    let x = setInterval(function() {
+                    x = setInterval(function() {
                         // kalau masih ada waktu, maka kurangi
                         if (timer > 0) {
                             // jadikan minutes : second
-                            let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 *
+                            let minutes = Math.floor((timer % (1000 * 60 * 60)) / (
+                                1000 *
                                 60));
                             let seconds = Math.floor((timer % (1000 * 60)) / 1000);
 
@@ -638,12 +667,152 @@
             //  kalau game pause
             else if (condition == 'pause') {
                 console.log('masuk pause');
+                clearInterval(x);
             }
             //  kalau game stop
             else if (condition == 'stop') {
                 console.log('masuk stop');
-            }
+                clearInterval(x);
 
+                // reset timer
+                localStorage.removeItem(key);
+                console.log(localStorage.getItem(key));
+
+                // ganti timer ke default
+                $('#timer').text('- - : - -');
+            }
+            // kalau ganti sesi
+            else if (condition == 'ganti') {
+                console.log('masuk ganti');
+                clearInterval(x);
+
+                let timer = waktu * 1000;
+
+                // buat timer baru
+                x = setInterval(function() {
+                    // kalau masih ada waktu, maka kurangi
+                    if (timer > 0) {
+                        // jadikan minutes : second
+                        let minutes = Math.floor((timer % (1000 * 60 * 60)) / (
+                            1000 *
+                            60));
+                        let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+
+                        // kalau tidak double digit jadikan double digit
+                        if (minutes < 10) {
+                            minutes = '0' + minutes;
+                        }
+                        if (seconds < 10) {
+                            seconds = '0' + seconds;
+                        }
+
+                        // tampilkan timer
+                        $('#timer').text(minutes + " : " + seconds);
+
+                        //kurangi per 1000 milisecond
+                        timer -= 1000;
+
+                        // masukkan timer dan tanggal sekarang ke localStorage per detik
+                        localStorage.setItem(key, timer);
+                        // localStorage.setItem('now', Date.now());
+                        console.log(localStorage.getItem(key));
+                        // console.log(localStorage.getItem('now'));
+                    }
+                    // kalau sudah habis, maka selesai 
+                    else {
+                        // hapus timer sekarang
+                        clearInterval(x);
+                        localStorage.clear();
+                        $('#timer').text('00 : 00');
+
+                        // lanjut sesi berikutnya
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('ganti.sesi') }}",
+                            data: {
+                                '_token': '<?php echo csrf_token(); ?>',
+                                'sesi': $('#nomorSesi').attr('value')
+                            },
+                            success: function() {
+                                // alert('success');
+                                // masuk pusher
+                            },
+                            error: function() {
+                                alert('error');
+                            }
+                        })
+                    }
+                }, 1000)
+
+                // set condition supaya waktu reload masih jalan
+                localStorage.setItem('condition', 'start');
+            }
+            // kalau ganti sesi
+            else if (condition == 'back') {
+                console.log('masuk back');
+                clearInterval(x);
+
+                let timer = waktu * 1000;
+
+                // buat timer baru
+                x = setInterval(function() {
+                    // kalau masih ada waktu, maka kurangi
+                    if (timer > 0) {
+                        // jadikan minutes : second
+                        let minutes = Math.floor((timer % (1000 * 60 * 60)) / (
+                            1000 *
+                            60));
+                        let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+
+                        // kalau tidak double digit jadikan double digit
+                        if (minutes < 10) {
+                            minutes = '0' + minutes;
+                        }
+                        if (seconds < 10) {
+                            seconds = '0' + seconds;
+                        }
+
+                        // tampilkan timer
+                        $('#timer').text(minutes + " : " + seconds);
+
+                        //kurangi per 1000 milisecond
+                        timer -= 1000;
+
+                        // masukkan timer dan tanggal sekarang ke localStorage per detik
+                        localStorage.setItem(key, timer);
+                        // localStorage.setItem('now', Date.now());
+                        console.log(localStorage.getItem(key));
+                        // console.log(localStorage.getItem('now'));
+                    }
+                    // kalau sudah habis, maka selesai 
+                    else {
+                        // hapus timer sekarang
+                        clearInterval(x);
+                        localStorage.clear();
+                        $('#timer').text('00 : 00');
+
+                        // lanjut sesi berikutnya
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('ganti.sesi') }}",
+                            data: {
+                                '_token': '<?php echo csrf_token(); ?>',
+                                'sesi': $('#nomorSesi').attr('value')
+                            },
+                            success: function() {
+                                // alert('success');
+                                // masuk pusher
+                            },
+                            error: function() {
+                                alert('error');
+                            }
+                        })
+                    }
+                }, 1000)
+
+                // set condition supaya waktu reload masih jalan
+                localStorage.setItem('condition', 'start');
+            }
         })
     </script>
 @endsection
