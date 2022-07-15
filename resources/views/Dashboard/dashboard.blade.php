@@ -78,7 +78,8 @@
                     <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
                 </div>
                 <div class="col-1">
-                    <h3 id="nomorSesi" value="{{ $sesi[0]->sesi }}">Sesi <span id="sesi">{{$sesi[0]->nama}}</span></h3>
+                    <h3 id="nomorSesi" value="{{ $sesi[0]->sesi }}">Sesi <span id="sesi">{{ $sesi[0]->nama }}</span>
+                    </h3>
                 </div>
                 <div class="col-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
                     <h3>Timer</h3>
@@ -326,7 +327,10 @@
     <script>
         // buat menjalankan / melanjutkan timer pas buka webpage
         $(document).ready(function() {
-                // alert($('#sesi').text());
+            let condition = localStorage.getItem('mulai');
+
+            // kalau game start
+            if (condition == 'start') {
                 $.ajax({
                     type: 'POST',
                     url: "{{ route('timer') }}",
@@ -356,7 +360,8 @@
                                 // kalau masih ada waktu, maka kurangi
                                 if (timer > 0) {
                                     // jadikan minutes : second
-                                    let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 *
+                                    let minutes = Math.floor((timer % (1000 * 60 * 60)) / (
+                                        1000 *
                                         60));
                                     let seconds = Math.floor((timer % (1000 * 60)) / 1000);
 
@@ -415,7 +420,8 @@
                                 // kalau masih ada waktu, maka kurangi
                                 if (timer > 0) {
                                     // jadikan minutes : second
-                                    let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 *
+                                    let minutes = Math.floor((timer % (1000 * 60 * 60)) / (
+                                        1000 *
                                         60));
                                     let seconds = Math.floor((timer % (1000 * 60)) / 1000);
 
@@ -470,22 +476,43 @@
                         alert('error');
                     }
                 })
-            })
+            }
+            // kalau game pause
+            else if (condition == 'pause') {
 
-            /* Pusher */
-            window.Echo.channel('sesiPusher').listen('.sesi', (e) => {
-                console.log(e.id);
-                console.log(e.sesi);
-                console.log(e.waktu);
-                $('#nomorSesi').attr('value', e.id);
-                $('#sesi').text(e.sesi);
-                let waktu = e.waktu;
+            }
+            // kalau game stop
+            else if (condition == 'stop') {
 
-                /* Timer */
-                // variable used to continue timer
-                const key = 'timer'
-                var timeInMs = localStorage.getItem(key);
+            }
+        })
 
+        /* Pusher */
+        window.Echo.channel('sesiPusher').listen('.sesi', (e) => {
+            console.log(e.id);
+            console.log(e.sesi);
+            console.log(e.waktu);
+            console.log(e.mulai);
+
+            // setting sesi
+            $('#nomorSesi').attr('value', e.id);
+            $('#sesi').text(e.sesi);
+
+            // setting timer
+            let waktu = e.waktu;
+
+            localStorage.setItem('mulai', e.mulai);
+            let condition = localStorage.getItem('mulai');
+            console.log(localStorage.getItem('mulai'));
+
+            /* Timer */
+            // variable used to continue timer
+            const key = 'timer';
+            var timeInMs = localStorage.getItem(key);
+
+            // kalau game berjalan
+            if (condition == 'start') {
+                console.log('masuk start');
                 // kalau sudah pernah buka web ini
                 if (timeInMs) {
                     // hitung waktu yang hilang saat reload
@@ -607,6 +634,16 @@
                         }
                     }, 1000)
                 }
-            })
+            }
+            //  kalau game pause
+            else if (condition == 'pause') {
+                console.log('masuk pause');
+            }
+            //  kalau game stop
+            else if (condition == 'stop') {
+                console.log('masuk stop');
+            }
+
+        })
     </script>
 @endsection

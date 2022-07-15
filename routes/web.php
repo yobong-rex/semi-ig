@@ -62,11 +62,14 @@ Route::get('/prosesbahan', function () {
 
 // Ganti Sesi
 Route::get('/adminsesi', 'SesiController@sesi')->name('adminsesi');
+Route::post('/adminsesi/startsesi', 'SesiController@startSesi')->name('start.sesi');
+Route::post('/adminsesi/pausesesi', 'SesiController@pauseSesi')->name('pause.sesi');
+Route::post('/adminsesi/stopsesi', 'SesiController@stopSesi')->name('stop.sesi');
 Route::post('/adminsesi/gantisesi', 'SesiController@gantiSesi')->name('ganti.sesi');
 Route::post('/adminsesi/backsesi', 'SesiController@backSesi')->name('back.sesi');
 
 // Timer
-route::post('/timer', 'SesiController@Timer')->name('timer');
+route::post('/timer', 'SesiController@timer')->name('timer');
 
 
 //Route coba-coba
