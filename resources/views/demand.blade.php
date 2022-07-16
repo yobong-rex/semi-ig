@@ -46,21 +46,6 @@
     @endphp
 
     <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
-        <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
-
-            {{-- Nama Team dan Timer --}}
-            <div class="row align-items-center rounded heading">
-                <div class="col-9 nama_team">
-                    <!-- <h1 id="namaTeam" value='{{ $user[0]->idteam }}'> Team </h1>  -->
-                </div>
-                <div class="col-1">
-                    <h3 id="nomorSesi" value="{{ $sesi1 }}">Sesi <span id="sesi">{{ $sesi1 }}</span></h3>
-                </div>
-                <div class="col-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
-                    <h3>Timer</h3>
-                    <h4 id="timer">- - : - -</h4>
-                </div>
-            </div>
 
             <div class="row spacing"></div>
 
