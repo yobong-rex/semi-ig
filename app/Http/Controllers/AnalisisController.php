@@ -178,10 +178,13 @@ class AnalisisController extends Controller
     {
         $status = $request->get('status');
         DB::table('sesi')->where('idsesi', 1)->update(['analisis' => $status]);
+
         $sesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
-        $sesi = $sesi[0]->nama;
-        $pusher = ['status' => $status, 'sesi' => $sesi];
+        $sesiVal = $sesi[0]->nama;
+
+        $pusher = ['status' => $status, 'sesi' => $sesiVal];
         event(new Analisis($pusher));
+
         return redirect()->route('analisis.admin')->with('status', 'status sesi analisis berhasil diubah');
     }
 }

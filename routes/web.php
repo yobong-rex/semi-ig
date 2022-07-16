@@ -37,7 +37,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/komponen', 'KomponenController@komponen')->middleware('can:isMarketing')->name('komponen');
         Route::get('/komponen/ajax', 'KomponenController@komponenAjax')->name('komponen.ajax');
         Route::post('/komponen/upgrade', 'KomponenController@komponenUpgrade')->name('upgrade.komponen');
-
         
         // Analisis Bahan Baku
         Route::get('/bahan', 'BahanController@bahan')->middleware('can:isResearcher')->name('bahan');
@@ -58,14 +57,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/market', 'MarketController@market')->middleware('can:isAdmin')->name('market');
     Route::post('/market/beli', 'MarketController@marketBeli')->name('market.beli');
 
+    
+    //admin analisis
+    Route::get('/adminanalisis', 'AnalisisController@admin')->middleware('can:isAdmin')->name('analisis.admin');
+    Route::post('/adminanalisis/update', 'AnalisisController@updateSesi')->name('analisis.update');
+
     // Ganti Sesi
     Route::get('/adminsesi', 'SesiController@sesi')->middleware('can:isAdmin')->name('adminsesi');
+    Route::post('/adminsesi/startsesi', 'SesiController@startSesi')->name('start.sesi');
+    Route::post('/adminsesi/pausesesi', 'SesiController@pauseSesi')->name('pause.sesi');
+    Route::post('/adminsesi/stopsesi', 'SesiController@stopSesi')->name('stop.sesi');
     Route::post('/adminsesi/gantisesi', 'SesiController@gantiSesi')->name('ganti.sesi');
     Route::post('/adminsesi/backsesi', 'SesiController@backSesi')->name('back.sesi');
-
-    //admin analisis
-    Route::get('/admin/analisis', 'AnalisisController@admin')->name('analisis.admin');
-    Route::post('/admin/analisis/update', 'AnalisisController@updateSesi')->name('analisis.update');
 });
 
 
@@ -79,15 +82,6 @@ Route::get('/admin', function () {
 Route::get('/prosesbahan', function () {
     return view('Analisis_Bahan_Baku.prosesbahan');
 })->name('prosesbahan');
-
-
-// Ganti Sesi
-Route::get('/adminsesi', 'SesiController@sesi')->name('adminsesi');
-Route::post('/adminsesi/startsesi', 'SesiController@startSesi')->name('start.sesi');
-Route::post('/adminsesi/pausesesi', 'SesiController@pauseSesi')->name('pause.sesi');
-Route::post('/adminsesi/stopsesi', 'SesiController@stopSesi')->name('stop.sesi');
-Route::post('/adminsesi/gantisesi', 'SesiController@gantiSesi')->name('ganti.sesi');
-Route::post('/adminsesi/backsesi', 'SesiController@backSesi')->name('back.sesi');
 
 
 // Timer
@@ -111,15 +105,6 @@ Route::get('/test/timer', function(){
 })->name('test.timer');
 //Route coba-coba
 
-
-// Route::get('/home', 'HomeController@index')->name('home');
-
-
-Route::get('/adminkomponen', function () {
-    return view('mesin.adminkomponen');
-})->name('adminkomponen');
-// Auth::routes();
-
 // Route::get('/home', 'HomeController@index')->name('home');
 
 // make team
@@ -128,10 +113,6 @@ Route::get('/maketeam', function () {
 })->name('maketeam');
 
 Route::post('/maketeam/maketeam', 'TeamController@makeTeam')->name('makeTeam');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 

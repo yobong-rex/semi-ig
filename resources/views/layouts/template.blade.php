@@ -169,16 +169,17 @@
     <div class="container-fluid p-0">
         <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
             {{-- Nama Team dan Timer --}}
-            <div class="row align-items-center rounded heading">
+            <div class="row flex-wrap align-items-center rounded heading">
 
-                <div class="col-md-9 nama_team">
+                <div class="col-md-9 flex nama_team">
                     <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
                 </div>
-                <div class="col-md-1 coloumn_sesi">
+                <div class="col-md-1 flex coloumn_sesi">
                     <h3 id="nomorSesi" value={{ $valueSesi }}>Sesi <span id="sesi">{{ $namaSesi }}</span>
                     </h3>
                 </div>
-                <div class="col-md-2 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
+                <div class="col-md-2 flex text-center align-self-end timer rounded-2"
+                    style="font-family:TT Norms Regular;">
 
                     <h3>Timer</h3>
                     <h4 id="timer">- - : - -</h4>
@@ -189,7 +190,7 @@
         </div>
     </div>
 
-    <!-- modal info -->
+    <!-- modal info timer-->
     <div class="modal fade" id="modalInfoTimer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -197,18 +198,41 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Informasi</h5>
                 </div>
-                <div class="modal-body flex" id='info-body'>
+                <div class="modal-body flex" id='info-body-timer'>
                     Sesi telah berganti!!
                 </div>
                 <div class="modal-footer">
-                    <a href="{{ route('dashboard') }}" class="btn btn-secondary mdl-close"
-                        data-bs-dismiss="modal">OK!</a>
+                    <a href="{{ route('dashboard') }}" class="btn btn-secondary mdl-close">OK!</a>
                 </div>
             </div>
         </div>
     </div>
-    <!-- end modal info -->
+    <!-- end modal info timer-->
 
+    
+        <!-- modal info analisis-->
+        <div class="modal fade" id="modalInfoAnalisis" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Informasi</h5>
+                    </div>
+                    <div class="modal-body flex" id='info-body-analisis'>
+                        Sesi analisis telah <span id='analisis-status'></span>
+                    </div>
+                    <div class="modal-footer" id='footer-analisis'>
+                    @can('isProduction_Manager')
+                        <a href="{{ route('analisis') }}" class="btn btn-secondary mdl-close" >OK!</a>
+                    @else
+                        <button type="button" class="btn btn-secondary mdl-close" data-bs-dismiss="modal">OK!</button>
+                    @endcan
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end modal info analisis-->
+    
     <script src="../../js/app.js"></script>
     <script>
         let x = null;
@@ -703,23 +727,20 @@
                 localStorage.setItem('condition', 'start');
             }
         })
-    </script>
 
-    <script>
         window.Echo.channel('analisisChannel').listen('.analisis', (e) => {
             console.log(e.analisis.sesi);
-            if (e.analisis.sesi == "2") {
-                console.log('a')
-                $('footer-analisis').html(`<a href="{{ route('analisis') }}" class="btn btn-secondary mdl-close"
-                                    data-bs-dismiss="modal">OK!</a>`);
-            } else {
-                $('footer-analisis').html(
-                    '<button type="button" class="btn btn-secondary mdl-close" data-bs-dismiss="modal">Close</button>'
-                    );
-            }
+            // $('#footer-analisis').html(
+            //     '<button type="button" class="btn btn-secondary mdl-close" data-bs-dismiss="modal">OK!</button>'
+            // );
 
             if (e.analisis.status == true) {
                 $('#analisis-status').text('dibuka');
+                // if (e.analisis.sesi == "2") {
+                //     $('#footer-analisis').html(
+                //         `<a href="{{ route('analisis') }}" class="btn btn-secondary mdl-close" >OK!</a>`
+                //     );
+                // }
             } else {
                 $('#analisis-status').text('ditutup');
             }
