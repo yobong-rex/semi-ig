@@ -117,6 +117,7 @@ class KomponenController extends Controller
 
     function komponenAjax(Request $request)
     {
+        $this->authorize('isMarketing');
         $namaMesin = $request->get('namaMesin');
         $idmesin = DB::table('mesin')->where('nama', 'like', '%' . $namaMesin . '%')->get();
 
@@ -151,12 +152,13 @@ class KomponenController extends Controller
 
     function komponenUpgrade(Request $request)
     {
+        $this->authorize('isMarketing');
         $namaMesin = $request->get('namaMesin');
         $namaKomponen = $request->get('namaKomponen');
+
         $team = Auth::user()->teams_idteam;
         $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
         $idmesin = DB::table('mesin')->where('nama', 'like', '%' . $namaMesin . '%')->get();
-
         $idkom = DB::table('level_komponen as lk')
             ->join('komponen as k', 'lk.komponen_idkomponen', '=', 'k.idkomponen')
             ->select('komponen_idkomponen', 'k.level', 'k.harga')
@@ -218,24 +220,33 @@ class KomponenController extends Controller
         $level_d = $level_komponen[3]->level;
 
         $level_mesin = 1;
+        $cycle = $idmesin[0]->cycle;
 
         // Check Level
         if ($level_a == 10 && $level_b == 10 && $level_c == 10 && $level_d == 10) {
             $level_mesin = 6;
+            $cycle -= 1;
         } elseif ($level_a >= 8 && $level_b >= 8 && $level_c >= 8 && $level_d >= 8) {
             $level_mesin = 5;
+            $cycle -= 1;
         } elseif ($level_a >= 6 && $level_b >= 6 && $level_c >= 6 && $level_d >= 6) {
             $level_mesin = 4;
+            $cycle -= 1;
         } elseif ($level_a >= 4 && $level_b >= 4 && $level_c >= 4 && $level_d >= 4) {
             $level_mesin = 3;
+            $cycle -= 1;
         } elseif ($level_a >= 2 && $level_b >= 2 && $level_c >= 2 && $level_d >= 2) {
             $level_mesin = 2;
+            $cycle -= 1;
         }
 
         DB::table('mesin_has_teams')
             ->where('mesin_idmesin', $idmesin[0]->idmesin)
             ->where('teams_idteam', $user[0]->idteam)
-            ->update(['level' => $level_mesin]);
+            ->update([
+                'level' => $level_mesin,
+                'cycleTime' => $cycle
+            ]);
 
         $levelMesin = DB::table('teams as t')
             ->join('mesin_has_teams as mht', 't.idteam', '=', 'mht.teams_idteam')

@@ -75,23 +75,22 @@
                 {{ session('error') }}
             </div>
         @endif
-        
             <div class="row spacing"></div>
 
             {{-- Card Dana --}}
             <div class="card-header rounded" style="background-color:#faf0dc;box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
                 <div class="row align-items-center">
-                    <div class="col-1 text-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
+                    <div class="col-md-1 text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"fill="currentColor"
                             class="bi bi-wallet2" viewBox="0 0 16 16">
                             <path
                                 d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z" />
                         </svg>
                     </div>
-                    <div class="col-2 label_dana">
-                        <h1>Dana : </h1>
+                    <div class="col-md-2 label_dana text-center">
+                        <h1>Dana :</h1> 
                     </div>
-                    <div class="col-9 dana">
+                    <div class="col-md-9 dana">
                         <h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1>
                     </div>
                 </div>
@@ -105,8 +104,8 @@
                 SEBELUM Konfirmasi</div>
             {{-- Form produksi --}}
             <form action="{{ route('produksi.buat') }}" method='post'>
-                <input type="hidden" value='{{ $sesi[0]->nama }}' name='sesi'>
-                <input type="hidden" value='{{ $user[0]->idteam }}' name='team'>
+                <input type="hidden" id='sesi' value='{{ $sesi1 }}' name='sesi'>
+                <input type="hidden" id='team' value='{{ $user[0]->idteam }}' name='team'>
                 @csrf
                 <table class="table table-bordered" style="vertical-align: middle;">
                     <thead class="thead">
@@ -132,14 +131,14 @@
                         @for ($i = 1; $i <= 3; $i++)
                             <tr id="tr_{{ $i }}">
                                 @if ($i == 1)
-                                    <input type="hidden" name='defect_{{ $i }}' value='{{ $defect1 }}'>
+                                    <input type="hidden" id='defect_{{ $i }}' name='defect_{{ $i }}' value='{{ $defect1 }}'>
                                 @elseif ($i == 2)
-                                    <input type="hidden" name='defect_{{ $i }}' value='{{ $defect2 }}'>
+                                    <input type="hidden" id="defect_{{ $i }}" name='defect_{{ $i }}' value='{{ $defect2 }}'>
                                 @else
-                                    <input type="hidden" name='defect_{{ $i }}' value='{{ $defect3 }}'>
+                                    <input type="hidden" id='defect_{{ $i }}' name='defect_{{ $i }}' value='{{ $defect3 }}'>
                                 @endif
                                 <td>
-                                    <select name="produk_{{ $i }}" id="">
+                                    <select name="produk_{{ $i }}" id="produk_{{ $i }}">
                                         <option value="">pilih produk</option>
                                         @if ($i == 1)
                                             <option value="1">Scooter</option>
@@ -158,15 +157,13 @@
                                             <option value="4">Rubber Ball</option>
                                             <option value="5">Fidget Spiner</option>
                                             <option value="14">Bowling Set</option>
-                                            <option value="8">Action Figure</option>
+                                            <option value="8">Action Figure (Gundam)</option>
                                         @endif
                                     </select>
                                 </td>
                                 <td><input class="inputJumlahProduk" type="number" name='jumlah_{{ $i }}'
-                                        id='jumlahProduk' min="0"
-                                        oninput="this.value =
-                                !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
-                                        placeholder=0>
+                                        id='jumlahProduk_{{ $i }}' min="0" oninput="this.value =
+                                !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0>
                                 </td>
                                 <th class="nomor" scope="row">Proses Produksi {{ $i }}</th>
                                 @for ($j = 1; $j <= 9; $j++)
@@ -184,9 +181,8 @@
                                     </td>
                                 @endfor
                                 <td>
-                                    {{-- Button Tampilin modal --}}
-                                    <button type="button" class="btn btn-success" id="button_PopupModal"
-                                        data-bs-toggle="modal" data-bs-target="#staticBackdrop">Konfirmasi</button>
+                                    {{--Button Tampilin modal--}}
+                                    <button type="button" class="btn btn-success " id="button_PopupModal" btn='{{$i}}' data-bs-toggle="modal" data-bs-target="#staticBackdrop">Konfirmasi</button>
 
                                     {{-- Button asli --}}
                                     {{-- <button class="btn btn-success" name='submit' value='{{ $i }}' id="button_{{ $i }}">Konfirmasi</button> --}}
@@ -203,7 +199,8 @@
 
             {{-- Pop Up Konfirmasi --}}
             <!-- Modal -->
-            {{-- <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -211,17 +208,36 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body flex">
-                                Apakah anda yakin untuk melakukan produksi {{$i}} ?
+                                Apakah anda yakin untuk melakukan produksi <span id='no-konfrim'></span> ?
                             </div>
                             <div class="modal-footer">
 
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Cancel</button>
  
-                                <button class="btn btn-success" name='submit' value='{{ $i }}' id="button_{{ $i }}">Konfirmasi</button>
+                                <button class="btn btn-success btn-modal" name='button'>Konfirmasi</button>
                             </div>
                         </div>
                     </div>
-                </div> --}}
+                </div>
+            <!-- end modal -->
+
+            <!-- modal info -->
+                <div class="modal fade" id="modalInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Informasi</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body flex" id='info-body'>
+                                
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- end modal info -->
 
             {{-- Kartu bawah --}}
             <!-- <div class="row">
@@ -262,5 +278,50 @@
                     </div> -->
 
         </div>
+
+        <script>
+            let btn = '';
+            $(document).on('click','#button_PopupModal', function(){
+                btn = $(this).attr('btn');
+                $('#no-konfrim').text(btn);
+            })
+
+            $(document).on('click','.btn-modal', function(){
+                // alert(btn);
+                let defect = $('#defect_'+btn).attr('value');
+                let sesi = $('#sesi').attr('value');
+                let team = $('#team').attr('value');
+                let product = $('#produk_'+btn).val();
+                let product_name = $('#produk_'+btn+" option:selected").text();
+                let jumlah = $('#jumlahProduk_'+btn).val();
+                console.log(product_name);
+                // alert(product_name)
+                $.ajax({
+                type: "POST",
+                url: "{{ route('produksi.buat') }}",
+                data: {
+                    '_token': '<?php echo csrf_token(); ?>',
+                    'sesi': sesi,
+                    'team': team,
+                    'defect' : defect,
+                    'produk' : product,
+                    'jumlah' : jumlah,
+                    'name'  : product_name,
+                    'btn'   : btn
+                },
+                success: function(data) {
+                    $('#staticBackdrop').modal('hide');
+                    $('#info-body').text(data.msg);
+                    $('#modalInfo').modal('show');
+                    $('#produk_'+btn).val("").change();
+                    $('#jumlahProduk_'+btn).val(0);
+                },
+                error: function() {
+                    // alert('error');
+                }
+            });
+            })
+        </script>
     </body>
 @endsection
+ 

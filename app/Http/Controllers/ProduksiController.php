@@ -40,12 +40,9 @@ class ProduksiController extends Controller
     {
         $team = Auth::user()->teams_idteam;
         $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
-        $sesi = DB::table('sesi as s')
-            ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
-            ->select('s.sesi', 'ws.nama')
-            ->get();
-
-        $sesi1 = $sesi[0]->sesi;
+        $getSesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
+        $sesi1 = $getSesi[0]->nama;
+        // $sesi1 = $sesi[0]->sesi;
         if ($sesi1 == 3) {
             return redirect()->route('dashboard');
         }
@@ -77,6 +74,9 @@ class ProduksiController extends Controller
                 ->where('analisis.produksi', 3)
                 ->orderBy('teams_has_analisis.analisis_idanalisis', 'desc')
                 ->limit(1)->get();
+            if(count($proses1) == 0 || count($proses2) == 0 || count($proses3) == 0){
+                return redirect()->route('analisis')->with('error','tolong isi terlebih dahulu proses produksi 1,2,dan 3');
+            }
             $proses1 = $proses1[0]->proses;
             $proses2 = $proses2[0]->proses;
             $proses3 = $proses3[0]->proses;
@@ -95,16 +95,29 @@ class ProduksiController extends Controller
 
     function buat(Request $request)
     {
-        $btn = $request->get('submit');
-        $produk = $request->get('produk_' . $btn);
-        $jumlah = $request->get('jumlah_' . $btn);
-        $defect = $request->get('defect_' . $btn);
-        $sesi = $request->get('sesi');
-        $team = $request->get('team');
+        $this->authorize('isProduction_Manager');
+        $btn = $request->get('btn');
+        $produk = $request->get('produk');
+        $jumlah = $request->get('jumlah');
+        $defect = $request->get('defect');
+        $getSesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
+        $sesi = $getSesi[0]->nama;
+        $team = Auth::user()->teams_idteam;
+        $name = $request->get('name');
+
+        if($produk == ''){
+            return response()->json(array(
+                'msg' => 'maaf, tolong pilih produk yang ingin diproduksi terlebih dahulu',
+                'code' => '401'
+            ), 200);
+        }
 
         if ($sesi == 1) {
             if ($jumlah > 80) {
-                return redirect()->route('produksi')->with('error', 'jumlah yang ingin kamu produksi melebihi kapasitas produksi');
+                return response()->json(array(
+                    'msg' => 'maaf, jumlah yang ingin kamu produksi melebihi kapasitas produksi',
+                    'code' => '401'
+                ), 200);
             }
         } else {
 
@@ -127,7 +140,10 @@ class ProduksiController extends Controller
             }
 
             if (($jumlah > $analisisProses[0][0]) || ($jumlah > $analisisProses[0][1])) {
-                return redirect()->route('produksi')->with('error', 'jumlah yang ingin kamu produksi melebihi kapasitas produksi');
+                return response()->json(array(
+                    'msg' => 'maaf, jumlah yang ingin kamu produksi melebihi kapasitas produksi',
+                    'code' => '401'
+                ), 200);
             }
         }
 
@@ -135,7 +151,10 @@ class ProduksiController extends Controller
         $bahanBaku_split = explode(';', $bahanBaku[0]->bahan_baku);
         $teamStatus = DB::table('teams')->select('dana', 'inventory')->where('idteam', $team)->get();
         if ($teamStatus[0]->dana < 100) {
-            return redirect()->route('produksi')->with('error', 'maaf dana mu kurang untuk membuat product');
+            return response()->json(array(
+                'msg' => 'maaf, maaf dana mu kurang untuk membuat product',
+                'code' => '401'
+            ), 200);
         }
 
         foreach ($bahanBaku_split as $bb) {
@@ -148,7 +167,10 @@ class ProduksiController extends Controller
                 ->get();
             if (count($inv) > 0) {
                 if ($jumlah > $inv[0]->stock) {
-                    return redirect()->route('produksi')->with('error', 'maaf bahan baku mu kurang untuk membuat product');
+                    return response()->json(array(
+                        'msg' => 'maaf, bahan baku mu kurang untuk membuat product',
+                        'code' => '401'
+                    ), 200);
                 } else {
                     $invBaru = $inv[0]->stock - $jumlah;
                     DB::table('inventory')
@@ -157,7 +179,10 @@ class ProduksiController extends Controller
                         ->update(['stock' => $invBaru]);
                 }
             } else {
-                return redirect()->route('produksi')->with('error', 'maaf bahan baku mu kurang untuk membuat product');
+                return response()->json(array(
+                    'msg' => 'maaf, bahan baku mu kurang untuk membuat product',
+                    'code' => '401'
+                ), 200);
             }
         }
 
@@ -173,6 +198,7 @@ class ProduksiController extends Controller
             $jmlTemp = $jmlTemp * $persen / 100;
         }
         $hasil = floor($jmlTemp);
+        $hasil_user = $hasil;
         $histori = DB::table('history_produksi')->select('hasil')->where('teams_idteam', $team)->where('produk_idproduk', $produk)->get();
         if (count($histori) > 0) {
             $hasil += $histori[0]->hasil;
@@ -182,13 +208,16 @@ class ProduksiController extends Controller
         $newDana = $teamStatus[0]->dana - 100;
         DB::table('history_produksi')
             ->updateOrInsert(
-                ['teams_idteam' => $team, 'produk_idproduk' => $produk],
+                ['teams_idteam' => $team, 'produk_idproduk' => $produk,'sesi'=> $sesi],
                 ['hasil' => $hasil]
             );
         DB::table('teams')->where('idteam', $team)->update([
             'dana'          => $newDana,
             'inventory'     => $newInv
         ]);
-        return redirect()->route('produksi')->with('status', 'selamat kamu berhasil melakukan produksi sebanyak ' . $hasil);
+        return response()->json(array(
+            'msg' => 'selamat kamu berhasil melakukan produksi '.$name.' sebanyak '. $hasil_user,
+            'code' => '401'
+        ), 200);
     }
 }

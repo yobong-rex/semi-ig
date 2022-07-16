@@ -2,6 +2,7 @@
 
 use App\Komponen;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CheckSesi;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,45 +21,65 @@ use Illuminate\Support\Facades\Route;
 
 // route masukkan sini kalau sebelum masuk halaman web user harus login dahulu
 Route::middleware(['auth'])->group(function () {
-
     // Dashboard
     Route::get('/', 'TeamController@dashboard')->name('dashboard');
 
-    // Mesin Komponen
-    Route::get('/komponen', 'KomponenController@komponen')->name('komponen');
-    Route::get('/komponen/ajax', 'KomponenController@komponenAjax')->name('komponen.ajax');
-    Route::post('/komponen/upgrade', 'KomponenController@komponenUpgrade')->name('upgrade.komponen');
-
-    // Mesin Kapasitas
-    Route::get('/kapasitas', 'KapasitasController@kapasitas')->name('kapasitas');
-    Route::post('/kapasitas/upgrade', 'KapasitasController@kapasitasUpgrade')->name('upgrade.kapasitas');
-
     // Analisis Proses
-    Route::get('/analisis', 'AnalisisController@analisi')->name('analisis');
+    Route::get('/analisis', 'AnalisisController@analisi')->middleware('can:isProduction_Manager')->name('analisis');
     Route::post('/analisis/proses', 'AnalisisController@insertProses')->name('analisis.proses');
 
-    // Analisis Bahan Baku
-    Route::get('/bahan', 'BahanController@bahan')->name('bahan');
-    Route::post('/bahan', 'BahanController@analisisBahan')->name('analisis.bahan');
+    Route::middleware([CheckSesi::class])->group(function(){
+        // Mesin Kapasitas
+        Route::get('/kapasitas', 'KapasitasController@kapasitas')->middleware('can:isProduction_Manager')->name('kapasitas');
+        Route::post('/kapasitas/upgrade', 'KapasitasController@kapasitasUpgrade')->name('upgrade.kapasitas');
+
+        // Mesin Komponen
+        Route::get('/komponen', 'KomponenController@komponen')->middleware('can:isMarketing')->name('komponen');
+        Route::get('/komponen/ajax', 'KomponenController@komponenAjax')->name('komponen.ajax');
+        Route::post('/komponen/upgrade', 'KomponenController@komponenUpgrade')->name('upgrade.komponen');
+
+        
+        // Analisis Bahan Baku
+        Route::get('/bahan', 'BahanController@bahan')->middleware('can:isResearcher')->name('bahan');
+        Route::post('/bahan', 'BahanController@analisisBahan')->name('analisis.bahan');
+        
+        //produksi
+        Route::get('/produksi', 'ProduksiController@produksi')->middleware('can:isProduction_Manager')->name('produksi');
+        Route::post('/produksi/buat', 'ProduksiController@buat')->name('produksi.buat');
+
+        //demand
+        Route::get('/demand', 'DemandController@demand')->middleware('can:isMarketing')->name('demand');
+        Route::post('/demand/konfrim', 'DemandController@konfrim')->name('demand.konfrim');
+        Route::post('/demand/get', 'DemandController@getDemand')->name('demand.getDemand');
+    });
+
+
+    // IG Market
+    Route::get('/market', 'MarketController@market')->middleware('can:isAdmin')->name('market');
+    Route::post('/market/beli', 'MarketController@marketBeli')->name('market.beli');
+
+    // Ganti Sesi
+    Route::get('/adminsesi', 'SesiController@sesi')->middleware('can:isAdmin')->name('adminsesi');
+    Route::post('/adminsesi/gantisesi', 'SesiController@gantiSesi')->name('ganti.sesi');
+    Route::post('/adminsesi/backsesi', 'SesiController@backSesi')->name('back.sesi');
+
+    //admin analisis
+    Route::get('/admin/analisis', 'AnalisisController@admin')->name('analisis.admin');
+    Route::post('/admin/analisis/update', 'AnalisisController@updateSesi')->name('analisis.update');
 });
 
 
-// IG Market
-Route::get('/market', 'MarketController@market')->name('market');
-Route::post('/market/beli', 'MarketController@marketBeli')->name('market.beli');
 
 // Sesi Analisis
 Route::get('/admin', function () {
     return view('Sesi_Analisis.admin');
 })->name('admin');
 
-//produksi
-Route::get('/produksi', 'ProduksiController@produksi')->name('produksi');
-Route::post('/produksi/buat', 'ProduksiController@buat')->name('produksi.buat');
 
 Route::get('/prosesbahan', function () {
     return view('Analisis_Bahan_Baku.prosesbahan');
 })->name('prosesbahan');
+
 
 // Ganti Sesi
 Route::get('/adminsesi', 'SesiController@sesi')->name('adminsesi');
@@ -67,6 +88,7 @@ Route::post('/adminsesi/pausesesi', 'SesiController@pauseSesi')->name('pause.ses
 Route::post('/adminsesi/stopsesi', 'SesiController@stopSesi')->name('stop.sesi');
 Route::post('/adminsesi/gantisesi', 'SesiController@gantiSesi')->name('ganti.sesi');
 Route::post('/adminsesi/backsesi', 'SesiController@backSesi')->name('back.sesi');
+
 
 // Timer
 route::post('/timer', 'SesiController@timer')->name('timer');
@@ -89,22 +111,18 @@ Route::get('/test/timer', function(){
 })->name('test.timer');
 //Route coba-coba
 
-Route::get('/admin/analisis', 'AnalisisController@admin')->name('analisis.admin');
-Route::post('/admin/analisis/update', 'AnalisisController@updateSesi')->name('analisis.update');
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/demand', 'DemandController@demand')->name('demand');
-Route::post('/demand/konfrim', 'DemandController@konfrim')->name('demand.konfrim');
-Route::post('/demand/get', 'DemandController@getDemand')->name('demand.getDemand');
 
 Route::get('/adminkomponen', function () {
     return view('mesin.adminkomponen');
 })->name('adminkomponen');
 // Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
 
+// make team
 Route::get('/maketeam', function () {
     return view('maketeam');
 })->name('maketeam');

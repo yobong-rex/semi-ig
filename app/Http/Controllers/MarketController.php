@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
+use App\Events\Market;
+use Illuminate\Http\Response;
 
 class MarketController extends Controller
 {
@@ -15,20 +17,30 @@ class MarketController extends Controller
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
             ->select('s.sesi', 'ws.nama')
             ->get();
+        $sesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
         $data = DB::table('ig_markets')->where('sesi', $sesi[0]->nama)->get();
         return view('market', compact('data', 'user', 'sesi'));
     }
 
     function marketBeli(Request $request)
     {
+        $this->authorize('isAdmin');
         try {
             $item = $request->get('item');
             $total = $request->get('total');
+            $getSesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
+            $sesi = $getSesi[0]->nama;
             $team = $request->get('team');
             $total_bahan = $request->get('total_bahan');
-            $sesi = $request->get('sesi');
             $totalItem = $request->get('totalItem');
             $sisaInv = 0;
+
+            if($team == ""){
+                return response()->json(array(
+                    'msg' => 'tolong pilih team terlebih dahulu',
+                    'code' => '401'
+                ), 200);
+            }
 
             $team_detail = DB::table('teams')->select('dana', 'inventory')->where('idteam', $team)->get();
             if ($team_detail[0]->inventory < $totalItem) {
@@ -54,6 +66,7 @@ class MarketController extends Controller
 
             $bahan_baku = DB::table('ig_markets')->whereIn('idig_markets', $item_id)->get();
             $insert = [];
+            $stokPusser = array();
             foreach ($item as $key => $val) {
                 if ($bahan_baku[$key]->stok < $val['quantity']) {
                     return response()->json(array(
@@ -71,8 +84,11 @@ class MarketController extends Controller
                     DB::table('ig_markets')->where('idig_markets', $val['item'])->update([
                         'stok' => $sisaStok
                     ]);
+                    $temp['idItem'] = $val['item'];
+                    $temp['stock'] = $sisaStok;
 
                     array_push($insert, $data);
+                    array_push($stokPusser,$temp);
                 }
             }
 
@@ -106,25 +122,12 @@ class MarketController extends Controller
                     ['ig_markets' => $val['item'], 'teams' => $team],
                     ['stock' => $stok]
                 );
+                event(new Market($stokPusser));
+
             }
 
-            // foreach($item as $key => $val){
-
-            // }
-
-            // if (count($item)>0){
-            //     foreach($item as $key => $val){
-            //         $data = [
-            //             'ig_markets' => $val['item'],
-            //             'teams'      => $team,
-            //             'stock'      => $val['quantity'] * $val['isi']
-            //         ];
-            //         array_push($insertStok,$data);
-            //     }
-            //     DB::table('inventory')->insert($insertStok);
-            // }
-
             return response()->json(array(
+                "success"=>true,
                 'msg' => 'selamat team anda berhasil membeli bahan baku',
                 'code' => '200'
             ), 200);

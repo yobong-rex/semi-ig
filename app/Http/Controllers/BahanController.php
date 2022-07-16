@@ -24,6 +24,7 @@ class BahanController extends Controller
 
     function analisisBahan(Request $request)
     {
+        $this->authorize('isResearcher');
         $produk = $request->get('produk');
         $resource1 = $request->get('resource1');
         $resource2 = $request->get('resource2');

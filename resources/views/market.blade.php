@@ -61,6 +61,7 @@
 
     <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
 
+
         <div class="row spacing"></div>
 
         {{-- Card List Kelompok --}}
@@ -68,7 +69,7 @@
             <div class="row align-items-center">
                 <div class="col-1">
                     <h5> Team : </h5>
-                </div>
+                 </div>
                 <div class="col-5">
                     <select id='selectedTeam' name="selectedTeam">
                         <option value="" hidden>Pilih Team</option>
@@ -78,7 +79,6 @@
                     </select>
                 </div>
             </div>
-        </div>
 
         <div class="row-12">
             <!-- {{-- Card Dana --}}
@@ -104,32 +104,33 @@
 
         <div class="alert alert-danger" role="alert">Masukkan Pembelian sesuai Urutan !!!</div>
 
-        {{-- market table --}}
-        <table class="table table-bordered" style="vertical-align: middle;">
-            <thead class="thead">
-                <tr>
-                    <th class="nomor_bahan" scope="col">No.</th>
-                    <th scope="col">Bahan Baku</th>
-                    <th scope="col">Isi/Paket</th>
-                    <th scope="col">Stok</th>
-                    <th scope="col">Harga Paket</th>
-                    <th scope="col" style="width:250px;">Pembelian per paket</th>
-                    <th scope="col">Sub-Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php $nomer = 1; ?>
-                @foreach ($data as $d)
-                    <input type="hidden" id="item_{{ $nomer }}" value="{{ $d->idig_markets }}">
-                    <tr>
-                        <th class="nomor_bahan" scope="row">{{ $nomer }}</th>
-                        <td>{{ $d->bahan_baku }}</td>
-                        <td id="isi_{{ $nomer }}">{{ $d->isi }}</td>
-                        <td id="stok_{{ $nomer }}">{{ $d->stok }}</td>
-                        <td id="harga_{{ $nomer }}">{{ $d->harga }}</td>
-                        <td><input class="form-control quantity" id="input_{{ $nomer }}" type="number"
-                                min="0"
-                                oninput="this.value =
+
+                {{-- market table --}}
+                <table class="table table-bordered" style="vertical-align: middle;">
+                    <thead class="thead">
+                        <tr>
+                            <th class="nomor_bahan" scope="col">No.</th>
+                            <th scope="col">Bahan Baku</th>
+                            <th scope="col">Isi/Paket</th>
+                            <th scope="col">Stok</th>
+                            <th scope="col">Harga Paket</th>
+                            <th scope="col" style="width:250px;">Pembelian per paket</th>
+                            <th scope="col">Sub-Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $nomer = 1; ?>
+                        @foreach ($data as $d)
+                            <input type="hidden" id="item_{{ $nomer }}" value="{{ $d->idig_markets }}">
+                            <tr>
+                                <th class="nomor_bahan" scope="row">{{ $nomer }}</th>
+                                <td>{{ $d->bahan_baku }}</td>
+                                <td id="isi_{{ $nomer }}">{{ $d->isi }}</td>
+                                <td id="stok_{{ $d->idig_markets }}">{{ $d->stok }}</td>
+                                <td id="harga_{{ $nomer }}">{{ $d->harga }}</td>
+                                <td><input class="form-control quantity" id="input_{{ $nomer }}" type="number"
+                                        min="0"
+                                        oninput="this.value =
                                 !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
                                 placeholder=0>
                         </td>
@@ -200,22 +201,27 @@
         </div>
         </div>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script>
-            /* Ajax */
-            let item = [];
-            let count = 0;
-            let totalItem = 0;
-            $(document).on('change', '.quantity', function() {
-                let quantity = $(this).val();
-                let id = $(this).attr('id');
-                let split_id = id.split('_');
-                let harga = $("#harga_" + split_id[1]).text();
-                let subtotal = parseInt(harga) * quantity;
-                $('#subtotal_' + split_id[1]).text(subtotal);
-                total();
-            })
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+            <script src="../../js/app.js"></script>
+            <script>
+                let item = [];
+                let count = 0;
+                let totalItem = 0;
 
+                window.Echo.channel('stockChannel').listen('.market', (e) => { 
+                    $.each(e.market, function(key, value) {
+                        $('#stok_'+value.idItem).text(value.stock);
+                    });
+                })
+                $(document).on('change', '.quantity', function() {
+                    let quantity = $(this).val();
+                    let id = $(this).attr('id');
+                    let split_id = id.split('_');
+                    let harga = $("#harga_" + split_id[1]).text();
+                    let subtotal = parseInt(harga) * quantity;
+                    $('#subtotal_' + split_id[1]).text(subtotal);
+                    total();
+                })
             function total() {
                 item = [];
                 let total = 0;
@@ -235,6 +241,20 @@
                         totalUnit = (parseInt($('#input_' + i).val()) * parseInt($('#isi_' + i).text()));
                         totalItem += totalUnit;
                     }
+                    let temp = count - 100;
+                    // console.log(temp);
+                    total += parseInt($('#biaya_pengiriman').text());
+                    if (temp >= 0) {
+                        let lebih = parseInt(temp / 10);
+                        lebih += parseInt(1);
+                        let kirim = lebih * 50
+                        let pengiriman = 200 + kirim;
+                        $('#biaya_pengiriman').text(pengiriman);
+                        total += kirim;
+                    } else {
+                        $('#biaya_pengiriman').text('200');
+                    }
+                    $('#total').text(total);
                 }
                 let temp = count - 100;
                 console.log(temp);
@@ -257,35 +277,35 @@
                 $('#mdlTotal').text(total);
             })
 
-            $(document).on('click', '#konfirmasi_pembelian', function() {
-                let total = $('#total').text();
-                let idteam = $('#selectedTeam').val();
-                console.log(idteam)
-                let sesi = $('sesi').text();
-                $.ajax({
-                    type: "POST",
-                    url: "{{ route('market.beli') }}",
-                    data: {
-                        '_token': '<?php echo csrf_token(); ?>',
-                        'item': item,
-                        'total': total,
-                        'team': idteam,
-                        'total_bahan': count,
-                        'sesi': sesi,
-                        'totalItem': totalItem
-                    },
-                    success: function(data) {
-                        $('#staticBackdrop').modal('hide');
-                        $('#body-konfir').text(data.msg);
-                        $('#mdlPemberitahuan').modal('show');
-                    }
-                });
-            })
+                $(document).on('click', '#konfirmasi_pembelian', function() {
+                    let total = $('#total').text();
+                    let idteam = $('#selectedTeam').val();
+                    // console.log(idteam)
+                    let sesi = $('sesi').text();
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('market.beli') }}",
+                        data: {
+                            '_token': '<?php echo csrf_token(); ?>',
+                            'item': item,
+                            'total': total,
+                            'team': idteam,
+                            'total_bahan': count,
+                            'sesi': sesi,
+                            'totalItem': totalItem
+                        },
+                        success: function(data) {
+                            $('#staticBackdrop').modal('hide');
+                            $('#body-konfir').text(data.msg);
+                            $('#mdlPemberitahuan').modal('show');
+                        }
+                    });
+                })
 
-            $(document).on('click', '#reload', function() {
-                let value = $(this).val();
-                location.reload()
-            })
-        </script>
+                $(document).on('click', '#reload', function() {
+                    // let value = $(this).val();
+                    location.reload()
+                })
+            </script>
     </body>
 @endsection

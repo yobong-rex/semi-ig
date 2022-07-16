@@ -73,6 +73,34 @@
             background-color: #6868ac;
             border-radius: 5px;
         }
+
+        .heading {
+            box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
+            padding: 5px;
+        }
+        .nama_team {
+            color: #ea435e;
+        }
+
+        .timer {
+            background-color: #77dd77;
+            /* misal waktu habis background jadi #ea435e */
+            width: 150px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
+        }
+        @media (max-width:800px){
+            .dana, .label_dana{
+                text-align: center;
+            }
+        }
+
+        @media (max-width:1000px){
+            .coloumn_sesi{
+                max-width:fit-content;
+            }
+        }
+        
+
     </style>
 
     {{-- CSS Tambahan Internal --}}
@@ -95,28 +123,30 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('dashboard') }}">Dashboard</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('dashboard') }}">Market</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('komponen') }}">Mesin</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('kapasitas') }}">Kapasitas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('produksi') }}">Produksi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('analisis') }}">Analisis
-                            Produksi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('bahan') }}">Analisis Bahan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('dashboard') }}">Demand</a>
-                    </li>
+                    
+                    @can('isMarketing')
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('komponen') }}">Mesin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('demand') }}">Demand</a>
+                        </li>
+                    @elsecan('isResearcher')
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('bahan') }}">Analisis Bahan</a>
+                        </li>
+                    @elsecan('isProduction_Manager')
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('kapasitas') }}">Kapasitas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('produksi') }}">Produksi</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('analisis') }}">Analisis Produksi</a>
+                        </li>
+                    @endcan
+                    
                     <li class="nav-item logOut">
                         <a href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
@@ -137,19 +167,20 @@
         <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
             {{-- Nama Team dan Timer --}}
             <div class="row align-items-center rounded heading">
-                <div class="col-9 nama_team">
+
+                <div class="col-md-9 nama_team">
                     <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
                 </div>
-                <div class="col-1">
-                    <h3 id="nomorSesi" value="{{ $sesi[0]->sesi }}">Sesi <span
-                            id="sesi">{{ $sesi[0]->nama }}</span>
-                    </h3>
+                <div class="col-md-1 coloumn_sesi">
+                    <h3 id="nomorSesi">Sesi <span id="sesi">{{$sesi[0]->sesi}}</span></h3>
                 </div>
-                <div class="col-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
+                <div class="col-md-2 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
+
                     <h3>Timer</h3>
                     <h4 id="timer">- - : - -</h4>
                 </div>
             </div>
+
             @yield('content')
         </div>
     </div>
@@ -668,6 +699,31 @@
                 localStorage.setItem('condition', 'start');
             }
         })
+
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        window.Echo.channel('analisisChannel').listen('.analisis', (e) => { 
+            console.log(e.analisis.sesi);
+           if(e.analisis.sesi == "2"){
+                console.log('a')
+                $('footer-analisis').html(`<a href="{{ route('analisis') }}" class="btn btn-secondary mdl-close"
+                                    data-bs-dismiss="modal">OK!</a>`);
+           }
+           else{
+                $('footer-analisis').html('<button type="button" class="btn btn-secondary mdl-close" data-bs-dismiss="modal">Close</button>');
+           }
+
+           if(e.analisis.status == true){
+                $('#analisis-status').text('dibuka');
+           }
+           else{
+                $('#analisis-status').text('ditutup');
+           }
+
+           $('#modalInfoAnalisis').modal('show');
+        });
     </script>
 </body>
 

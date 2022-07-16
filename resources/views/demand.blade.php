@@ -47,40 +47,11 @@
 
     <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
 
+
         <div class="row spacing"></div>
 
         {{-- Card List Kelompok --}}
-        <div class="card-header rounded" style="background-color:#faf0dc;box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
-            <div class="row align-items-center">
-                <div class="col-1">
-                    <h5> Team : </h5>
-                </div>
-                <div class="col-5">
-                    <select id='selectedTeam' name="selectedTeam">
-                        <option value="" hidden>Pilih Team</option>
-                        @foreach ($user as $u)
-                            <option value="{{ $u->idteam }}">{{ $u->nama }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-        </div>
-        <!-- {{-- Card Dana --}}
-                    <div class="card-header rounded" style="background-color:#faf0dc; box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
-                        <div class="row align-items-center">
-                            <div class="col-1 text-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
-                                    <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"/>
-                                </svg>
-                            </div>
-                            <div class="col-2 label_dana">
-                                <h1>Dana : </h1>
-                            </div>
-                            <div class="col-9 dana">
-                                {{-- <h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1> --}}
-                            </div>
-                        </div>
-                    </div> -->
+        
 
         <div class="row spacing"></div>
 
@@ -98,168 +69,100 @@
                         <th scope="col">Produk</th>
                         <th scope="col" style="text-align:center;">Memenuhi Demand</th>
                         <th scope="col" style="width:165px;">Total</th>
+                        <th scope="col" style="width:165px;">Sisa</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @php
-                        $i = 1;
-                    @endphp
-                    @foreach ($produk as $p)
-                        <tr>
-                            <td class="nomor_demand" scope="row">{{ $i++ }}</td>
-                            <td>{{ $p->nama }}</td>
-                            <td class="inputDemand"><input type="number" class='demand'
-                                    id='input_{{ $p->idproduk }}'min="0"
-                                    oninput="this.value = 
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
-                                    placeholder=0></td>
-                            <td id='total_{{ $p->idproduk }}' class="demand-total">
+
+                @php
+                    $i=1
+                @endphp
+                @foreach ($produk as $p)
+                    <tr>
+                        <td class="nomor_demand" scope="row">{{$i++}}</td>
+                        <td>{{$p->nama}}</td>
+                        <td class="inputDemand"><input type="number" class='demand' id='input_{{$p->idproduk}}'min="0" oninput="this.value = 
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
+                        <td id='total_{{$p->idproduk}}' class="demand-total">
+                            @if (count($data) == 0)
                                 0
-                            </td>
-                        </tr>
-                    @endforeach
+                            @else
+                                <?php $triger = 0; ?>
+                                @foreach ($data as $d)
+                                    @if ($p->idproduk == $d->idproduk)
+                                        {{ $d->jumlah }}
+                                        <?php $triger += 1; ?>
+                                    @endif
+                                @endforeach
+                                @if ($triger == 0)
+                                    {{ $triger }}
+                                @endif
+                            @endif
+                        </td>
+                        <td>
+                            @if (count($data) == 0)
+                                3
+                            @else
+                                <?php $triger = 0; ?>
+                                @foreach ($data as $d)
+                                    @if ($p->idproduk == $d->idproduk)
+                                        {{ $d->sisa }}
+                                        <?php $triger += 1; ?>
+                                    @endif
+                                @endforeach
+                                @if ($triger == 0)
+                                    3
+                                @endif
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
                 </tbody>
             </table>
-            <button type="button" class="btn btn-success" id="konfrim">Konfirmasi</button>
-            {{-- <table class="table table-bordered" style="vertical-align: middle;">
-                @php
-                    $arrproduk = array('Scooter', 'Hoverboard', 'Skateboard', 'Bicycle', 'Claw Machine', 'RC Car', 'RC Helicopter', 'Trampoline', 'Robot', 'Airsoft Gun', 'Rubber Ball', 'Fidget Spinner', 'Bowling Set', 'Action Figure');
-                    $col=1;
-                @endphp
-                <thead class="thead">
-                    <tr>
-                        <th class="nomor_demand" scope="col">No.</th>
-                        <th scope="col">Produk</th>
-                        <th scope="col" colspan={{$col}} style="text-align:center;">Memenuhi Demand</th>
-                        <th scope="col">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for ($i = 1; $i <= count($arrproduk); $i++)
-                    <tr>
-                        <th class="nomor_demand" scope="row">{{$i}}</th>
-                        <td>{{$arrproduk[$i-1]}}</td>
-                        <td id="demand-{{$i}}"><input class="inputDemand" type="number" name='jumlah' id='jumlahDemand' min="0" oninput="this.value = 
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                        <td id="total-{{$i}}">0</td>
-                    </tr>
-                    @endfor
-                    <tr>
-                        <th class="nomor_demand" scope="row">1</th>
-                        <td>Scooter</td>
-                        <td id="demand-1_1">0</td>
-                        <td id="demand-1_2">0</td>
-                        <td id="demand-1_3">0</td>
-                        <td id="total-1">0</td>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal" >Pemuhi Demand</button>
 
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">2</th>
-                        <td>Hoverboard</td>
-                        <td id="demand-2_1">0</td>
-                        <td id="demand-2_2">0</td>
-                        <td id="demand-2_3">0</td>
-                        <td id="total-2">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">3</th>
-                        <td>Skateboard</td>
-                        <td id="demand-3_1">0</td>
-                        <td id="demand-3_2">0</td>
-                        <td id="demand-3_3">0</td>
-                        <td id="total-3">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">4</th>
-                        <td>Bicycle</td>
-                        <td id="demand-4_1">0</td>
-                        <td id="demand-4_2">0</td>
-                        <td id="demand-4_3">0</td>
-                        <td id="total-4">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">5</th>
-                        <td>Claw Machine</td>
-                        <td id="demand-5_1">0</td>
-                        <td id="demand-5_2">0</td>
-                        <td id="demand-5_3">0</td>
-                        <td id="total-5">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">6</th>
-                        <td>RC Car</td>
-                        <td id="demand-6_1">0</td>
-                        <td id="demand-6_2">0</td>
-                        <td id="demand-6_3">0</td>
-                        <td id="total-6">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">7</th>
-                        <td>RC Helicopter</td>
-                        <td id="demand-7_1">0</td>
-                        <td id="demand-7_2">0</td>
-                        <td id="demand-7_3">0</td>
-                        <td id="total-7">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">8</th>
-                        <td>Trampoline</td>
-                        <td id="demand-8_1">0</td>
-                        <td id="demand-8_2">0</td>
-                        <td id="demand-8_3">0</td>
-                        <td id="total-8">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">9</th>
-                        <td>Robot</td>
-                        <td id="demand-9_1">0</td>
-                        <td id="demand-9_2">0</td>
-                        <td id="demand-9_3">0</td>
-                        <td id="total-9">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">10</th>
-                        <td>Airsoft Gun</td>
-                        <td id="demand-10_1">0</td>
-                        <td id="demand-10_2">0</td>
-                        <td id="demand-10_3">0</td>
-                        <td id="total-10">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">11</th>
-                        <td>Rubber Ball</td>
-                        <td id="demand-11_1">0</td>
-                        <td id="demand-11_2">0</td>
-                        <td id="demand-11_3">0</td>
-                        <td id="total-11">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">12</th>
-                        <td>Fidget Spinner</td>
-                        <td id="demand-12_1">0</td>
-                        <td id="demand-12_2">0</td>
-                        <td id="demand-12_3">0</td>
-                        <td id="total-12">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">13</th>
-                        <td>Bowling set</td>
-                        <td id="demand-13_1">0</td>
-                        <td id="demand-13_2">0</td>
-                        <td id="demand-13_3">0</td>
-                        <td id="total-13">0</td>
-                    </tr>
-                    <tr>
-                        <th class="nomor_demand" scope="row">14</th>
-                        <td>Action Figure</td>
-                        <td id="demand-14_1">0</td>
-                        <td id="demand-14_2">0</td>
-                        <td id="demand-14_3">0</td>
-                        <td id="total-14">0</td>
-                    </tr>
-                </tbody>
-             </table> --}}
+            <!-- Modal -->
+                <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Konfirmasi Produksi</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body flex">
+                                Apakah anda yakin untuk melakukan pemenuhan demand ?
+                            </div>
+                            <div class="modal-footer">
 
+                                <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Cancel</button>
+
+                                <button class="btn btn-success btn-modal" id="konfrim" name='button'>Konfirmasi</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- end modal -->
+            
+            <!-- modal info -->
+                <div class="modal fade" id="modalInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Informasi</h5>
+                                <button type="button" class="btn-close mdl-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body flex" id='info-body'>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary mdl-close" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- end modal info -->
+            
+            
 
 
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -303,23 +206,27 @@
                     console.log(arrDemand);
                 });
 
-                $(document).on('click', '#konfrim', function() {
-                    console.log($('#selectedTeam').val());
+
+                $(document).on('click','#konfrim',function(){
                     $.ajax({
                         type: "POST",
-                        url: "{{ route('demand.konfrim') }}",
-                        data: {
-                            '_token': '<?php echo csrf_token(); ?>',
-                            'demand': arrDemand,
-                            'team': $('#selectedTeam').val(),
-                            'sesi': $('#nomorSesi').attr('value'),
+                        url: "{{route('demand.konfrim')}}",
+                        data:{
+                            '_token': '<?php echo csrf_token()?>',
+                            'demand' : arrDemand,
                         },
-                        success: function(data) {
-                            alert(data.msg);
-                            location.reload();
+                        success: function(data){
+                            $("#modal").modal('hide');
+                            $('#info-body').text(data.msg);
+                            $('#modalInfo').modal('show');
+
                         }
                     });
                 });
+
+                $(document).on('click','.mdl-close',function(){
+                   location.reload();
+                })
             </script>
         </div>
         </div>
