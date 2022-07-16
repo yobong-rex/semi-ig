@@ -6,11 +6,15 @@ use App\Events\Sesi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use DB;
+use Auth;
 
 class SesiController extends Controller
 {
     function sesi()
     {
+        $team = Auth::user()->teams_idteam;
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam', 'inventory', 'demand', 'customer_value', 'hibah')->where('idteam', $team)->get();
+
         $sesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
             ->select('s.sesi', 'ws.nama')
@@ -31,7 +35,7 @@ class SesiController extends Controller
             $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
         }
 
-        return view('adminsesi', compact('sesi', 'detail'));
+        return view('adminsesi', compact('sesi', 'detail', 'user'));
     }
 
     function startSesi()

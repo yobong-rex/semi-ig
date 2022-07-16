@@ -47,81 +47,81 @@
 
     <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
 
-            <div class="row spacing"></div>
+        <div class="row spacing"></div>
 
-            {{-- Card List Kelompok --}}
-            <div class="card-header rounded" style="background-color:#faf0dc;box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
-                <div class="row align-items-center">
-                    <div class="col-1">
-                        <h5> Team : </h5>
-                    </div>
-                    <div class="col-5">
-                        <select id='selectedTeam' name="selectedTeam">
-                            <option value="" hidden>Pilih Team</option>
-                            @foreach ($user as $u)
-                                <option value="{{ $u->idteam }}">{{ $u->nama }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+        {{-- Card List Kelompok --}}
+        <div class="card-header rounded" style="background-color:#faf0dc;box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
+            <div class="row align-items-center">
+                <div class="col-1">
+                    <h5> Team : </h5>
+                </div>
+                <div class="col-5">
+                    <select id='selectedTeam' name="selectedTeam">
+                        <option value="" hidden>Pilih Team</option>
+                        @foreach ($user as $u)
+                            <option value="{{ $u->idteam }}">{{ $u->nama }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
-            <!-- {{-- Card Dana --}}
-                <div class="card-header rounded" style="background-color:#faf0dc; box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
-                    <div class="row align-items-center">
-                        <div class="col-1 text-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
-                                <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"/>
-                            </svg>
+        </div>
+        <!-- {{-- Card Dana --}}
+                    <div class="card-header rounded" style="background-color:#faf0dc; box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
+                        <div class="row align-items-center">
+                            <div class="col-1 text-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
+                                    <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"/>
+                                </svg>
+                            </div>
+                            <div class="col-2 label_dana">
+                                <h1>Dana : </h1>
+                            </div>
+                            <div class="col-9 dana">
+                                {{-- <h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1> --}}
+                            </div>
                         </div>
-                        <div class="col-2 label_dana">
-                            <h1>Dana : </h1>
-                        </div>
-                        <div class="col-9 dana">
-                            {{-- <h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1> --}}
-                        </div>
-                    </div>
-                </div> -->
+                    </div> -->
 
-            <div class="row spacing"></div>
+        <div class="row spacing"></div>
 
-            <div class="alert alert-danger" role="alert"> Setiap produk hanya bisa dimasukkan 1x !!! </br> Jika salah
-                lakukan refresh halaman.</div>
+        <div class="alert alert-danger" role="alert"> Setiap produk hanya bisa dimasukkan 1x !!! </br> Jika salah
+            lakukan refresh halaman.</div>
 
-            <div class="card-body pemenuhan rounded">
-                <h1>Pemenuhan Demand</h1>
+        <div class="card-body pemenuhan rounded">
+            <h1>Pemenuhan Demand</h1>
 
-                {{-- Table Pemenuhan Demand --}}
-                <table class="table table-bordered">
-                    <thead>
+            {{-- Table Pemenuhan Demand --}}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="nomor_demand" scope="col">No.</th>
+                        <th scope="col">Produk</th>
+                        <th scope="col" style="text-align:center;">Memenuhi Demand</th>
+                        <th scope="col" style="width:165px;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $i = 1;
+                    @endphp
+                    @foreach ($produk as $p)
                         <tr>
-                            <th class="nomor_demand" scope="col">No.</th>
-                            <th scope="col">Produk</th>
-                            <th scope="col" style="text-align:center;">Memenuhi Demand</th>
-                            <th scope="col" style="width:165px;">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $i = 1;
-                        @endphp
-                        @foreach ($produk as $p)
-                            <tr>
-                                <td class="nomor_demand" scope="row">{{ $i++ }}</td>
-                                <td>{{ $p->nama }}</td>
-                                <td class="inputDemand"><input type="number" class='demand'
-                                        id='input_{{ $p->idproduk }}'min="0"
-                                        oninput="this.value = 
+                            <td class="nomor_demand" scope="row">{{ $i++ }}</td>
+                            <td>{{ $p->nama }}</td>
+                            <td class="inputDemand"><input type="number" class='demand'
+                                    id='input_{{ $p->idproduk }}'min="0"
+                                    oninput="this.value = 
                             !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
-                                        placeholder=0></td>
-                                <td id='total_{{ $p->idproduk }}' class="demand-total">
-                                    0
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <button type="button" class="btn btn-success" id="konfrim">Konfirmasi</button>
-                {{-- <table class="table table-bordered" style="vertical-align: middle;">
+                                    placeholder=0></td>
+                            <td id='total_{{ $p->idproduk }}' class="demand-total">
+                                0
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-success" id="konfrim">Konfirmasi</button>
+            {{-- <table class="table table-bordered" style="vertical-align: middle;">
                 @php
                     $arrproduk = array('Scooter', 'Hoverboard', 'Skateboard', 'Bicycle', 'Claw Machine', 'RC Car', 'RC Helicopter', 'Trampoline', 'Robot', 'Airsoft Gun', 'Rubber Ball', 'Fidget Spinner', 'Bowling Set', 'Action Figure');
                     $col=1;
@@ -262,352 +262,66 @@
 
 
 
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-                <script src="../../js/app.js"></script>
-                <script>
-                    // buat menjalankan timer pas buka webpage
-                    $(document).ready(function() {
-                        // alert($('#sesi').text());
-                        $.ajax({
-                            type: 'POST',
-                            url: "{{ route('timer') }}",
-                            data: {
-                                '_token': '<?php echo csrf_token(); ?>',
-                                'namaSesi': $('#sesi').text()
-                            },
-                            success: function(data) {
-                                // alert('success');
-                                let waktu = data.waktu[0].waktu;
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+            <script>
+                let arrDemand = [];
 
-                                /* Timer */
-
-                                // variable used to continue timer
-                                const key = 'timer'
-                                var timeInMs = localStorage.getItem(key);
-
-                                // kalau sudah pernah buka web ini
-                                if (timeInMs) {
-                                    // hitung waktu yang hilang saat reload
-                                    // let delta = Date.now() - localStorage.getItem('now');
-
-                                    // timer lanjut dari waktu sebelum reload
-                                    timer = timeInMs;
-
-                                    let x = setInterval(function() {
-                                        // kalau masih ada waktu, maka kurangi
-                                        if (timer > 0) {
-                                            // jadikan minutes : second
-                                            let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 *
-                                                60));
-                                            let seconds = Math.floor((timer % (1000 * 60)) / 1000);
-
-                                            // kalau tidak double digit jadikan double digit
-                                            if (minutes < 10) {
-                                                minutes = '0' + minutes;
-                                            }
-                                            if (seconds < 10) {
-                                                seconds = '0' + seconds;
-                                            }
-
-                                            // tampilkan timer
-                                            $('#timer').text(minutes + " : " + seconds);
-
-                                            //kurangi per 1000 milisecond
-                                            timer -= 1000;
-
-                                            // masukkan timer dan tanggal sekarang ke localStorage per detik
-                                            localStorage.setItem(key, timer);
-                                            // localStorage.setItem('now', Date.now());
-                                            console.log(localStorage.getItem(key));
-                                            // console.log(localStorage.getItem('now'));
-                                        }
-                                        // kalau sudah habis, maka selesai 
-                                        else {
-                                            // hapus timer sekarang
-                                            clearInterval(x);
-                                            localStorage.clear();
-                                            $('#timer').text('00 : 00');
-
-                                            // lanjut sesi berikutnya
-                                            $.ajax({
-                                                type: 'POST',
-                                                url: "{{ route('ganti.sesi') }}",
-                                                data: {
-                                                    '_token': '<?php echo csrf_token(); ?>',
-                                                    'sesi': $('#nomorSesi').attr('value')
-                                                },
-                                                success: function() {
-                                                    // alert('success');
-                                                    // masuk pusher
-                                                },
-                                                error: function() {
-                                                    alert('error');
-                                                }
-                                            })
-                                        }
-                                    }, 1000)
-                                }
-                                // kalau belum pernah buka web ini
-                                else {
-                                    let timer = waktu * 1000;
-
-                                    // buat timer baru
-                                    let x = setInterval(function() {
-                                        // kalau masih ada waktu, maka kurangi
-                                        if (timer > 0) {
-                                            // jadikan minutes : second
-                                            let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 *
-                                                60));
-                                            let seconds = Math.floor((timer % (1000 * 60)) / 1000);
-
-                                            // kalau tidak double digit jadikan double digit
-                                            if (minutes < 10) {
-                                                minutes = '0' + minutes;
-                                            }
-                                            if (seconds < 10) {
-                                                seconds = '0' + seconds;
-                                            }
-
-                                            // tampilkan timer
-                                            $('#timer').text(minutes + " : " + seconds);
-
-                                            //kurangi per 1000 milisecond
-                                            timer -= 1000;
-
-                                            // masukkan timer dan tanggal sekarang ke localStorage per detik
-                                            localStorage.setItem(key, timer);
-                                            // localStorage.setItem('now', Date.now());
-                                            console.log(localStorage.getItem(key));
-                                            // console.log(localStorage.getItem('now'));
-                                        }
-                                        // kalau sudah habis, maka selesai 
-                                        else {
-                                            // hapus timer sekarang
-                                            clearInterval(x);
-                                            localStorage.clear();
-                                            $('#timer').text('00 : 00');
-
-                                            // lanjut sesi berikutnya
-                                            $.ajax({
-                                                type: 'POST',
-                                                url: "{{ route('ganti.sesi') }}",
-                                                data: {
-                                                    '_token': '<?php echo csrf_token(); ?>',
-                                                    'sesi': $('#nomorSesi').attr('value')
-                                                },
-                                                success: function() {
-                                                    // alert('success');
-                                                    // masuk pusher
-                                                },
-                                                error: function() {
-                                                    alert('error');
-                                                }
-                                            })
-                                        }
-                                    }, 1000)
-                                }
-                            },
-                            error: function() {
-                                alert('error');
+                $(document).on('change', '#selectedTeam', function() {
+                    let id = $(this).val();
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('demand.getDemand') }}",
+                        data: {
+                            '_token': '<?php echo csrf_token(); ?>',
+                            'team': id,
+                            'sesi': $('#nomorSesi').attr('value'),
+                        },
+                        success: function(data) {
+                            if (data.list.length > 0) {
+                                $.each(data.list, function(key, value) {
+                                    $('#total_' + data.list[key].idproduk).text(data.list[key].jumlah);
+                                });
+                            } else {
+                                $('.demand-total').text('0');
                             }
-                        })
-                    })
-
-                    /* Pusher */
-                    window.Echo.channel('sesiPusher').listen('.sesi', (e) => {
-                        console.log(e.id);
-                        console.log(e.sesi);
-                        console.log(e.waktu);
-                        $('#nomorSesi').attr('value', e.id);
-                        $('#sesi').text(e.sesi);
-                        let waktu = e.waktu;
-
-                        /* Timer */
-                        // variable used to continue timer
-                        const key = 'timer'
-                        var timeInMs = localStorage.getItem(key);
-
-                        // kalau sudah pernah buka web ini
-                        if (timeInMs) {
-                            // hitung waktu yang hilang saat reload
-                            // let delta = Date.now() - localStorage.getItem('now');
-
-                            // timer lanjut dari waktu sebelum reload
-                            timer = timeInMs;
-
-                            let x = setInterval(function() {
-                                // kalau masih ada waktu, maka kurangi
-                                if (timer > 0) {
-                                    // jadikan minutes : second
-                                    let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 *
-                                        60));
-                                    let seconds = Math.floor((timer % (1000 * 60)) / 1000);
-
-                                    // kalau tidak double digit jadikan double digit
-                                    if (minutes < 10) {
-                                        minutes = '0' + minutes;
-                                    }
-                                    if (seconds < 10) {
-                                        seconds = '0' + seconds;
-                                    }
-
-                                    // tampilkan timer
-                                    $('#timer').text(minutes + " : " + seconds);
-
-                                    //kurangi per 1000 milisecond
-                                    timer -= 1000;
-
-                                    // masukkan timer dan tanggal sekarang ke localStorage per detik
-                                    localStorage.setItem(key, timer);
-                                    // localStorage.setItem('now', Date.now());
-                                    console.log(localStorage.getItem(key));
-                                    // console.log(localStorage.getItem('now'));
-                                }
-                                // kalau sudah habis, maka selesai 
-                                else {
-                                    // hapus timer sekarang
-                                    clearInterval(x);
-                                    localStorage.clear();
-                                    $('#timer').text('00 : 00');
-
-                                    // lanjut sesi berikutnya
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: "{{ route('ganti.sesi') }}",
-                                        data: {
-                                            '_token': '<?php echo csrf_token(); ?>',
-                                            'sesi': $('#nomorSesi').attr('value')
-                                        },
-                                        success: function() {
-                                            // alert('success');
-                                            // masuk pusher
-                                        },
-                                        error: function() {
-                                            alert('error');
-                                        }
-                                    })
-                                }
-                            }, 1000)
                         }
-                        // kalau belum pernah buka web ini
-                        else {
-                            let timer = waktu * 1000;
+                    });
+                });
 
-                            // buat timer baru
-                            let x = setInterval(function() {
-                                // kalau masih ada waktu, maka kurangi
-                                if (timer > 0) {
-                                    // jadikan minutes : second
-                                    let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 *
-                                        60));
-                                    let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+                $(document).on('change', '.demand', function() {
+                    let val = parseInt($(this).val());
+                    let id = $(this).attr('id');
+                    let id_split = id.split('_');
+                    let total = parseInt($('#total_' + id_split[1]).text());
+                    total += val;
+                    $('#total_' + id_split[1]).text(total);
+                    $(this).attr("disabled", true);
+                    arrDemand.push({
+                        'produk': id_split[1],
+                        'total': $(this).val()
+                    });
+                    console.log(arrDemand);
+                });
 
-                                    // kalau tidak double digit jadikan double digit
-                                    if (minutes < 10) {
-                                        minutes = '0' + minutes;
-                                    }
-                                    if (seconds < 10) {
-                                        seconds = '0' + seconds;
-                                    }
-
-                                    // tampilkan timer
-                                    $('#timer').text(minutes + " : " + seconds);
-
-                                    //kurangi per 1000 milisecond
-                                    timer -= 1000;
-
-                                    // masukkan timer dan tanggal sekarang ke localStorage per detik
-                                    localStorage.setItem(key, timer);
-                                    // localStorage.setItem('now', Date.now());
-                                    console.log(localStorage.getItem(key));
-                                    // console.log(localStorage.getItem('now'));
-                                }
-                                // kalau sudah habis, maka selesai 
-                                else {
-                                    // hapus timer sekarang
-                                    clearInterval(x);
-                                    localStorage.clear();
-                                    $('#timer').text('00 : 00');
-
-                                    // lanjut sesi berikutnya
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: "{{ route('ganti.sesi') }}",
-                                        data: {
-                                            '_token': '<?php echo csrf_token(); ?>',
-                                            'sesi': $('#nomorSesi').attr('value')
-                                        },
-                                        success: function() {
-                                            // alert('success');
-                                            // masuk pusher
-                                        },
-                                        error: function() {
-                                            alert('error');
-                                        }
-                                    })
-                                }
-                            }, 1000)
+                $(document).on('click', '#konfrim', function() {
+                    console.log($('#selectedTeam').val());
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('demand.konfrim') }}",
+                        data: {
+                            '_token': '<?php echo csrf_token(); ?>',
+                            'demand': arrDemand,
+                            'team': $('#selectedTeam').val(),
+                            'sesi': $('#nomorSesi').attr('value'),
+                        },
+                        success: function(data) {
+                            alert(data.msg);
+                            location.reload();
                         }
-                    })
-
-                    let arrDemand = [];
-
-                    $(document).on('change', '#selectedTeam', function() {
-                        let id = $(this).val();
-                        $.ajax({
-                            type: "POST",
-                            url: "{{ route('demand.getDemand') }}",
-                            data: {
-                                '_token': '<?php echo csrf_token(); ?>',
-                                'team': id,
-                                'sesi': $('#nomorSesi').attr('value'),
-                            },
-                            success: function(data) {
-                                if (data.list.length > 0) {
-                                    $.each(data.list, function(key, value) {
-                                        $('#total_' + data.list[key].idproduk).text(data.list[key].jumlah);
-                                    });
-                                } else {
-                                    $('.demand-total').text('0');
-                                }
-                            }
-                        });
                     });
-
-                    $(document).on('change', '.demand', function() {
-                        let val = parseInt($(this).val());
-                        let id = $(this).attr('id');
-                        let id_split = id.split('_');
-                        let total = parseInt($('#total_' + id_split[1]).text());
-                        total += val;
-                        $('#total_' + id_split[1]).text(total);
-                        $(this).attr("disabled", true);
-                        arrDemand.push({
-                            'produk': id_split[1],
-                            'total': $(this).val()
-                        });
-                        console.log(arrDemand);
-                    });
-
-                    $(document).on('click', '#konfrim', function() {
-                        console.log($('#selectedTeam').val());
-                        $.ajax({
-                            type: "POST",
-                            url: "{{ route('demand.konfrim') }}",
-                            data: {
-                                '_token': '<?php echo csrf_token(); ?>',
-                                'demand': arrDemand,
-                                'team': $('#selectedTeam').val(),
-                                'sesi': $('#nomorSesi').attr('value'),
-                            },
-                            success: function(data) {
-                                alert(data.msg);
-                                location.reload();
-                            }
-                        });
-                    });
-                </script>
-            </div>
+                });
+            </script>
+        </div>
         </div>
     </body>
 @endsection

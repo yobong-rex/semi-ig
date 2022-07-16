@@ -2,7 +2,7 @@
 
 @section('title', 'Admin')
 
-@section('content')
+@section('admin')
 
     <body>
         <h1>Admin Sesi</h1>

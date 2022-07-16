@@ -2,7 +2,7 @@
 
 @section("title", "Admin")
 
-@section('content')
+@section('admin')
     <style>
 
     .button_buka_tutup{
