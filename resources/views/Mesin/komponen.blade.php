@@ -4,7 +4,7 @@
 
 @section('content')
     <style>
-        .heading {
+        .heading,.kartu_tabel {
             box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
             padding: 5px;
         }
@@ -57,6 +57,21 @@
         .upgrade:hover {
             -webkit-transform: scale(1.07);
         }
+        .kartu_tabel{
+            background-color: #ffffff;
+            width: fit-content;
+        }
+        @media (max-width:800px){
+            .dana, .label_dana{
+                text-align: center;
+            }
+        }
+
+        @media (max-width:1000px){
+            .dana, .label_dana{
+                font-size: 25px;
+            }
+        }
     </style>
 
     <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
@@ -101,52 +116,54 @@
 
             <div class="row spacing"></div>
 
-            {{-- Table Komponen --}}
-            <table class="table" style="width:fit-content;">
-                {{-- Heading --}}
-                <thead class="thead">
-                    <th>
-                        <h4>Mesin : </h4>
-                    </th>
-                    {{-- ComboBox Mesin --}}
-                    <th style="vertical-align:middle;">
-                        <select id='mesin' name="mesin">
-                            @php
-                                $arrMesin = [];
-                                for ($a = 0; $a < count($namaMesin); $a++) {
-                                    array_push($arrMesin, $namaMesin[$a]->nama);
-                                }
-                            @endphp
-                            @foreach ($arrMesin as $mesin)
-                                <option value="{{ $mesin }}">{{ $mesin }}</option>
-                            @endforeach
-                        </select>
-                    </th>
-                </thead>
-                {{-- Nama-nama Komponen --}}
-                <tbody>
-                    <tr style="background-color:#faf0dc;">
-                        <td>Level Mesin : </td>
-                        <td class="noLevel" id="levelMesin_">{{ $levelMesin[0]->level }}</td>
-                    </tr>
-                    @for ($x = 0; $x < count($data); $x++)
-                        <tr>
-                            <td id="nama_komponen_{{ $x }}" class="namaKomponen" style="width:150px;">
-                                {{ $data[$x]->nama_komponen }} :
-                            </td>
-                            <td id="komponen_{{ $x }}" class='noLevel'>
-                                {{ $data[$x]->level }}
-                            </td>
-                            <td>
-                                {{-- button Upgrade --}}
-                                <button type="button" id="upgrade_{{ $x }}" class="upgrade"
-                                    value='{{ $data[$x]->nama_komponen }}' data-bs-toggle="modal"
-                                    data-bs-target="#Konfirmasi">Upgrade</button>
-                            </td>
+            <div class="card-body kartu_tabel">
+                {{-- Table Komponen --}}
+                <table class="table" style="width:fit-content;">
+                    {{-- Heading --}}
+                    <thead class="thead">
+                        <th>
+                            <h4>Mesin : </h4>
+                        </th>
+                        {{-- ComboBox Mesin --}}
+                        <th style="vertical-align:middle;">
+                            <select id='mesin' name="mesin">
+                                @php
+                                    $arrMesin = [];
+                                    for ($a = 0; $a < count($namaMesin); $a++) {
+                                        array_push($arrMesin, $namaMesin[$a]->nama);
+                                    }
+                                @endphp
+                                @foreach ($arrMesin as $mesin)
+                                    <option value="{{ $mesin }}">{{ $mesin }}</option>
+                                @endforeach
+                            </select>
+                        </th>
+                    </thead>
+                    {{-- Nama-nama Komponen --}}
+                    <tbody>
+                        <tr style="background-color:#faf0dc;">
+                            <td>Level Mesin : </td>
+                            <td class="noLevel" id="levelMesin_">{{ $levelMesin[0]->level }}</td>
                         </tr>
-                    @endfor
-                </tbody>
-            </table>
+                        @for ($x = 0; $x < count($data); $x++)
+                            <tr>
+                                <td id="nama_komponen_{{ $x }}" class="namaKomponen" style="width:150px;">
+                                    {{ $data[$x]->nama_komponen }} :
+                                </td>
+                                <td id="komponen_{{ $x }}" class='noLevel'>
+                                    {{ $data[$x]->level }}
+                                </td>
+                                <td>
+                                    {{-- button Upgrade --}}
+                                    <button type="button" id="upgrade_{{ $x }}" class="upgrade"
+                                        value='{{ $data[$x]->nama_komponen }}' data-bs-toggle="modal"
+                                        data-bs-target="#Konfirmasi">Upgrade</button>
+                                </td>
+                            </tr>
+                        @endfor
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         {{-- Modal --}}

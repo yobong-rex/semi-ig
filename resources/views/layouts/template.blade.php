@@ -62,7 +62,31 @@
             background-color:#6868ac;
             border-radius: 5px;
         }
-        
+        .heading {
+            box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
+            padding: 5px;
+        }
+        .nama_team {
+            color: #ea435e;
+        }
+
+        .timer {
+            background-color: #77dd77;
+            /* misal waktu habis background jadi #ea435e */
+            width: 150px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
+        }
+        @media (max-width:800px){
+            .dana, .label_dana{
+                text-align: center;
+            }
+        }
+
+        @media (max-width:1000px){
+            .coloumn_sesi{
+                max-width:fit-content;
+            }
+        }
         
     </style>
 
@@ -120,6 +144,20 @@
 
     {{-- Body --}}
     <div class="container-fluid p-0">
+        <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
+            {{-- Nama Team dan Timer --}}
+            <div class="row align-items-center rounded heading">
+                <div class="col-md-9 nama_team">
+                    <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
+                </div>
+                <div class="col-md-1 coloumn_sesi">
+                    <h3 id="nomorSesi">Sesi <span id="sesi">{{$sesi[0]->sesi}}</span></h3>
+                </div>
+                <div class="col-md-2 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
+                    <h3>Timer</h3>
+                    <h4 id="timer">- - : - -</h4>
+                </div>
+            </div>
         @yield('content')
     </div>
 
