@@ -75,22 +75,6 @@
                 {{ session('error') }}
             </div>
         @endif
-        <div class="px-4 py-5" style="font-family:TT Norms Bold;">
-
-            {{-- Nama Team dan Timer --}}
-            <div class="row align-items-center rounded heading">
-                <div class="col-md-9 nama_team">
-                    <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
-                </div>
-                <div class="col-md-1">
-                    <h3 id="nomorSesi">Sesi <span id="sesi">sesi1</span></h3>
-                </div>
-                <div class="col-md-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
-                    <h3>Timer</h3>
-                    <h4 id="timer">- - : - -</h4>
-                </div>
-            </div>
-
             <div class="row spacing"></div>
 
             {{-- Card Dana --}}
@@ -116,7 +100,8 @@
             <div class="row spacing"></div>
 
             <h1>Produksi</h1>
-            <div class="alert alert-danger" role="alert">Pastikan untuk MEMILIH Jenis Produk dan MENGINPUT Jumlah Produk SEBELUM Konfirmasi</div>
+            <div class="alert alert-danger" role="alert">Pastikan untuk MEMILIH Jenis Produk dan MENGINPUT Jumlah Produk
+                SEBELUM Konfirmasi</div>
             {{-- Form produksi --}}
             <form action="{{ route('produksi.buat') }}" method='post'>
                 <input type="hidden" id='sesi' value='{{ $sesi1 }}' name='sesi'>
@@ -128,7 +113,8 @@
                             <th scope="col"> </th>
                             <th scope="col"> </th>
                             <th scope="col" colspan="10" style="text-align:center;">Urutan Produksi Produk</th>
-                            <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;">Konfirmasi</th>
+                            <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;">Konfirmasi
+                            </th>
                         </tr>
                         <tr>
                             <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;">Produk</th>
@@ -183,14 +169,14 @@
                                 @for ($j = 1; $j <= 9; $j++)
                                     <td>
                                         @if ($i == 1)
-                                            <input class="urutanProduksi" type="text" value='{{ $splitProses1[$j - 1] }}'
-                                                disabled>
+                                            <input class="urutanProduksi" type="text"
+                                                value='{{ $splitProses1[$j - 1] }}' disabled>
                                         @elseif ($i == 2)
-                                            <input class="urutanProduksi" type="text" value='{{ $splitProses2[$j - 1] }}'
-                                                disabled>
+                                            <input class="urutanProduksi" type="text"
+                                                value='{{ $splitProses2[$j - 1] }}' disabled>
                                         @else
-                                            <input class="urutanProduksi" type="text" value='{{ $splitProses3[$j - 1] }}'
-                                                disabled>
+                                            <input class="urutanProduksi" type="text"
+                                                value='{{ $splitProses3[$j - 1] }}' disabled>
                                         @endif
                                     </td>
                                 @endfor
@@ -198,12 +184,12 @@
                                     {{--Button Tampilin modal--}}
                                     <button type="button" class="btn btn-success " id="button_PopupModal" btn='{{$i}}' data-bs-toggle="modal" data-bs-target="#staticBackdrop">Konfirmasi</button>
 
-                                    {{--Button asli--}}
-                                    {{--<button class="btn btn-success" name='submit' value='{{ $i }}' id="button_{{ $i }}">Konfirmasi</button>--}}
+                                    {{-- Button asli --}}
+                                    {{-- <button class="btn btn-success" name='submit' value='{{ $i }}' id="button_{{ $i }}">Konfirmasi</button> --}}
 
-                                </td> 
+                                </td>
                             </tr>
-                            
+
                         @endfor
                     </tbody>
                 </table>
@@ -213,6 +199,7 @@
 
             {{-- Pop Up Konfirmasi --}}
             <!-- Modal -->
+
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -254,41 +241,41 @@
 
             {{-- Kartu bawah --}}
             <!-- <div class="row">
-                {{-- Card Cycle Time --}}
-                <div class="col">
-                    <div class="card-body rounded text-center kartu_Home">
+                        {{-- Card Cycle Time --}}
                         <div class="col">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-hourglass-split" viewBox="0 0 16 16">
-                                <path d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z"/>
-                              </svg>
+                            <div class="card-body rounded text-center kartu_Home">
+                                <div class="col">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-hourglass-split" viewBox="0 0 16 16">
+                                        <path d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z"/>
+                                      </svg>
+                                </div>
+                                <div class="col">
+                                    <h2>Cycle Time</h2>
+                                </div>
+                                <div class="col">
+                                    <h3 id="cycleTime">00:00</h3>
+                                </div>
+                            </div>
                         </div>
+                
+                        {{-- Card Defect --}}
                         <div class="col">
-                            <h2>Cycle Time</h2>
+                            <div class="card-body rounded text-center kartu_Home">
+                                <div class="col">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
+                                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                      </svg>
+                                </div>
+                                <div class="col">
+                                    <h2>Jumlah Defect</h2>
+                                </div>
+                                <div class="col">
+                                    <h3 id="totalDefect">0</h3>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col">
-                            <h3 id="cycleTime">00:00</h3>
-                        </div>
-                    </div>
-                </div>
-        
-                {{-- Card Defect --}}
-                <div class="col">
-                    <div class="card-body rounded text-center kartu_Home">
-                        <div class="col">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
-                                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                              </svg>
-                        </div>
-                        <div class="col">
-                            <h2>Jumlah Defect</h2>
-                        </div>
-                        <div class="col">
-                            <h3 id="totalDefect">0</h3>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
+                    </div> -->
 
         </div>
 

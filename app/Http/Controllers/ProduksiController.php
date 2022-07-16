@@ -43,7 +43,7 @@ class ProduksiController extends Controller
         $getSesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
         $sesi1 = $getSesi[0]->nama;
         // $sesi1 = $sesi[0]->sesi;
-        if ($sesi1 == 2) {
+        if ($sesi1 == 3) {
             return redirect()->route('dashboard');
         }
         $proses1 = '';
@@ -89,7 +89,8 @@ class ProduksiController extends Controller
         $defect1 = $this->getDefect($splitProses1, $user);
         $defect2 = $this->getDefect($splitProses2, $user);
         $defect3 = $this->getDefect($splitProses3, $user);
-        return view('Produksi.produksi', compact('splitProses1', 'splitProses2', 'splitProses3', 'defect1', 'defect2', 'defect3', 'user', 'sesi1'));
+        
+        return view('Produksi.produksi', compact('splitProses1', 'splitProses2', 'splitProses3', 'defect1', 'defect2', 'defect3', 'user', 'sesi'));
     }
 
     function buat(Request $request)

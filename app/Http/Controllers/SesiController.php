@@ -6,15 +6,126 @@ use App\Events\Sesi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use DB;
+use Auth;
 
 class SesiController extends Controller
 {
     function sesi()
     {
-        $sesi = DB::table('sesi')
-            ->where('idsesi', 1)
+        $team = Auth::user()->teams_idteam;
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam', 'inventory', 'demand', 'customer_value', 'hibah')->where('idteam', $team)->get();
+
+        $sesi = DB::table('sesi as s')
+            ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
+            ->select('s.sesi', 'ws.nama')
             ->get();
-        return view('adminsesi', compact('sesi'));
+
+        $sesiAtas = $sesi[0]->sesi - 1;
+        $sesiBawah = $sesi[0]->sesi + 1;
+
+        if ($sesiAtas < 1 || $sesiBawah > 11 || $sesi[0]->nama != 'Cooldown') {
+            $detail = $sesi[0]->nama;
+        } else {
+            $namaAtas = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiAtas)
+                ->get();
+            $namaBawah = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiBawah)
+                ->get();
+            $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
+        }
+
+        return view('adminsesi', compact('sesi', 'detail', 'user'));
+    }
+
+    function startSesi()
+    {
+        $sesi = DB::table('sesi as s')
+            ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
+            ->select('s.sesi', 'ws.nama', 'ws.waktu')
+            ->get();
+
+        $sesiAtas = $sesi[0]->sesi - 1;
+        $sesiBawah = $sesi[0]->sesi + 1;
+
+        if ($sesiAtas < 1 || $sesiBawah > 11 || $sesi[0]->nama != 'Cooldown') {
+            $detail = $sesi[0]->nama;
+        } else {
+            $namaAtas = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiAtas)
+                ->get();
+            $namaBawah = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiBawah)
+                ->get();
+            $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
+        }
+
+        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'start', $detail));
+
+        return response()->json(array(
+            "success" => true,
+            'status' => 'Started'
+        ), 200);
+    }
+
+    function pauseSesi()
+    {
+        $sesi = DB::table('sesi as s')
+            ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
+            ->select('s.sesi', 'ws.nama', 'ws.waktu')
+            ->get();
+
+        $sesiAtas = $sesi[0]->sesi - 1;
+        $sesiBawah = $sesi[0]->sesi + 1;
+
+        if ($sesiAtas < 1 || $sesiBawah > 11 || $sesi[0]->nama != 'Cooldown') {
+            $detail = $sesi[0]->nama;
+        } else {
+            $namaAtas = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiAtas)
+                ->get();
+            $namaBawah = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiBawah)
+                ->get();
+            $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
+        }
+
+        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'pause', $detail));
+
+        return response()->json(array(
+            "success" => true,
+            'status' => 'Paused'
+        ), 200);
+    }
+
+    function stopSesi()
+    {
+        $sesi = DB::table('sesi as s')
+            ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
+            ->select('s.sesi', 'ws.nama', 'ws.waktu')
+            ->get();
+
+        $sesiAtas = $sesi[0]->sesi - 1;
+        $sesiBawah = $sesi[0]->sesi + 1;
+
+        if ($sesiAtas < 1 || $sesiBawah > 11 || $sesi[0]->nama != 'Cooldown') {
+            $detail = $sesi[0]->nama;
+        } else {
+            $namaAtas = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiAtas)
+                ->get();
+            $namaBawah = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiBawah)
+                ->get();
+            $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
+        }
+
+        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'stop', $detail));
+
+        return response()->json(array(
+            "success" => true,
+            'status' => 'Stopped'
+        ), 200);
     }
 
     function gantiSesi(Request $request)
@@ -22,7 +133,7 @@ class SesiController extends Controller
         $sekarang = $request->get('sesi');
 
         $upSesi = $sekarang + 1;
-        if ($sekarang == 6) {
+        if ($sekarang == 11) {
             return response()->json(array(
                 'msg' => 'Sesi Sudah Max Woe!!'
             ), 200);
@@ -32,15 +143,12 @@ class SesiController extends Controller
                 ->update(['sesi' => ($upSesi)]);
         }
 
-        $updated = DB::table('sesi')
-            ->where('idsesi', 1)
-            ->get();
-
         $team = DB::table('teams')
             ->select('idteam', 'dana', 'hibah','total_pendapatan')
             ->get();
 
-        if ($upSesi == 3) {
+        // nambah hibah ke dana
+        if ($upSesi == 5) {
             foreach ($team as $t) {
                 $dblDana = (float)$t->dana;
                 $danaPlus = ($dblDana) + ($t->hibah);
@@ -55,6 +163,8 @@ class SesiController extends Controller
             }
         }
 
+     
+      
         foreach ($team as $t){
             $overProd = DB::table('history_produksi')->where('teams_idteam',$t->idteam)->where('sesi', $sekarang)->where('hasil','>',0)->get();
             $temp = 0;
@@ -69,15 +179,34 @@ class SesiController extends Controller
                 DB::table('teams')->where('idteam', $t->idteam)->update(['dana'=>$danaBaru, 'total_pendapatan'=>$totalPendapatanBaru]);
             }
         }
+      
+        $sesi = DB::table('sesi as s')
+            ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
+            ->select('s.sesi', 'ws.nama', 'ws.waktu')
+            ->get();
 
-        $getSesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
-        $sesi = $getSesi[0]->nama;
+        $sesiAtas = $sesi[0]->sesi - 1;
+        $sesiBawah = $sesi[0]->sesi + 1;
 
-        event(new Sesi($sesi));
+        if ($sesiAtas < 1 || $sesiBawah > 11 || $sesi[0]->nama != 'Cooldown') {
+            $detail = $sesi[0]->nama;
+        } else {
+            $namaAtas = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiAtas)
+                ->get();
+            $namaBawah = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiBawah)
+                ->get();
+            $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
+        }
+
+        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'ganti', $detail));
 
         return response()->json(array(
-            "success"=>true,
-            'sesi' => $sesi
+            "success" => true,
+            "sesi" => $sesi,
+            'detail' => $detail,
+            'status' => 'Started'
         ), 200);
     }
 
@@ -95,28 +224,41 @@ class SesiController extends Controller
                 ->update(['sesi' => ($sekarang - 1)]);
         }
 
-        $updated = DB::table('sesi')
-            ->where('idsesi', 1)
-            ->get();
+        $sesi = DB::table('sesi as s')->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')->select('s.sesi', 'ws.nama', 'ws.waktu')->get();
 
-       
-            $getSesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
-            $sesi = $getSesi[0]->nama;
-    
-            event(new Sesi($sesi));
-    
-            return response()->json(array(
-                "success"=>true,
-                'sesi' => $sesi
-            ), 200);
+        $sesiAtas = $sesi[0]->sesi - 1;
+        $sesiBawah = $sesi[0]->sesi + 1;
+
+        if ($sesiAtas < 1 || $sesiBawah > 11 || $sesi[0]->nama != 'Cooldown') {
+            $detail = $sesi[0]->nama;
+        } else {
+            $namaAtas = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiAtas)
+                ->get();
+            $namaBawah = DB::table('waktu_sesi')
+                ->where('idwaktu_sesi', '=', $sesiBawah)
+                ->get();
+            $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
+        }
+
+        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'back', $detail));
+
+        return response()->json(array(
+            "success" => true,
+            "sesi" => $sesi,
+            'detail' => $detail,
+            'status' => 'Started'
+        ), 200);
     }
 
-    public function getSesi(Request $request){
-        
-        $getSesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
-        $sesi = $getSesi[0]->nama;
+    function timer(Request $request)
+    {
+        $namaSesi = $request->get('namaSesi');
+
+        $waktu_sesi = DB::table('waktu_sesi')->select('waktu')->where('nama', 'like', '%' . $namaSesi . '%')->get();
+
         return response()->json(array(
-            'sesi' => $sesi
-        ), 200);
+            'waktu' => $waktu_sesi
+        ));
     }
 }

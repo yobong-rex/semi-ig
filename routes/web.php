@@ -81,11 +81,18 @@ Route::get('/prosesbahan', function () {
 })->name('prosesbahan');
 
 
+// Ganti Sesi
+Route::get('/adminsesi', 'SesiController@sesi')->name('adminsesi');
+Route::post('/adminsesi/startsesi', 'SesiController@startSesi')->name('start.sesi');
+Route::post('/adminsesi/pausesesi', 'SesiController@pauseSesi')->name('pause.sesi');
+Route::post('/adminsesi/stopsesi', 'SesiController@stopSesi')->name('stop.sesi');
+Route::post('/adminsesi/gantisesi', 'SesiController@gantiSesi')->name('ganti.sesi');
+Route::post('/adminsesi/backsesi', 'SesiController@backSesi')->name('back.sesi');
 
-// Mesin
-// Route::get('/komponen-mesin', function () {
-//     return view ('mesin.komponen');
-// })->name('komponenMesin');
+
+// Timer
+route::post('/timer', 'SesiController@timer')->name('timer');
+
 
 //Route coba-coba
 Route::post('/ajax', 'MesinController@cobaAjax')->name('coba.ajax');
@@ -98,6 +105,10 @@ Route::get('/sender', function(){
 Route::get('/receiver', function(){
     return view('receiverPusher');
 })->name('receiver');
+
+Route::get('/test/timer', function(){
+    return view('testTimer');
+})->name('test.timer');
 //Route coba-coba
 
 
@@ -125,5 +136,3 @@ Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('/sesi/getsesi','SesiController@getSesi')->name('getSesi');

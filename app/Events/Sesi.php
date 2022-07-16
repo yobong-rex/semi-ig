@@ -14,19 +14,30 @@ class Sesi implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $id;
     public $sesi;
+    public $waktu;
+    public $condition;
+    public $detailSesi;
 
-    public function __construct($sesi)
+    public function __construct($id, $sesi, $waktu, $condition, $detailSesi)
     {
-        $this->sesi=$sesi;
+        $this->id = $id;
+        $this->sesi = $sesi;
+        $this->waktu = $waktu;
+        // buat mengetahui game sedang berjalan, behenti, pause
+        // start || pause || stop
+        $this->condition = $condition;
+        $this->detailSesi = $detailSesi;
     }
-    
+
     public function broadcastOn()
     {
         return new Channel('sesiPusher');
     }
 
-    public function broadcastAs(){
+    public function broadcastAs()
+    {
         return 'sesi';
     }
 }

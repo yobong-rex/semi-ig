@@ -12,7 +12,11 @@ class AnalisisController extends Controller
 {
     function analisi()
     {
-        $sesi = DB::table('sesi')->select('sesi', 'analisis')->get();
+        $sesi = DB::table('sesi as s')
+            ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
+            ->select('s.sesi', 's.analisis', 'ws.nama')
+            ->get();
+
         if ($sesi[0]->analisis == true) {
             $team = Auth::user()->teams_idteam;
             $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();

@@ -1,59 +1,53 @@
 @extends('layouts.template')
 
-@section("title", "Demand")
+@section('title', 'Demand')
 
 @section('content')
 
-<style>
-    .heading{
-        box-shadow: 0 6px 10px rgba(0,0,0,.08);
-        padding:5px;
-    }
-    .nama_team{
-        color:#ea435e;
-    }
-    .timer{
-        background-color:#77dd77; /* misal waktu habis background jadi #ea435e */
-        width:150px;
-        box-shadow: 0 6px 10px rgba(0,0,0,.08);
-    }
-    .dana{
-        text-align:right;
-    }
-    .nomor_demand{
-        width:50px;
-        text-align:center;
-    }
-    .pemenuhan{
-        background-color:#ffffff;
-        box-shadow: 0 6px 10px rgba(0,0,0,.08);
-    }
-</style>
+    <style>
+        .heading {
+            box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
+            padding: 5px;
+        }
 
-@php
-$sesi=1;
-// $dana={{$teams->dana}};
-// $namaTeam={{$teams->nama}};
-$nomorSesi=1;   
+        .nama_team {
+            color: #ea435e;
+        }
 
-$timer="00:00";
-@endphp
+        .timer {
+            background-color: #77dd77;
+            /* misal waktu habis background jadi #ea435e */
+            width: 150px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
+        }
 
-<body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
-    <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
+        .dana {
+            text-align: right;
+        }
 
-    {{--Nama Team dan Timer--}}
-        <div class="row align-items-center rounded heading">
-            <div class="col-9 nama_team">
-                <h1 id="namaTeam" value=''> {{$user[0]->nama}} </h1> 
-            </div>
-            <div class="col-1"><h3 id="sesi" value="{{$sesi1}}">Sesi <span>{{$sesi1}}</span></h3></div>
-            <div class="col-1 text-center align-self-end timer rounded-2"  style="font-family:TT Norms Regular;">
-                <h3>Timer</h3>
-                <h4 id="timer">- - : - -</h4>
-            </div>
-        </div>
-            
+        .nomor_demand {
+            width: 50px;
+            text-align: center;
+        }
+
+        .pemenuhan {
+            background-color: #ffffff;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
+        }
+    </style>
+
+    @php
+    $sesi = 1;
+    // $dana={{ $teams->dana }};
+    // $namaTeam={{ $teams->nama }};
+    $nomorSesi = 1;
+
+    $timer = '00:00';
+    @endphp
+
+    <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
+
+
         <div class="row spacing"></div>
 
         {{-- Card List Kelompok --}}
@@ -61,7 +55,8 @@ $timer="00:00";
 
         <div class="row spacing"></div>
 
-        <div class="alert alert-danger" role="alert"> Setiap produk hanya bisa dimasukkan 1x !!! </br> Jika salah lakukan refresh halaman.</div>
+        <div class="alert alert-danger" role="alert"> Setiap produk hanya bisa dimasukkan 1x !!! </br> Jika salah
+            lakukan refresh halaman.</div>
 
         <div class="card-body pemenuhan rounded">
             <h1>Pemenuhan Demand</h1>
@@ -78,6 +73,7 @@ $timer="00:00";
                     </tr>
                 </thead>
                 <tbody>
+
                 @php
                     $i=1
                 @endphp
@@ -168,45 +164,48 @@ $timer="00:00";
             
             
 
+
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
             <script>
-
                 let arrDemand = [];
 
-                $(document).on('change','#selectedTeam',function(){
+                $(document).on('change', '#selectedTeam', function() {
                     let id = $(this).val();
                     $.ajax({
                         type: "POST",
-                        url: "{{route('demand.getDemand')}}",
-                        data:{
-                            '_token': '<?php echo csrf_token()?>',
+                        url: "{{ route('demand.getDemand') }}",
+                        data: {
+                            '_token': '<?php echo csrf_token(); ?>',
                             'team': id,
-                            'sesi': $('#sesi').attr('value'),
+                            'sesi': $('#nomorSesi').attr('value'),
                         },
-                        success: function(data){
-                            if(data.list.length> 0){
-                                $.each(data.list, function(key,value){
-                                    $('#total_'+data.list[key].idproduk).text(data.list[key].jumlah);
+                        success: function(data) {
+                            if (data.list.length > 0) {
+                                $.each(data.list, function(key, value) {
+                                    $('#total_' + data.list[key].idproduk).text(data.list[key].jumlah);
                                 });
-                            }
-                            else{
+                            } else {
                                 $('.demand-total').text('0');
                             }
                         }
                     });
                 });
 
-                $(document).on('change','.demand',function(){
+                $(document).on('change', '.demand', function() {
                     let val = parseInt($(this).val());
                     let id = $(this).attr('id');
                     let id_split = id.split('_');
-                    let total = parseInt( $('#total_'+id_split[1]).text());
+                    let total = parseInt($('#total_' + id_split[1]).text());
                     total += val;
-                    $('#total_'+id_split[1]).text(total);
+                    $('#total_' + id_split[1]).text(total);
                     $(this).attr("disabled", true);
-                    arrDemand.push({'produk': id_split[1], 'total': $(this).val()});
+                    arrDemand.push({
+                        'produk': id_split[1],
+                        'total': $(this).val()
+                    });
                     console.log(arrDemand);
                 });
+
 
                 $(document).on('click','#konfrim',function(){
                     $.ajax({
@@ -220,7 +219,7 @@ $timer="00:00";
                             $("#modal").modal('hide');
                             $('#info-body').text(data.msg);
                             $('#modalInfo').modal('show');
-                           
+
                         }
                     });
                 });
@@ -230,6 +229,6 @@ $timer="00:00";
                 })
             </script>
         </div>
-    </div>
-</body>
+        </div>
+    </body>
 @endsection

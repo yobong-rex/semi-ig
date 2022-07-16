@@ -44,21 +44,24 @@
     </style>
 
     <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
-        <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
 
-            {{-- Nama Team dan Timer --}}
-            <div class="row align-items-center rounded heading">
-                <div class="col-md-9 nama_team">
-                    <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
+        <div class="row spacing"></div>
+
+        {{-- Card Dana --}}
+        <div class="card-header rounded" style="background-color:#faf0dc;box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
+            <div class="row align-items-center">
+                <div class="col-1 text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
+                        class="bi bi-wallet2" viewBox="0 0 16 16">
+                        <path
+                            d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z" />
+                    </svg>
                 </div>
-                <div class="col-md-1">
-                    <h3 id="nomorSesi">Sesi <span id="sesi">{{$sesi[0]->sesi}}</span></h3>
+                <div class="col-2 label_dana">
+                    <h1>Dana : </h1>
                 </div>
-                <div class="col-md-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
-                    <h3>Timer</h3>
-                    <h4 id="timer">- - : - -</h4>
-                </div>
-            </div>
+                <div class="col-9 dana">
+                    <h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1>
 
             <div class="row spacing"></div>
 
@@ -78,44 +81,46 @@
                     <div class="col-md-9 dana">
                         <h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1>
                     </div>
+
                 </div>
             </div>
-
-            <div class="row spacing"></div>
-
-            {{-- Card Kapasitas --}}
-            <div class="card-body kapasitas rounded">
-                <table class="table table">
-                    {{-- Heading --}}
-                    <thead class="thead">
-                        <tr>
-                            <th scope="col">Mesin</th>
-                            <th scope="col" style="text-align:center;">Level</th>
-                            <th class="class_kapasitasMesin" style="text-align:center;">Kapasitas</th>
-                            <th scope="col" style="text-align:center;">Konfirmasi</th>
-                        </tr>
-                    </thead>
-                    {{-- Data Kapasitas --}}
-                    <tbody>
-                        @for ($x = 0; $x < count($data); $x++)
-                            <tr style="vertical-align:middle;">
-                                <td id='nama_mesin'>
-                                    {{ $data[$x]->nama }}
-                                </td>
-                                <td id='level_kapasitas_{{ $data[$x]->nama }}' style="text-align:center;">
-                                    {{ $data[$x]->level }}</td>
-                                <td id='kapasitas_kapasitas_{{ $data[$x]->nama }}' style="text-align:center;">
-                                    {{ $data[$x]->kapasitas }}</td>
-                                <td style="text-align:center;vertical-align:center;">
-                                    <button class='upgrade' value={{ $data[$x]->nama }} data-bs-toggle="modal"
-                                        data-bs-target="#Konfirmasi">Upgrade</button>
-                                </td>
-                            </tr>
-                        @endfor
-                    </tbody>
-                </table>
-            </div>
         </div>
+
+        <div class="row spacing"></div>
+
+        {{-- Card Kapasitas --}}
+        <div class="card-body kapasitas rounded">
+            <table class="table table">
+                {{-- Heading --}}
+                <thead class="thead">
+                    <tr>
+                        <th scope="col">Mesin</th>
+                        <th scope="col" style="text-align:center;">Level</th>
+                        <th class="class_kapasitasMesin" style="text-align:center;">Kapasitas</th>
+                        <th scope="col" style="text-align:center;">Konfirmasi</th>
+                    </tr>
+                </thead>
+                {{-- Data Kapasitas --}}
+                <tbody>
+                    @for ($x = 0; $x < count($data); $x++)
+                        <tr style="vertical-align:middle;">
+                            <td id='nama_mesin'>
+                                {{ $data[$x]->nama }}
+                            </td>
+                            <td id='level_kapasitas_{{ $data[$x]->nama }}' style="text-align:center;">
+                                {{ $data[$x]->level }}</td>
+                            <td id='kapasitas_kapasitas_{{ $data[$x]->nama }}' style="text-align:center;">
+                                {{ $data[$x]->kapasitas }}</td>
+                            <td style="text-align:center;vertical-align:center;">
+                                <button class='upgrade' value={{ $data[$x]->nama }} data-bs-toggle="modal"
+                                    data-bs-target="#Konfirmasi">Upgrade</button>
+                            </td>
+                        </tr>
+                    @endfor
+                </tbody>
+            </table>
+        </div>
+
 
         {{-- Modal --}}
         {{-- Modal Konfirmasi Upgrade --}}
@@ -163,6 +168,7 @@
     </body>
 
     <script>
+        /* Ajax */
         let namaMesin = "";
 
         $('.upgrade').click(function() {

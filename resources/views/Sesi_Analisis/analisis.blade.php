@@ -39,6 +39,7 @@
     button_{nomor proses produksi} --}}
 
     <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
+
         @if (session('status'))
             <div class="alert alert-success" id="status">
                 {{ session('status') }}
@@ -48,22 +49,11 @@
                 {{ session('error') }}
             </div>
         @endif
-        <div class="px-4 py-5" style="font-family:TT Norms Bold;">
+      
 
-            {{-- Nama Team dan Timer --}}
-            <div class="row align-items-center rounded heading">
-                <div class="col-md-9 nama_team">
-                    <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
-                </div>
-                <div class="col-md-1">
-                    <h3 id="nomorSesi">Sesi <span id="sesi">{{$sesi[0]->sesi}}</span></h3>
-                </div>
-                <div class="col-md-1 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
-                    <h3>Timer</h3>
-                    <h4 id="timer">- - : - -</h4>
-                </div>
-            </div>
 
+        <div class="row spacing"></div>
+        <h1>Sesi Analisis</h1>
             <div class="row spacing"></div>
             {{-- Card Dana --}}
             <div class="card-header rounded" style="background-color:#faf0dc;box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
@@ -84,52 +74,52 @@
                 </div>
             </div>
 
-            <div class="row spacing"></div>
-            <h1>Sesi Analisis</h1>
 
-            {{-- tabel analisis --}}
-            <form action="">
-                <table class="table table-bordered" style="vertical-align: middle;">
-                    <thead class="thead">
-                        <tr>
-                            <th scope="col"> </th>
-                            <th scope="col" colspan="9" style="text-align:center;">Urutan Produksi Produk</th>
-                            <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;width:80px;">Konfirmasi</th>
-                        </tr>
-                        <tr>
-                            <th class="nomor" scope="col">Nomor</th>
-                            @for ($i = 1; $i <= 9; $i++)
-                                <th class="penomoran" scope="col">{{ $i }}</th>
-                            @endfor
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{-- id proses_(prosesId) --}}
-                        @for ($i = 1; $i <= 3; $i++)
-                            <tr id="tr_{{ $i }}">
-                                <th class="nomor" scope="row">Proses Produksi {{ $i }}</th>
-                                @for ($j = 1; $j <= 9; $j++)
-                                    <td>
-                                        <select name="proses" id="proses_{{ $i }}_{{ $j }}">
-                                            <option value="">-Select-</option>
-                                            @foreach ($mesin as $m)
-                                                <option value='{{ $m->nama }}' kapasitas='{{ $m->kapasitas }}'
-                                                    time='{{ $m->cycle }}'>{{ $m->nama }}</option>
-                                            @endforeach
-                                            <option value="Idle" kapasitas="" time="6">Idle</option>
-                                            <option value="Delay" kapasitas="" time="7">Delay</option>
-                                        </select>
-                                    </td>
-                                @endfor
-                                <td style="vertical-align: middle;text-align: center"><button type="button" id="button_{{ $i }}" class="btn btn-success"
-                                        value="{{ $i }}">Konfirmasi</button>
-                                </td>
-                            </tr>
+        {{-- tabel analisis --}}
+        <form action="">
+            <table class="table table-bordered" style="vertical-align: middle;">
+                <thead class="thead">
+                    <tr>
+                        <th scope="col"> </th>
+                        <th scope="col" colspan="9" style="text-align:center;">Urutan Produksi Produk</th>
+                        <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;width:80px;">
+                            Konfirmasi</th>
+                    </tr>
+                    <tr>
+                        <th class="nomor" scope="col">Nomor</th>
+                        @for ($i = 1; $i <= 9; $i++)
+                            <th class="penomoran" scope="col">{{ $i }}</th>
                         @endfor
-                    </tbody>
-                </table>
-            </form>
-        </div>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{-- id proses_(prosesId) --}}
+                    @for ($i = 1; $i <= 3; $i++)
+                        <tr id="tr_{{ $i }}">
+                            <th class="nomor" scope="row">Proses Produksi {{ $i }}</th>
+                            @for ($j = 1; $j <= 9; $j++)
+                                <td>
+                                    <select name="proses" id="proses_{{ $i }}_{{ $j }}">
+                                        <option value="">-Select-</option>
+                                        @foreach ($mesin as $m)
+                                            <option value='{{ $m->nama }}' kapasitas='{{ $m->kapasitas }}'
+                                                time='{{ $m->cycle }}'>{{ $m->nama }}</option>
+                                        @endforeach
+                                        <option value="Idle" kapasitas="" time="6">Idle</option>
+                                        <option value="Delay" kapasitas="" time="7">Delay</option>
+                                    </select>
+                                </td>
+                            @endfor
+                            <td style="vertical-align: middle;text-align: center"><button type="button"
+                                    id="button_{{ $i }}" class="btn btn-success"
+                                    value="{{ $i }}">Konfirmasi</button>
+                            </td>
+                        </tr>
+                    @endfor
+                </tbody>
+            </table>
+        </form>
+
 
         {{-- Modal --}}
         {{-- Modal Notif --}}
@@ -152,9 +142,7 @@
             </div>
         </div>
     </body>
-@endsection
 
-@section('ajaxquery')
     <script>
         function setProses($nomer,$proses){
             let triger = 1;
@@ -199,12 +187,12 @@
             arrProses1 = jQuery.grep(arrProses, function(value) {
                 return value != '';
             });
-            
+
             for (var x = 0; x < arrProses.length; x++) {
                 prosesInsert += arrProses[x] + ";";
             }
             var panjang = arrProses1.length;
-            
+
             $.ajax({
                 type: "POST",
                 url: "{{ route('analisis.proses') }}",
@@ -226,13 +214,13 @@
                         $('#Notif').modal('show');
                     } else {
                         $('#dana').html(data.user[0].dana);
-                        
+
                         if (data.status == false) {
                             $('#notifUpgrade').text('Not Efficient');
-                        $('#Notif').modal('show');
+                            $('#Notif').modal('show');
                         } else {
                             $('#notifUpgrade').text('Efficient');
-                        $('#Notif').modal('show');
+                            $('#Notif').modal('show');
                         }
                     }
                 },

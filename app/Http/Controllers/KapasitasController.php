@@ -106,7 +106,10 @@ class KapasitasController extends Controller
     {
         $team = Auth::user()->teams_idteam;
         $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
-        $sesi = DB::table('sesi')->select('sesi')->get();
+        $sesi = DB::table('sesi as s')
+            ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
+            ->select('s.sesi', 'ws.nama')
+            ->get();
         $data = DB::table('mesin as m')
             ->join('kapasitas as k', 'm.idmesin', '=', 'k.mesin_idmesin')
             ->join('kapasitas_has_teams as kht', 'k.idkapasitas', '=', 'kht.kapasitas_idkapasitas')
@@ -114,7 +117,7 @@ class KapasitasController extends Controller
             ->where('kht.teams_idteam', $user[0]->idteam)
             ->orderBy('m.idmesin', 'asc')
             ->get();
-        // dd($data);
+
         return view('Mesin.kapasitas', compact('data', 'user', 'sesi'));
     }
 
@@ -137,7 +140,7 @@ class KapasitasController extends Controller
         $level = $idkap[0]->level;
         $dana = $user[0]->dana;
         $harga = $idkap[0]->harga;
-        
+
         if ($level < 5) {
             if ($dana >= $harga) {
                 $upgrade += 1;
