@@ -12,14 +12,16 @@ class BahanController extends Controller
     {
         $team = Auth::user()->teams_idteam;
         $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
-        $sesi = DB::table('sesi as s')
+        $getSesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
-            ->select('s.sesi', 'ws.nama')
+            ->select('s.sesi', 'ws.nama', 's.analisis')
             ->get();
+        $valueSesi = $getSesi[0]->sesi;
+        $namaSesi = $getSesi[0]->nama;
 
         $product = DB::table('produk')->get();
 
-        return view('Analisis_Bahan_Baku.bahan', compact('user', 'sesi', 'product'));
+        return view('Analisis_Bahan_Baku.bahan', compact('user', 'valueSesi', 'namaSesi', 'product'));
     }
 
     function analisisBahan(Request $request)

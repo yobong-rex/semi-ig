@@ -43,13 +43,19 @@ class ProduksiController extends Controller
         $getSesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
         $sesi1 = $getSesi[0]->nama;
         // $sesi1 = $sesi[0]->sesi;
-        if ($sesi1 == 3) {
+        $getSesi = DB::table('sesi as s')
+            ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
+            ->select('s.sesi', 'ws.nama')
+            ->get();
+        $valueSesi = $getSesi[0]->sesi;
+        $namaSesi = $getSesi[0]->nama;
+        if ($namaSesi == 2) {
             return redirect()->route('dashboard');
         }
         $proses1 = '';
         $proses2 = '';
         $proses3 = '';
-        if ($sesi1 == 1) {
+        if ($namaSesi == 1) {
             $proses1 = 'Sorting;Cutting;Bending;Assembling;Delay;Cutting;Assembling;Sorting;Packing';
             $proses2 = 'Sorting;Cutting;Assembling;Drilling;Delay;Cutting;Assembling;Idle;Packing';
             $proses3 = 'Sorting;Molding;Idle;Assembling;Sorting;Delay;Assembling;Packing;';
@@ -90,7 +96,7 @@ class ProduksiController extends Controller
         $defect2 = $this->getDefect($splitProses2, $user);
         $defect3 = $this->getDefect($splitProses3, $user);
         
-        return view('Produksi.produksi', compact('splitProses1', 'splitProses2', 'splitProses3', 'defect1', 'defect2', 'defect3', 'user', 'sesi'));
+        return view('Produksi.produksi', compact('splitProses1', 'splitProses2', 'splitProses3', 'defect1', 'defect2', 'defect3', 'user', 'namaSesi','valueSesi'));
     }
 
     function buat(Request $request)

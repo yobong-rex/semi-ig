@@ -12,13 +12,14 @@ class SesiController extends Controller
 {
     function sesi()
     {
-        $team = Auth::user()->teams_idteam;
-        $user = DB::table('teams')->select('nama', 'dana', 'idteam', 'inventory', 'demand', 'customer_value', 'hibah')->where('idteam', $team)->get();
+        $user = DB::table('users')->select(DB::raw('name as nama'))->where('id', 26)->get();
 
         $sesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
             ->select('s.sesi', 'ws.nama')
             ->get();
+        $valueSesi = $sesi[0]->sesi;
+        $namaSesi = $sesi[0]->nama;
 
         $sesiAtas = $sesi[0]->sesi - 1;
         $sesiBawah = $sesi[0]->sesi + 1;
@@ -35,7 +36,7 @@ class SesiController extends Controller
             $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
         }
 
-        return view('adminsesi', compact('sesi', 'detail', 'user'));
+        return view('adminsesi', compact('sesi', 'detail', 'valueSesi', 'namaSesi', 'user'));
     }
 
     function startSesi()

@@ -13,13 +13,16 @@ class MarketController extends Controller
     function market()
     {
         $user = DB::table('teams')->select('nama', 'idteam')->get();
-        $sesi = DB::table('sesi as s')
+
+        $getSesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
             ->select('s.sesi', 'ws.nama')
             ->get();
-        $sesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
-        $data = DB::table('ig_markets')->where('sesi', $sesi[0]->nama)->get();
-        return view('market', compact('data', 'user', 'sesi'));
+        $valueSesi = $getSesi[0]->sesi;
+        $namaSesi = $getSesi[0]->nama;
+
+        $data = DB::table('ig_markets')->where('sesi', $getSesi[0]->nama)->get();
+        return view('market', compact('data', 'user', 'valueSesi', 'namaSesi'));
     }
 
     function marketBeli(Request $request)
@@ -35,7 +38,7 @@ class MarketController extends Controller
             $totalItem = $request->get('totalItem');
             $sisaInv = 0;
 
-            if($team == ""){
+            if ($team == "") {
                 return response()->json(array(
                     'msg' => 'tolong pilih team terlebih dahulu',
                     'code' => '401'
@@ -88,7 +91,7 @@ class MarketController extends Controller
                     $temp['stock'] = $sisaStok;
 
                     array_push($insert, $data);
-                    array_push($stokPusser,$temp);
+                    array_push($stokPusser, $temp);
                 }
             }
 
@@ -123,11 +126,10 @@ class MarketController extends Controller
                     ['stock' => $stok]
                 );
                 event(new Market($stokPusser));
-
             }
 
             return response()->json(array(
-                "success"=>true,
+                "success" => true,
                 'msg' => 'selamat team anda berhasil membeli bahan baku',
                 'code' => '200'
             ), 200);

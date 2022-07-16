@@ -90,10 +90,12 @@ class KomponenController extends Controller
         $idmesin = DB::table('mesin')->where('nama', 'like', '%Sorting%')->get();
         $namaMesin = DB::table('mesin')->select('nama')->get();
 
-        $sesi = DB::table('sesi as s')
+        $getSesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
             ->select('s.sesi', 'ws.nama')
             ->get();
+        $valueSesi = $getSesi[0]->sesi;
+        $namaSesi = $getSesi[0]->nama;
 
         $data = DB::table('mesin as m')
             ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
@@ -112,7 +114,7 @@ class KomponenController extends Controller
             ->where('m.idmesin', $idmesin[0]->idmesin)
             ->get();
 
-        return view('Mesin.komponen', compact('data', 'user', 'levelMesin', 'sesi', 'namaMesin'));
+        return view('Mesin.komponen', compact('data', 'user', 'levelMesin', 'valueSesi', 'namaSesi', 'namaMesin'));
     }
 
     function komponenAjax(Request $request)

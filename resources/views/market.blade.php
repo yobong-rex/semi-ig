@@ -79,6 +79,7 @@
                     </select>
                 </div>
             </div>
+        </div>
 
         <div class="row-12">
             <!-- {{-- Card Dana --}}

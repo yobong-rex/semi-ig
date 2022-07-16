@@ -78,6 +78,7 @@
             box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
             padding: 5px;
         }
+
         .nama_team {
             color: #ea435e;
         }
@@ -88,19 +89,20 @@
             width: 150px;
             box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
         }
-        @media (max-width:800px){
-            .dana, .label_dana{
+
+        @media (max-width:800px) {
+
+            .dana,
+            .label_dana {
                 text-align: center;
             }
         }
 
-        @media (max-width:1000px){
-            .coloumn_sesi{
-                max-width:fit-content;
+        @media (max-width:1000px) {
+            .coloumn_sesi {
+                max-width: fit-content;
             }
         }
-        
-
     </style>
 
     {{-- CSS Tambahan Internal --}}
@@ -123,7 +125,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('dashboard') }}">Dashboard</a>
                     </li>
-                    
+
                     @can('isMarketing')
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{ route('komponen') }}">Mesin</a>
@@ -143,10 +145,11 @@
                             <a class="nav-link active" aria-current="page" href="{{ route('produksi') }}">Produksi</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ route('analisis') }}">Analisis Produksi</a>
+                            <a class="nav-link active" aria-current="page" href="{{ route('analisis') }}">Analisis
+                                Produksi</a>
                         </li>
                     @endcan
-                    
+
                     <li class="nav-item logOut">
                         <a href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
@@ -172,7 +175,8 @@
                     <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
                 </div>
                 <div class="col-md-1 coloumn_sesi">
-                    <h3 id="nomorSesi">Sesi <span id="sesi">{{$sesi[0]->sesi}}</span></h3>
+                    <h3 id="nomorSesi" value={{ $valueSesi }}>Sesi <span id="sesi">{{ $namaSesi }}</span>
+                    </h3>
                 </div>
                 <div class="col-md-2 text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
 
@@ -699,30 +703,28 @@
                 localStorage.setItem('condition', 'start');
             }
         })
-
     </script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-        window.Echo.channel('analisisChannel').listen('.analisis', (e) => { 
+        window.Echo.channel('analisisChannel').listen('.analisis', (e) => {
             console.log(e.analisis.sesi);
-           if(e.analisis.sesi == "2"){
+            if (e.analisis.sesi == "2") {
                 console.log('a')
                 $('footer-analisis').html(`<a href="{{ route('analisis') }}" class="btn btn-secondary mdl-close"
                                     data-bs-dismiss="modal">OK!</a>`);
-           }
-           else{
-                $('footer-analisis').html('<button type="button" class="btn btn-secondary mdl-close" data-bs-dismiss="modal">Close</button>');
-           }
+            } else {
+                $('footer-analisis').html(
+                    '<button type="button" class="btn btn-secondary mdl-close" data-bs-dismiss="modal">Close</button>'
+                    );
+            }
 
-           if(e.analisis.status == true){
+            if (e.analisis.status == true) {
                 $('#analisis-status').text('dibuka');
-           }
-           else{
+            } else {
                 $('#analisis-status').text('ditutup');
-           }
+            }
 
-           $('#modalInfoAnalisis').modal('show');
+            $('#modalInfoAnalisis').modal('show');
         });
     </script>
 </body>

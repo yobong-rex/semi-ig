@@ -12,24 +12,19 @@ class AnalisisController extends Controller
 {
     function analisi()
     {
-        $sesi = DB::table('sesi as s')
+        $getSesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
-            ->select('s.sesi', 's.analisis', 'ws.nama')
+            ->select('s.sesi', 'ws.nama', 's.analisis')
             ->get();
+        $valueSesi = $getSesi[0]->sesi;
+        $namaSesi = $getSesi[0]->nama;
 
-        if ($sesi[0]->analisis == true) {
+        if ($getSesi[0]->analisis == true) {
             $team = Auth::user()->teams_idteam;
             $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
             $proses1 = '';
             $proses2 = '';
             $proses3 = '';
-            // $mesin = DB::table('mesin')
-            //     ->join('view_kapasitas_mesin', 'mesin.idmesin', '=', 'view_kapasitas_mesin.mesin_id')
-            //     ->join('mesin_has_teams', 'mesin.idmesin', '=', 'mesin_has_teams.mesin_idmesin')
-            //     ->select('mesin.idmesin', 'mesin.nama', 'mesin.cycle', 'view_kapasitas_mesin.kapasitas')
-            //     ->where('mesin_has_teams.teams_idteam', $user[0]->idteam)
-            //     ->where('view_kapasitas_mesin.team', $user[0]->idteam)
-            //     ->get();
 
             $mesin = DB::table('mesin as m')
                 ->join('mesin_has_teams as mht', 'm.idmesin', '=', 'mht.mesin_idmesin')
@@ -39,8 +34,6 @@ class AnalisisController extends Controller
                 ->where('mht.teams_idteam', $user[0]->idteam)
                 ->where('kht.teams_idteam', $user[0]->idteam)
                 ->get();
-
-            
 
             $proses1DB = DB::table('teams_has_analisis')
                 ->join('analisis', 'teams_has_analisis.analisis_idanalisis', '=', 'analisis.idanalisis')
@@ -63,17 +56,17 @@ class AnalisisController extends Controller
                 ->orderBy('teams_has_analisis.analisis_idanalisis', 'desc')
                 ->limit(1)->get();
 
-            if(count($proses1DB)>0){
+            if (count($proses1DB) > 0) {
                 $proses1 = $proses1DB[0]->proses;
             }
-            if(count($proses2DB)>0){
+            if (count($proses2DB) > 0) {
                 $proses2 = $proses2DB[0]->proses;
             }
-            if(count($proses3DB)>0){
+            if (count($proses3DB) > 0) {
                 $proses3 = $proses3DB[0]->proses;
             }
 
-            return view('Sesi_Analisis.analisis', compact('mesin', 'user', 'sesi','proses1','proses2','proses3'));
+            return view('Sesi_Analisis.analisis', compact('mesin', 'user', 'valueSesi', 'namaSesi', 'proses1', 'proses2', 'proses3'));
         } else {
             return redirect()->route('dashboard');
         }
@@ -187,7 +180,7 @@ class AnalisisController extends Controller
         DB::table('sesi')->where('idsesi', 1)->update(['analisis' => $status]);
         $sesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
         $sesi = $sesi[0]->nama;
-        $pusher = ['status'=>$status, 'sesi'=> $sesi];
+        $pusher = ['status' => $status, 'sesi' => $sesi];
         event(new Analisis($pusher));
         return redirect()->route('analisis.admin')->with('status', 'status sesi analisis berhasil diubah');
     }
