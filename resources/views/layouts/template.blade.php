@@ -169,7 +169,7 @@
     <div class="container-fluid p-0">
         <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
             {{-- Nama Team dan Timer --}}
-            <div class="row flex-wrap rounded heading">
+            <div class="row flex-wrap align-items-center rounded heading">
 
                 <div class="col flex nama_team">
                     <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
