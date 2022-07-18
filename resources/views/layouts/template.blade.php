@@ -169,12 +169,12 @@
     <div class="container-fluid p-0">
         <div class="container px-4 py-5" style="font-family:TT Norms Bold;">
             {{-- Nama Team dan Timer --}}
-            <div class="row flex-wrap align-items-center rounded heading">
+            <div class="row flex-wrap rounded heading">
 
-                <div class="col-md-9 flex nama_team">
+                <div class="col flex nama_team">
                     <h1 id="namaTeam">Team {{ $user[0]->nama }}</h1>
                 </div>
-                <div class="col-md-1 flex coloumn_sesi">
+                <div class="col flex coloumn_sesi" style="text-align:right;">
                     <h3 id="nomorSesi" value={{ $valueSesi }}>Sesi <span id="sesi">{{ $namaSesi }}</span>
                     </h3>
                 </div>
