@@ -344,8 +344,9 @@
                     <!--Body buat di edit-->
                     <div class="modal-body flex">
                         <select id="selected_sesi">
-                            @for($i=1;$i<=6;$i++)
-                                <option value="">Sesi {{$i}}</option>
+                            <option value="">Pilih Sesi</option>
+                            @for($i=1;$i<$namaSesi;$i++)
+                                <option value="{{$i}}">Sesi {{$i}}</option>
                             @endfor
                         </select>
                         <table class="table table-bordered" style="vertical-align: middle;">
@@ -356,14 +357,7 @@
                                     <th scope="col" style="width:1.5em;">Jumlah</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @for($i=1;$i<=2;$i++)
-                                <tr>
-                                    <td class="nomor_OP" style="text-align: center;">{{$i}}</td>
-                                    <td id="namaProdukOP_noSesi_{{$i}}">-</td>
-                                    <td id="jumlahProdukOP_noSesi_{{$i}}">-</td>
-                                </tr>
-                                @endfor
+                            <tbody id='body-over'>
                             </tbody>
                         </table>
                     </div>
@@ -376,7 +370,43 @@
             </div>
         </div>
 
-        
+        <script>
+           $('#selected_sesi').on('change', function(){
+                let sesi = $(this).val();
+                $.ajax({
+                        type: "POST",
+                        url: "{{ route('dashboard.overProduct') }}",
+                        data: {
+                            '_token': '<?php echo csrf_token(); ?>',
+                            'sesi': sesi,
+                            
+                        },
+                        success: function(data) {
+                           $('#body-over').empty();
+                           let nomer = 1;
+                           if(data.msg == ''){
+                                $.each(data.result, function(key,value){
+                                    $('#body-over').append(`
+                                    <tr>
+                                        <td class="nomor_OP" style="text-align: center;">`+nomer+`</td>
+                                        <td id="">`+value.nama+`</td>
+                                        <td id="">`+value.hasil+`</td>
+                                    </tr>`);
+                                    nomer +=1;
+                                });
+                           }
+                           else{
+                                $('#body-over').append(`
+                                    <tr>
+                                        <td class="nomor_OP" style="text-align: center;"></td>
+                                        <td id="">`+data.msg+`</td>
+                                        <td id=""></td>
+                                    </tr>`);
+                           }
+                        }
+                    });
+           });
+        </script>
 
     </body>
 @endsection

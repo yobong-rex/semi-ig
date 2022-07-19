@@ -23,6 +23,7 @@ use App\Http\Middleware\CheckSesi;
 Route::middleware(['auth'])->group(function () {
     // Dashboard
     Route::get('/', 'TeamController@dashboard')->name('dashboard');
+    Route::post('/dashboard/overProduct', 'TeamController@overProduct')->name('dashboard.overProduct');
 
     // Analisis Proses
     Route::get('/analisis', 'AnalisisController@analisi')->middleware('can:isProduction_Manager')->name('analisis');

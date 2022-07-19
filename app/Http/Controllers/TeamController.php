@@ -196,4 +196,28 @@ class TeamController extends Controller
             'msg' => 'berhasil'
         ), 200);
     }
+
+    function overProduct(Request $request){
+        try {
+            $msg = '';
+            $sesi = $request->get('sesi');
+            $team = Auth::user()->teams_idteam;
+            $result = DB::table('history_produksi')
+                        ->join('produk','history_produksi.produk_idproduk', '=','produk.idproduk')
+                        ->where('history_produksi.sesi', $sesi)
+                        ->where('history_produksi.teams_idteam', $team)->get();
+            if(count($result)==0){
+                $msg = 'Tidak ada over production dalam sesi ini';
+            }
+            return response()->json(array(
+                'result' => $result,
+                'msg'  => $msg
+            ), 200);
+        } catch (\PDOException $e) {
+            return response()->json(array(
+                'msg' => 'maaf ada kesalahan koneksi dengan server  ' . $e,
+                'code' => '401'
+            ), 200);
+        }
+    }
 }
