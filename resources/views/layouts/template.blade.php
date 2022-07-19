@@ -63,6 +63,9 @@
             background-color: #ea435e;
             border-radius: 5px;
         }
+        .nav-link:active{
+            transform: scale(0.95);
+        }
 
         .spacing {
             margin: 15px;
@@ -89,6 +92,7 @@
             width: 150px;
             box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
         }
+        
 
         @media (max-width:800px) {
 
@@ -178,9 +182,7 @@
                     <h3 id="nomorSesi" value={{ $valueSesi }}>Sesi <span id="sesi">{{ $namaSesi }}</span>
                     </h3>
                 </div>
-                <div class="col-md-2 flex text-center align-self-end timer rounded-2"
-                    style="font-family:TT Norms Regular;">
-
+                <div class="col-md-2 flex text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
                     <h3>Timer</h3>
                     <h4 id="timer">- - : - -</h4>
                 </div>
@@ -210,28 +212,28 @@
     <!-- end modal info timer-->
 
     
-        <!-- modal info analisis-->
-        <div class="modal fade" id="modalInfoAnalisis" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Informasi</h5>
-                    </div>
-                    <div class="modal-body flex" id='info-body-analisis'>
-                        Sesi analisis telah <span id='analisis-status'></span>
-                    </div>
-                    <div class="modal-footer" id='footer-analisis'>
-                    @can('isProduction_Manager')
-                        <a href="{{ route('analisis') }}" class="btn btn-secondary mdl-close" >OK!</a>
-                    @else
-                        <button type="button" class="btn btn-secondary mdl-close" data-bs-dismiss="modal">OK!</button>
-                    @endcan
-                    </div>
+    <!-- modal info analisis-->
+    <div class="modal fade" id="modalInfoAnalisis" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Informasi</h5>
+                </div>
+                <div class="modal-body flex" id='info-body-analisis'>
+                    Sesi analisis telah <span id='analisis-status'></span>
+                </div>
+                <div class="modal-footer" id='footer-analisis'>
+                @can('isProduction_Manager')
+                    <a href="{{ route('analisis') }}" class="btn btn-secondary mdl-close" >OK!</a>
+                @else
+                    <button type="button" class="btn btn-secondary mdl-close" data-bs-dismiss="modal">OK!</button>
+                @endcan
                 </div>
             </div>
         </div>
-        <!-- end modal info analisis-->
+    </div>
+    <!-- end modal info analisis-->
     
     <script src="../../js/app.js"></script>
     <script>
