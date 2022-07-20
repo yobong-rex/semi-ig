@@ -30,8 +30,6 @@ class LoginController extends Controller
     // protected $redirectTo = RouteServiceProvider::HOME;
     public function redirectTo()
         {
-            $password = Auth::user()->password;
-            Auth::logoutOtherDevices($password);
             if (Auth::user()->role == "Admin") {
                 return redirect()->route('market');
             } else {
@@ -47,6 +45,10 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    protected function authenticated(){
+        Auth::logoutOtherDevices(request('password'));
     }
 
     public function username()
