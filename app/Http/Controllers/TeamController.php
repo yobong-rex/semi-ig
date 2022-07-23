@@ -112,7 +112,7 @@ class TeamController extends Controller
 
         $produk = DB::table('produk')->select('idproduk', 'nama')->get();
 
-        $produk_team = DB::table('history_produksi')->where('teams_idteam', $team)->get();
+        $produk_team = DB::table('history_produksi')->where('teams_idteam', $team)->where('sesi',$namaSesi)->get();
 
         $idanalisisProses = DB::table('analisis as a')
             ->join('teams_has_analisis as tha', 'a.idanalisis', '=', 'tha.analisis_idanalisis')

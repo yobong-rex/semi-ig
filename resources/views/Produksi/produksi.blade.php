@@ -69,7 +69,7 @@
     @endphp
 
     {{-- DOKUMENTASI ID --}}
-    {{-- namaTeam : nama masing-masing team 
+    {{-- namaTeam : nama masing-masing team
     timer : string timer
     dana : dana masing-masing team
     nomorSesi : nomor sesi
@@ -99,7 +99,7 @@
                         </svg>
                     </div>
                     <div class="col-md-3 label_dana">
-                        <h1>Dana :</h1> 
+                        <h1>Dana :</h1>
                     </div>
                     <div class="col-md-8 dana">
                         <h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1>
@@ -239,7 +239,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body flex" id='info-body'>
-                            
+
                         </div>
                         <div class="modal-footer">
                         </div>
@@ -266,7 +266,7 @@
                                 </div>
                             </div>
                         </div>
-                
+
                         {{-- Card Defect --}}
                         <div class="col">
                             <div class="card-body rounded text-center kartu_Home">
@@ -295,6 +295,7 @@
 
             $(document).on('click','.btn-modal', function(){
                 // alert(btn);
+                $(this).prop('disabled', true);
                 let defect = $('#defect_'+btn).attr('value');
                 let sesi = $('#sesi').attr('value');
                 let team = $('#team').attr('value');
@@ -303,6 +304,7 @@
                 let jumlah = $('#jumlahProduk_'+btn).val();
                 console.log(product_name);
                 // alert(product_name)
+
                 $.ajax({
                 type: "POST",
                 url: "{{ route('produksi.buat') }}",
@@ -318,6 +320,7 @@
                 },
                 success: function(data) {
                     $('#staticBackdrop').modal('hide');
+                    $('.btn-modal').prop('disabled', false);
                     $('#info-body').text(data.msg);
                     $('#modalInfo').modal('show');
                     $('#produk_'+btn).val("").change();
@@ -331,4 +334,3 @@
         </script>
     </body>
 @endsection
- 
