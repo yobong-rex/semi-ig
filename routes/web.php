@@ -25,11 +25,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', 'TeamController@dashboard')->name('dashboard');
     Route::post('/dashboard/overProduct', 'TeamController@overProduct')->name('dashboard.overProduct');
 
-    // Analisis Proses
-    Route::get('/analisis', 'AnalisisController@analisi')->middleware('can:isProduction_Manager')->name('analisis');
-    Route::post('/analisis/proses', 'AnalisisController@insertProses')->name('analisis.proses');
 
     Route::middleware([CheckSesi::class])->group(function () {
+        // Analisis Proses
+        Route::get('/analisis', 'AnalisisController@analisi')->middleware('can:isProduction_Manager')->name('analisis');
+        Route::post('/analisis/proses', 'AnalisisController@insertProses')->name('analisis.proses');
         // Mesin Kapasitas
         Route::get('/kapasitas', 'KapasitasController@kapasitas')->middleware('can:isProduction_Manager')->name('kapasitas');
         Route::post('/kapasitas/upgrade', 'KapasitasController@kapasitasUpgrade')->name('upgrade.kapasitas');
