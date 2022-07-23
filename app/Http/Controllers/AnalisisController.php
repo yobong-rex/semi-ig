@@ -19,6 +19,10 @@ class AnalisisController extends Controller
         $valueSesi = $getSesi[0]->sesi;
         $namaSesi = $getSesi[0]->nama;
 
+        if($namaSesi == 'Cooldown'){
+            return redirect('/');
+        }
+
         if ($getSesi[0]->analisis == true) {
             $team = Auth::user()->teams_idteam;
             $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
