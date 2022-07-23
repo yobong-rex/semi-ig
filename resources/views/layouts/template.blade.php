@@ -63,7 +63,8 @@
             background-color: #ea435e;
             border-radius: 5px;
         }
-        .nav-link:active{
+
+        .nav-link:active {
             transform: scale(0.95);
         }
 
@@ -92,7 +93,7 @@
             width: 150px;
             box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
         }
-        
+
 
         @media (max-width:800px) {
 
@@ -115,6 +116,7 @@
 </head>
 
 <!-- <body oncontextmenu="return false"> -->
+
 <body>
     {{-- NavBar --}}
     <nav class="navbar navbar-expand-lg" style="background-color: #ffff; box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);">
@@ -183,7 +185,8 @@
                     <h3 id="nomorSesi" value={{ $valueSesi }}>Sesi <span id="sesi">{{ $namaSesi }}</span>
                     </h3>
                 </div>
-                <div class="col-md-2 flex text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
+                <div class="col-md-2 flex text-center align-self-end timer rounded-2"
+                    style="font-family:TT Norms Regular;">
                     <h3>Timer</h3>
                     <h4 id="timer">- - : - -</h4>
                 </div>
@@ -205,14 +208,18 @@
                     Sesi telah berganti!!
                 </div>
                 <div class="modal-footer">
-                    <a href="{{ route('dashboard') }}" class="btn btn-secondary mdl-close">OK!</a>
+                    @cannot('isAdmin')
+                        <a href="{{ route('dashboard') }}" class="btn btn-secondary mdl-close">OK!</a>
+                    @else
+                        <button type="button" class="btn btn-secondary mdl-close" data-bs-dismiss="modal">OK!</button>
+                    @endcannot
                 </div>
             </div>
         </div>
     </div>
     <!-- end modal info timer-->
 
-    
+
     <!-- modal info analisis-->
     <div class="modal fade" id="modalInfoAnalisis" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -225,17 +232,17 @@
                     Sesi analisis telah <span id='analisis-status'></span>
                 </div>
                 <div class="modal-footer" id='footer-analisis'>
-                @can('isProduction_Manager')
-                    <a href="{{ route('analisis') }}" class="btn btn-secondary mdl-close" >OK!</a>
-                @else
-                    <button type="button" class="btn btn-secondary mdl-close" data-bs-dismiss="modal">OK!</button>
-                @endcan
+                    @can('isProduction_Manager')
+                        <a href="{{ route('analisis') }}" class="btn btn-secondary mdl-close">OK!</a>
+                    @else
+                        <button type="button" class="btn btn-secondary mdl-close" data-bs-dismiss="modal">OK!</button>
+                    @endcan
                 </div>
             </div>
         </div>
     </div>
     <!-- end modal info analisis-->
-    
+
     <script src="../../js/app.js"></script>
     <script>
         let x = null;

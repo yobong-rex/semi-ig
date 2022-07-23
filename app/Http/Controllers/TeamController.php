@@ -89,7 +89,7 @@ class TeamController extends Controller
     function dashboard()
     {
         $team = Auth::user()->teams_idteam;
-        if($team == null){
+        if ($team == null) {
             return redirect()->route('market');
         }
         $user = DB::table('teams')->select('nama', 'dana', 'idteam', 'inventory', 'demand', 'customer_value', 'hibah')->where('idteam', $team)->get();
@@ -131,7 +131,22 @@ class TeamController extends Controller
             $analisisProses[] = array($arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
         }
 
-        return view('Dashboard.dashboard', compact('user', 'valueSesi','namaSesi', 'data', 'produk', 'bahanBaku', 'bbTeam', 'produk_team', 'analisisProses'));
+        return view('Dashboard.dashboard', compact('user', 'valueSesi', 'namaSesi', 'data', 'produk', 'bahanBaku', 'bbTeam', 'produk_team', 'analisisProses'));
+    }
+
+    function masukMakeTeam()
+    {
+        $user = DB::table('users')->select(DB::raw('name as nama'))->where('id', 26)->get();
+
+        $getSesi = DB::table('sesi as s')
+            ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
+            ->select('s.sesi', 'ws.nama')
+            ->get();
+
+        $valueSesi = $getSesi[0]->sesi;
+        $namaSesi = $getSesi[0]->nama;
+
+        return view('maketeam', compact('user', 'namaSesi', 'valueSesi'));
     }
 
     function makeTeam(Request $request)
@@ -167,13 +182,14 @@ class TeamController extends Controller
 
         $idteam = DB::getPdo()->lastInsertId();
         $idkomponen = 1;
+
         for ($jenisMesin = 1; $jenisMesin <= 7; $jenisMesin++) {
             DB::table('mesin_has_teams')
                 ->insert([
                     'mesin_idmesin' => $jenisMesin,
                     'teams_idteam' => $idteam,
                     'level' => 1,
-                    'cycleTime' => $mesin[$jenisMesin-1]->cycle
+                    'cycleTime' => $mesin[$jenisMesin - 1]->cycle
                 ]);
             DB::table('kapasitas_has_teams')
                 ->insert([
@@ -197,16 +213,17 @@ class TeamController extends Controller
         ), 200);
     }
 
-    function overProduct(Request $request){
+    function overProduct(Request $request)
+    {
         try {
             $msg = '';
             $sesi = $request->get('sesi');
             $team = Auth::user()->teams_idteam;
             $result = DB::table('history_produksi')
-                        ->join('produk','history_produksi.produk_idproduk', '=','produk.idproduk')
-                        ->where('history_produksi.sesi', $sesi)
-                        ->where('history_produksi.teams_idteam', $team)->get();
-            if(count($result)==0){
+                ->join('produk', 'history_produksi.produk_idproduk', '=', 'produk.idproduk')
+                ->where('history_produksi.sesi', $sesi)
+                ->where('history_produksi.teams_idteam', $team)->get();
+            if (count($result) == 0) {
                 $msg = 'Tidak ada over production dalam sesi ini';
             }
             return response()->json(array(

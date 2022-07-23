@@ -94,6 +94,7 @@ class KomponenController extends Controller
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
             ->select('s.sesi', 'ws.nama')
             ->get();
+            
         $valueSesi = $getSesi[0]->sesi;
         $namaSesi = $getSesi[0]->nama;
 

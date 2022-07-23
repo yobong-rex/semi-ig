@@ -2,7 +2,7 @@
 
 @section('title', 'Test Make Team')
 
-@section('content')
+@section('admin')
 
     <body>
         <input id='namaTeam' type="text">
