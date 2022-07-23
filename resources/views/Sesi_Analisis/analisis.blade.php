@@ -91,47 +91,49 @@
         <div class="row spacing"></div>
         {{-- tabel analisis --}}
         <form action="">
-            <table class="table table-bordered" style="vertical-align: middle;">
-                <thead class="thead">
-                    <tr>
-                        <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center">Nomor</th>
-                        <th scope="col" colspan="9" style="text-align:center;">Urutan Produksi Produk</th>
-                        <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;width:80px;">
-                            Konfirmasi</th>
-                    </tr>
-                    <tr>
-                        
-                        @for ($i = 1; $i <= 9; $i++)
-                            <th class="penomoran" scope="col">{{ $i }}</th>
-                        @endfor
-                    </tr>
-                </thead>
-                <tbody>
-                    {{-- id proses_(prosesId) --}}
-                    @for ($i = 1; $i <= 3; $i++)
-                        <tr id="tr_{{ $i }}">
-                            <th class="nomor" scope="row">Proses Produksi {{ $i }}</th>
-                            @for ($j = 1; $j <= 9; $j++)
-                                <td>
-                                    <select name="proses" id="proses_{{ $i }}_{{ $j }}">
-                                        <option value="">-Select-</option>
-                                        @foreach ($mesin as $m)
-                                            <option value='{{ $m->nama }}' kapasitas='{{ $m->kapasitas }}'
-                                                time='{{ $m->cycle }}'>{{ $m->nama }}</option>
-                                        @endforeach
-                                        <option value="Idle" kapasitas="" time="6">Idle</option>
-                                        <option value="Delay" kapasitas="" time="7">Delay</option>
-                                    </select>
-                                </td>
-                            @endfor
-                            <td style="vertical-align: middle;text-align: center"><button type="button"
-                                    id="button_{{ $i }}" class="btn btn-success"
-                                    value="{{ $i }}">Konfirmasi</button>
-                            </td>
+            <div class="table-responsive">
+                <table class="table table-bordered" style="vertical-align: middle;">
+                    <thead class="thead">
+                        <tr>
+                            <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center">Nomor</th>
+                            <th scope="col" colspan="9" style="text-align:center;">Urutan Produksi Produk</th>
+                            <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;width:80px;">
+                                Konfirmasi</th>
                         </tr>
-                    @endfor
-                </tbody>
-            </table>
+                        <tr>
+                            
+                            @for ($i = 1; $i <= 9; $i++)
+                                <th class="penomoran" scope="col">{{ $i }}</th>
+                            @endfor
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{-- id proses_(prosesId) --}}
+                        @for ($i = 1; $i <= 3; $i++)
+                            <tr id="tr_{{ $i }}">
+                                <th class="nomor" scope="row">Proses Produksi {{ $i }}</th>
+                                @for ($j = 1; $j <= 9; $j++)
+                                    <td>
+                                        <select name="proses" id="proses_{{ $i }}_{{ $j }}">
+                                            <option value="">-Select-</option>
+                                            @foreach ($mesin as $m)
+                                                <option value='{{ $m->nama }}' kapasitas='{{ $m->kapasitas }}'
+                                                    time='{{ $m->cycle }}'>{{ $m->nama }}</option>
+                                            @endforeach
+                                            <option value="Idle" kapasitas="" time="6">Idle</option>
+                                            <option value="Delay" kapasitas="" time="7">Delay</option>
+                                        </select>
+                                    </td>
+                                @endfor
+                                <td style="vertical-align: middle;text-align: center"><button type="button"
+                                        id="button_{{ $i }}" class="btn btn-success"
+                                        value="{{ $i }}">Konfirmasi</button>
+                                </td>
+                            </tr>
+                        @endfor
+                    </tbody>
+                </table>
+            </div>
         </form>
 
 
