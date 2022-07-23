@@ -10,7 +10,8 @@
         <h3>Detail : <span id="detailSesi">{{ $detail }}</span></h3>
         <h3>Status : <span id="status"></span></h3>
         <button type="button" class="btn btn-success" id="button_start">Start</button>
-        <button type="button" class="btn btn-success" id="button_pause">Pause</button>
+        <button type="button" class="btn btn-success" id="button_pause" data-bs-toggle="modal"
+        data-bs-target="#pause">Pause</button>
         <button type="button" class="btn btn-danger" id="button_stop" data-bs-toggle="modal"
             data-bs-target="#stop">Stop</button><br><br>
         <button type="button" class="btn btn-success" id="button_back" data-bs-toggle="modal" data-bs-target="#back">Back
@@ -19,13 +20,36 @@
             data-bs-target="#ganti">Ganti Sesi</button>
 
         {{-- Modal --}}
-        {{-- Konfirmasi Stop --}}
-        <div class="modal fade" id="stop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="KonfirmasiLabel" aria-hidden="true">
+        {{-- Konfirmasi Pause --}}
+        <div class="modal fade" id="pause" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="pauseLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="KonfirmasiLabel">Stop Game</h5>
+                        <h5 class="modal-title" id="pauseLabel">Pause Game</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body flex">
+                        Apakah anda yakin ingin Pause Game?
+                    </div>
+                    <div class="modal-footer">
+                        {{-- button cancel --}}
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        {{-- button konfirmasi pause --}}
+                        <button type="button" class="btn btn-success" id="konfirmasi_pause"
+                            data-bs-dismiss="modal">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Konfirmasi Stop --}}
+        <div class="modal fade" id="stop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="stopLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="stopLabel">Stop Game</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body flex">
@@ -44,11 +68,11 @@
 
         {{-- Konfirmasi Ganti Sesi --}}
         <div class="modal fade" id="ganti" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="KonfirmasiLabel" aria-hidden="true">
+            aria-labelledby="gantiLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="KonfirmasiLabel">Ganti Sesi</h5>
+                        <h5 class="modal-title" id="gantiLabel">Ganti Sesi</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body flex">
@@ -67,11 +91,11 @@
 
         {{-- Konfirmasi Back Sesi --}}
         <div class="modal fade" id="back" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="KonfirmasiLabel" aria-hidden="true">
+            aria-labelledby="backLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="KonfirmasiLabel">Back Sesi</h5>
+                        <h5 class="modal-title" id="backLabel">Back Sesi</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body flex">
@@ -132,7 +156,7 @@
         });
 
         // buat pause sesi
-        $('#button_pause').click(function() {
+        $('#konfirmasi_pause').click(function() {
             $.ajax({
                 type: 'POST',
                 url: "{{ route('pause.sesi') }}",
