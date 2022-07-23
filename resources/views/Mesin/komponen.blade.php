@@ -30,10 +30,6 @@
             vertical-align: middle;
         }
 
-        .namaKomponen {
-            width: 140px;
-            vertical-align: middle;
-        }
 
         .class_kapasitasMesin {
             text-align: center;
@@ -59,7 +55,7 @@
         }
         .kartu_tabel{
             background-color: #ffffff;
-            width: fit-content;
+            width: 100%;
         }
         @media (max-width:800px){
             .dana, .label_dana{
@@ -101,12 +97,13 @@
 
             <div class="card-body kartu_tabel">
                 {{-- Table Komponen --}}
-                <table class="table" style="width:fit-content;">
+                <table class="table" style="width:100%;font-size:18px;">
                     {{-- Heading --}}
                     <thead class="thead">
                         <th>
                             <h4>Mesin : </h4>
                         </th>
+                        <th>Gambar</th>
                         {{-- ComboBox Mesin --}}
                         <th style="vertical-align:middle;">
                             <select id='mesin' name="mesin">
@@ -125,18 +122,20 @@
                     {{-- Nama-nama Komponen --}}
                     <tbody>
                         <tr style="background-color:#faf0dc;">
-                            <td>Level Mesin : </td>
+                            <td colspan="2">Level Mesin : </td>
                             <td class="noLevel" id="levelMesin_">{{ $levelMesin[0]->level }}</td>
                         </tr>
                         @for ($x = 0; $x < count($data); $x++)
                             <tr>
-                                <td id="nama_komponen_{{ $x }}" class="namaKomponen" style="width:150px;">
+                                <td style="width:150px;"><img src="{{ asset('assets') }}/img/IGKomponen_Injector.png"></td>
+                                <td id="nama_komponen_{{ $x }}" class="namaKomponen" style="width:150px;vertical-align:middle;">
                                     {{ $data[$x]->nama_komponen }} :
                                 </td>
+                                
                                 <td id="komponen_{{ $x }}" class='noLevel'>
                                     {{ $data[$x]->level }}
                                 </td>
-                                <td>
+                                <td style="text-align:center;vertical-align:middle;">
                                     {{-- button Upgrade --}}
                                     <button type="button" id="upgrade_{{ $x }}" class="upgrade"
                                         value='{{ $data[$x]->nama_komponen }}' data-bs-toggle="modal"
