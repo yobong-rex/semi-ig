@@ -46,7 +46,7 @@
     @endphp
 
     {{-- DOKUMENTASI ID --}}
-    {{-- namaTeam : nama masing-masing team 
+    {{-- namaTeam : nama masing-masing team
     timer : string timer
     nomorSesi : nomor sesi
     dana : dana masing-masing team
@@ -83,7 +83,7 @@
 
         <div class="row-12">
             <!-- {{-- Card Dana --}}
-                                                    
+
                         <div class="card-header rounded" style="background-color:#faf0dc;box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
                             <div class="row align-items-center">
                                 <div class="col-1 text-center">
@@ -209,7 +209,7 @@
                 let count = 0;
                 let totalItem = 0;
 
-                window.Echo.channel('stockChannel').listen('.market', (e) => { 
+                window.Echo.channel('stockChannel').listen('.market', (e) => {
                     $.each(e.market, function(key, value) {
                         $('#stok_'+value.idItem).text(value.stock);
                     });
@@ -257,20 +257,20 @@
                     }
                     $('#total').text(total);
                 }
-                let temp = count - 100;
-                console.log(temp);
-                total += parseInt($('#biaya_pengiriman').text());
-                if (temp >= 0) {
-                    let lebih = parseInt(temp / 10);
-                    lebih += parseInt(1);
-                    let kirim = lebih * 50
-                    let pengiriman = 200 + kirim;
-                    $('#biaya_pengiriman').text(pengiriman);
-                    total += kirim;
-                } else {
-                    $('#biaya_pengiriman').text('200');
-                }
-                $('#total').text(total);
+                // let temp = count - 100;
+                // console.log(temp);
+                // total += parseInt($('#biaya_pengiriman').text());
+                // if (temp >= 0) {
+                //     let lebih = parseInt(temp / 10);
+                //     lebih += parseInt(1);
+                //     let kirim = lebih * 50
+                //     let pengiriman = 200 + kirim;
+                //     $('#biaya_pengiriman').text(pengiriman);
+                //     total += kirim;
+                // } else {
+                //     $('#biaya_pengiriman').text('200');
+                // }
+                // $('#total').text(total);
             }
 
             $(document).on('click', '#button_PopupModal', function() {
