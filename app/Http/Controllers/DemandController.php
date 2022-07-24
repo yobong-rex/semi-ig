@@ -28,7 +28,7 @@ class DemandController extends Controller
 
         $produk = DB::table('produk')->select('idproduk', 'nama')->get();
         return view('demand', compact('data', 'produk', 'valueSesi', 'namaSesi', 'team', 'user'));
-        // return view('demand',compact('produk','user','sesi1'));  
+        // return view('demand',compact('produk','user','sesi1'));
 
     }
 
@@ -127,8 +127,8 @@ class DemandController extends Controller
                 $danaBaru = $teamDana[0]->dana + $totalJual;
                 $demandBaru = $teamDana[0]->demand + $totalDemand;
                 $pendapatanBaru = $teamDana[0]->total_pendapatan + $totalJual;
-                $customerValue = $pendapatanBaru * $demandBaru;
-                $hibah = $customerValue / 100;
+                $customerValue = $pendapatanBaru;
+                $hibah = $customerValue;
                 DB::table('teams')->where('idteam', $team)->update(['dana' => $danaBaru, 'demand' => $demandBaru, 'total_pendapatan' => $pendapatanBaru, 'customer_value' => $customerValue, 'hibah' => $hibah]);
                 return response()->json(array(
                     'msg' => 'selamat team anda berhasil memenuhi demand',

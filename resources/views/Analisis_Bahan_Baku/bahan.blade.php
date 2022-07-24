@@ -102,7 +102,7 @@
                     @for ($i = 1; $i <= 3; $i++)
                         <td>
                             @php
-                                $arrResource = ['Steel', 'Iron', 'Aluminium Alloy', 'ABS Plastic', 'PP Plastic', 'PC Plastic', 'SBR Rubber', 'PU Rubber', 'NBR Rubber', 'Silicone', 'Acrylic', 'Cable', 'EVA Glue', 'PVA Glue'];
+                                $arrResource = ['Steel', 'Iron', 'Aluminium Alloy', 'ABS Plastic', 'PP Plastic', 'PC Plastic', 'SBR Rubber', 'PU Rubber', 'NBR Rubber', 'Silicon', 'Acrylic', 'Cable', 'EVA Glue', 'PVA Glue'];
                             @endphp
                             <select name="resource{{ $i }}" id="resource{{ $i }}">
                                 @foreach ($arrResource as $key => $resource)
@@ -145,6 +145,10 @@
     
     <script>
         $('#analisisBahan').click(function() {
+            // alert($('#produk').val());
+            // alert($('#resource1').val());
+            // alert($('#resource2').val());
+            // alert($('#resource3').val());
             $.ajax({
                 type: 'POST',
                 url: "{{ route('analisis.bahan') }}",
