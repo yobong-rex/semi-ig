@@ -190,6 +190,7 @@
             }
 
         });
+        
         $('.btn').click(function() {
             var arrProses = [];
             let arrKapasitas = [];

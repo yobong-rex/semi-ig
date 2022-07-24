@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Kapasitas;
+use App\Events\Mesin;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use DB;
 use Auth;
 
@@ -130,6 +132,7 @@ class KapasitasController extends Controller
         $this->authorize('isProduction_Manager');
         $team = Auth::user()->teams_idteam;
         $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
+
         $namaMesin = $request->get('namaMesin');
         $idmesin = DB::table('mesin')->where('nama', 'like', '%' . $namaMesin . '%')->get();
 
@@ -176,12 +179,13 @@ class KapasitasController extends Controller
             ->where('kht.teams_idteam', $user[0]->idteam)
             ->where('m.idmesin', $idmesin[0]->idmesin)
             ->get();
-        // dd($data);
+
+        event(new Mesin('kapasitas', 'cycle'));
+
         return response()->json(array(
             'data' => $data,
             'user' => $updatedUser,
             'msg' => 'Upgrade Successful'
         ), 200);
-        // return view('Mesin.kapasitas', compact('data'));
     }
 }

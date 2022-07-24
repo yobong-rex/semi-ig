@@ -104,8 +104,6 @@ class AnalisisController extends Controller
         $team = Auth::user()->teams_idteam;
         $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
 
-
-
         DB::table('analisis')->insert([
             'produksi' => $produksi,
             'length' => $length

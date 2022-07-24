@@ -4,7 +4,6 @@
 
 @section('content')
     <style>
-        
         .dana {
             text-align: right;
         }
@@ -39,36 +38,48 @@
             background-color: #ffffff;
             box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
         }
-        .col-md-4{
-            margin-bottom:10px;
+
+        .col-md-4 {
+            margin-bottom: 10px;
         }
-        .button_OverProduct{
+
+        .button_OverProduct {
             border: 0px;
             position: fixed;
             bottom: 10%;
             right: 5%;
             background-color: rgba(0, 0, 0, 0);
         }
-        .gambar_OP{
+
+        .gambar_OP {
             width: 3.5em;
             height: 3.5em;
         }
-        @media (max-width:800px){
-            .dana, .label_dana{
+
+        @media (max-width:800px) {
+
+            .dana,
+            .label_dana {
                 text-align: center;
             }
-            .button_OverProduct,.gambar_OP{
+
+            .button_OverProduct,
+            .gambar_OP {
                 width: 2em;
                 bottom: 10%;
                 right: 5%;
             }
         }
 
-        @media (max-width:1000px){
-            .dana, .label_dana{
+        @media (max-width:1000px) {
+
+            .dana,
+            .label_dana {
                 font-size: 25px;
             }
-            .button_OverProduct,.gambar_OP{
+
+            .button_OverProduct,
+            .gambar_OP {
                 width: 3em;
                 bottom: 10%;
                 right: 5%;
@@ -104,7 +115,7 @@
                         </svg>
                     </div>
                     <div class="col-md-3 label_dana">
-                        <h1>Dana :</h1> 
+                        <h1>Dana :</h1>
                     </div>
                     <div class="col-md-8 dana">
                         <h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1>
@@ -186,8 +197,8 @@
                 <div class="col-md-4">
                     <div class="card-body rounded text-center kartu_Home">
                         <div class="col">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" 
-                                fill="currentColor" class="bi bi-stopwatch" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
+                                class="bi bi-stopwatch" viewBox="0 0 16 16">
                                 <path d="M8.5 5.6a.5.5 0 1 0-1 0v2.9h-3a.5.5 0 0 0 0 1H8a.5.5 0 0 0 .5-.5V5.6z" />
                                 <path
                                     d="M6.5 1A.5.5 0 0 1 7 .5h2a.5.5 0 0 1 0 1v.57c1.36.196 2.594.78 3.584 1.64a.715.715 0 0 1 .012-.013l.354-.354-.354-.353a.5.5 0 0 1 .707-.708l1.414 1.415a.5.5 0 1 1-.707.707l-.353-.354-.354.354a.512.512 0 0 1-.013.012A7 7 0 1 1 7 2.071V1.5a.5.5 0 0 1-.5-.5zM8 3a6 6 0 1 0 .001 12A6 6 0 0 0 8 3z" />
@@ -327,28 +338,31 @@
         </div>
 
         {{-- <div style="background:#000000 ;border:1px solid #000000;"> --}}
-            <button class="button_OverProduct" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                <svg xmlns="http://www.w3.org/2000/svg" class="gambar_OP" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
-                  </svg>
-            </button>
+        <button class="button_OverProduct" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <svg xmlns="http://www.w3.org/2000/svg" class="gambar_OP" fill="currentColor"
+                class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                <path
+                    d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z" />
+            </svg>
+        </button>
         {{-- </div> --}}
 
-        <div class="modal fade" id="staticBackdrop"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal fade" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="staticBackdropLabel">Over Production</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    
+
                     <!--Body buat di edit-->
                     <div class="modal-body flex">
                         <select id="selected_sesi">
                             <option value="">Pilih Sesi</option>
-                            @for($i=1;$i<$namaSesi;$i++)
-                                <option value="{{$i}}">Sesi {{$i}}</option>
+                            @for ($i = 1; $i < $namaSesi; $i++)
+                                <option value="{{ $i }}">Sesi {{ $i }}</option>
                             @endfor
                         </select>
                         <table class="table table-bordered" style="vertical-align: middle;">
@@ -373,41 +387,44 @@
         </div>
 
         <script>
-           $('#selected_sesi').on('change', function(){
+            window.Echo.channel('mesinPusher').listen('.mesin', (e) => {
+                console.log(e);
+            });
+
+            $('#selected_sesi').on('change', function() {
                 let sesi = $(this).val();
                 $.ajax({
-                        type: "POST",
-                        url: "{{ route('dashboard.overProduct') }}",
-                        data: {
-                            '_token': '<?php echo csrf_token(); ?>',
-                            'sesi': sesi,
-                            
-                        },
-                        success: function(data) {
-                           $('#body-over').empty();
-                           let nomer = 1;
-                           if(data.msg == ''){
-                                $.each(data.result, function(key,value){
-                                    $('#body-over').append(`
-                                    <tr>
-                                        <td class="nomor_OP" style="text-align: center;">`+nomer+`</td>
-                                        <td id="">`+value.nama+`</td>
-                                        <td id="">`+value.hasil+`</td>
-                                    </tr>`);
-                                    nomer +=1;
-                                });
-                           }
-                           else{
+                    type: "POST",
+                    url: "{{ route('dashboard.overProduct') }}",
+                    data: {
+                        '_token': '<?php echo csrf_token(); ?>',
+                        'sesi': sesi,
+
+                    },
+                    success: function(data) {
+                        $('#body-over').empty();
+                        let nomer = 1;
+                        if (data.msg == '') {
+                            $.each(data.result, function(key, value) {
                                 $('#body-over').append(`
                                     <tr>
+                                        <td class="nomor_OP" style="text-align: center;">` + nomer + `</td>
+                                        <td id="">` + value.nama + `</td>
+                                        <td id="">` + value.hasil + `</td>
+                                    </tr>`);
+                                nomer += 1;
+                            });
+                        } else {
+                            $('#body-over').append(`
+                                    <tr>
                                         <td class="nomor_OP" style="text-align: center;"></td>
-                                        <td id="">`+data.msg+`</td>
+                                        <td id="">` + data.msg + `</td>
                                         <td id=""></td>
                                     </tr>`);
-                           }
                         }
-                    });
-           });
+                    }
+                });
+            });
         </script>
 
     </body>

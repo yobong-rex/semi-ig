@@ -163,8 +163,6 @@ class SesiController extends Controller
                     ]);
             }
         }
-
-     
       
         foreach ($team as $t){
             $overProd = DB::table('history_produksi')->where('teams_idteam',$t->idteam)->where('sesi', $sekarang)->where('hasil','>',0)->get();
