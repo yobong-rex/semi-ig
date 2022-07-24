@@ -42,19 +42,23 @@ class ProduksiController extends Controller
         $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
         $getSesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
         $sesi1 = $getSesi[0]->nama;
-        // $sesi1 = $sesi[0]->sesi;
+
         $getSesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
             ->select('s.sesi', 'ws.nama')
             ->get();
+
         $valueSesi = $getSesi[0]->sesi;
         $namaSesi = $getSesi[0]->nama;
+
         if ($namaSesi == 2) {
             return redirect()->route('dashboard');
         }
+
         $proses1 = '';
         $proses2 = '';
         $proses3 = '';
+
         if ($namaSesi == 1) {
             $proses1 = 'Sorting;Cutting;Bending;Assembling;Delay;Cutting;Assembling;Sorting;Packing';
             $proses2 = 'Sorting;Cutting;Assembling;Drilling;Delay;Cutting;Assembling;Idle;Packing';
@@ -66,6 +70,7 @@ class ProduksiController extends Controller
                 ->where('analisis.produksi', 1)
                 ->orderBy('teams_has_analisis.analisis_idanalisis', 'desc')
                 ->limit(1)->get();
+
             $proses2 = DB::table('teams_has_analisis')
                 ->join('analisis', 'teams_has_analisis.analisis_idanalisis', '=', 'analisis.idanalisis')
                 ->select('teams_has_analisis.proses')
@@ -73,6 +78,7 @@ class ProduksiController extends Controller
                 ->where('analisis.produksi', 2)
                 ->orderBy('teams_has_analisis.analisis_idanalisis', 'desc')
                 ->limit(1)->get();
+
             $proses3 = DB::table('teams_has_analisis')
                 ->join('analisis', 'teams_has_analisis.analisis_idanalisis', '=', 'analisis.idanalisis')
                 ->select('teams_has_analisis.proses')
@@ -80,9 +86,11 @@ class ProduksiController extends Controller
                 ->where('analisis.produksi', 3)
                 ->orderBy('teams_has_analisis.analisis_idanalisis', 'desc')
                 ->limit(1)->get();
-            if(count($proses1) == 0 || count($proses2) == 0 || count($proses3) == 0){
-                return redirect()->route('analisis')->with('error','tolong isi terlebih dahulu proses produksi 1,2,dan 3');
+                
+            if (count($proses1) == 0 || count($proses2) == 0 || count($proses3) == 0) {
+                return redirect()->route('analisis')->with('error', 'tolong isi terlebih dahulu proses produksi 1,2,dan 3');
             }
+
             $proses1 = $proses1[0]->proses;
             $proses2 = $proses2[0]->proses;
             $proses3 = $proses3[0]->proses;
@@ -95,8 +103,8 @@ class ProduksiController extends Controller
         $defect1 = $this->getDefect($splitProses1, $user);
         $defect2 = $this->getDefect($splitProses2, $user);
         $defect3 = $this->getDefect($splitProses3, $user);
-        
-        return view('Produksi.produksi', compact('splitProses1', 'splitProses2', 'splitProses3', 'defect1', 'defect2', 'defect3', 'user', 'namaSesi','valueSesi'));
+
+        return view('Produksi.produksi', compact('splitProses1', 'splitProses2', 'splitProses3', 'defect1', 'defect2', 'defect3', 'user', 'namaSesi', 'valueSesi'));
     }
 
     function buat(Request $request)
@@ -111,7 +119,7 @@ class ProduksiController extends Controller
         $team = Auth::user()->teams_idteam;
         $name = $request->get('name');
 
-        if($produk == ''){
+        if ($produk == '') {
             return response()->json(array(
                 'msg' => 'maaf, tolong pilih produk yang ingin diproduksi terlebih dahulu',
                 'code' => '401'
@@ -205,7 +213,7 @@ class ProduksiController extends Controller
         }
         $hasil = floor($jmlTemp);
         $hasil_user = $hasil;
-        $histori = DB::table('history_produksi')->select('hasil')->where('teams_idteam', $team)->where('produk_idproduk', $produk)->get();
+        $histori = DB::table('history_produksi')->select('hasil')->where('teams_idteam', $team)->where('produk_idproduk', $produk)->where('sesi',$sesi)->get();
         if (count($histori) > 0) {
             $hasil += $histori[0]->hasil;
         }
@@ -214,7 +222,7 @@ class ProduksiController extends Controller
         $newDana = $teamStatus[0]->dana - 100;
         DB::table('history_produksi')
             ->updateOrInsert(
-                ['teams_idteam' => $team, 'produk_idproduk' => $produk,'sesi'=> $sesi],
+                ['teams_idteam' => $team, 'produk_idproduk' => $produk, 'sesi' => $sesi],
                 ['hasil' => $hasil]
             );
         DB::table('teams')->where('idteam', $team)->update([
@@ -222,7 +230,7 @@ class ProduksiController extends Controller
             'inventory'     => $newInv
         ]);
         return response()->json(array(
-            'msg' => 'selamat kamu berhasil melakukan produksi '.$name.' sebanyak '. $hasil_user,
+            'msg' => 'selamat kamu berhasil melakukan produksi ' . $name . ' sebanyak ' . $hasil_user,
             'code' => '401'
         ), 200);
     }

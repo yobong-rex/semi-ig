@@ -34,7 +34,7 @@ class AnalisisController extends Controller
                 ->join('mesin_has_teams as mht', 'm.idmesin', '=', 'mht.mesin_idmesin')
                 ->join('kapasitas as k', 'm.idmesin', '=', 'k.mesin_idmesin')
                 ->join('kapasitas_has_teams as kht', 'k.idkapasitas', '=', 'kht.kapasitas_idkapasitas')
-                ->select('m.idmesin', 'm.nama', 'm.cycle', 'k.kapasitas')
+                ->select('m.idmesin', 'm.nama', 'mht.cycleTime', 'k.kapasitas')
                 ->where('mht.teams_idteam', $user[0]->idteam)
                 ->where('kht.teams_idteam', $user[0]->idteam)
                 ->get();
