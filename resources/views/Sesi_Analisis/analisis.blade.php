@@ -33,14 +33,19 @@
             width: 110px;
             text-align: center;
         }
-        @media (max-width:800px){
-            .dana, .label_dana{
+
+        @media (max-width:800px) {
+
+            .dana,
+            .label_dana {
                 text-align: center;
             }
         }
 
-        @media (max-width:1000px){
-            .dana, .label_dana{
+        @media (max-width:1000px) {
+
+            .dana,
+            .label_dana {
                 font-size: 25px;
             }
         }
@@ -60,7 +65,7 @@
                 {{ session('error') }}
             </div>
         @endif
-      
+
 
 
         <div class="row spacing"></div>
@@ -80,7 +85,7 @@
                     </svg>
                 </div>
                 <div class="col-md-3 label_dana">
-                    <h1>Dana :</h1> 
+                    <h1>Dana :</h1>
                 </div>
                 <div class="col-md-8 dana">
                     <h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1>
@@ -101,7 +106,6 @@
                                 Konfirmasi</th>
                         </tr>
                         <tr>
-                            
                             @for ($i = 1; $i <= 9; $i++)
                                 <th class="penomoran" scope="col">{{ $i }}</th>
                             @endfor
@@ -118,7 +122,7 @@
                                             <option value="">-Select-</option>
                                             @foreach ($mesin as $m)
                                                 <option value='{{ $m->nama }}' kapasitas='{{ $m->kapasitas }}'
-                                                    time='{{ $m->cycle }}'>{{ $m->nama }}</option>
+                                                    time='{{ $m->cycleTime }}'>{{ $m->nama }}</option>
                                             @endforeach
                                             <option value="Idle" kapasitas="" time="6">Idle</option>
                                             <option value="Delay" kapasitas="" time="7">Delay</option>
@@ -126,7 +130,8 @@
                                     </td>
                                 @endfor
                                 <td style="vertical-align: middle;text-align: center">
-                                    <button type="button" id="button_{{ $i }}" class="btn btn-success" value="{{ $i }}">Konfirmasi</button>
+                                    <button type="button" id="button_{{ $i }}" class="btn btn-success"
+                                        value="{{ $i }}">Konfirmasi</button>
                                 </td>
                             </tr>
                         @endfor
@@ -159,31 +164,31 @@
     </body>
 
     <script>
-        function setProses($nomer,$proses){
+        function setProses($nomer, $proses) {
             let triger = 1;
             let splitProses = $proses.split(";")
-            $.each(splitProses, function(key, value){
+            $.each(splitProses, function(key, value) {
                 console.log(value);
-                $('#proses_'+$nomer+'_'+triger).val(value);
-                triger +=1;
+                $('#proses_' + $nomer + '_' + triger).val(value);
+                triger += 1;
             })
         }
 
-        $(document).ready(function(){
-            let proses1 = "<?php echo $proses1 ?>";
-            let proses2 = "<?php echo $proses2 ?>";
-            let proses3 = "<?php echo $proses3 ?>";
+        $(document).ready(function() {
+            let proses1 = "<?php echo $proses1; ?>";
+            let proses2 = "<?php echo $proses2; ?>";
+            let proses3 = "<?php echo $proses3; ?>";
 
-            if(proses1 != ''){
-                setProses(1,proses1);
+            if (proses1 != '') {
+                setProses(1, proses1);
             }
-            if(proses2 != ''){
-                setProses(2,proses2);
+            if (proses2 != '') {
+                setProses(2, proses2);
             }
-            if(proses3 != ''){
-                setProses(3,proses3);
+            if (proses3 != '') {
+                setProses(3, proses3);
             }
-            
+
         });
         $('.btn').click(function() {
             var arrProses = [];
