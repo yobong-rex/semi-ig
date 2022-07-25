@@ -146,7 +146,7 @@
                 @endforeach
                 </tbody>
             </table>
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal" >Pemuhi Demand</button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal" >Penuhi Demand</button>
             <button type="button" class="btn btn-danger" id='btn-clear' >Clear</button>
 
             <!-- Modal -->
