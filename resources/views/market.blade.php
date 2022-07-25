@@ -223,6 +223,7 @@
                     $('#subtotal_' + split_id[1]).text(subtotal);
                     total();
                 })
+
             function total() {
                 item = [];
                 let total = 0;
@@ -242,35 +243,21 @@
                         totalUnit = (parseInt($('#input_' + i).val()) * parseInt($('#isi_' + i).text()));
                         totalItem += totalUnit;
                     }
-                    let temp = count - 100;
-                    // console.log(temp);
-                    total += parseInt($('#biaya_pengiriman').text());
-                    if (temp >= 0) {
-                        let lebih = parseInt(temp / 10);
-                        lebih += parseInt(1);
-                        let kirim = lebih * 50
-                        let pengiriman = 200 + kirim;
-                        $('#biaya_pengiriman').text(pengiriman);
-                        total += kirim;
-                    } else {
-                        $('#biaya_pengiriman').text('200');
-                    }
-                    $('#total').text(total);
                 }
-                // let temp = count - 100;
-                // console.log(temp);
-                // total += parseInt($('#biaya_pengiriman').text());
-                // if (temp >= 0) {
-                //     let lebih = parseInt(temp / 10);
-                //     lebih += parseInt(1);
-                //     let kirim = lebih * 50
-                //     let pengiriman = 200 + kirim;
-                //     $('#biaya_pengiriman').text(pengiriman);
-                //     total += kirim;
-                // } else {
-                //     $('#biaya_pengiriman').text('200');
-                // }
-                // $('#total').text(total);
+                let temp = count - 100;
+                console.log(temp);
+                total += parseInt($('#biaya_pengiriman').text());
+                if (temp >= 0) {
+                    let lebih = parseInt(temp / 10);
+                    lebih += parseInt(1);
+                    let kirim = lebih * 50
+                    let pengiriman = 200 + kirim;
+                    $('#biaya_pengiriman').text(pengiriman);
+                    total += kirim;
+                } else {
+                    $('#biaya_pengiriman').text('200');
+                }
+                $('#total').text(total);
             }
 
             $(document).on('click', '#button_PopupModal', function() {
