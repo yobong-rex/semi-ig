@@ -71,14 +71,14 @@
                     </svg>
                 </div>
                 <div class="col-md-3 label_dana">
-                    <h1>Dana :</h1> 
+                    <h1>Dana :</h1>
                 </div>
                 <div class="col-md-8 dana">
                     <h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1>
                 </div>
             </div>
         </div>
-        
+
 
         <div class="row spacing"></div>
 
@@ -108,7 +108,7 @@
                     <tr>
                         <td class="nomor_demand" scope="row">{{$i++}}</td>
                         <td>{{$p->nama}}</td>
-                        <td class="inputDemand"><input type="number" class='demand' id='input_{{$p->idproduk}}'min="0" oninput="this.value = 
+                        <td class="inputDemand"><input type="number" class='demand' id='input_{{$p->idproduk}}'min="0" oninput="this.value =
                             !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                         <td id='total_{{$p->idproduk}}' class="demand-total">
                             @if (count($data) == 0)
@@ -147,6 +147,7 @@
                 </tbody>
             </table>
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal" >Pemuhi Demand</button>
+            <button type="button" class="btn btn-danger" id='btn-clear' >Clear</button>
 
             <!-- Modal -->
                 <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -169,7 +170,7 @@
                     </div>
                 </div>
             <!-- end modal -->
-            
+
             <!-- modal info -->
                 <div class="modal fade" id="modalInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -179,7 +180,7 @@
                                 <button type="button" class="btn-close mdl-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body flex" id='info-body'>
-                                
+
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary mdl-close" data-bs-dismiss="modal">Close</button>
@@ -188,8 +189,8 @@
                     </div>
                 </div>
             <!-- end modal info -->
-            
-            
+
+
 
 
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -254,6 +255,12 @@
 
                 $(document).on('click','.mdl-close',function(){
                    location.reload();
+                })
+
+                $(document).on('click','#btn-clear', function(){
+                    $('.demand').val('0');
+                    $('.demand').prop('disabled', false);
+                    $('.demand-total').text('0');
                 })
             </script>
         </div>
