@@ -98,6 +98,7 @@ class AnalisisController extends Controller
 
         //mencari cycletime
         $time = array_sum($cycle);
+        
         //9000/cycle time
         $cycleTime = intval(9000 / $time);
 
@@ -120,7 +121,7 @@ class AnalisisController extends Controller
         ]);
 
         $dana = $user[0]->dana;
-        $harga = 700;
+        $harga = 150;
         if ($dana >= $harga) {
             DB::table('teams')
                 ->where('idteam', $user[0]->idteam)

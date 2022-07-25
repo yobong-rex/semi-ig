@@ -259,13 +259,11 @@ class KomponenController extends Controller
             ->where('m.idmesin', $idmesin[0]->idmesin)
             ->get();
 
-        // dd($data);
         return response()->json(array(
             'data' => $data,
             'user' => $updatedUser,
             'levelMesin' => $levelMesin,
             'msg' => 'Upgrade Successful'
         ), 200);
-        // return view('Mesin.komponen', compact('data', 'user', 'levelMesin'));
     }
 }
