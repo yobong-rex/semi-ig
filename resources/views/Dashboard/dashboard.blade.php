@@ -27,7 +27,7 @@
         .nomor_inventory {
             width: 50px;
             text-align: center;
-            
+
         }
 
         .nomor_demand {
@@ -70,7 +70,8 @@
                 bottom: 10%;
                 right: 5%;
             }
-            .OP_text{
+
+            .OP_text {
                 font-size: 12px;
             }
         }
@@ -88,7 +89,8 @@
                 bottom: 10%;
                 right: 5%;
             }
-            .OP_text{
+
+            .OP_text {
                 font-size: 12px;
             }
         }
@@ -219,7 +221,7 @@
                                     @if (isset($analisisProses[$i - 1][0]))
                                         {{ $analisisProses[$i - 1][0] }}
                                     @else
-                                        0
+                                        50
                                     @endif
                                 </span>
                             </h4>
@@ -228,7 +230,11 @@
                             <h4>Cycle Time : <span id="cycleTime_{{ $i }}">
                                     @if (isset($analisisProses[$i - 1][1]))
                                         {{ $analisisProses[$i - 1][1] }}
-                                    @else
+                                    @elseif ($i == 1)
+                                        0
+                                    @elseif ($i == 2)
+                                        0
+                                    @elseif ($i == 3)
                                         0
                                     @endif
                                 </span>
@@ -352,7 +358,7 @@
                 <path
                     d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z" />
             </svg>
-        </br>
+            <br>
             <span id="OP_text" style="text-align:center;">Over Production</span>
         </button>
         {{-- </div> --}}
@@ -395,10 +401,46 @@
             </div>
         </div>
 
+        <script src="../../js/app.js"></script>
         <script>
             window.Echo.channel('mesinPusher').listen('.mesin', (e) => {
-                console.log(e);
-            });
+                console.log(e.kapasitas1);
+                console.log(e.cycle1);
+                console.log(e.kapasitas2);
+                console.log(e.cycle2);
+                console.log(e.kapasitas3);
+                console.log(e.cycle3);
+
+                //  kalau kapasitas 1 ada isinya
+                if (e.kapasitas1 != '') {
+                    $('#maxProduct_1').text(e.kapasitas1);
+                }
+
+                //  kalau kapasitas 2 ada isinya
+                if (e.kapasitas2 != '') {
+                    $('#maxProduct_2').text(e.kapasitas2);
+                }
+
+                //  kalau kapasitas 3 ada isinya
+                if (e.kapasitas3 != '') {
+                    $('#maxProduct_3').text(e.kapasitas3);
+                }
+
+                //  kalau cycle 1 ada isinya
+                if (e.cycle1 != '') {
+                    $('#cycleTime_1').text(e.cycle1);
+                }
+
+                //  kalau cycle 2 ada isinya
+                if (e.cycle2 != '') {
+                    $('#cycleTime_2').text(e.cycle2);
+                }
+
+                //  kalau cycle 3 ada isinya
+                if (e.cycle3 != '') {
+                    $('#cycleTime_3').text(e.cycle3);
+                }
+            })
 
             $('#selected_sesi').on('change', function() {
                 let sesi = $(this).val();
@@ -432,8 +474,8 @@
                                     </tr>`);
                         }
                     }
-                });
-            });
+                })
+            })
         </script>
 
     </body>

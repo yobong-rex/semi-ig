@@ -14,13 +14,25 @@ class Mesin implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $kapasitas;
-    public $cycle;
+    public $kapasitas1;
+    public $cycle1;
 
-    public function __construct($kapasitas, $cycle)
+    public $kapasitas2;
+    public $cycle2;
+
+    public $kapasitas3;
+    public $cycle3;
+
+    public function __construct($kapasitas1, $cycle1, $kapasitas2, $cycle2, $kapasitas3, $cycle3)
     {
-        $this->kapasitas = $kapasitas;
-        $this->cycle = $cycle;
+        $this->kapasitas1 = $kapasitas1;
+        $this->cycle1 = $cycle1;
+
+        $this->kapasitas2 = $kapasitas2;
+        $this->cycle2 = $cycle2;
+
+        $this->kapasitas3 = $kapasitas3;
+        $this->cycle3 = $cycle3;
     }
 
     public function broadcastOn()
