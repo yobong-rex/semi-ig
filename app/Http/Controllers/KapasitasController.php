@@ -265,7 +265,7 @@ class KapasitasController extends Controller
         $minKpasitas2 = '';
         $minKpasitas3 = '';
 
-        if (count($arrKapasitas1)) {
+        if (count($arrKapasitas1) != 0) {
             $minKpasitas1 = min($arrKapasitas1);
 
             DB::table('teams_has_analisis')
@@ -274,7 +274,7 @@ class KapasitasController extends Controller
                 ->update(['maxProduct' => $minKpasitas1]);
         }
 
-        if (count($arrKapasitas2)) {
+        if (count($arrKapasitas2) != 0) {
             $minKpasitas2 = min($arrKapasitas2);
 
             DB::table('teams_has_analisis')
@@ -283,7 +283,7 @@ class KapasitasController extends Controller
                 ->update(['maxProduct' => $minKpasitas2]);
         }
 
-        if (count($arrKapasitas3)) {
+        if (count($arrKapasitas3) != 0) {
             $minKpasitas3 = min($arrKapasitas3);
 
             DB::table('teams_has_analisis')

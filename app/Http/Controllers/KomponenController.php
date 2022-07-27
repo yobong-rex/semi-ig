@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Komponen;
+use App\Events\Mesin;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use DB;
 use Auth;
 
@@ -94,7 +96,7 @@ class KomponenController extends Controller
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
             ->select('s.sesi', 'ws.nama')
             ->get();
-            
+
         $valueSesi = $getSesi[0]->sesi;
         $namaSesi = $getSesi[0]->nama;
 
@@ -258,6 +260,135 @@ class KomponenController extends Controller
             ->where('t.idteam', $user[0]->idteam)
             ->where('m.idmesin', $idmesin[0]->idmesin)
             ->get();
+
+        // start (ambil id analisis produksi terakhir)
+        $idProduksi1 = DB::table('teams_has_analisis as tha')
+            ->join('analisis as a', 'tha.analisis_idanalisis', '=', 'a.idanalisis')
+            ->select(DB::raw('max(a.idanalisis) as maxIdAnalisis'), DB::raw('a.length as length'))
+            ->where('tha.teams_idteam', '=', $user[0]->idteam)
+            ->where('a.produksi', '=', 1)
+            ->get();
+
+        $idProduksi2 = DB::table('teams_has_analisis as tha')
+            ->join('analisis as a', 'tha.analisis_idanalisis', '=', 'a.idanalisis')
+            ->select(DB::raw('max(a.idanalisis) as maxIdAnalisis'), DB::raw('a.length as length'))
+            ->where('tha.teams_idteam', '=', $user[0]->idteam)
+            ->where('a.produksi', '=', 2)
+            ->get();
+
+        $idProduksi3 = DB::table('teams_has_analisis as tha')
+            ->join('analisis as a', 'tha.analisis_idanalisis', '=', 'a.idanalisis')
+            ->select(DB::raw('max(a.idanalisis) as maxIdAnalisis'), DB::raw('a.length as length'))
+            ->where('tha.teams_idteam', '=', $user[0]->idteam)
+            ->where('a.produksi', '=', 3)
+            ->get();
+        // end (ambil id analisis produksi terakhir)
+
+        // start (ambil proses)
+        $produksi1 = DB::table('teams_has_analisis')
+            ->select('proses')
+            ->where('analisis_idanalisis', '=', $idProduksi1[0]->maxIdAnalisis)
+            ->where('proses', 'like', '%' . $namaMesin . '%')
+            ->get();
+
+        $produksi2 = DB::table('teams_has_analisis')
+            ->select('proses')
+            ->where('analisis_idanalisis', '=', $idProduksi2[0]->maxIdAnalisis)
+            ->where('proses', 'like', '%' . $namaMesin . '%')
+            ->get();
+
+        $produksi3 = DB::table('teams_has_analisis')
+            ->select('proses')
+            ->where('analisis_idanalisis', '=', $idProduksi3[0]->maxIdAnalisis)
+            ->where('proses', 'like', '%' . $namaMesin . '%')
+            ->get();
+        // end (ambil proses)
+
+        $arrCycle1 = [];
+        $arrCycle2 = [];
+        $arrCycle3 = [];
+
+        if (count($produksi1) != 0) {
+            $proses1 = explode(';', $produksi1[0]->proses);
+
+            for ($x = 0; $x < $idProduksi1[0]->length; $x++) {
+                $cycle1 =  DB::table('mesin_has_teams as mht')
+                    ->join('mesin as m', 'mht.mesin_idmesin', '=', 'm.idmesin')
+                    ->select(DB::raw('mht.cycleTime as cycle'))
+                    ->where('mht.teams_idteam', '=', $user[0]->idteam)
+                    ->where('m.nama', 'like', '%' . $proses1[$x] . '%')
+                    ->get();
+
+                array_push($arrCycle1, $cycle1[0]->cycle);
+            }
+        }
+
+        if (count($produksi2) != 0) {
+            $proses2 = explode(';', $produksi2[0]->proses);
+
+            for ($x = 0; $x < $idProduksi2[0]->length; $x++) {
+                $cycle2 =  DB::table('mesin_has_teams as mht')
+                    ->join('mesin as m', 'mht.mesin_idmesin', '=', 'm.idmesin')
+                    ->select(DB::raw('mht.cycleTime as cycle'))
+                    ->where('mht.teams_idteam', '=', $user[0]->idteam)
+                    ->where('m.nama', 'like', '%' . $proses2[$x] . '%')
+                    ->get();
+
+                array_push($arrCycle2, $cycle2[0]->cycle);
+            }
+        }
+
+        if (count($produksi3) != 0) {
+            $proses3 = explode(';', $produksi3[0]->proses);
+
+            for ($x = 0; $x < $idProduksi3[0]->length; $x++) {
+                $cycle3 =  DB::table('mesin_has_teams as mht')
+                    ->join('mesin as m', 'mht.mesin_idmesin', '=', 'm.idmesin')
+                    ->select(DB::raw('mht.cycleTime as cycle'))
+                    ->where('mht.teams_idteam', '=', $user[0]->idteam)
+                    ->where('m.nama', 'like', '%' . $proses3[$x] . '%')
+                    ->get();
+
+                array_push($arrCycle3, $cycle3[0]->cycle);
+            }
+        }
+
+        $cycleTime1 = '';
+        $cycleTime2 = '';
+        $cycleTime3 = '';
+
+        //mencari cycletime
+        if (count($arrCycle1) != 0) {
+            $time1 = array_sum($arrCycle1);
+            $cycleTime1 = intval(9000 / $time1);
+
+            DB::table('teams_has_analisis')
+                ->where('teams_idteam', '=', $user[0]->idteam)
+                ->where('analisis_idanalisis', '=', $idProduksi1[0]->maxIdAnalisis)
+                ->update(['cycleTime' => $cycleTime1]);
+        }
+
+        if (count($arrCycle2) != 0) {
+            $time2 = array_sum($arrCycle2);
+            $cycleTime2 = intval(9000 / $time2);
+
+            DB::table('teams_has_analisis')
+                ->where('teams_idteam', '=', $user[0]->idteam)
+                ->where('analisis_idanalisis', '=', $idProduksi2[0]->maxIdAnalisis)
+                ->update(['cycleTime' => $cycleTime2]);
+        }
+
+        if (count($arrCycle3) != 0) {
+            $time3 = array_sum($arrCycle3);
+            $cycleTime3 = intval(9000 / $time3);
+
+            DB::table('teams_has_analisis')
+                ->where('teams_idteam', '=', $user[0]->idteam)
+                ->where('analisis_idanalisis', '=', $idProduksi3[0]->maxIdAnalisis)
+                ->update(['cycleTime' => $cycleTime3]);
+        }
+
+        event(new Mesin('', $cycleTime1, '', $cycleTime2, '', $cycleTime3));
 
         return response()->json(array(
             'data' => $data,
