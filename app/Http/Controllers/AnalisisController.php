@@ -19,7 +19,7 @@ class AnalisisController extends Controller
         $valueSesi = $getSesi[0]->sesi;
         $namaSesi = $getSesi[0]->nama;
 
-        if($namaSesi == 'Cooldown'){
+        if ($namaSesi == 'Cooldown') {
             return redirect('/');
         }
 
@@ -98,7 +98,7 @@ class AnalisisController extends Controller
 
         //mencari cycletime
         $time = array_sum($cycle);
-        
+
         //9000/cycle time
         $cycleTime = intval(9000 / $time);
 
@@ -134,35 +134,58 @@ class AnalisisController extends Controller
 
         $updatedUser = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
 
-        $notEfficient = [];
+        // $notEfficient = [];
         $efficient = [];
         if ($produksi == 1) {
-            $notEfficient = ['Sorting', 'Cutting', 'Bending', 'Assembling', 'Delay', 'Cutting', 'Assembling', 'Sorting', 'Packing'];
+            // $notEfficient = ['Sorting', 'Cutting', 'Bending', 'Assembling', 'Delay', 'Cutting', 'Assembling', 'Sorting', 'Packing'];
             $efficient = ['Sorting', 'Cutting', 'Bending', 'Assembling', 'Packing'];
         } else if ($produksi == 2) {
-            $notEfficient = ['Sorting', 'Cutting', 'Assembling', 'Drilling', 'Delay', 'Cutting', 'Assembling', 'Idle', 'Packing'];
+            // $notEfficient = ['Sorting', 'Cutting', 'Assembling', 'Drilling', 'Delay', 'Cutting', 'Assembling', 'Idle', 'Packing'];
             $efficient = ['Sorting', 'Cutting', 'Assembling', 'Drilling', 'Packing'];
         } elseif ($produksi == 3) {
-            $notEfficient = ['Sorting', 'Molding', 'Idle', 'Assembling', 'Sorting', 'Delay', 'Assembling', 'Packing'];
+            // $notEfficient = ['Sorting', 'Molding', 'Idle', 'Assembling', 'Sorting', 'Delay', 'Assembling', 'Packing'];
             $efficient = ['Sorting', 'Molding', 'Assembling', 'Packing'];
         }
 
 
-        $status = true;
-        if (count($efficient) == $length) {
-            for ($x = 0; $x < count($efficient); $x++) {
-                if ($efficient[$x] != $arrProses[$x]) {
-                    $status = false;
+        $status = 'false';
+        $arrayProses = $arrProses;
+        $arrEff = $efficient;
+        $count = count($arrEff);
+        if (count($arrEff) == $length) {
+            for ($x = 0; $x < $count; $x++) {
+                if ($arrayProses[$x] == $arrEff[$x]) {
+                    unset($arrayProses[$x]);
+                    unset($arrEff[$x]);
                 }
             }
-        } else if (count($notEfficient) == $length) {
-            for ($x = 0; $x < count($notEfficient); $x++) {
-                if ($notEfficient[$x] != $arrProses[$x]) {
-                    $status = false;
+
+            if (count($arrEff) == 0) {
+                $status = 'true';
+
+                return response()->json(array(
+                    'user' => $updatedUser,
+                    'status' => $status
+                ), 200);
+            }
+
+            foreach ($arrEff as $a => $isi_a) {
+                foreach ($arrayProses as $b => $isi_b) {
+                    if ($isi_a == $isi_b) {
+                        unset($arrEff[$a]);
+                        unset($arrayProses[$b]);
+                    }
                 }
             }
-        } else {
-            $status = false;
+
+            if (count($arrEff) == 0) {
+                $status = 'half';
+
+                return response()->json(array(
+                    'user' => $updatedUser,
+                    'status' => $status
+                ), 200);
+            }
         }
 
         return response()->json(array(

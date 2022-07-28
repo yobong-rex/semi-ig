@@ -231,11 +231,11 @@
                                     @if (isset($analisisProses[$i - 1][1]))
                                         {{ $analisisProses[$i - 1][1] }}
                                     @elseif ($i == 1)
-                                        0
+                                        73
                                     @elseif ($i == 2)
-                                        0
+                                        79
                                     @elseif ($i == 3)
-                                        0
+                                        90
                                     @endif
                                 </span>
                             </h4>

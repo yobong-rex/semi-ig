@@ -189,7 +189,7 @@
             }
 
         });
-        
+
         $('.btn').click(function() {
             var arrProses = [];
             let arrKapasitas = [];
@@ -235,11 +235,14 @@
                     } else {
                         $('#dana').html(data.user[0].dana);
 
-                        if (data.status == false) {
+                        if (data.status == 'false') {
                             $('#notifUpgrade').text('Not Efficient');
                             $('#Notif').modal('show');
-                        } else {
+                        } else if (data.status == 'true') {
                             $('#notifUpgrade').text('Efficient');
+                            $('#Notif').modal('show');
+                        } else if (data.status == 'half') {
+                            $('#notifUpgrade').text('Wrong Order');
                             $('#Notif').modal('show');
                         }
                     }
