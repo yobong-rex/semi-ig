@@ -116,6 +116,9 @@
             {{-- Form produksi --}}
             <form action="{{ route('produksi.buat') }}" method='post'>
                 @csrf
+                <input type="hidden" id='mesinProduksi_1' value = '{{$proses1}}'>
+                <input type="hidden" id='mesinProduksi_2' value = '{{$proses2}}'>
+                <input type="hidden" id='mesinProduksi_3' value = '{{$proses3}}'>
                 <div class="table-responsive">
                     <table class="table table-bordered" style="vertical-align: middle;">
                         <thead class="thead">
@@ -302,6 +305,7 @@
                 let product = $('#produk_'+btn).val();
                 let product_name = $('#produk_'+btn+" option:selected").text();
                 let jumlah = $('#jumlahProduk_'+btn).val();
+                let mesinProduksi = $('#mesinProduksi_'+btn).val();
                 console.log(product_name);
                 // alert(product_name)
 
@@ -316,7 +320,8 @@
                     'produk' : product,
                     'jumlah' : jumlah,
                     'name'  : product_name,
-                    'btn'   : btn
+                    'btn'   : btn,
+                    "mesinProduksi" : mesinProduksi
                 },
                 success: function(data) {
                     $('#staticBackdrop').modal('hide');

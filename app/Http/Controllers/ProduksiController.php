@@ -86,7 +86,7 @@ class ProduksiController extends Controller
                 ->where('analisis.produksi', 3)
                 ->orderBy('teams_has_analisis.analisis_idanalisis', 'desc')
                 ->limit(1)->get();
-                
+
             if (count($proses1) == 0 || count($proses2) == 0 || count($proses3) == 0) {
                 return redirect()->route('analisis')->with('error', 'tolong isi terlebih dahulu proses produksi 1,2,dan 3');
             }
@@ -104,7 +104,7 @@ class ProduksiController extends Controller
         $defect2 = $this->getDefect($splitProses2, $user);
         $defect3 = $this->getDefect($splitProses3, $user);
 
-        return view('Produksi.produksi', compact('splitProses1', 'splitProses2', 'splitProses3', 'defect1', 'defect2', 'defect3', 'user', 'namaSesi', 'valueSesi'));
+        return view('Produksi.produksi', compact('splitProses1', 'splitProses2', 'splitProses3', 'defect1', 'defect2', 'defect3', 'user', 'namaSesi', 'valueSesi','proses1','proses2','proses3'));
     }
 
     function buat(Request $request)
@@ -118,6 +118,7 @@ class ProduksiController extends Controller
         $sesi = $getSesi[0]->nama;
         $team = Auth::user()->teams_idteam;
         $name = $request->get('name');
+        $mesinProduksi = $request->get('mesinProduksi');
 
         if ($produk == '') {
             return response()->json(array(
@@ -125,6 +126,7 @@ class ProduksiController extends Controller
                 'code' => '401'
             ), 200);
         }
+
 
         if ($sesi == 1) {
             if ($jumlah > 80) {
@@ -134,6 +136,29 @@ class ProduksiController extends Controller
                 ), 200);
             }
         } else {
+
+            //cek level mesin
+            $splitMesin = explode(';', $mesinProduksi);
+            foreach($splitMesin as $mp){
+                if($mp != ''){
+                    $levelMesin = DB::table('teams as t')
+                    ->join('mesin_has_teams as mht', 't.idteam', '=', 'mht.teams_idteam')
+                    ->join('mesin as m', 'mht.mesin_idmesin', '=', 'm.idmesin')
+                    ->select('mht.level')
+                    ->where('t.idteam', $team)
+                    ->where('m.nama', $mp)
+                    ->get();
+
+                    if($levelMesin[0]->level < ($sesi - 1)){
+                        return response()->json(array(
+                            'msg' => 'maaf, mesin '.$mp. ' belum mencapai level '.($sesi - 1),
+                            'code' => '401'
+                        ), 200);
+
+                    }
+                }
+            }
+
 
             $idanalisisProses = DB::table('analisis as a')
                 ->join('teams_has_analisis as tha', 'a.idanalisis', '=', 'tha.analisis_idanalisis')
