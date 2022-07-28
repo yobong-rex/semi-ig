@@ -141,7 +141,7 @@
                 @endforeach
                 <tr>
                     <td colspan="6">Biaya Pengiriman:</td>
-                    <td id="biaya_pengiriman">200 TC</td>
+                    <td id="biaya_pengiriman">150 TC</td>
                 </tr>
                 <tr>
                     <td colspan="6">Total Pembelian:</td>
@@ -244,18 +244,32 @@
                         totalItem += totalUnit;
                     }
                 }
-                let temp = count - 100;
-                console.log(temp);
-                total += parseInt($('#biaya_pengiriman').text());
+
+                if(count > 75){
+                    $('#body-konfir').text("Maaf, maksimal membeli 75 paket dalam 1 transaksi");
+                    $('#mdlPemberitahuan').modal('show');
+                    return
+                }
+                let temp = count - 50;
+
+                total += parseInt(150);
+
                 if (temp >= 0) {
-                    let lebih = parseInt(temp / 10);
-                    lebih += parseInt(1);
-                    let kirim = lebih * 50
-                    let pengiriman = 200 + kirim;
+                    let lebih = parseInt(temp / 5);
+
+                    if(temp%5 != 0){
+                        lebih += parseInt(1);
+
+                    }
+                    console.log("lebih "+lebih);
+                    // lebih += parseInt(1);
+                    let kirim = lebih * 5
+
+                    let pengiriman = 150 + kirim;
                     $('#biaya_pengiriman').text(pengiriman);
                     total += kirim;
                 } else {
-                    $('#biaya_pengiriman').text('200');
+                    $('#biaya_pengiriman').text('150');
                 }
                 $('#total').text(total);
             }

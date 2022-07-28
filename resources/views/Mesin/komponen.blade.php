@@ -85,7 +85,7 @@
                         </svg>
                     </div>
                     <div class="col-md-3 label_dana">
-                        <h1>Dana :</h1> 
+                        <h1>Dana :</h1>
                     </div>
                     <div class="col-md-8 dana">
                         <h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1>
@@ -127,11 +127,11 @@
                         </tr>
                         @for ($x = 0; $x < count($data); $x++)
                             <tr>
-                                <td style="width:150px;"><img src="{{ asset('assets') }}/img/IGKomponen_Injector.png"></td>
+                                <td style="width:150px;"><img src="{{ asset('assets') }}/img/{{$data[$x]->nama_komponen}}.png" id='image_{{ $x }}'></td>
                                 <td id="nama_komponen_{{ $x }}" class="namaKomponen" style="width:150px;vertical-align:middle;">
                                     {{ $data[$x]->nama_komponen }} :
                                 </td>
-                                
+
                                 <td id="komponen_{{ $x }}" class='noLevel'>
                                     {{ $data[$x]->level }}
                                 </td>
@@ -205,6 +205,7 @@
                     },
                     success: function(data) {
                         $.each(data.data, function(key, value) {
+                            $('#image_'+key).attr('src',"{{ asset('assets') }}/img/"+data.data[key].nama_komponen +".png" )
                             $('#nama_komponen_' + key).html(data.data[key].nama_komponen + ' :');
                             $('#komponen_' + key).html(data.data[key].level);
                             $('#upgrade_' + key).attr('value', data.data[key].nama_komponen);
