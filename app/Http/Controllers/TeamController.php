@@ -136,7 +136,8 @@ class TeamController extends Controller
 
     function masukMakeTeam()
     {
-        $user = DB::table('users')->select(DB::raw('name as nama'))->where('id', 26)->get();
+        $team = Auth::user()->id;
+        $user = DB::table('users')->select(DB::raw('name as nama'))->where('id', $team)->get();
 
         $getSesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
