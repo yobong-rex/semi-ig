@@ -162,7 +162,7 @@ class KomponenController extends Controller
         $namaKomponen = $request->get('namaKomponen');
 
         $team = Auth::user()->teams_idteam;
-        $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam', 'limit_produksi1', 'limit_produksi2', 'limit_produksi3')->where('idteam', $team)->get();
         $idmesin = DB::table('mesin')->where('nama', 'like', '%' . $namaMesin . '%')->get();
         $idkom = DB::table('level_komponen as lk')
             ->join('komponen as k', 'lk.komponen_idkomponen', '=', 'k.idkomponen')
@@ -357,32 +357,21 @@ class KomponenController extends Controller
         $cycleTime2 = '';
         $cycleTime3 = '';
 
+
+
         //mencari cycletime
         if (count($arrCycle1) != 0) {
             $time1 = array_sum($arrCycle1);
             $cycleTime1 = intval(9000 / $time1);
 
-            //ambil cycle time sebelumnya
-            $idanalisisProses = DB::table('analisis as a')
-                ->join('teams_has_analisis as tha', 'a.idanalisis', '=', 'tha.analisis_idanalisis')
-                ->select(DB::raw('MAX(a.idanalisis) as maxIdAnalisis'))
-                ->where('tha.teams_idteam', $user[0]->idteam)
-                ->where('a.produksi', 1)
-                ->groupBy('a.produksi')
-                ->orderBy('a.idanalisis')
+            $cycleDulu1 =  DB::table('teams_has_analisis')
+                ->select("cycleTime")
+                ->where('teams_idteam', '=', $user[0]->idteam)
+                ->where('analisis_idanalisis', '=', $idProduksi1[0]->maxIdAnalisis)
                 ->get();
 
-            $analisisProses = [];
-            foreach ($idanalisisProses as $idAP) {
-                $arrAP = DB::table('teams_has_analisis')
-                    ->select('cycleTime')
-                    ->where('analisis_idanalisis', $idAP->maxIdAnalisis)
-                    ->get();
-                $analisisProses[] = array($arrAP[0]->cycleTime);
-            }
-
             //cari sesisih antara cycle time lama dan baru
-            $selisih = $cycleTime1-$analisisProses[0][0];
+            $selisih1 = $cycleTime1 - $cycleDulu1[0]->cycleTime;
             // var_dump($selisih);
 
             //update cycle time
@@ -391,36 +380,25 @@ class KomponenController extends Controller
                 ->where('analisis_idanalisis', '=', $idProduksi1[0]->maxIdAnalisis)
                 ->update(['cycleTime' => $cycleTime1]);
 
-            //update limit produksi team
-            DB::table('teams')->increment('limit_produksi1', $selisih,['idteam'=>$user[0]->idteam]);
-
+                //update limit produksi team
+                DB::table('teams')->where('idteam', $user[0]->idteam)->update(['limit_produksi1' => ($user[0]->limit_produksi1 + $selisih1)]);
+                // DB::table('teams')->increment('limit_produksi1', $selisih1,['idteam'=>$user[0]->idteam]);
+                // return $selisih1;
+                
         }
 
         if (count($arrCycle2) != 0) {
             $time2 = array_sum($arrCycle2);
             $cycleTime2 = intval(9000 / $time2);
 
-            //ambil cycle time sebelumnya
-            $idanalisisProses = DB::table('analisis as a')
-            ->join('teams_has_analisis as tha', 'a.idanalisis', '=', 'tha.analisis_idanalisis')
-            ->select(DB::raw('MAX(a.idanalisis) as maxIdAnalisis'))
-            ->where('tha.teams_idteam', $user[0]->idteam)
-            ->where('a.produksi', 2)
-            ->groupBy('a.produksi')
-            ->orderBy('a.idanalisis')
-            ->get();
-
-            $analisisProses = [];
-            foreach ($idanalisisProses as $idAP) {
-                $arrAP = DB::table('teams_has_analisis')
-                    ->select('cycleTime')
-                    ->where('analisis_idanalisis', $idAP->maxIdAnalisis)
-                    ->get();
-                $analisisProses[] = array($arrAP[0]->cycleTime);
-            }
+            $cycleDulu2 =  DB::table('teams_has_analisis')
+                ->select("cycleTime")
+                ->where('teams_idteam', '=', $user[0]->idteam)
+                ->where('analisis_idanalisis', '=', $idProduksi2[0]->maxIdAnalisis)
+                ->get();
 
             //cari sesisih antara cycle time lama dan baru
-            $selisih = $cycleTime2 - $analisisProses[0][0];
+            $selisih2 = $cycleTime2 - $cycleDulu2[0]->cycleTime;
 
             DB::table('teams_has_analisis')
                 ->where('teams_idteam', '=', $user[0]->idteam)
@@ -428,34 +406,22 @@ class KomponenController extends Controller
                 ->update(['cycleTime' => $cycleTime2]);
 
             //update limit produksi team
-            DB::table('teams')->increment('limit_produksi2', $selisih,['idteam'=>$user[0]->idteam]);
+            DB::table('teams')->where('idteam', $user[0]->idteam)->update(['limit_produksi2' => ($user[0]->limit_produksi2 + $selisih2)]);
+            // DB::table('teams')->increment('limit_produksi2', $selisih,['idteam'=>$user[0]->idteam]);
         }
 
         if (count($arrCycle3) != 0) {
             $time3 = array_sum($arrCycle3);
             $cycleTime3 = intval(9000 / $time3);
 
-            //ambil cycle time sebelumnya
-            $idanalisisProses = DB::table('analisis as a')
-            ->join('teams_has_analisis as tha', 'a.idanalisis', '=', 'tha.analisis_idanalisis')
-            ->select(DB::raw('MAX(a.idanalisis) as maxIdAnalisis'))
-            ->where('tha.teams_idteam', $user[0]->idteam)
-            ->where('a.produksi', 3)
-            ->groupBy('a.produksi')
-            ->orderBy('a.idanalisis')
-            ->get();
-
-            $analisisProses = [];
-            foreach ($idanalisisProses as $idAP) {
-                $arrAP = DB::table('teams_has_analisis')
-                    ->select('cycleTime')
-                    ->where('analisis_idanalisis', $idAP->maxIdAnalisis)
-                    ->get();
-                $analisisProses[] = array($arrAP[0]->cycleTime);
-            }
+            $cycleDulu3 =  DB::table('teams_has_analisis')
+                ->select("cycleTime")
+                ->where('teams_idteam', '=', $user[0]->idteam)
+                ->where('analisis_idanalisis', '=', $idProduksi3[0]->maxIdAnalisis)
+                ->get();
 
             //cari sesisih antara cycle time lama dan baru
-            $selisih = $cycleTime3 - $analisisProses[0][0];
+            $selisih3 = $cycleTime3 - $cycleDulu3[0]->cycleTime;
 
             DB::table('teams_has_analisis')
                 ->where('teams_idteam', '=', $user[0]->idteam)
@@ -463,7 +429,8 @@ class KomponenController extends Controller
                 ->update(['cycleTime' => $cycleTime3]);
 
             //update limit produksi team
-            DB::table('teams')->increment('limit_produksi3', $selisih,['idteam'=>$user[0]->idteam]);
+            DB::table('teams')->where('idteam', $user[0]->idteam)->update(['limit_produksi3' => ($user[0]->limit_produksi3 + $selisih3)]);
+            // DB::table('teams')->increment('limit_produksi3', $selisih,['idteam'=>$user[0]->idteam]);
         }
 
         event(new Mesin('', $cycleTime1, '', $cycleTime2, '', $cycleTime3));
