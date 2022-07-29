@@ -120,6 +120,11 @@ class AnalisisController extends Controller
             'cycleTime' => $cycleTime
         ]);
 
+        //memasukan cycleTime ke users
+        DB::table('teams')
+            ->where('idteam', $user[0]->idteam)
+            ->update(['limit_produksi'.$produksi => $cycleTime]);
+
         $dana = $user[0]->dana;
         $harga = 150;
         if ($dana >= $harga) {

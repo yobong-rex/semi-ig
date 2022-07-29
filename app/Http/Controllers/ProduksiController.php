@@ -188,10 +188,19 @@ class ProduksiController extends Controller
 
         $bahanBaku = DB::table('produk')->select('bahan_baku')->where('idproduk', $produk)->get();
         $bahanBaku_split = explode(';', $bahanBaku[0]->bahan_baku);
-        $teamStatus = DB::table('teams')->select('dana', 'inventory')->where('idteam', $team)->get();
+        $limit = 'limit_produksi'.$btn;
+
+        //ambil status team
+        $teamStatus = DB::table('teams')->select('dana', 'inventory', $limit.' as limit')->where('idteam', $team)->get();
         if ($teamStatus[0]->dana < 100) {
             return response()->json(array(
                 'msg' => 'maaf, maaf dana mu kurang untuk membuat product',
+                'code' => '401'
+            ), 200);
+        }
+        if($jumlah > $teamStatus[0]->limit){
+            return response()->json(array(
+                'msg' => 'maaf, jumlah yang ingin kamu produksi melebihi limit proses',
                 'code' => '401'
             ), 200);
         }
@@ -245,6 +254,7 @@ class ProduksiController extends Controller
         $totBahan = $jumlah * 3;
         $newInv = $teamStatus[0]->inventory + $totBahan;
         $newDana = $teamStatus[0]->dana - 100;
+        $newLimit = $teamStatus[0]->limit - $jumlah;
         DB::table('history_produksi')
             ->updateOrInsert(
                 ['teams_idteam' => $team, 'produk_idproduk' => $produk, 'sesi' => $sesi],
@@ -252,7 +262,8 @@ class ProduksiController extends Controller
             );
         DB::table('teams')->where('idteam', $team)->update([
             'dana'          => $newDana,
-            'inventory'     => $newInv
+            'inventory'     => $newInv,
+            $limit          => $newLimit
         ]);
         return response()->json(array(
             'msg' => 'selamat kamu berhasil melakukan produksi ' . $name . ' sebanyak ' . $hasil_user,
