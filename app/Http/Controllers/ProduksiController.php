@@ -192,6 +192,10 @@ class ProduksiController extends Controller
 
         //ambil status team
         $teamStatus = DB::table('teams')->select('dana', 'inventory', $limit.' as limit')->where('idteam', $team)->get();
+
+        //get inventory
+        $newInv = $teamStatus[0]->inventory;
+
         if ($teamStatus[0]->dana < 100) {
             return response()->json(array(
                 'msg' => 'maaf, maaf dana mu kurang untuk membuat product',
@@ -215,18 +219,25 @@ class ProduksiController extends Controller
                 ->get();
             if (count($inv) > 0) {
                 if ($jumlah > $inv[0]->stock) {
+                    DB::table('teams')->where('idteam', $team)->update([
+                        'inventory'     => $newInv,
+                    ]);
                     return response()->json(array(
                         'msg' => 'maaf, bahan baku mu kurang untuk membuat product',
                         'code' => '401'
                     ), 200);
                 } else {
                     $invBaru = $inv[0]->stock - $jumlah;
+                    $newInv += $jumlah;
                     DB::table('inventory')
                         ->where('ig_markets', $inv[0]->idig_markets)
                         ->where('teams', $team)
                         ->update(['stock' => $invBaru]);
                 }
             } else {
+                DB::table('teams')->where('idteam', $team)->update([
+                    'inventory'     => $newInv,
+                ]);
                 return response()->json(array(
                     'msg' => 'maaf, bahan baku mu kurang untuk membuat product',
                     'code' => '401'
@@ -251,8 +262,8 @@ class ProduksiController extends Controller
         if (count($histori) > 0) {
             $hasil += $histori[0]->hasil;
         }
-        $totBahan = $jumlah * 3;
-        $newInv = $teamStatus[0]->inventory + $totBahan;
+        // $totBahan = $jumlah * 3;
+        // $newInv = $teamStatus[0]->inventory + $totBahan;
         $newDana = $teamStatus[0]->dana - 100;
         $newLimit = $teamStatus[0]->limit - $jumlah;
         DB::table('history_produksi')
