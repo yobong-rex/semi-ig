@@ -12,7 +12,8 @@ class SesiController extends Controller
 {
     function sesi()
     {
-        $user = DB::table('users')->select(DB::raw('name as nama'))->where('id', 26)->get();
+        $team = Auth::user()->id;
+        $user = DB::table('users')->select(DB::raw('name as nama'))->where('id', $team)->get();
 
         $sesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
