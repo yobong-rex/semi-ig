@@ -32,7 +32,10 @@ class LoginController extends Controller
         {
             if (Auth::user()->role == "Admin") {
                 return redirect()->route('market');
-            } else {
+            } else if(Auth::user()->role == "SI") {
+                return redirect()->route('adminsesi');
+            }
+            else{
                 return redirect()->route('dashboard');
             }
         }

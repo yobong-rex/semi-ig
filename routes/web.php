@@ -65,7 +65,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     // Admin Sesi
-    Route::get('/adminsesi', 'SesiController@sesi')->middleware('can:isAdmin')->name('adminsesi');
+    Route::get('/adminsesi', 'SesiController@sesi')->middleware('can:isSI')->name('adminsesi');
     Route::post('/adminsesi/startsesi', 'SesiController@startSesi')->name('start.sesi');
     Route::post('/adminsesi/pausesesi', 'SesiController@pauseSesi')->name('pause.sesi');
     Route::post('/adminsesi/stopsesi', 'SesiController@stopSesi')->name('stop.sesi');

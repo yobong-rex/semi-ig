@@ -12,7 +12,7 @@ class SesiController extends Controller
 {
     function sesi()
     {
-        $this->authorize('isAdmin');
+        $this->authorize('isSI');
 
         $team = Auth::user()->id;
         $user = DB::table('users')->select(DB::raw('name as nama'))->where('id', $team)->get();
@@ -44,7 +44,7 @@ class SesiController extends Controller
 
     function startSesi()
     {
-        $this->authorize('isAdmin');
+        $this->authorize('isSI');
 
         $sesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
@@ -76,7 +76,7 @@ class SesiController extends Controller
 
     function pauseSesi()
     {
-        $this->authorize('isAdmin');
+        $this->authorize('isSI');
 
         $sesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
@@ -108,7 +108,7 @@ class SesiController extends Controller
 
     function stopSesi()
     {
-        $this->authorize('isAdmin');
+        $this->authorize('isSI');
 
         $sesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
@@ -140,7 +140,7 @@ class SesiController extends Controller
 
     function gantiSesi(Request $request)
     {
-        $this->authorize('isAdmin');
+        $this->authorize('isSI');
 
         $sekarang = $request->get('sesi');
 
@@ -247,7 +247,7 @@ class SesiController extends Controller
 
     function backSesi(Request $request)
     {
-        $this->authorize('isAdmin');
+        $this->authorize('isSI');
 
         $sekarang = $request->get('sesi');
 
