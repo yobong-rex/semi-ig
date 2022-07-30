@@ -100,10 +100,9 @@
                 <table class="table" style="width:100%;font-size:18px;">
                     {{-- Heading --}}
                     <thead class="thead">
-                        <th>
+                        <th colspan="2">
                             <h4>Mesin : </h4>
                         </th>
-                        <th>Gambar</th>
                         {{-- ComboBox Mesin --}}
                         <th style="vertical-align:middle;">
                             <select id='mesin' name="mesin">
