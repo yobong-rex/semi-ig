@@ -132,6 +132,7 @@ class SesiController extends Controller
 
     function gantiSesi(Request $request)
     {
+
         $sekarang = $request->get('sesi');
 
         $upSesi = $sekarang + 1;
@@ -178,32 +179,57 @@ class SesiController extends Controller
                 $totalPendapatanBaru = $t->total_pendapatan + $temp;
 
                 DB::table('teams')->where('idteam', $t->idteam)->update(['dana'=>$danaBaru, 'total_pendapatan'=>$totalPendapatanBaru]);
-            }
-        }
 
-        //reset cycle time per tim
-        foreach ($team as $t){
-            $idanalisisProses = DB::table('analisis as a')
-            ->join('teams_has_analisis as tha', 'a.idanalisis', '=', 'tha.analisis_idanalisis')
-            ->select(DB::raw('MAX(a.idanalisis) as maxIdAnalisis'))
-            ->where('tha.teams_idteam', $t->idteam)
-            ->groupBy('a.produksi')
-            ->orderBy('a.idanalisis')
-            ->get();
-
-            $analisisProses = [];
-            foreach ($idanalisisProses as $idAP) {
-                $arrAP = DB::table('teams_has_analisis')
-                    ->select( 'cycleTime')
-                    ->where('analisis_idanalisis', $idAP->maxIdAnalisis)
+                //reset cycle time
+                $idanalisisProses = DB::table('analisis as a')
+                    ->join('teams_has_analisis as tha', 'a.idanalisis', '=', 'tha.analisis_idanalisis')
+                    ->select(DB::raw('MAX(a.idanalisis) as maxIdAnalisis'))
+                    ->where('tha.teams_idteam', $t->idteam)
+                    ->groupBy('a.produksi')
+                    ->orderBy('a.idanalisis')
                     ->get();
-                $analisisProses[] = array($arrAP[0]->cycleTime);
-            }
 
-            DB::table('teams')
-                ->where('idteam', $t->idteam)
-                ->update(['limit_produksi1' => $analisisProses[0][0], 'limit_produksi2' => $analisisProses[1][0], 'limit_produksi3' => $analisisProses[2][0]]);
+                $analisisProses = [];
+                foreach ($idanalisisProses as $idAP) {
+                    $arrAP = DB::table('teams_has_analisis')
+                        ->select( 'cycleTime')
+                        ->where('analisis_idanalisis', $idAP->maxIdAnalisis)
+                        ->get();
+                    $analisisProses[] = array($arrAP[0]->cycleTime);
+                }
+
+                if(count($analisisProses)>0){
+                    DB::table('teams')
+                        ->where('idteam', $t->idteam)
+                        ->update(['limit_produksi1' => $analisisProses[0][0], 'limit_produksi2' => $analisisProses[1][0], 'limit_produksi3' => $analisisProses[2][0]]);
+                    }
+                }
+
         }
+
+        // //reset cycle time per tim
+        // foreach ($team as $t){
+        //     $idanalisisProses = DB::table('analisis as a')
+        //         ->join('teams_has_analisis as tha', 'a.idanalisis', '=', 'tha.analisis_idanalisis')
+        //         ->select(DB::raw('MAX(a.idanalisis) as maxIdAnalisis'))
+        //         ->where('tha.teams_idteam', $t->idteam)
+        //         ->groupBy('a.produksi')
+        //         ->orderBy('a.idanalisis')
+        //         ->get();
+
+        //     $analisisProses = [];
+        //     foreach ($idanalisisProses as $idAP) {
+        //         $arrAP = DB::table('teams_has_analisis')
+        //             ->select( 'cycleTime')
+        //             ->where('analisis_idanalisis', $idAP->maxIdAnalisis)
+        //             ->get();
+        //         $analisisProses[] = array($arrAP[0]->cycleTime);
+        //     }
+
+        //     DB::table('teams')
+        //         ->where('idteam', $t->idteam)
+        //         ->update(['limit_produksi1' => $analisisProses[0][0], 'limit_produksi2' => $analisisProses[1][0], 'limit_produksi3' => $analisisProses[2][0]]);
+        // }
 
         $sesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
@@ -225,7 +251,7 @@ class SesiController extends Controller
             $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
         }
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'ganti', $detail));
+        // event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'ganti', $detail));
 
         return response()->json(array(
             "success" => true,

@@ -209,6 +209,7 @@ class ProduksiController extends Controller
             ), 200);
         }
 
+        //bahan baku harusnya bisa untuk sesi selanjutnya
         foreach ($bahanBaku_split as $bb) {
             $inv = DB::table('inventory')
                 ->join('ig_markets', 'inventory.ig_markets', '=', 'ig_markets.idig_markets')
