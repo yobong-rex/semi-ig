@@ -11,6 +11,7 @@ class DemandController extends Controller
     function demand()
     {
         $team = Auth::user()->teams_idteam;
+        // $user = DB::table('teams')->select('nama', 'dana', 'idteam', 'inventory', 'demand', 'customer_value', 'hibah')->where('idteam', $team)->get();
 
         $getSesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
@@ -19,7 +20,7 @@ class DemandController extends Controller
         $valueSesi = $getSesi[0]->sesi;
         $namaSesi = $getSesi[0]->nama;
 
-        $user = DB::table('teams')->select('nama', 'idteam','dana')->get();
+        $user = DB::table('teams')->select('nama', 'idteam','dana')->where('idteam', $team)->get();
         $data = DB::table('team_demand')
             ->join('produk', 'team_demand.idproduk', 'produk.idproduk')
             ->where('idteam', $team)
