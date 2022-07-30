@@ -12,6 +12,8 @@ class SesiController extends Controller
 {
     function sesi()
     {
+        $this->authorize('isAdmin');
+
         $team = Auth::user()->id;
         $user = DB::table('users')->select(DB::raw('name as nama'))->where('id', $team)->get();
 
@@ -42,6 +44,8 @@ class SesiController extends Controller
 
     function startSesi()
     {
+        $this->authorize('isAdmin');
+
         $sesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
             ->select('s.sesi', 'ws.nama', 'ws.waktu')
@@ -72,6 +76,8 @@ class SesiController extends Controller
 
     function pauseSesi()
     {
+        $this->authorize('isAdmin');
+
         $sesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
             ->select('s.sesi', 'ws.nama', 'ws.waktu')
@@ -102,6 +108,8 @@ class SesiController extends Controller
 
     function stopSesi()
     {
+        $this->authorize('isAdmin');
+
         $sesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
             ->select('s.sesi', 'ws.nama', 'ws.waktu')
@@ -132,6 +140,7 @@ class SesiController extends Controller
 
     function gantiSesi(Request $request)
     {
+        $this->authorize('isAdmin');
 
         $sekarang = $request->get('sesi');
 
@@ -147,7 +156,7 @@ class SesiController extends Controller
         }
 
         $team = DB::table('teams')
-            ->select('idteam', 'dana', 'hibah','total_pendapatan')
+            ->select('idteam', 'dana', 'hibah', 'total_pendapatan')
             ->get();
 
         // nambah hibah ke dana
@@ -167,18 +176,18 @@ class SesiController extends Controller
         }
 
         //over production
-        foreach ($team as $t){
-            $overProd = DB::table('history_produksi')->where('teams_idteam',$t->idteam)->where('sesi', $sekarang)->where('hasil','>',0)->get();
+        foreach ($team as $t) {
+            $overProd = DB::table('history_produksi')->where('teams_idteam', $t->idteam)->where('sesi', $sekarang)->where('hasil', '>', 0)->get();
             $temp = 0;
-            if(count($overProd)>0){
-                foreach ($overProd as $op){
-                    $hargaProduk = DB::table('produk')->select('harga_jual')->where('idproduk',$op->produk_idproduk)->get();
-                    $temp += ($op->hasil * floor($hargaProduk[0]->harga_jual * 40 /100));
+            if (count($overProd) > 0) {
+                foreach ($overProd as $op) {
+                    $hargaProduk = DB::table('produk')->select('harga_jual')->where('idproduk', $op->produk_idproduk)->get();
+                    $temp += ($op->hasil * floor($hargaProduk[0]->harga_jual * 40 / 100));
                 }
                 $danaBaru = $t->dana + $temp;
                 $totalPendapatanBaru = $t->total_pendapatan + $temp;
 
-                DB::table('teams')->where('idteam', $t->idteam)->update(['dana'=>$danaBaru, 'total_pendapatan'=>$totalPendapatanBaru]);
+                DB::table('teams')->where('idteam', $t->idteam)->update(['dana' => $danaBaru, 'total_pendapatan' => $totalPendapatanBaru]);
 
                 //reset cycle time
                 $idanalisisProses = DB::table('analisis as a')
@@ -192,44 +201,19 @@ class SesiController extends Controller
                 $analisisProses = [];
                 foreach ($idanalisisProses as $idAP) {
                     $arrAP = DB::table('teams_has_analisis')
-                        ->select( 'cycleTime')
+                        ->select('cycleTime')
                         ->where('analisis_idanalisis', $idAP->maxIdAnalisis)
                         ->get();
                     $analisisProses[] = array($arrAP[0]->cycleTime);
                 }
 
-                if(count($analisisProses)>0){
+                if (count($analisisProses) > 0) {
                     DB::table('teams')
                         ->where('idteam', $t->idteam)
                         ->update(['limit_produksi1' => $analisisProses[0][0], 'limit_produksi2' => $analisisProses[1][0], 'limit_produksi3' => $analisisProses[2][0]]);
-                    }
                 }
-
+            }
         }
-
-        // //reset cycle time per tim
-        // foreach ($team as $t){
-        //     $idanalisisProses = DB::table('analisis as a')
-        //         ->join('teams_has_analisis as tha', 'a.idanalisis', '=', 'tha.analisis_idanalisis')
-        //         ->select(DB::raw('MAX(a.idanalisis) as maxIdAnalisis'))
-        //         ->where('tha.teams_idteam', $t->idteam)
-        //         ->groupBy('a.produksi')
-        //         ->orderBy('a.idanalisis')
-        //         ->get();
-
-        //     $analisisProses = [];
-        //     foreach ($idanalisisProses as $idAP) {
-        //         $arrAP = DB::table('teams_has_analisis')
-        //             ->select( 'cycleTime')
-        //             ->where('analisis_idanalisis', $idAP->maxIdAnalisis)
-        //             ->get();
-        //         $analisisProses[] = array($arrAP[0]->cycleTime);
-        //     }
-
-        //     DB::table('teams')
-        //         ->where('idteam', $t->idteam)
-        //         ->update(['limit_produksi1' => $analisisProses[0][0], 'limit_produksi2' => $analisisProses[1][0], 'limit_produksi3' => $analisisProses[2][0]]);
-        // }
 
         $sesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
@@ -263,6 +247,8 @@ class SesiController extends Controller
 
     function backSesi(Request $request)
     {
+        $this->authorize('isAdmin');
+
         $sekarang = $request->get('sesi');
 
         if ($sekarang == 1) {
