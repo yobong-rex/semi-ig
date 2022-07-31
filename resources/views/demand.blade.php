@@ -228,6 +228,7 @@
                     total += val;
                     $('#total_' + id_split[1]).text(total);
                     $(this).attr("disabled", true);
+                    console.log($(this).val());
                     arrDemand.push({
                         'produk': id_split[1],
                         'total': $(this).val()
