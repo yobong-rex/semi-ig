@@ -411,34 +411,38 @@
                 console.log(e.kapasitas3);
                 console.log(e.cycle3);
 
-                //  kalau kapasitas 1 ada isinya
-                if (e.kapasitas1 != '') {
-                    $('#maxProduct_1').text(e.kapasitas1);
-                }
+                let idTeam = '<?php echo $idteam ?>';
 
-                //  kalau kapasitas 2 ada isinya
-                if (e.kapasitas2 != '') {
-                    $('#maxProduct_2').text(e.kapasitas2);
-                }
+                if (idTeam == e.id) {
+                    //  kalau kapasitas 1 ada isinya
+                    if (e.kapasitas1 != '') {
+                        $('#maxProduct_1').text(e.kapasitas1);
+                    }
 
-                //  kalau kapasitas 3 ada isinya
-                if (e.kapasitas3 != '') {
-                    $('#maxProduct_3').text(e.kapasitas3);
-                }
+                    //  kalau kapasitas 2 ada isinya
+                    if (e.kapasitas2 != '') {
+                        $('#maxProduct_2').text(e.kapasitas2);
+                    }
 
-                //  kalau cycle 1 ada isinya
-                if (e.cycle1 != '') {
-                    $('#cycleTime_1').text(e.cycle1);
-                }
+                    //  kalau kapasitas 3 ada isinya
+                    if (e.kapasitas3 != '') {
+                        $('#maxProduct_3').text(e.kapasitas3);
+                    }
 
-                //  kalau cycle 2 ada isinya
-                if (e.cycle2 != '') {
-                    $('#cycleTime_2').text(e.cycle2);
-                }
+                    //  kalau cycle 1 ada isinya
+                    if (e.cycle1 != '') {
+                        $('#cycleTime_1').text(e.cycle1);
+                    }
 
-                //  kalau cycle 3 ada isinya
-                if (e.cycle3 != '') {
-                    $('#cycleTime_3').text(e.cycle3);
+                    //  kalau cycle 2 ada isinya
+                    if (e.cycle2 != '') {
+                        $('#cycleTime_2').text(e.cycle2);
+                    }
+
+                    //  kalau cycle 3 ada isinya
+                    if (e.cycle3 != '') {
+                        $('#cycleTime_3').text(e.cycle3);
+                    }
                 }
             })
 

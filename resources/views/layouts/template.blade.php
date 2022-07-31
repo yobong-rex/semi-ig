@@ -125,8 +125,7 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent" style="justify-content:center;">
                 <a class="navbar-brand" href="/">
-                    <img src="{{ asset('assets') }}/logo/Logo_IG_Header.png" alt="Logo IGXXX"
-                        style="max-height: 40px">
+                    <img src="{{ asset('assets') }}/logo/Logo_IG_Header.png" alt="Logo IGXXX" style="max-height: 40px">
                 </a>
                 <ul class="navbar-nav mb-2 mb-lg-0 gap-4">
                     <li class="nav-item">
@@ -208,11 +207,15 @@
                     Sesi telah berganti!!
                 </div>
                 <div class="modal-footer">
-                    @cannot('isAdmin')
+                    @can('isProduction')
+                        <a href="{{ route('dashboard') }}" class="btn btn-secondary mdl-close">OK!</a>
+                    @elsecan('isMarketing')
+                        <a href="{{ route('dashboard') }}" class="btn btn-secondary mdl-close">OK!</a>
+                    @elsecan('isResearcher')
                         <a href="{{ route('dashboard') }}" class="btn btn-secondary mdl-close">OK!</a>
                     @else
                         <button type="button" class="btn btn-secondary mdl-close" data-bs-dismiss="modal">OK!</button>
-                    @endcannot
+                    @endcan
                 </div>
             </div>
         </div>
@@ -221,8 +224,8 @@
 
 
     <!-- modal info analisis-->
-    <div class="modal fade" id="modalInfoAnalisis" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="modalInfoAnalisis" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -316,24 +319,7 @@
                                     $('#timer').text('00 : 00');
 
                                     // lanjut sesi berikutnya
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: "{{ route('ganti.sesi') }}",
-                                        data: {
-                                            '_token': '<?php echo csrf_token(); ?>',
-                                            'sesi': $('#nomorSesi').attr('value')
-                                        },
-                                        success: function() {
-                                            // masuk pusher
-                                            // alert('success');
 
-                                            // tampilkan modal
-                                            $('#modalInfoTimer').modal('show');
-                                        },
-                                        error: function() {
-                                            alert('error');
-                                        }
-                                    })
                                 }
                             }, 1000);
                         }
@@ -379,30 +365,13 @@
                                     $('#timer').text('00 : 00');
 
                                     // lanjut sesi berikutnya
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: "{{ route('ganti.sesi') }}",
-                                        data: {
-                                            '_token': '<?php echo csrf_token(); ?>',
-                                            'sesi': $('#nomorSesi').attr('value')
-                                        },
-                                        success: function() {
-                                            // masuk pusher
-                                            // alert('success');
 
-                                            // tampilkan modal
-                                            $('#modalInfoTimer').modal('show');
-                                        },
-                                        error: function() {
-                                            alert('error');
-                                        }
-                                    })
                                 }
                             }, 1000);
                         }
                     },
                     error: function() {
-                        alert('error');
+                        // alert('error');
                     }
                 })
             }
@@ -490,7 +459,7 @@
                             $('#timer').text('00 : 00');
 
                             // lanjut sesi berikutnya
-                            
+
                         }
                     }, 1000)
                 }
@@ -536,7 +505,7 @@
                             $('#timer').text('00 : 00');
 
                             // lanjut sesi berikutnya
-                            
+
                         }
                     }, 1000)
                 }
@@ -606,7 +575,7 @@
                         $('#timer').text('00 : 00');
 
                         // lanjut sesi berikutnya
-                        
+
                     }
                 }, 1000)
 
@@ -661,7 +630,7 @@
                         $('#timer').text('00 : 00');
 
                         // lanjut sesi berikutnya
-                       
+
                     }
                 }, 1000)
 

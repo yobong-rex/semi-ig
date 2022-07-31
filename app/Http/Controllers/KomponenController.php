@@ -357,8 +357,6 @@ class KomponenController extends Controller
         $cycleTime2 = '';
         $cycleTime3 = '';
 
-
-
         //mencari cycletime
         if (count($arrCycle1) != 0) {
             $time1 = array_sum($arrCycle1);
@@ -433,7 +431,7 @@ class KomponenController extends Controller
             // DB::table('teams')->increment('limit_produksi3', $selisih,['idteam'=>$user[0]->idteam]);
         }
 
-        event(new Mesin('', $cycleTime1, '', $cycleTime2, '', $cycleTime3));
+        event(new Mesin($user[0]->idteam, '', $cycleTime1, '', $cycleTime2, '', $cycleTime3));
 
         return response()->json(array(
             'data' => $data,

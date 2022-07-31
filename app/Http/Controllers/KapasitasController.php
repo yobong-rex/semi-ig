@@ -292,7 +292,7 @@ class KapasitasController extends Controller
                 ->update(['maxProduct' => $minKpasitas3]);
         }
 
-        event(new Mesin($minKpasitas1, '', $minKpasitas2, '', $minKpasitas3, ''));
+        event(new Mesin($user[0]->idteam, $minKpasitas1, '', $minKpasitas2, '', $minKpasitas3, ''));
 
         return response()->json(array(
             'data' => $data,

@@ -88,11 +88,17 @@ class TeamController extends Controller
 
     function dashboard()
     {
-        $team = Auth::user()->teams_idteam;
-        if ($team == null) {
-            return redirect()->route('market');
+        $team = Auth::user();
+        $idteam = $team->teams_idteam;
+        if ($team->teams_idteam == null) {
+            if ($team->role == 'SI') {
+                return redirect()->route('adminsesi');
+            } else {
+                return redirect()->route('market');
+            }
         }
-        $user = DB::table('teams')->select('nama', 'dana', 'idteam', 'inventory', 'demand', 'customer_value', 'hibah')->where('idteam', $team)->get();
+
+        $user = DB::table('teams')->select('nama', 'dana', 'idteam', 'inventory', 'demand', 'customer_value', 'hibah')->where('idteam', $team->teams_idteam)->get();
 
         $getSesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
@@ -103,16 +109,16 @@ class TeamController extends Controller
 
         $data = DB::table('team_demand')
             ->join('produk', 'team_demand.idproduk', 'produk.idproduk')
-            ->where('idteam', $team)
+            ->where('idteam', $team->teams_idteam)
             ->where('sesi', $namaSesi)
             ->get();
 
         $bahanBaku = DB::table('ig_markets')->where('sesi', $namaSesi)->get();
-        $bbTeam = DB::table('inventory')->where('teams', $team)->get();
+        $bbTeam = DB::table('inventory')->where('teams', $team->teams_idteam)->get();
 
         $produk = DB::table('produk')->select('idproduk', 'nama')->get();
 
-        $produk_team = DB::table('history_produksi')->where('teams_idteam', $team)->where('sesi',$namaSesi)->get();
+        $produk_team = DB::table('history_produksi')->where('teams_idteam', $team->teams_idteam)->where('sesi', $namaSesi)->get();
 
         $idanalisisProses = DB::table('analisis as a')
             ->join('teams_has_analisis as tha', 'a.idanalisis', '=', 'tha.analisis_idanalisis')
@@ -131,7 +137,7 @@ class TeamController extends Controller
             $analisisProses[] = array($arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
         }
 
-        return view('Dashboard.dashboard', compact('user', 'valueSesi', 'namaSesi', 'data', 'produk', 'bahanBaku', 'bbTeam', 'produk_team', 'analisisProses'));
+        return view('Dashboard.dashboard', compact('idteam', 'user', 'valueSesi', 'namaSesi', 'data', 'produk', 'bahanBaku', 'bbTeam', 'produk_team', 'analisisProses'));
     }
 
     function masukMakeTeam()

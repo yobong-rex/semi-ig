@@ -14,6 +14,8 @@ class Mesin implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+public $id;
+
     public $kapasitas1;
     public $cycle1;
 
@@ -23,8 +25,10 @@ class Mesin implements ShouldBroadcast
     public $kapasitas3;
     public $cycle3;
 
-    public function __construct($kapasitas1, $cycle1, $kapasitas2, $cycle2, $kapasitas3, $cycle3)
+    public function __construct($id, $kapasitas1, $cycle1, $kapasitas2, $cycle2, $kapasitas3, $cycle3)
     {
+        $this->id = $id;
+        
         $this->kapasitas1 = $kapasitas1;
         $this->cycle1 = $cycle1;
 
