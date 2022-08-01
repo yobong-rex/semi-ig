@@ -63,6 +63,9 @@
             background-color: #ea435e;
             border-radius: 5px;
         }
+        .nav-link{
+            padding-left: 0;
+        }
 
         .nav-link:active {
             transform: scale(0.95);
@@ -96,17 +99,30 @@
 
 
         @media (max-width:800px) {
-
             .dana,
             .label_dana {
                 text-align: center;
             }
+            .nav-link:focus,.nav-link:hover,.nav-link:active{
+                padding-left: 1em;
+            }
+            .nav-link{
+                padding-left: 1em;
+            }
+
         }
 
         @media (max-width:1000px) {
             .coloumn_sesi {
                 max-width: fit-content;
             }
+            .nav-link:focus,.nav-link:hover,.nav-link:active {
+                padding-left: 1em;
+            }
+            .nav-link{
+                padding-left: 1em;
+            }
+
         }
     </style>
 
@@ -121,12 +137,16 @@
     {{-- NavBar --}}
     <nav class="navbar navbar-expand-lg" style="background-color: #ffff; box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);">
         <div class="container-fluid gap-5">
-
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent" style="justify-content:center;">
-                <a class="navbar-brand" href="/">
-                    <img src="{{ asset('assets') }}/logo/Logo_IG_Header.png" alt="Logo IGXXX" style="max-height: 40px">
-                </a>
+            <a class="navbar-brand" href="/">
+                <img src="{{ asset('assets') }}/logo/Logo_IG_Header.png" alt="Logo IGXXX" style="max-height: 40px">
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                  </svg></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse" style="justify-content:">
+                
                 <ul class="navbar-nav mb-2 mb-lg-0 gap-4">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('dashboard') }}">Dashboard</a>
@@ -155,7 +175,8 @@
                                 Produksi</a>
                         </li>
                     @endcan
-
+                </ul>
+                <div class="navbar-nav ms-auto"> 
                     <li class="nav-item logOut">
                         <a href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
@@ -164,8 +185,9 @@
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf
                         </form>
                     </li>
-                </ul>
+                </div>
             </div>
+            
         </div>
     </nav>
 
