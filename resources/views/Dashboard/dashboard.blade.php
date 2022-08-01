@@ -410,10 +410,13 @@
                 console.log(e.cycle2);
                 console.log(e.kapasitas3);
                 console.log(e.cycle3);
-
+                
                 let idTeam = '<?php echo $idteam ?>';
+                console.log(e.id);
+                console.log(idTeam);
 
                 if (idTeam == e.id) {
+                    console.log('masuk if-id sama')
                     //  kalau kapasitas 1 ada isinya
                     if (e.kapasitas1 != '') {
                         $('#maxProduct_1').text(e.kapasitas1);

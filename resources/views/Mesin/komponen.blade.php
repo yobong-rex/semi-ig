@@ -4,7 +4,8 @@
 
 @section('content')
     <style>
-        .heading,.kartu_tabel {
+        .heading,
+        .kartu_tabel {
             box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
             padding: 5px;
         }
@@ -53,18 +54,24 @@
         .upgrade:hover {
             -webkit-transform: scale(1.07);
         }
-        .kartu_tabel{
+
+        .kartu_tabel {
             background-color: #ffffff;
             width: 100%;
         }
-        @media (max-width:800px){
-            .dana, .label_dana{
+
+        @media (max-width:800px) {
+
+            .dana,
+            .label_dana {
                 text-align: center;
             }
         }
 
-        @media (max-width:1000px){
-            .dana, .label_dana{
+        @media (max-width:1000px) {
+
+            .dana,
+            .label_dana {
                 font-size: 25px;
             }
         }
@@ -72,79 +79,84 @@
 
     <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
 
-            <div class="row spacing"></div>
+        <div class="row spacing"></div>
 
-            {{-- Card Dana --}}
-            <div class="card-header rounded" style="background-color:#faf0dc;box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
-                <div class="row align-items-center">
-                    <div class="col-md-1 text-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
-                            class="bi bi-wallet2" viewBox="0 0 16 16">
-                            <path
-                                d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z" />
-                        </svg>
-                    </div>
-                    <div class="col-md-3 label_dana">
-                        <h1>Dana :</h1>
-                    </div>
-                    <div class="col-md-8 dana">
-                        <h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1>
-                    </div>
+        {{-- Card Dana --}}
+        <div class="card-header rounded" style="background-color:#faf0dc;box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
+            <div class="row align-items-center">
+                <div class="col-md-1 text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
+                        class="bi bi-wallet2" viewBox="0 0 16 16">
+                        <path
+                            d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z" />
+                    </svg>
+                </div>
+                <div class="col-md-3 label_dana">
+                    <h1>Dana :</h1>
+                </div>
+                <div class="col-md-8 dana">
+                    <h1><span id="dana">{{ number_format($user[0]->dana) }}</span> TC</h1>
                 </div>
             </div>
+        </div>
 
-            <div class="row spacing"></div>
+        <div class="row spacing"></div>
 
-            <div class="card-body kartu_tabel">
-                {{-- Table Komponen --}}
-                <table class="table" style="width:100%;font-size:18px;">
-                    {{-- Heading --}}
-                    <thead class="thead">
-                        <th colspan="2">
-                            <h4>Mesin : </h4>
-                        </th>
-                        {{-- ComboBox Mesin --}}
-                        <th style="vertical-align:middle;">
-                            <select id='mesin' name="mesin">
-                                @php
-                                    $arrMesin = [];
-                                    for ($a = 0; $a < count($namaMesin); $a++) {
-                                        array_push($arrMesin, $namaMesin[$a]->nama);
-                                    }
-                                @endphp
-                                @foreach ($arrMesin as $mesin)
-                                    <option value="{{ $mesin }}">{{ $mesin }}</option>
-                                @endforeach
-                            </select>
-                        </th>
-                    </thead>
-                    {{-- Nama-nama Komponen --}}
-                    <tbody>
-                        <tr style="background-color:#faf0dc;">
-                            <td colspan="2">Level Mesin : </td>
-                            <td class="noLevel" id="levelMesin_">{{ $levelMesin[0]->level }}</td>
+        <div class="card-body kartu_tabel">
+            {{-- Table Komponen --}}
+            <table class="table" style="width:100%;font-size:18px;">
+                {{-- Heading --}}
+                <thead class="thead">
+                    <th colspan="2">
+                        <h4>Mesin : </h4>
+                    </th>
+                    {{-- ComboBox Mesin --}}
+                    <th style="vertical-align:middle;">
+                        <select id='mesin' name="mesin">
+                            @php
+                                $arrMesin = [];
+                                for ($a = 0; $a < count($namaMesin); $a++) {
+                                    array_push($arrMesin, $namaMesin[$a]->nama);
+                                }
+                            @endphp
+                            @foreach ($arrMesin as $mesin)
+                                <option value="{{ $mesin }}">{{ $mesin }}</option>
+                            @endforeach
+                        </select>
+                    </th>
+                </thead>
+                {{-- Nama-nama Komponen --}}
+                <tbody>
+                    <tr style="background-color:#faf0dc;">
+                        <td colspan="2">Level Mesin : </td>
+                        <td class="noLevel" id="levelMesin_">{{ $levelMesin[0]->level }}</td>
+                    </tr>
+                    @for ($x = 0; $x < count($data); $x++)
+                        <tr>
+                            <td style="width:150px;"><img src="{{ asset('assets') }}/img/{{ $data[$x]->nama_komponen }}.png"
+                                    id='image_{{ $x }}'></td>
+                            <td id="nama_komponen_{{ $x }}" class="namaKomponen"
+                                style="width:150px;vertical-align:middle;">
+                                {{ $data[$x]->nama_komponen }} :
+                            </td>
+                            <td id="komponen_{{ $x }}" class='noLevel'>
+                                {{ $data[$x]->level }}
+                            </td>
+                            <td style="text-align:center;vertical-align:middle;">
+                                {{-- button Upgrade --}}
+                                <button type="button" id="upgrade_{{ $x }}" class="upgrade"
+                                    value='{{ $data[$x]->nama_komponen }}' data-bs-toggle="modal"
+                                    data-bs-target="#Konfirmasi">Upgrade</button>
+                            </td>
                         </tr>
-                        @for ($x = 0; $x < count($data); $x++)
-                            <tr>
-                                <td style="width:150px;"><img src="{{ asset('assets') }}/img/{{$data[$x]->nama_komponen}}.png" id='image_{{ $x }}'></td>
-                                <td id="nama_komponen_{{ $x }}" class="namaKomponen" style="width:150px;vertical-align:middle;">
-                                    {{ $data[$x]->nama_komponen }} :
-                                </td>
-
-                                <td id="komponen_{{ $x }}" class='noLevel'>
-                                    {{ $data[$x]->level }}
-                                </td>
-                                <td style="text-align:center;vertical-align:middle;">
-                                    {{-- button Upgrade --}}
-                                    <button type="button" id="upgrade_{{ $x }}" class="upgrade"
-                                        value='{{ $data[$x]->nama_komponen }}' data-bs-toggle="modal"
-                                        data-bs-target="#Konfirmasi">Upgrade</button>
-                                </td>
-                            </tr>
-                        @endfor
-                    </tbody>
-                </table>
-            </div>
+                    @endfor
+                </tbody>
+                <tfoot>
+                    <button id="upgrade_all" data-bs-toggle="modal" data-bs-target="#Konfirmasi">Upgrade All
+                        Component</button>
+                </tfoot>
+            </table>
+        </div>
         </div>
 
         {{-- Modal --}}
@@ -158,8 +170,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body flex">
-                        Apakah anda yakin ingin Upgrade Komponen <b><span id='komponenNama'></span></b> dari Mesin <b><span
-                                id='mesinNama'></span></b> ?
+                        Apakah anda yakin ingin Upgrade <b><span id="textSemua"></span></b> Komponen <b><span
+                                id='komponenNama'></span></b> dari Mesin <b><span id='mesinNama'></span></b> ?
                     </div>
                     <div class="modal-footer">
                         {{-- button cancel --}}
@@ -204,7 +216,8 @@
                     },
                     success: function(data) {
                         $.each(data.data, function(key, value) {
-                            $('#image_'+key).attr('src',"{{ asset('assets') }}/img/"+data.data[key].nama_komponen +".png" )
+                            $('#image_' + key).attr('src', "{{ asset('assets') }}/img/" + data
+                                .data[key].nama_komponen + ".png")
                             $('#nama_komponen_' + key).html(data.data[key].nama_komponen + ' :');
                             $('#komponen_' + key).html(data.data[key].level);
                             $('#upgrade_' + key).attr('value', data.data[key].nama_komponen);
@@ -219,12 +232,22 @@
 
             let namaMesin = "";
             let namaKomponen = "";
+            let type = "";
 
             $('.upgrade').click(function() {
                 namaMesin = $('#mesin').val();
                 namaKomponen = $(this).val();
+                type = "";
                 $('#mesinNama').text(namaMesin);
                 $('#komponenNama').text(namaKomponen);
+            })
+
+
+            $('#upgrade_all').click(function() {
+                namaMesin = $('#mesin').val();
+                type = "all";
+                $('#mesinNama').text(namaMesin);
+                $('#textSemua').text("Semua");
             })
 
             $('#konfirmasi_upgrade').click(function() {
@@ -234,7 +257,8 @@
                     data: {
                         '_token': '<?php echo csrf_token(); ?>',
                         'namaMesin': namaMesin,
-                        'namaKomponen': namaKomponen
+                        'namaKomponen': namaKomponen,
+                        'type': type
                     },
                     success: function(data) {
                         // alert('success');
