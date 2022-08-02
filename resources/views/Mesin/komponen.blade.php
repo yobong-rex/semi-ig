@@ -7,7 +7,7 @@
         .heading,
         .kartu_tabel {
             box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
-            padding: 5px;
+            padding: 1em;
         }
 
         .nama_team {
@@ -43,7 +43,8 @@
         }
 
         .upgrade,
-        .upgrade:focus {
+        .upgrade:focus,
+        .upgradeAll {
             background-color: #ffc107;
             border: 1px #ffc107;
             border-radius: 5px;
@@ -51,7 +52,8 @@
             transition: all 0.2s ease;
         }
 
-        .upgrade:hover {
+        .upgrade:hover,
+        .upgradeAll:hover {
             -webkit-transform: scale(1.07);
         }
 
@@ -66,6 +68,15 @@
             .label_dana {
                 text-align: center;
             }
+            .upgrade,.upgradeAll{
+                font-size: 12px;
+            }
+            .namaKomponen,.dropdown{
+                font-size: 16px;
+            }
+            .imgKomponen{
+                width: 68px;
+            }
         }
 
         @media (max-width:1000px) {
@@ -73,6 +84,15 @@
             .dana,
             .label_dana {
                 font-size: 25px;
+            }
+            .upgrade,.upgradeAll{
+                font-size: 12px;
+            }
+            .namaKomponen,.dropdown{
+                font-size: 16px;
+            }
+            .imgKomponen{
+                width: 68px;
             }
         }
     </style>
@@ -104,14 +124,14 @@
 
         <div class="card-body kartu_tabel">
             {{-- Table Komponen --}}
-            <table class="table" style="width:100%;font-size:18px;">
+            <table class="table-responsive" style="width:100%;font-size:18px; padding-left:0.5em;">
                 {{-- Heading --}}
                 <thead class="thead">
                     <th colspan="2">
                         <h4>Mesin : </h4>
                     </th>
                     {{-- ComboBox Mesin --}}
-                    <th style="vertical-align:middle;">
+                    <th style="vertical-align:middle;" class="dropdown">
                         <select id='mesin' name="mesin">
                             @php
                                 $arrMesin = [];
@@ -130,13 +150,17 @@
                     <tr style="background-color:#faf0dc;">
                         <td colspan="2">Level Mesin : </td>
                         <td class="noLevel" id="levelMesin_">{{ $levelMesin[0]->level }}</td>
+                        <td style="text-align:center;">
+                            <button class="upgradeAll" id="upgrade_all" data-bs-toggle="modal" data-bs-target="#Konfirmasi">Upgrade All
+                                Component</button>
+                        </td>
                     </tr>
                     @for ($x = 0; $x < count($data); $x++)
                         <tr>
                             <td style="width:150px;"><img src="{{ asset('assets') }}/img/{{ $data[$x]->nama_komponen }}.png"
-                                    id='image_{{ $x }}'></td>
+                                    id='image_{{ $x }}' class="imgKomponen"></td>
                             <td id="nama_komponen_{{ $x }}" class="namaKomponen"
-                                style="width:150px;vertical-align:middle;">
+                                style="max-width:150px;vertical-align:middle;">
                                 {{ $data[$x]->nama_komponen }} :
                             </td>
                             <td id="komponen_{{ $x }}" class='noLevel'>
@@ -152,8 +176,7 @@
                     @endfor
                 </tbody>
                 <tfoot>
-                    <button id="upgrade_all" data-bs-toggle="modal" data-bs-target="#Konfirmasi">Upgrade All
-                        Component</button>
+                    
                 </tfoot>
             </table>
         </div>

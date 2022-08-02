@@ -112,6 +112,10 @@ Route::get('/test/timer', function () {
 })->name('test.timer');
 //Route coba-coba
 
+Route::get('/leaderboard', function() {
+    return view('leaderboard');
+})->name('leaderboard');
+
 // Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();

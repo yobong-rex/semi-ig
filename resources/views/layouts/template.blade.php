@@ -63,12 +63,12 @@
             background-color: #ea435e;
             border-radius: 5px;
         }
-        .nav-link{
-            padding-left: 0;
-        }
 
         .nav-link:active {
             transform: scale(0.95);
+        }
+        .buttonNav{
+            padding-left: 0.5
         }
 
         .spacing {
@@ -104,12 +104,8 @@
                 text-align: center;
             }
             .nav-link:focus,.nav-link:hover,.nav-link:active{
-                padding-left: 1em;
+                transition: all 0.2s ease;
             }
-            .nav-link{
-                padding-left: 1em;
-            }
-
         }
 
         @media (max-width:1000px) {
@@ -117,12 +113,8 @@
                 max-width: fit-content;
             }
             .nav-link:focus,.nav-link:hover,.nav-link:active {
-                padding-left: 1em;
+                transition: all 0.2s ease;
             }
-            .nav-link{
-                padding-left: 1em;
-            }
-
         }
     </style>
 
@@ -149,38 +141,40 @@
                 
                 <ul class="navbar-nav mb-2 mb-lg-0 gap-4">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('dashboard') }}">Dashboard</a>
+                        <a class="nav-link active" style="padding-left:0.5em" aria-current="page" href="{{ route('dashboard') }}">Dashboard</a>
                     </li>
 
                     @can('isMarketing')
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ route('komponen') }}">Mesin</a>
+                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page" href="{{ route('komponen') }}">Mesin</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ route('demand') }}">Demand</a>
+                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page" href="{{ route('demand') }}">Demand</a>
                         </li>
                     @elsecan('isResearcher')
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ route('bahan') }}">Analisis Bahan</a>
+                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page" href="{{ route('bahan') }}">Analisis Bahan</a>
                         </li>
                     @elsecan('isProduction_Manager')
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ route('kapasitas') }}">Kapasitas</a>
+                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page" href="{{ route('kapasitas') }}">Kapasitas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ route('produksi') }}">Produksi</a>
+                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page" href="{{ route('produksi') }}">Produksi</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ route('analisis') }}">Analisis
-                                Produksi</a>
+                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page" href="{{ route('analisis') }}">Analisis Produksi</a>
                         </li>
                     @endcan
+                    <li class="nav-item">
+                        <a class="nav-link active" style="padding-left:0.5em" aria-current="page" href="{{ route('leaderboard') }}">Leaderboard</a>
+                    </li>
                 </ul>
                 <div class="navbar-nav ms-auto"> 
-                    <li class="nav-item logOut">
+                    <li class="nav-item">
                         <a href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                            class="text-light nav-link active" aria-current="page" style="text-decoration:none;">
+                            class="text-light nav-link active logOut" aria-current="page" style="text-decoration:none;padding-left:0.5em;">
                             {{ __('Logout') }}</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf
                         </form>
