@@ -38,6 +38,9 @@
             .dana, .label_dana{
                 text-align: center;
             }
+            .demand{
+                max-width: 100px;
+            }
         }
 
         @media (max-width:1000px){
@@ -89,63 +92,65 @@
             <h1>Pemenuhan Demand</h1>
 
             {{-- Table Pemenuhan Demand --}}
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th class="nomor_demand" scope="col">No.</th>
-                        <th scope="col">Produk</th>
-                        <th scope="col" style="text-align:center;">Memenuhi Demand</th>
-                        <th scope="col" style="width:165px;">Total</th>
-                        <th scope="col" style="width:165px;">Sisa</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="table-responsive">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr style="vertical-align: middle;">
+                            <th class="nomor_demand" scope="col">No.</th>
+                            <th scope="col">Produk</th>
+                            <th scope="col" style="text-align:center;" class="textMemenuhi">Memenuhi Demand</th>
+                            <th scope="col" style="width:165px;">Total</th>
+                            <th scope="col" style="width:165px;">Sisa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                @php
-                    $i=1
-                @endphp
-                @foreach ($produk as $p)
-                    <tr>
-                        <td class="nomor_demand" scope="row">{{$i++}}</td>
-                        <td>{{$p->nama}}</td>
-                        <td class="inputDemand"><input type="number" class='demand' id='input_{{$p->idproduk}}'min="0" oninput="this.value =
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
-                        <td id='total_{{$p->idproduk}}' class="demand-total">
-                            @if (count($data) == 0)
-                                0
-                            @else
-                                <?php $triger = 0; ?>
-                                @foreach ($data as $d)
-                                    @if ($p->idproduk == $d->idproduk)
-                                        {{ $d->jumlah }}
-                                        <?php $triger += 1; ?>
+                    @php
+                        $i=1
+                    @endphp
+                    @foreach ($produk as $p)
+                        <tr>
+                            <td class="nomor_demand" scope="row">{{$i++}}</td>
+                            <td>{{$p->nama}}</td>
+                            <td class="inputDemand"><input type="number" class='demand' id='input_{{$p->idproduk}}'min="0" oninput="this.value =
+                                !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
+                            <td id='total_{{$p->idproduk}}' class="demand-total">
+                                @if (count($data) == 0)
+                                    0
+                                @else
+                                    <?php $triger = 0; ?>
+                                    @foreach ($data as $d)
+                                        @if ($p->idproduk == $d->idproduk)
+                                            {{ $d->jumlah }}
+                                            <?php $triger += 1; ?>
+                                        @endif
+                                    @endforeach
+                                    @if ($triger == 0)
+                                        {{ $triger }}
                                     @endif
-                                @endforeach
-                                @if ($triger == 0)
-                                    {{ $triger }}
                                 @endif
-                            @endif
-                        </td>
-                        <td>
-                            @if (count($data) == 0)
-                                3
-                            @else
-                                <?php $triger = 0; ?>
-                                @foreach ($data as $d)
-                                    @if ($p->idproduk == $d->idproduk)
-                                        {{ $d->sisa }}
-                                        <?php $triger += 1; ?>
-                                    @endif
-                                @endforeach
-                                @if ($triger == 0)
+                            </td>
+                            <td>
+                                @if (count($data) == 0)
                                     3
+                                @else
+                                    <?php $triger = 0; ?>
+                                    @foreach ($data as $d)
+                                        @if ($p->idproduk == $d->idproduk)
+                                            {{ $d->sisa }}
+                                            <?php $triger += 1; ?>
+                                        @endif
+                                    @endforeach
+                                    @if ($triger == 0)
+                                        3
+                                    @endif
                                 @endif
-                            @endif
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal" >Penuhi Demand</button>
             <button type="button" class="btn btn-danger" id='btn-clear' >Clear</button>
 
