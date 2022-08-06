@@ -68,13 +68,18 @@
             .label_dana {
                 text-align: center;
             }
-            .upgrade,.upgradeAll{
+
+            .upgrade,
+            .upgradeAll {
                 font-size: 12px;
             }
-            .namaKomponen,.dropdown{
+
+            .namaKomponen,
+            .dropdown {
                 font-size: 16px;
             }
-            .imgKomponen{
+
+            .imgKomponen {
                 width: 68px;
             }
         }
@@ -85,13 +90,18 @@
             .label_dana {
                 font-size: 25px;
             }
-            .upgrade,.upgradeAll{
+
+            .upgrade,
+            .upgradeAll {
                 font-size: 12px;
             }
-            .namaKomponen,.dropdown{
+
+            .namaKomponen,
+            .dropdown {
                 font-size: 16px;
             }
-            .imgKomponen{
+
+            .imgKomponen {
                 width: 68px;
             }
         }
@@ -151,7 +161,8 @@
                         <td colspan="2">Level Mesin : </td>
                         <td class="noLevel" id="levelMesin_">{{ $levelMesin[0]->level }}</td>
                         <td style="text-align:center;">
-                            <button class="upgradeAll" id="upgrade_all" data-bs-toggle="modal" data-bs-target="#Konfirmasi">Upgrade All
+                            <button class="upgradeAll" id="upgrade_all" data-bs-toggle="modal"
+                                data-bs-target="#Konfirmasi">Upgrade All
                                 Component</button>
                         </td>
                     </tr>
@@ -176,7 +187,7 @@
                     @endfor
                 </tbody>
                 <tfoot>
-                    
+
                 </tfoot>
             </table>
         </div>

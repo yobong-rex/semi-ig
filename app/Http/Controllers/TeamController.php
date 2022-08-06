@@ -184,7 +184,10 @@ class TeamController extends Controller
                 'total_pendapatan' => 0,
                 'demand' => 0,
                 'customer_value' => 0,
-                'hibah' => 0
+                'hibah' => 0,
+                'limit_produksi1' => 73,
+                'limit_produksi2' => 79,
+                'limit_produksi3' => 90
             ]);
 
         $idteam = DB::getPdo()->lastInsertId();
@@ -200,7 +203,7 @@ class TeamController extends Controller
                 ]);
             DB::table('kapasitas_has_teams')
                 ->insert([
-                    'kapasitas_idkapasitas' => ((($jenisMesin - 1) * 5) + 1),
+                    'kapasitas_idkapasitas' => ((($jenisMesin - 1) * 6) + 1),
                     'kapasitas_mesin_idmesin' => $jenisMesin,
                     'teams_idteam' => $idteam
                 ]);
