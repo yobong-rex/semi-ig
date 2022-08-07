@@ -125,7 +125,7 @@
                             <input type="hidden" id="item_{{ $nomer }}" value="{{ $d->idig_markets }}">
                             <tr>
                                 <th class="nomor_bahan" scope="row">{{ $nomer }}</th>
-                                <td>{{ $d->bahan_baku }}</td>
+                                <td id="bahan_{{ $nomer }}">{{ $d->bahan_baku }}</td>
                                 <td id="isi_{{ $nomer }}">{{ $d->isi }}</td>
                                 <td id="stok_{{ $d->idig_markets }}">{{ $d->stok }}</td>
                                 <td id="harga_{{ $nomer }}">{{ $d->harga }}</td>
@@ -236,6 +236,7 @@
                         count += parseInt($('#input_' + i).val());
                         item.push({
                             'item': $('#item_' + i).val(),
+                            'nama': $('#bahan_'+i).text(),
                             'quantity': $('#input_' + i).val(),
                             'subtotal': $('#subtotal_' + i).text(),
                             'isi': $('#isi_' + i).text()
@@ -244,6 +245,7 @@
                         totalItem += totalUnit;
                     }
                 }
+                console.log(item)
 
                 if(count > 75){
                     $('#body-konfir').text("Maaf, maksimal membeli 75 paket dalam 1 transaksi");
@@ -255,15 +257,8 @@
                 total += parseInt(150);
 
                 if (temp >= 0) {
-                    let lebih = parseInt(temp / 5);
 
-                    if(temp%5 != 0){
-                        lebih += parseInt(1);
-
-                    }
-                    console.log("lebih "+lebih);
-                    // lebih += parseInt(1);
-                    let kirim = lebih * 5
+                    let kirim = temp * 4
 
                     let pengiriman = 150 + kirim;
                     $('#biaya_pengiriman').text(pengiriman);

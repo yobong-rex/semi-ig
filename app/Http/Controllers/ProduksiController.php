@@ -209,32 +209,49 @@ class ProduksiController extends Controller
             ), 200);
         }
 
+        $stockINV = array();
+        $whereBahanBaku = array();
+        $countCukup = 0;
+
         //bahan baku harusnya bisa untuk sesi selanjutnya
         foreach ($bahanBaku_split as $bb) {
+            //ubah
             $inv = DB::table('inventory')
-                ->join('ig_markets', 'inventory.ig_markets', '=', 'ig_markets.idig_markets')
-                ->select('inventory.stock', 'ig_markets.idig_markets', 'ig_markets.isi')
+                ->select('stock','ig_markets')
                 ->where('inventory.teams', $team)
-                ->where('ig_markets.bahan_baku', 'like', "%" . $bb . "%")
-                ->where('ig_markets.sesi', $sesi)
+                ->where('ig_markets', 'like', "%" . $bb . "%")
                 ->get();
             if (count($inv) > 0) {
-                if ($jumlah > $inv[0]->stock) {
-                    DB::table('teams')->where('idteam', $team)->update([
-                        'inventory'     => $newInv,
-                    ]);
+                //ubah
+                if($jumlah > $inv[0]->stock){
                     return response()->json(array(
                         'msg' => 'maaf, bahan baku mu kurang untuk membuat product',
                         'code' => '401'
                     ), 200);
-                } else {
-                    $invBaru = $inv[0]->stock - $jumlah;
-                    $newInv += $jumlah;
-                    DB::table('inventory')
-                        ->where('ig_markets', $inv[0]->idig_markets)
-                        ->where('teams', $team)
-                        ->update(['stock' => $invBaru]);
                 }
+                else{
+                    $countCukup +=1;
+                    array_push($stockINV, $inv[0]->stock);
+                    array_push($whereBahanBaku,  $inv[0]->ig_markets);
+                    $newInv += $jumlah;
+                }
+                // if ($jumlah > $inv[0]->stock) {
+                //     DB::table('teams')->where('idteam', $team)->update([
+                //         'inventory'     => $newInv,
+                //     ]);
+                //     return response()->json(array(
+                //         'msg' => 'maaf, bahan baku mu kurang untuk membuat product',
+                //         'code' => '401'
+                //     ), 200);
+                // } else {
+                //     $invBaru = $inv[0]->stock - $jumlah;
+                //     $newInv += $jumlah;
+
+                //     DB::table('inventory')
+                //         ->where('ig_markets', $inv[0]->idig_markets)
+                //         ->where('teams', $team)
+                //         ->update(['stock' => $invBaru]);
+                // }
             } else {
                 DB::table('teams')->where('idteam', $team)->update([
                     'inventory'     => $newInv,
@@ -244,6 +261,12 @@ class ProduksiController extends Controller
                     'code' => '401'
                 ), 200);
             }
+        }
+
+        if($countCukup == 3){
+            DB::table('inventory')->where('teams', $team)->where('ig_markets', $whereBahanBaku[0])->update(['stock'=> ($stockINV[0]-$jumlah)]);
+            DB::table('inventory')->where('teams', $team)->where('ig_markets', $whereBahanBaku[1])->update(['stock'=> ($stockINV[1]-$jumlah)]);
+            DB::table('inventory')->where('teams', $team)->where('ig_markets', $whereBahanBaku[2])->update(['stock'=> ($stockINV[2]-$jumlah)]);
         }
 
         //bagian penghitungan jml produk jadi

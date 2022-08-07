@@ -121,9 +121,14 @@ class MarketController extends Controller
                         }
                     }
                 }
+                $getInventory = DB::table('inventory')->where('teams', $team)->where('ig_markets', $val['nama'])->get();
+                $newInventory = $stok;
+                if(count($getInventory)>0){
+                    $newInventory = $getInventory[0]->stock + $stok;
+                }
                 DB::table('inventory')->updateOrInsert(
-                    ['ig_markets' => $val['item'], 'teams' => $team],
-                    ['stock' => $stok]
+                    ['ig_markets' => $val['nama'], 'teams' => $team],
+                    ['stock' => $newInventory]
                 );
                 event(new Market($stokPusser));
             }

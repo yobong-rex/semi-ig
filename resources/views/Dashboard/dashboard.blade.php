@@ -98,7 +98,7 @@
 
 
     {{-- DOKUMENTASI ID --}}
-    {{-- namaTeam : nama masing-masing team 
+    {{-- namaTeam : nama masing-masing team
     timer : string timer
     dana : dana masing-masing team
     sisaInventory : sisa inventory
@@ -270,7 +270,7 @@
                                 @else
                                     <?php $trigerBB = 0; ?>
                                     @foreach ($bbTeam as $bt)
-                                        @if ($b->idig_markets == $bt->ig_markets)
+                                        @if ($b->bahan_baku == $bt->ig_markets)
                                             {{ $bt->stock }}
                                             <?php $trigerBB += 1; ?>
                                         @endif
@@ -410,7 +410,7 @@
                 console.log(e.cycle2);
                 console.log(e.kapasitas3);
                 console.log(e.cycle3);
-                
+
                 let idTeam = '<?php echo $idteam ?>';
                 console.log(e.id);
                 console.log(idTeam);
