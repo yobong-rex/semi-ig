@@ -145,13 +145,11 @@ class KomponenController extends Controller
             ->where('t.idteam', $user[0]->idteam)
             ->where('m.idmesin', $idmesin[0]->idmesin)
             ->get();
-
-        // dd($data);
+            
         return response()->json(array(
             'data' => $data,
             'levelMesin' => $levelMesin
         ), 200);
-        // return view('Mesin.komponen', compact('data', 'user', 'levelMesin'));
     }
 
     function komponenUpgrade(Request $request)
@@ -225,6 +223,10 @@ class KomponenController extends Controller
                 DB::table('teams')
                     ->where('idteam', $user[0]->idteam)
                     ->update(['dana' => ($dana - $hargaTotal)]);
+            } else {
+                return response()->json(array(
+                    'msg' => 'Dana Tidak Mencukupi'
+                ), 200);
             }
         }
         // kalau upgrade 1 komponen
