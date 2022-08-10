@@ -12,7 +12,10 @@ class MarketController extends Controller
 {
     function market()
     {
-        $user = DB::table('teams')->select('nama', 'idteam')->get();
+        $id = Auth::user()->id;
+        $user = DB::table('users')->select(DB::raw('name as nama'))->where('id', $id)->get();
+        
+        $team = DB::table('teams')->select('nama', 'idteam')->get();
 
         $getSesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
@@ -22,7 +25,7 @@ class MarketController extends Controller
         $namaSesi = $getSesi[0]->nama;
 
         $data = DB::table('ig_markets')->where('sesi', $getSesi[0]->nama)->get();
-        return view('market', compact('data', 'user', 'valueSesi', 'namaSesi'));
+        return view('market', compact('data', 'user', 'team', 'valueSesi', 'namaSesi'));
     }
 
     function marketBeli(Request $request)
@@ -123,7 +126,7 @@ class MarketController extends Controller
                 }
                 $getInventory = DB::table('inventory')->where('teams', $team)->where('ig_markets', $val['nama'])->get();
                 $newInventory = $stok;
-                if(count($getInventory)>0){
+                if (count($getInventory) > 0) {
                     $newInventory = $getInventory[0]->stock + $stok;
                 }
                 DB::table('inventory')->updateOrInsert(

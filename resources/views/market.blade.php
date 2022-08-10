@@ -73,8 +73,8 @@
                 <div class="col-5">
                     <select id='selectedTeam' name="selectedTeam">
                         <option value="" hidden>Pilih Team</option>
-                        @foreach ($user as $u)
-                            <option value="{{ $u->idteam }}">{{ $u->nama }}</option>
+                        @foreach ($team as $t)
+                            <option value="{{ $t->idteam }}">{{ $t->nama }}</option>
                         @endforeach
                     </select>
                 </div>
