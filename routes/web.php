@@ -76,6 +76,9 @@ Route::middleware(['auth'])->group(function () {
     // MakeTeam
     Route::get('/maketeam', 'TeamController@masukMakeTeam')->middleware('can:isAdmin')->name('maketeam');
     Route::post('/maketeam/maketeam', 'TeamController@makeTeam')->name('makeTeam');
+
+    //leaderboard
+    Route::get('/leaderboard', 'TeamController@leaderboard')->name('leaderboard');
 });
 
 
@@ -112,9 +115,6 @@ Route::get('/test/timer', function () {
 })->name('test.timer');
 //Route coba-coba
 
-Route::get('/leaderboard', function() {
-    return view('leaderboard');
-})->name('leaderboard');
 
 // Route::get('/home', 'HomeController@index')->name('home');
 
