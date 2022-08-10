@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
-use App\Events\updateLeaderboard;
-use Illuminate\Http\Response;
 
 class ProduksiController extends Controller
 {
@@ -193,7 +191,7 @@ class ProduksiController extends Controller
         $limit = 'limit_produksi'.$btn;
 
         //ambil status team
-        $teamStatus = DB::table('teams')->select('dana', 'inventory', $limit.' as limit', 'total_defect', 'total_berhasil')->where('idteam', $team)->get();
+        $teamStatus = DB::table('teams')->select('dana', 'inventory', $limit.' as limit')->where('idteam', $team)->get();
 
         //get inventory
         $newInv = $teamStatus[0]->inventory;
@@ -288,13 +286,8 @@ class ProduksiController extends Controller
         if (count($histori) > 0) {
             $hasil += $histori[0]->hasil;
         }
-
         // $totBahan = $jumlah * 3;
         // $newInv = $teamStatus[0]->inventory + $totBahan;
-        $produkDefect = $jumlah - $hasil;
-        $produkBerhasil = $jumlah - $produkDefect;
-        $newDefect = $teamStatus[0]->total_defect + $produkDefect;
-        $newBerhasil = $teamStatus[0]->total_berhasil + $produkBerhasil;
         $newDana = $teamStatus[0]->dana - 100;
         $newLimit = $teamStatus[0]->limit - $jumlah;
         DB::table('history_produksi')
@@ -303,15 +296,11 @@ class ProduksiController extends Controller
                 ['hasil' => $hasil]
             );
         DB::table('teams')->where('idteam', $team)->update([
-            'dana'              => $newDana,
-            'inventory'         => $newInv,
-            $limit              => $newLimit,
-            'total_defect'      => $newDefect,
-            'total_berhasil'    => $newBerhasil,
+            'dana'          => $newDana,
+            'inventory'     => $newInv,
+            $limit          => $newLimit
         ]);
-        event(new updateLeaderboard('berhasil'));
         return response()->json(array(
-            "success" => true,
             'msg' => 'selamat kamu berhasil melakukan produksi ' . $name . ' sebanyak ' . $hasil_user,
             'code' => '401'
         ), 200);

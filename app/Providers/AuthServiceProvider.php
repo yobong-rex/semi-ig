@@ -26,44 +26,24 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('isMarketing', function($user){
-            if( $user->role == 'Marketing'){
-                return Response::allow();
-            } else {
-                return Response::deny('Hanya Untuk Marketing');
-            }
+            return $user->role == 'Marketing';
         });
 
         Gate::define('isResearcher', function($user){
-            if ($user->role == 'Researcher'){
-                return Response::allow();
-            } else {
-                return Response::deny('Hanya Untuk Researcher');
-            }
+            return $user->role == 'Researcher';
         });
 
         Gate::define('isProduction_Manager', function($user){
-            if ($user->role == 'Production Manager'){
-                return Response::allow();
-            } else {
-                return Response::deny('Hanya Untuk Production Manager');
-            }
+            return $user->role == 'Production Manager';
         });
 
 
         Gate::define('isAdmin', function($user){
-            if ($user->role == 'Admin'){
-                return Response::allow();
-            } else {
-                return Response::deny('Hanya Untuk Admin');
-            }
+            return $user->role == 'Admin';
         });
 
         Gate::define('isSI', function($user){
-            if ($user->role == 'SI'){
-                return Response::allow();
-            } else {
-                return Response::deny('Hanya Untuk Admin');
-            }
+            return $user->role == 'SI';
         });
 
         //

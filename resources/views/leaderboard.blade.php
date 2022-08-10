@@ -80,7 +80,14 @@
                                 <th>Customer Value</th>
                             </tr>
                         </thead>
-                        <tbody id ='awal'>
+                        <tbody>
+                            @for($i=1;$i<=13;$i++)
+                            <tr>
+                                <td style="text-align:center;font-family:TT Norms Bold;">{{$i}}</td>
+                                <td style="vertical-align:middle;"> Team {{$i}}</td>
+                                <td style="vertical-align:middle;">1000</td>
+                            </tr>
+                            @endfor
                         </tbody>
                     </table>
                 </div>
@@ -93,7 +100,14 @@
                                 <th>Customer Value</th>
                             </tr>
                         </thead>
-                        <tbody id = 'akhir'>
+                        <tbody>
+                            @for($i=14;$i<=25;$i++)
+                            <tr>
+                                <td style="text-align:center; font-family:TT Norms Bold;">{{$i}}</td>
+                                <td style="vertical-align:middle;"> Team {{$i}}</td>
+                                <td style="vertical-align:middle;">1000</td>
+                            </tr>
+                            @endfor
                         </tbody>
                     </table>
                 </div>
@@ -101,52 +115,7 @@
             </div>
 
         </div>
-
+    
     </div>
-
-    <script>
-
-        function getLeaderboard(){
-            $.ajax({
-                type: "POST",
-                url: "{{ route('leaderboard') }}",
-                data: {
-                    '_token': '<?php echo csrf_token(); ?>'
-                },
-                success: function(data) {
-                    let nomer = 1;
-                    $.each(data.data1, function(key, value) {
-                        $('#awal').html(`
-                            <tr>
-                                <td style="text-align:center;font-family:TT Norms Bold;">`+nomer+`</td>
-                                <td style="vertical-align:middle;">`+value.nama+`</td>
-                                <td style="vertical-align:middle;">`+value.customer_value+`</td>
-                            </tr>
-                        `);
-                        nomer += 1;
-                    });
-                    $.each(data.data2, function(key, value) {
-                        $('#akhir').html(`
-                            <tr>
-                                <td style="text-align:center;font-family:TT Norms Bold;">`+nomer+`</td>
-                                <td style="vertical-align:middle;">`+value.nama+`</td>
-                                <td style="vertical-align:middle;">`+value.customer_value+`</td>
-                            </tr>
-                        `);
-                        nomer += 1;
-                    });
-                }
-            });
-        }
-        $(document).ready(function(){
-            getLeaderboard();
-        });
-
-        window.Echo.channel('leaderboardChannel').listen('.msg', (e) => {
-           if(e.msg == 'berhasil'){
-                getLeaderboard();
-           }
-        })
-    </script>
 </body>
 </html>

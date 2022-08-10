@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use DB;
-use Auth;
 
 class CheckSesi
 {
@@ -21,13 +20,8 @@ class CheckSesi
         if($checkSesi[0]->nama == 'Cooldown'){
             return redirect('/');
         }
-        if(($checkSesi[0]->nama == '2') ){
-            if(Auth::user()->role == 'Production Manager'){
-                return redirect('analisis');
-            }
-            else{
-                return redirect('/');
-            }
+         if($checkSesi[0]->nama == '2'){
+            return redirect('analisis');
         }
         return $next($request);
     }
