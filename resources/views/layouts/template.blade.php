@@ -368,6 +368,7 @@
             console.log(e.sesi);
             console.log(e.waktu);
             console.log(e.condition);
+            console.log(e.countdownTimer)
 
             // setting sesi
             $('#nomorSesi').attr('value', e.id);
@@ -399,18 +400,18 @@
                 // kalau sudah pernah buka web ini
                 if (timeInMs) {
                     // timer lanjut dari waktu sebelum reload
-                    timer = parseInt(timeInMs);
+                    // timer = parseInt(timeInMs);
                     // console.log(timer);
 
                     // set destinasi stop
-                    let nowAwal = new Date().getTime();
+                    // let nowAwal = new Date().getTime();
                     // console.log(nowAwal);
-                    countdownTimer = nowAwal + timer;
+                    countdownTimer = e.countdownTimer;
                     // console.log(countdownTimer);
 
                     x = setInterval(function() {
                         let now = new Date().getTime();
-                        console.log(now);
+                        // console.log(now);
                         let distance = countdownTimer - now;
                         // console.log(distance);
 
@@ -447,13 +448,13 @@
                 }
                 // kalau belum pernah buka web ini
                 else {
-                    timer = waktu * 1000;
+                    // timer = waktu * 1000;
                     // console.log(timer);
 
                     // set destinasi stop
-                    let nowAwal = new Date().getTime();
+                    // let nowAwal = new Date().getTime();
                     // console.log(nowAwal);
-                    countdownTimer = nowAwal + timer;
+                    countdownTimer = e.countdownTimer;
                     // console.log(countdownTimer);
 
                     // buat timer baru
@@ -522,11 +523,11 @@
                 clearInterval(x);
                 console.log('masuk ganti');
 
-                timer = waktu * 1000;
+                // timer = waktu * 1000;
 
                 // set destinasi stop
-                let nowAwal = new Date().getTime();
-                countdownTimer = nowAwal + timer;
+                // let nowAwal = new Date().getTime();
+                countdownTimer = e.countdownTimer;
 
                 // buat timer baru
                 x = setInterval(function() {
@@ -577,11 +578,11 @@
                 clearInterval(x);
                 console.log('masuk back');
 
-                timer = waktu * 1000;
+                // timer = waktu * 1000;
 
                 // set destinasi stop
-                let nowAwal = new Date().getTime();
-                countdownTimer = nowAwal + timer;
+                // let nowAwal = new Date().getTime();
+                countdownTimer = e.countdownTimer;
 
                 // buat timer baru
                 x = setInterval(function() {

@@ -8,7 +8,7 @@
         <h1>Admin Sesi</h1>
         <h3>Sesi : <span id="nomorSesi" value="{{ $sesi[0]->sesi }}"> {{ $sesi[0]->nama }} </span></h3>
         <h3>Detail : <span id="detailSesi">{{ $detail }}</span></h3>
-        <h3>Status : <span id="status"></span></h3>
+        <h3>Status : <span id="status">-</span></h3>
         <button type="button" class="btn btn-success" id="button_start">Start</button>
         <button type="button" class="btn btn-success" id="button_pause" data-bs-toggle="modal"
         data-bs-target="#pause">Pause</button>
@@ -142,7 +142,10 @@
                 type: 'POST',
                 url: "{{ route('start.sesi') }}",
                 data: {
-                    '_token': '<?php echo csrf_token(); ?>'
+                    '_token': '<?php echo csrf_token(); ?>',
+                    'now': new Date().getTime(),
+                    'time': localStorage.getItem('timer'),
+                    'condition': localStorage.getItem('condition')
                 },
                 success: function(data) {
                     // alert('success');
@@ -150,7 +153,6 @@
                 },
                 error: function() {
                     alert('error');
-
                 }
             })
         });
@@ -202,7 +204,8 @@
                 url: "{{ route('ganti.sesi') }}",
                 data: {
                     '_token': '<?php echo csrf_token(); ?>',
-                    'sesi': $('#nomorSesi').attr('value')
+                    'sesi': $('#nomorSesi').attr('value'),
+                    'now': new Date().getTime()
                 },
                 success: function(data) {
                     if (data.msg == 'Sesi Sudah Max Woe!!') {
@@ -229,7 +232,8 @@
                 url: "{{ route('back.sesi') }}",
                 data: {
                     '_token': '<?php echo csrf_token(); ?>',
-                    'sesi': $('#nomorSesi').attr('value')
+                    'sesi': $('#nomorSesi').attr('value'),
+                    'now': new Date().getTime()
                 },
                 success: function(data) {
                     if (data.msg == 'Sesi Sudah Gabisa Kurang Woe!!') {

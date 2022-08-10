@@ -42,9 +42,13 @@ class SesiController extends Controller
         return view('adminsesi', compact('sesi', 'detail', 'valueSesi', 'namaSesi', 'user'));
     }
 
-    function startSesi()
+    function startSesi(Request $request)
     {
         $this->authorize('isSI');
+
+        $now = $request->get('now');
+        $time = $request->get('time');
+        $condition = $request->get('condition');
 
         $sesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
@@ -66,7 +70,21 @@ class SesiController extends Controller
             $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
         }
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'start', $detail));
+        $countdownTimer = $now + ($sesi[0]->waktu * 1000);
+
+        if ($condition == 'pause') {
+            $countdownTimer = $now + $time;
+        }
+
+        // $date = date("Y-m-d H:i:s", $countdownTimer / 1000);
+
+        // DB::table('timer')
+        //     ->where('idtimer', '=', 1)
+        //     ->update([
+        //         'timerEndPoint' => $date
+        //     ]);
+
+        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'start', $detail, $countdownTimer));
 
         return response()->json(array(
             "success" => true,
@@ -98,7 +116,7 @@ class SesiController extends Controller
             $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
         }
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'pause', $detail));
+        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'pause', $detail, ''));
 
         return response()->json(array(
             "success" => true,
@@ -130,7 +148,7 @@ class SesiController extends Controller
             $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
         }
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'stop', $detail));
+        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'stop', $detail, ''));
 
         return response()->json(array(
             "success" => true,
@@ -143,6 +161,8 @@ class SesiController extends Controller
         $this->authorize('isSI');
 
         $sekarang = $request->get('sesi');
+
+        $now = $request->get('now');
 
         $upSesi = $sekarang + 1;
         if ($sekarang == 11) {
@@ -176,15 +196,15 @@ class SesiController extends Controller
         }
 
         //reset inventory di sesi 5
-        if($upSesi == 9){
+        if ($upSesi == 9) {
             DB::table('inventory')->delete();
-            foreach($team as $t){
-                DB::table('teams')->where('idteam', $t->idteam)->update(['inventory'=> 450]);
+            foreach ($team as $t) {
+                DB::table('teams')->where('idteam', $t->idteam)->update(['inventory' => 450]);
             }
         }
 
         //over production, reset limit dan charge inventory
-        if($upSesi % 2 != 0){
+        if ($upSesi % 2 != 0) {
             foreach ($team as $t) {
                 $overProd = DB::table('history_produksi')->where('teams_idteam', $t->idteam)->where('sesi', $sekarang)->where('hasil', '>', 0)->get();
                 $temp = 0;
@@ -224,19 +244,15 @@ class SesiController extends Controller
                 }
 
                 // charge inventory
-                $teamInv = DB::table('inventory')->where('teams',$t->idteam)->get();
-                if(count($teamInv)> 0){
-                    foreach($teamInv as $ti){
+                $teamInv = DB::table('inventory')->where('teams', $t->idteam)->get();
+                if (count($teamInv) > 0) {
+                    foreach ($teamInv as $ti) {
                         $danaBaru = $t->dana - ($ti->stock * 2);
                         DB::table('teams')->where('idteam', $t->idteam)->update(['dana' => $danaBaru]);
                     }
                 }
-
             }
-
         }
-
-
 
         $sesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
@@ -258,7 +274,9 @@ class SesiController extends Controller
             $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
         }
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'ganti', $detail));
+        $countdownTimer = $now + ($sesi[0]->waktu * 1000);
+
+        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'ganti', $detail, $countdownTimer));
 
         return response()->json(array(
             "success" => true,
@@ -273,6 +291,8 @@ class SesiController extends Controller
         $this->authorize('isSI');
 
         $sekarang = $request->get('sesi');
+
+        $now = $request->get('now');
 
         if ($sekarang == 1) {
             return response()->json(array(
@@ -301,7 +321,9 @@ class SesiController extends Controller
             $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
         }
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'back', $detail));
+        $countdownTimer = $now + ($sesi[0]->waktu * 1000);
+
+        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'back', $detail, $countdownTimer));
 
         return response()->json(array(
             "success" => true,
