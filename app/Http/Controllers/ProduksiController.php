@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
-use App\Events\updateLeaderboard;
-use Illuminate\Http\Response;
+
 
 class ProduksiController extends Controller
 {
@@ -309,9 +308,8 @@ class ProduksiController extends Controller
             'total_defect'      => $newDefect,
             'total_berhasil'    => $newBerhasil,
         ]);
-        event(new updateLeaderboard('berhasil'));
+
         return response()->json(array(
-            "success" => true,
             'msg' => 'selamat kamu berhasil melakukan produksi ' . $name . ' sebanyak ' . $hasil_user,
             'code' => '401'
         ), 200);

@@ -246,8 +246,10 @@ class TeamController extends Controller
     }
 
     function leaderboard(){
-        $data1 = DB::table('teams')->select('nama', 'customer_value')->orderBy('customer_value', 'desc')->limit(13)->get();
-        $data2 = DB::table('teams')->select('nama', 'customer_value')->orderBy('customer_value', 'asc')->limit(12)->get();
-        return view('leaderboard', compact('data1','data2'));
+        $data1 = DB::table('teams')->select('nama', 'customer_value')->where('nama','!=','team SI')->orderBy('customer_value', 'desc')->get();
+        // return view('leaderboard', compact('data1','data2'));
+        return response()->json(array(
+            'data1' => $data1,
+        ), 200);
     }
 }

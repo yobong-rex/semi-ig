@@ -78,7 +78,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/maketeam/maketeam', 'TeamController@makeTeam')->name('makeTeam');
 
     //leaderboard
-    Route::get('/leaderboard', 'TeamController@leaderboard')->name('leaderboard');
+    Route::get('/leaderboard', function() {
+        return view('leaderboard');
+    })->name('leaderboard');
+    Route::post('/leaderboard/data', 'TeamController@leaderboard')->name('leaderboard');
 });
 
 

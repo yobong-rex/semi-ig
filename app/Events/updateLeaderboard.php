@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class updateLeaderboard
+class updateLeaderboard implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -20,17 +20,12 @@ class updateLeaderboard
         $this->msg=$msg;
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
     public function broadcastOn()
     {
         return new Channel('leaderboardChannel');
     }
 
     public function broadcastAs(){
-        return 'msg';
+        return 'updateLeaderboard';
     }
 }

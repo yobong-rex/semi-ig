@@ -104,8 +104,9 @@
 
     </div>
 
+    <script src="../../js/app.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-
         function getLeaderboard(){
             $.ajax({
                 type: "POST",
@@ -114,35 +115,38 @@
                     '_token': '<?php echo csrf_token(); ?>'
                 },
                 success: function(data) {
+                    $('#awal').empty()
+                    $('#akhir').empty()
                     let nomer = 1;
                     $.each(data.data1, function(key, value) {
-                        $('#awal').html(`
-                            <tr>
-                                <td style="text-align:center;font-family:TT Norms Bold;">`+nomer+`</td>
-                                <td style="vertical-align:middle;">`+value.nama+`</td>
-                                <td style="vertical-align:middle;">`+value.customer_value+`</td>
-                            </tr>
-                        `);
-                        nomer += 1;
-                    });
-                    $.each(data.data2, function(key, value) {
-                        $('#akhir').html(`
-                            <tr>
-                                <td style="text-align:center;font-family:TT Norms Bold;">`+nomer+`</td>
-                                <td style="vertical-align:middle;">`+value.nama+`</td>
-                                <td style="vertical-align:middle;">`+value.customer_value+`</td>
-                            </tr>
-                        `);
+                    if(nomer<=13){
+                            $('#awal').append(`
+                                <tr>
+                                    <td style="text-align:center;font-family:TT Norms Bold;">`+nomer+`</td>
+                                    <td style="vertical-align:middle;">`+value.nama+`</td>
+                                    <td style="vertical-align:middle;">`+value.customer_value+`</td>
+                                </tr>
+                            `);
+                        }
+                        else{
+                            $('#akhir').append(`
+                                <tr>
+                                    <td style="text-align:center;font-family:TT Norms Bold;">`+nomer+`</td>
+                                    <td style="vertical-align:middle;">`+value.nama+`</td>
+                                    <td style="vertical-align:middle;">`+value.customer_value+`</td>
+                                </tr>
+                            `);
+                        }
                         nomer += 1;
                     });
                 }
             });
         }
-        $(document).ready(function(){
+        $( document ).ready(function(){
             getLeaderboard();
         });
 
-        window.Echo.channel('leaderboardChannel').listen('.msg', (e) => {
+        window.Echo.channel('leaderboardChannel').listen('.updateLeaderboard', (e) => {
            if(e.msg == 'berhasil'){
                 getLeaderboard();
            }

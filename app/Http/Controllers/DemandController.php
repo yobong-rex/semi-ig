@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
+use App\Events\updateLeaderboard;
+use Illuminate\Http\Response;
 
 class DemandController extends Controller
 {
@@ -132,7 +134,9 @@ class DemandController extends Controller
                 $customerValue = $pendapatanBaru;
                 $hibah = floor($customerValue * 2.25);
                 DB::table('teams')->where('idteam', $team)->update(['dana' => $danaBaru, 'demand' => $demandBaru, 'total_pendapatan' => $pendapatanBaru, 'customer_value' => $customerValue, 'hibah' => $hibah]);
+                event(new updateLeaderboard('berhasil'));
                 return response()->json(array(
+                    "success" => true,
                     'msg' => 'selamat team anda berhasil memenuhi demand',
                     'code' => '200'
                 ), 200);

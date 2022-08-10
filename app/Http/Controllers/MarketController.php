@@ -14,7 +14,7 @@ class MarketController extends Controller
     {
         $id = Auth::user()->id;
         $user = DB::table('users')->select(DB::raw('name as nama'))->where('id', $id)->get();
-        
+
         $team = DB::table('teams')->select('nama', 'idteam')->get();
 
         $getSesi = DB::table('sesi as s')
@@ -48,7 +48,7 @@ class MarketController extends Controller
                 ), 200);
             }
 
-            $team_detail = DB::table('teams')->select('dana', 'inventory')->where('idteam', $team)->get();
+            $team_detail = DB::table('teams')->select('dana', 'inventory','pengeluaran')->where('idteam', $team)->get();
             if ($team_detail[0]->inventory < $totalItem) {
                 return response()->json(array(
                     'msg' => 'maaf, sisa inventori mu tidak cukup untuk membeli bahan baku',
@@ -106,7 +106,8 @@ class MarketController extends Controller
 
             DB::table('ig_markets_has_invoice')->insert($insert);
             $sisa_dana = $team_detail[0]->dana - $total;
-            DB::table('teams')->where('idteam', $team)->update(['dana' => $sisa_dana, 'inventory' => $sisaInv]);
+            $pengeluaran = $team_detail[0]->pengeluaran + $total;
+            DB::table('teams')->where('idteam', $team)->update(['dana' => $sisa_dana, 'inventory' => $sisaInv, 'pengeluaran' => $pengeluaran]);
 
             $team_has_inventory = DB::table('inventory')->whereIn('ig_markets', $item_id)->where('teams', $team)->get();
             // $insertStok = [];
