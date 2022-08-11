@@ -303,13 +303,13 @@
                 // kalau sudah pernah buka web ini
                 if (timeInMs) {
                     // timer lanjut dari waktu sebelum reload
-                    let timer = parseInt(timeInMs);
+                    // let timer = parseInt(timeInMs);
                     // console.log(timer);
 
                     // set destinasi stop
-                    let nowAwal = new Date().getTime();
+                    // let nowAwal = new Date().getTime();
                     // console.log(nowAwal);
-                    let countdownTimer = nowAwal + timer;
+                    let countdownTimer = localStorage.getItem('endtime');
                     // console.log(countdownTimer);
 
                     x = setInterval(function() {
@@ -407,6 +407,7 @@
                     // let nowAwal = new Date().getTime();
                     // console.log(nowAwal);
                     countdownTimer = e.countdownTimer;
+                    localStorage.setItem('endtime', countdownTimer);
                     // console.log(countdownTimer);
 
                     x = setInterval(function() {
@@ -455,6 +456,7 @@
                     // let nowAwal = new Date().getTime();
                     // console.log(nowAwal);
                     countdownTimer = e.countdownTimer;
+                    localStorage.setItem('endtime', countdownTimer);
                     // console.log(countdownTimer);
 
                     // buat timer baru
@@ -528,6 +530,7 @@
                 // set destinasi stop
                 // let nowAwal = new Date().getTime();
                 countdownTimer = e.countdownTimer;
+                localStorage.setItem('endtime', countdownTimer);
 
                 // buat timer baru
                 x = setInterval(function() {
@@ -583,6 +586,7 @@
                 // set destinasi stop
                 // let nowAwal = new Date().getTime();
                 countdownTimer = e.countdownTimer;
+                localStorage.setItem('endtime', countdownTimer);
 
                 // buat timer baru
                 x = setInterval(function() {
