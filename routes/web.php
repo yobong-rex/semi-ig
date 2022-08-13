@@ -74,7 +74,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     // MakeTeam
-    Route::get('/maketeam', 'TeamController@masukMakeTeam')->middleware('can:isAdmin')->name('maketeam');
+    Route::get('/maketeam', 'TeamController@masukMakeTeam')->middleware('can:isSI')->name('maketeam');
     Route::post('/maketeam/maketeam', 'TeamController@makeTeam')->name('makeTeam');
 
     //leaderboard

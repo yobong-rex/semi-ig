@@ -67,7 +67,8 @@
         .nav-link:active {
             transform: scale(0.95);
         }
-        .buttonNav{
+
+        .buttonNav {
             padding-left: 0.5
         }
 
@@ -99,11 +100,15 @@
 
 
         @media (max-width:800px) {
+
             .dana,
             .label_dana {
                 text-align: center;
             }
-            .nav-link:focus,.nav-link:hover,.nav-link:active{
+
+            .nav-link:focus,
+            .nav-link:hover,
+            .nav-link:active {
                 transition: all 0.2s ease;
             }
         }
@@ -112,7 +117,10 @@
             .coloumn_sesi {
                 max-width: fit-content;
             }
-            .nav-link:focus,.nav-link:hover,.nav-link:active {
+
+            .nav-link:focus,
+            .nav-link:hover,
+            .nav-link:active {
                 transition: all 0.2s ease;
             }
         }
@@ -133,55 +141,66 @@
                 <img src="{{ asset('assets') }}/logo/Logo_IG_Header.png" alt="Logo IGXXX" style="max-height: 40px">
             </a>
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-                  </svg></span>
+                <span class="navbar-toggler-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                        <path
+                            d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                    </svg></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse" style="justify-content:">
-                
+
                 <ul class="navbar-nav mb-2 mb-lg-0 gap-4">
                     <li class="nav-item">
-                        <a class="nav-link active" style="padding-left:0.5em" aria-current="page" href="{{ route('dashboard') }}">Dashboard</a>
+                        <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                            href="{{ route('dashboard') }}">Dashboard</a>
                     </li>
 
                     @can('isMarketing')
                         <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page" href="{{ route('komponen') }}">Mesin</a>
+                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                href="{{ route('komponen') }}">Mesin</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page" href="{{ route('demand') }}">Demand</a>
+                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                href="{{ route('demand') }}">Demand</a>
                         </li>
                     @elsecan('isResearcher')
                         <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page" href="{{ route('bahan') }}">Analisis Bahan</a>
+                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                href="{{ route('bahan') }}">Analisis Bahan</a>
                         </li>
                     @elsecan('isProduction_Manager')
                         <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page" href="{{ route('kapasitas') }}">Kapasitas</a>
+                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                href="{{ route('kapasitas') }}">Kapasitas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page" href="{{ route('produksi') }}">Produksi</a>
+                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                href="{{ route('produksi') }}">Produksi</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page" href="{{ route('analisis') }}">Analisis Produksi</a>
+                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                href="{{ route('analisis') }}">Analisis Produksi</a>
                         </li>
                     @endcan
                     <li class="nav-item">
-                        <a class="nav-link active" style="padding-left:0.5em" aria-current="page" href="{{ route('leaderboard') }}">Leaderboard</a>
+                        <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                            href="{{ route('leaderboard') }}">Leaderboard</a>
                     </li>
                 </ul>
-                <div class="navbar-nav ms-auto"> 
+                <div class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                            class="text-light nav-link active logOut" aria-current="page" style="text-decoration:none;padding-left:0.5em;">
+                            class="text-light nav-link active logOut" aria-current="page"
+                            style="text-decoration:none;padding-left:0.5em;">
                             {{ __('Logout') }}</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf
                         </form>
                     </li>
                 </div>
             </div>
-            
+
         </div>
     </nav>
 
@@ -267,143 +286,83 @@
         let x = null;
 
         // buat menjalankan / melanjutkan timer pas buka webpage
-        $(document).ready(function() {
+        /*$(document).ready(function() {
             let condition = localStorage.getItem('condition');
 
-            // kalau game start
+            // kalau game sudah start
             if (condition == 'start') {
-                $.ajax({
-                    type: 'POST',
-                    url: "{{ route('timer') }}",
-                    data: {
-                        '_token': '<?php echo csrf_token(); ?>',
-                        'namaSesi': $('#sesi').text()
-                    },
-                    success: function(data) {
-                        // alert('success');
-                        let waktu = data.waktu[0].waktu;
+                
+                clearInterval(x);
+                console.log('masuk start');
 
-                        /* Timer */
-                        clearInterval(x);
+                // variable used to continue timer
+                const key = 'timer';
+                var timeInMs = localStorage.getItem(key);
+                // console.log(timeInMs);
 
-                        // variable used to continue timer
-                        const key = 'timer'
-                        var timeInMs = localStorage.getItem(key);
+                // kalau sudah pernah buka web ini
+                if (timeInMs) {
+                    // timer lanjut dari waktu sebelum reload
+                    let timer = parseInt(timeInMs);
+                    // console.log(timer);
 
-                        // kalau sudah pernah buka web ini
-                        if (timeInMs) {
-                            // hitung waktu yang hilang saat reload
-                            // let delta = Date.now() - localStorage.getItem('now');
+                    // set destinasi stop
+                    let nowAwal = new Date().getTime();
+                    // console.log(nowAwal);
+                    let countdownTimer = nowAwal + timer;
+                    // console.log(countdownTimer);
 
-                            // timer lanjut dari waktu sebelum reload
-                            timer = timeInMs;
+                    x = setInterval(function() {
+                        let now = new Date().getTime();
+                        // console.log(now);
+                        let distance = countdownTimer - now;
+                        // console.log(distance);
 
-                            x = setInterval(function() {
-                                // kalau masih ada waktu, maka kurangi
-                                if (timer > 0) {
-                                    // jadikan minutes : second
-                                    let minutes = Math.floor((timer % (1000 * 60 * 60)) / (
-                                        1000 *
-                                        60));
-                                    let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+                        // jadikan minutes : second
+                        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                                    // kalau tidak double digit jadikan double digit
-                                    if (minutes < 10) {
-                                        minutes = '0' + minutes;
-                                    }
-                                    if (seconds < 10) {
-                                        seconds = '0' + seconds;
-                                    }
-
-                                    // tampilkan timer
-                                    $('#timer').text(minutes + " : " + seconds);
-
-                                    //kurangi per 1000 milisecond
-                                    timer -= 1000;
-
-                                    // masukkan timer dan tanggal sekarang ke localStorage per detik
-                                    localStorage.setItem(key, timer);
-                                    // localStorage.setItem('now', Date.now());
-                                    console.log(localStorage.getItem(key));
-                                    // console.log(localStorage.getItem('now'));
-                                }
-                                // kalau sudah habis, maka selesai 
-                                else {
-                                    // hapus timer sekarang
-                                    clearInterval(x);
-                                    localStorage.clear();
-                                    $('#timer').text('00 : 00');
-
-                                    // lanjut sesi berikutnya
-
-                                }
-                            }, 1000);
+                        // kalau tidak double digit jadikan double digit
+                        if (minutes < 10) {
+                            minutes = '0' + minutes;
                         }
-                        // kalau belum pernah buka web ini
-                        else {
-                            let timer = waktu * 1000;
-
-                            // buat timer baru
-                            x = setInterval(function() {
-                                // kalau masih ada waktu, maka kurangi
-                                if (timer > 0) {
-                                    // jadikan minutes : second
-                                    let minutes = Math.floor((timer % (1000 * 60 * 60)) / (
-                                        1000 *
-                                        60));
-                                    let seconds = Math.floor((timer % (1000 * 60)) / 1000);
-
-                                    // kalau tidak double digit jadikan double digit
-                                    if (minutes < 10) {
-                                        minutes = '0' + minutes;
-                                    }
-                                    if (seconds < 10) {
-                                        seconds = '0' + seconds;
-                                    }
-
-                                    // tampilkan timer
-                                    $('#timer').text(minutes + " : " + seconds);
-
-                                    //kurangi per 1000 milisecond
-                                    timer -= 1000;
-
-                                    // masukkan timer dan tanggal sekarang ke localStorage per detik
-                                    localStorage.setItem(key, timer);
-                                    // localStorage.setItem('now', Date.now());
-                                    console.log(localStorage.getItem(key));
-                                    // console.log(localStorage.getItem('now'));
-                                }
-                                // kalau sudah habis, maka selesai 
-                                else {
-                                    // hapus timer sekarang
-                                    clearInterval(x);
-                                    localStorage.clear();
-                                    $('#timer').text('00 : 00');
-
-                                    // lanjut sesi berikutnya
-
-                                }
-                            }, 1000);
+                        if (seconds < 10) {
+                            seconds = '0' + seconds;
                         }
-                    },
-                    error: function() {
-                        // alert('error');
-                    }
-                })
+
+                        // tampilkan timer
+                        $('#timer').text(minutes + " : " + seconds);
+
+                        // masukkan timer dan tanggal sekarang ke localStorage per detik
+                        localStorage.setItem(key, distance);
+                        console.log(localStorage.getItem(key));
+
+                        // kalau sudah habis, maka selesai 
+                        if (distance < 0) {
+                            // hapus timer sekarang
+                            clearInterval(x);
+                            localStorage.clear();
+                            $('#timer').text('00 : 00');
+
+                            // lanjut sesi berikutnya
+
+                        }
+                    }, 1000)
+                }
             }
             //  kalau game pause
             else if (condition == 'pause') {
-                console.log('masuk pause');
                 clearInterval(x);
+                console.log('masuk pause');
             }
             //  kalau game stop
             else if (condition == 'stop') {
-                console.log('masuk stop');
                 clearInterval(x);
+                console.log('masuk stop');
             }
         })
 
-        /* Pusher */
+        
         window.Echo.channel('sesiPusher').listen('.sesi', (e) => {
             console.log(e.id);
             console.log(e.sesi);
@@ -416,59 +375,66 @@
 
             // setting timer
             let waktu = e.waktu;
+            let timer = null;
+            // console.log(timer);
+            let countdownTimer = null;
+            // console.log(countdownTimer);
 
+            // set condition: start; pause; stop; ganti; back
             localStorage.setItem('condition', e.condition);
             let condition = localStorage.getItem('condition');
-            console.log(localStorage.getItem('condition'));
+            // console.log(condition);
 
-            /* Timer */
-            // variable used to continue timer
+            
+            // variable buat continue timer
             const key = 'timer';
             var timeInMs = localStorage.getItem(key);
+            // console.log(timeInMs);
 
             // kalau game berjalan
             if (condition == 'start') {
                 clearInterval(x);
                 console.log('masuk start');
+
                 // kalau sudah pernah buka web ini
                 if (timeInMs) {
-                    // hitung waktu yang hilang saat reload
-                    // let delta = Date.now() - localStorage.getItem('now');
-
                     // timer lanjut dari waktu sebelum reload
-                    timer = timeInMs;
+                    timer = parseInt(timeInMs);
+                    // console.log(timer);
+
+                    // set destinasi stop
+                    let nowAwal = new Date().getTime();
+                    // console.log(nowAwal);
+                    countdownTimer = nowAwal + timer;
+                    // console.log(countdownTimer);
 
                     x = setInterval(function() {
-                        // kalau masih ada waktu, maka kurangi
-                        if (timer > 0) {
-                            // jadikan minutes : second
-                            let minutes = Math.floor((timer % (1000 * 60 * 60)) / (
-                                1000 *
-                                60));
-                            let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+                        let now = new Date().getTime();
+                        console.log(now);
+                        let distance = countdownTimer - now;
+                        // console.log(distance);
 
-                            // kalau tidak double digit jadikan double digit
-                            if (minutes < 10) {
-                                minutes = '0' + minutes;
-                            }
-                            if (seconds < 10) {
-                                seconds = '0' + seconds;
-                            }
+                        // jadikan minutes : second
+                        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                            // tampilkan timer
-                            $('#timer').text(minutes + " : " + seconds);
-
-                            //kurangi per 1000 milisecond
-                            timer -= 1000;
-
-                            // masukkan timer dan tanggal sekarang ke localStorage per detik
-                            localStorage.setItem(key, timer);
-                            // localStorage.setItem('now', Date.now());
-                            console.log(localStorage.getItem(key));
-                            // console.log(localStorage.getItem('now'));
+                        // kalau tidak double digit jadikan double digit
+                        if (minutes < 10) {
+                            minutes = '0' + minutes;
                         }
+                        if (seconds < 10) {
+                            seconds = '0' + seconds;
+                        }
+
+                        // tampilkan timer
+                        $('#timer').text(minutes + " : " + seconds);
+
+                        // masukkan timer dan tanggal sekarang ke localStorage per detik
+                        localStorage.setItem(key, distance);
+                        console.log(localStorage.getItem(key));
+
                         // kalau sudah habis, maka selesai 
-                        else {
+                        if (distance < 0) {
                             // hapus timer sekarang
                             clearInterval(x);
                             localStorage.clear();
@@ -481,40 +447,45 @@
                 }
                 // kalau belum pernah buka web ini
                 else {
-                    let timer = waktu * 1000;
+                    timer = waktu * 1000;
+                    // console.log(timer);
+
+                    // set destinasi stop
+                    let nowAwal = new Date().getTime();
+                    // console.log(nowAwal);
+                    countdownTimer = nowAwal + timer;
+                    // console.log(countdownTimer);
 
                     // buat timer baru
                     x = setInterval(function() {
-                        // kalau masih ada waktu, maka kurangi
-                        if (timer > 0) {
-                            // jadikan minutes : second
-                            let minutes = Math.floor((timer % (1000 * 60 * 60)) / (
-                                1000 *
-                                60));
-                            let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+                        let now = new Date().getTime();
+                        // console.log(now);
+                        let distance = countdownTimer - now;
+                        // console.log(distance);
 
-                            // kalau tidak double digit jadikan double digit
-                            if (minutes < 10) {
-                                minutes = '0' + minutes;
-                            }
-                            if (seconds < 10) {
-                                seconds = '0' + seconds;
-                            }
+                        // jadikan minutes : second
+                        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (
+                            1000 *
+                            60));
+                        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                            // tampilkan timer
-                            $('#timer').text(minutes + " : " + seconds);
-
-                            //kurangi per 1000 milisecond
-                            timer -= 1000;
-
-                            // masukkan timer dan tanggal sekarang ke localStorage per detik
-                            localStorage.setItem(key, timer);
-                            // localStorage.setItem('now', Date.now());
-                            console.log(localStorage.getItem(key));
-                            // console.log(localStorage.getItem('now'));
+                        // kalau tidak double digit jadikan double digit
+                        if (minutes < 10) {
+                            minutes = '0' + minutes;
                         }
+                        if (seconds < 10) {
+                            seconds = '0' + seconds;
+                        }
+
+                        // tampilkan timer
+                        $('#timer').text(minutes + " : " + seconds);
+
+                        // masukkan timer dan tanggal sekarang ke localStorage per detik
+                        localStorage.setItem(key, distance);
+                        console.log(localStorage.getItem(key));
+
                         // kalau sudah habis, maka selesai 
-                        else {
+                        if (distance < 0) {
                             // hapus timer sekarang
                             clearInterval(x);
                             localStorage.clear();
@@ -528,12 +499,11 @@
             }
             //  kalau game pause
             else if (condition == 'pause') {
-                console.log('masuk pause');
                 clearInterval(x);
+                console.log('masuk pause');
             }
             //  kalau game stop
             else if (condition == 'stop') {
-                console.log('masuk stop');
                 clearInterval(x);
 
                 // reset timer
@@ -542,49 +512,50 @@
 
                 // ganti timer ke default
                 $('#timer').text('- - : - -');
+                console.log('masuk stop');
             }
             // kalau ganti sesi
             else if (condition == 'ganti') {
                 // tampilkan modal
                 $('#modalInfoTimer').modal('show');
 
-                console.log('masuk ganti');
                 clearInterval(x);
+                console.log('masuk ganti');
 
-                let timer = waktu * 1000;
+                timer = waktu * 1000;
+
+                // set destinasi stop
+                let nowAwal = new Date().getTime();
+                countdownTimer = nowAwal + timer;
 
                 // buat timer baru
                 x = setInterval(function() {
-                    // kalau masih ada waktu, maka kurangi
-                    if (timer > 0) {
-                        // jadikan minutes : second
-                        let minutes = Math.floor((timer % (1000 * 60 * 60)) / (
-                            1000 *
-                            60));
-                        let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+                    let now = new Date().getTime();
+                    let distance = countdownTimer - now;
 
-                        // kalau tidak double digit jadikan double digit
-                        if (minutes < 10) {
-                            minutes = '0' + minutes;
-                        }
-                        if (seconds < 10) {
-                            seconds = '0' + seconds;
-                        }
+                    // jadikan minutes : second
+                    let minutes = Math.floor((distance % (1000 * 60 * 60)) / (
+                        1000 *
+                        60));
+                    let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                        // tampilkan timer
-                        $('#timer').text(minutes + " : " + seconds);
-
-                        //kurangi per 1000 milisecond
-                        timer -= 1000;
-
-                        // masukkan timer dan tanggal sekarang ke localStorage per detik
-                        localStorage.setItem(key, timer);
-                        // localStorage.setItem('now', Date.now());
-                        console.log(localStorage.getItem(key));
-                        // console.log(localStorage.getItem('now'));
+                    // kalau tidak double digit jadikan double digit
+                    if (minutes < 10) {
+                        minutes = '0' + minutes;
                     }
+                    if (seconds < 10) {
+                        seconds = '0' + seconds;
+                    }
+
+                    // tampilkan timer
+                    $('#timer').text(minutes + " : " + seconds);
+
+                    // masukkan timer dan tanggal sekarang ke localStorage per detik
+                    localStorage.setItem(key, distance);
+                    console.log(localStorage.getItem(key));
+
                     // kalau sudah habis, maka selesai 
-                    else {
+                    if (distance < 0) {
                         // hapus timer sekarang
                         clearInterval(x);
                         localStorage.clear();
@@ -598,48 +569,48 @@
                 // set condition supaya waktu reload masih jalan
                 localStorage.setItem('condition', 'start');
             }
-            // kalau ganti sesi
+            // kalau back sesi
             else if (condition == 'back') {
                 // tampilkan modal
                 $('#modalInfoTimer').modal('show');
 
-                console.log('masuk back');
                 clearInterval(x);
+                console.log('masuk back');
 
-                let timer = waktu * 1000;
+                timer = waktu * 1000;
+
+                // set destinasi stop
+                let nowAwal = new Date().getTime();
+                countdownTimer = nowAwal + timer;
 
                 // buat timer baru
                 x = setInterval(function() {
-                    // kalau masih ada waktu, maka kurangi
-                    if (timer > 0) {
-                        // jadikan minutes : second
-                        let minutes = Math.floor((timer % (1000 * 60 * 60)) / (
-                            1000 *
-                            60));
-                        let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+                    let now = new Date().getTime();
+                    let distance = countdownTimer - now;
 
-                        // kalau tidak double digit jadikan double digit
-                        if (minutes < 10) {
-                            minutes = '0' + minutes;
-                        }
-                        if (seconds < 10) {
-                            seconds = '0' + seconds;
-                        }
+                    // jadikan minutes : second
+                    let minutes = Math.floor((distance % (1000 * 60 * 60)) / (
+                        1000 *
+                        60));
+                    let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                        // tampilkan timer
-                        $('#timer').text(minutes + " : " + seconds);
-
-                        //kurangi per 1000 milisecond
-                        timer -= 1000;
-
-                        // masukkan timer dan tanggal sekarang ke localStorage per detik
-                        localStorage.setItem(key, timer);
-                        // localStorage.setItem('now', Date.now());
-                        console.log(localStorage.getItem(key));
-                        // console.log(localStorage.getItem('now'));
+                    // kalau tidak double digit jadikan double digit
+                    if (minutes < 10) {
+                        minutes = '0' + minutes;
                     }
+                    if (seconds < 10) {
+                        seconds = '0' + seconds;
+                    }
+
+                    // tampilkan timer
+                    $('#timer').text(minutes + " : " + seconds);
+
+                    // masukkan timer dan tanggal sekarang ke localStorage per detik
+                    localStorage.setItem(key, distance);
+                    console.log(localStorage.getItem(key));
+
                     // kalau sudah habis, maka selesai 
-                    else {
+                    if (distance < 0) {
                         // hapus timer sekarang
                         clearInterval(x);
                         localStorage.clear();
@@ -653,6 +624,18 @@
                 // set condition supaya waktu reload masih jalan
                 localStorage.setItem('condition', 'start');
             }
+        })*/
+
+        window.Echo.channel('timePusher').listen('.time', (e) => {
+            console.log(e.minute);
+            console.log(e.second);
+            console.log(e.status);
+
+            if (e.status == 'ganti' || e.status == 'back') {
+                $('#modalInfoTimer').modal('show');
+            }
+
+            $('#timer').text(e.minute + " : " + e.second);
         })
 
         window.Echo.channel('analisisChannel').listen('.analisis', (e) => {
