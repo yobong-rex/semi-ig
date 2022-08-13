@@ -16,23 +16,44 @@ class ProduksiController extends Controller
         $tempDefect = [];
         $defectDefault = 10;
         foreach ($proses as $p) {
-            $data = DB::table('mesin as m')
-                ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
-                ->join('level_komponen as lk', 'k.idkomponen', '=', 'lk.komponen_idkomponen')
-                ->select('k.level')
-                ->where('lk.teams_idteam', $user[0]->idteam)
-                ->where('m.nama', $p)
-                ->orderBy('k.idkomponen', 'asc')
+            $data = DB::table('mesin_has_teams')
+                ->join('mesin', 'mesin_has_teams.mesin_idmesin', '=','mesin.idmesin')
+                ->select('mesin_has_teams.level')
+                ->where('mesin.nama', $p)
+                ->where('mesin_has_teams.teams_idteam', $user[0]->idteam)
                 ->get();
+            //     ->get();
+            // $data = DB::table('mesin as m')
+            //     ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
+            //     ->join('level_komponen as lk', 'k.idkomponen', '=', 'lk.komponen_idkomponen')
+            //     ->select('k.level')
+            //     ->where('lk.teams_idteam', $user[0]->idteam)
+            //     ->where('m.nama', $p)
+            //     ->orderBy('k.idkomponen', 'asc')
+            //     ->get();
             if (count($data) > 0) {
-                foreach ($data as $d) {
-                    $lvlDefect = $d->level - 1;
-                    array_push($tempDefect, $lvlDefect);
+                    // $lvlDefect = $d->level - 1;
+                    // array_push($tempDefect, $lvlDefect);
+                    $minDefect = 0;
+                    if($data[0]->level == 2){
+                        $minDefect = 2;
+                    }
+                    else if($data[0]->level == 3){
+                        $minDefect = 4;
+                    }
+                    else if($data[0]->level == 4){
+                        $minDefect = 6;
+                    }
+                    else if($data[0]->level == 5){
+                        $minDefect = 8;
+                    }
+                    else if($data[0]->level == 6){
+                        $minDefect = 10;
+                    }
+                    $newDefect = $defectDefault - $minDefect;
+                    $defect = $defect . $newDefect . ';';
                 }
-                $minDefect = min($tempDefect);
-                $newDefect = $defectDefault - $minDefect;
-                $defect = $defect . $newDefect . ';';
-            }
+                // $minDefect = min($tempDefect);
         }
         return $defect;
     }
@@ -291,9 +312,8 @@ class ProduksiController extends Controller
         // $totBahan = $jumlah * 3;
         // $newInv = $teamStatus[0]->inventory + $totBahan;
         $produkDefect = $jumlah - $hasil;
-        $produkBerhasil = $jumlah - $produkDefect;
         $newDefect = $teamStatus[0]->total_defect + $produkDefect;
-        $newBerhasil = $teamStatus[0]->total_berhasil + $produkBerhasil;
+        $newBerhasil = $teamStatus[0]->total_berhasil + $hasil;
         $newDana = $teamStatus[0]->dana - 100;
         $newLimit = $teamStatus[0]->limit - $jumlah;
         DB::table('history_produksi')
@@ -310,7 +330,7 @@ class ProduksiController extends Controller
         ]);
 
         return response()->json(array(
-            'msg' => 'selamat kamu berhasil melakukan produksi ' . $name . ' sebanyak ' . $hasil_user,
+            'msg' => 'selamat kamu berhasil melakukan produksi ' . $name . ' sebanyak ' . $hasil_user . ' dengan defect produk sebanyak '. $produkDefect,
             'code' => '401'
         ), 200);
     }
