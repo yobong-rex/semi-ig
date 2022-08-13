@@ -313,7 +313,7 @@ class ProduksiController extends Controller
 
         // $totBahan = $jumlah * 3;
         // $newInv = $teamStatus[0]->inventory + $totBahan;
-        $produkDefect = $jumlah - $hasil;
+        $produkDefect = $jumlah - $hasil_user;
         $newDefect = $teamStatus[0]->total_defect + $produkDefect;
         $newBerhasil = $teamStatus[0]->total_berhasil + $hasil;
         $newDana = $teamStatus[0]->dana - 100;
