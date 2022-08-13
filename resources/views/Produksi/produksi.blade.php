@@ -152,12 +152,12 @@
                                     @endif
                                     <td>
                                         @if($i == 1)
-                                            <p>Limit Produksi : {{$limit[0]->limit_produksi1}}</p>
+                                            <p>Sisa Produksi : {{$limit[0]->limit_produksi1}}</p>
                                         @elseif($i == 2)
-                                            <p>Limit Produksi : {{$limit[0]->limit_produksi2}}</p>
+                                            <p>Sisa Produksi : {{$limit[0]->limit_produksi2}}</p>
                                         @else
-                                            <p>Limit Produksi : {{$limit[0]->limit_produksi3}}</p>
-                                        @endif  
+                                            <p>Sisa Produksi : {{$limit[0]->limit_produksi3}}</p>
+                                        @endif
                                         <select name="produk_{{ $i }}" id="produk_{{ $i }}">
                                             <option value="">pilih produk</option>
                                             @if ($i == 1)

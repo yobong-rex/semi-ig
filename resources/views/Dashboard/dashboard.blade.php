@@ -217,7 +217,7 @@
                             <h2>Proses {{ $i }}</h2>
                         </div>
                         <div class="col">
-                            <h4>Max Product : <span id="maxProduct_{{ $i }}">
+                            <h4>Kapasitas Mesin : <span id="maxProduct_{{ $i }}">
                                     @if (isset($analisisProses[$i - 1][0]))
                                         {{ $analisisProses[$i - 1][0] }}
                                     @else
@@ -227,7 +227,7 @@
                             </h4>
                         </div>
                         <div class="col">
-                            <h4>Cycle Time : <span id="cycleTime_{{ $i }}">
+                            <h4>Maksimal Produksi : <span id="cycleTime_{{ $i }}">
                                     @if (isset($analisisProses[$i - 1][1]))
                                         {{ $analisisProses[$i - 1][1] }}
                                     @elseif ($i == 1)
