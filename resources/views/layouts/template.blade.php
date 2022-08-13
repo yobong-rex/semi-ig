@@ -286,12 +286,12 @@
         let x = null;
 
         // buat menjalankan / melanjutkan timer pas buka webpage
-        $(document).ready(function() {
+        /*$(document).ready(function() {
             let condition = localStorage.getItem('condition');
 
             // kalau game sudah start
             if (condition == 'start') {
-                /* Timer */
+                
                 clearInterval(x);
                 console.log('masuk start');
 
@@ -362,7 +362,7 @@
             }
         })
 
-        /* Pusher */
+        
         window.Echo.channel('sesiPusher').listen('.sesi', (e) => {
             console.log(e.id);
             console.log(e.sesi);
@@ -385,7 +385,7 @@
             let condition = localStorage.getItem('condition');
             // console.log(condition);
 
-            /* Timer */
+            
             // variable buat continue timer
             const key = 'timer';
             var timeInMs = localStorage.getItem(key);
@@ -624,6 +624,18 @@
                 // set condition supaya waktu reload masih jalan
                 localStorage.setItem('condition', 'start');
             }
+        })*/
+
+        window.Echo.channel('timePusher').listen('.time', (e) => {
+            console.log(e.minute);
+            console.log(e.second);
+            console.log(e.status);
+
+            if (e.status == 'ganti' || e.status == 'back') {
+                $('#modalInfoTimer').modal('show');
+            }
+
+            $('#timer').text(e.minute + " : " + e.second);
         })
 
         window.Echo.channel('analisisChannel').listen('.analisis', (e) => {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\Sesi;
+use App\Events\Timer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use DB;
@@ -70,7 +71,8 @@ class SesiController extends Controller
 
         return response()->json(array(
             "success" => true,
-            'status' => 'Started'
+            'status' => 'Started',
+            'waktu' => $sesi[0]->waktu
         ), 200);
     }
 
@@ -236,8 +238,6 @@ class SesiController extends Controller
 
         }
 
-
-
         $sesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
             ->select('s.sesi', 'ws.nama', 'ws.waktu')
@@ -264,7 +264,8 @@ class SesiController extends Controller
             "success" => true,
             "sesi" => $sesi,
             'detail' => $detail,
-            'status' => 'Started'
+            'status' => 'Started',
+            'waktu' => $sesi[0]->waktu
         ), 200);
     }
 
@@ -307,18 +308,22 @@ class SesiController extends Controller
             "success" => true,
             "sesi" => $sesi,
             'detail' => $detail,
-            'status' => 'Started'
+            'status' => 'Started',
+            'waktu' => $sesi[0]->waktu
         ), 200);
     }
 
     function timer(Request $request)
     {
-        $namaSesi = $request->get('namaSesi');
+        $minute = $request->get('minute');
+        $second = $request->get('second');
 
-        $waktu_sesi = DB::table('waktu_sesi')->select('waktu')->where('nama', 'like', '%' . $namaSesi . '%')->get();
+        $status = $request->get('status');
+
+        event(new Timer($minute, $second, $status));
 
         return response()->json(array(
-            'waktu' => $waktu_sesi
+            'status' => "Success"
         ));
     }
 }
