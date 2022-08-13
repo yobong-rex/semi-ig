@@ -157,7 +157,7 @@
                                             <p>Limit Produksi : {{$limit[0]->limit_produksi2}}</p>
                                         @else
                                             <p>Limit Produksi : {{$limit[0]->limit_produksi3}}</p>
-                                        @endif
+                                        @endif  
                                         <select name="produk_{{ $i }}" id="produk_{{ $i }}">
                                             <option value="">pilih produk</option>
                                             @if ($i == 1)

@@ -242,7 +242,7 @@
                     Sesi telah berganti!!
                 </div>
                 <div class="modal-footer">
-                    @can('isProduction')
+                    @can('isProduction_Manager')
                         <a href="{{ route('dashboard') }}" class="btn btn-secondary mdl-close">OK!</a>
                     @elsecan('isMarketing')
                         <a href="{{ route('dashboard') }}" class="btn btn-secondary mdl-close">OK!</a>
@@ -291,7 +291,7 @@
 
             // kalau game sudah start
             if (condition == 'start') {
-                
+
                 clearInterval(x);
                 console.log('masuk start');
 
@@ -337,7 +337,7 @@
                         localStorage.setItem(key, distance);
                         console.log(localStorage.getItem(key));
 
-                        // kalau sudah habis, maka selesai 
+                        // kalau sudah habis, maka selesai
                         if (distance < 0) {
                             // hapus timer sekarang
                             clearInterval(x);
@@ -362,7 +362,7 @@
             }
         })*/
 
-        
+
         window.Echo.channel('sesiPusher').listen('.sesi', (e) => {
             console.log(e.id);
             console.log(e.sesi);
@@ -385,7 +385,7 @@
             let condition = localStorage.getItem('condition');
             // console.log(condition);
 
-            
+
             // variable buat continue timer
             const key = 'timer';
             var timeInMs = localStorage.getItem(key);
@@ -433,7 +433,7 @@
                         localStorage.setItem(key, distance);
                         console.log(localStorage.getItem(key));
 
-                        // kalau sudah habis, maka selesai 
+                        // kalau sudah habis, maka selesai
                         if (distance < 0) {
                             // hapus timer sekarang
                             clearInterval(x);
@@ -484,7 +484,7 @@
                         localStorage.setItem(key, distance);
                         console.log(localStorage.getItem(key));
 
-                        // kalau sudah habis, maka selesai 
+                        // kalau sudah habis, maka selesai
                         if (distance < 0) {
                             // hapus timer sekarang
                             clearInterval(x);
@@ -554,7 +554,7 @@
                     localStorage.setItem(key, distance);
                     console.log(localStorage.getItem(key));
 
-                    // kalau sudah habis, maka selesai 
+                    // kalau sudah habis, maka selesai
                     if (distance < 0) {
                         // hapus timer sekarang
                         clearInterval(x);
@@ -609,7 +609,7 @@
                     localStorage.setItem(key, distance);
                     console.log(localStorage.getItem(key));
 
-                    // kalau sudah habis, maka selesai 
+                    // kalau sudah habis, maka selesai
                     if (distance < 0) {
                         // hapus timer sekarang
                         clearInterval(x);

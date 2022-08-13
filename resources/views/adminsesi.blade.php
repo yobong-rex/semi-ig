@@ -192,7 +192,7 @@
                         localStorage.setItem('timer', distance);
                         console.log(localStorage.getItem('timer'));
 
-                        // kalau sudah habis, maka selesai 
+                        // kalau sudah habis, maka selesai
                         if (distance < 1000) {
                             // hapus timer sekarang
                             clearInterval(x);
@@ -302,7 +302,7 @@
                             localStorage.setItem('timer', distance);
                             console.log(localStorage.getItem('timer'));
 
-                            // kalau sudah habis, maka selesai 
+                            // kalau sudah habis, maka selesai
                             if (distance < 1000) {
                                 // hapus timer sekarang
                                 clearInterval(x);
@@ -370,7 +370,7 @@
                             localStorage.setItem('timer', distance);
                             console.log(localStorage.getItem('timer'));
 
-                            // kalau sudah habis, maka selesai 
+                            // kalau sudah habis, maka selesai
                             if (distance < 1000) {
                                 // hapus timer sekarang
                                 clearInterval(x);
@@ -464,7 +464,7 @@
                 url: "{{ route('ganti.sesi') }}",
                 data: {
                     '_token': '<?php echo csrf_token(); ?>',
-                    'sesi': $('#nomorSesi').attr('value')
+                    'sesi': $('#nomorSesi').attr('value'),
                 },
                 success: function(data) {
                     if (data.msg == 'Sesi Sudah Max Woe!!') {
@@ -537,7 +537,7 @@
                             localStorage.setItem('timer', distance);
                             console.log(localStorage.getItem('timer'));
 
-                            // kalau sudah habis, maka selesai 
+                            // kalau sudah habis, maka selesai
                             if (distance < 1000) {
                                 // hapus timer sekarang
                                 clearInterval(x);
@@ -638,7 +638,7 @@
                             localStorage.setItem('timer', distance);
                             console.log(localStorage.getItem('timer'));
 
-                            // kalau sudah habis, maka selesai 
+                            // kalau sudah habis, maka selesai
                             if (distance < 1000) {
                                 // hapus timer sekarang
                                 clearInterval(x);
