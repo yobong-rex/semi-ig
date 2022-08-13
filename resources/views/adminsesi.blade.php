@@ -286,7 +286,7 @@
                             console.log(localStorage.getItem('timer'));
 
                             // kalau sudah habis, maka selesai 
-                            if (distance < 0) {
+                            if (distance < 1000) {
                                 // hapus timer sekarang
                                 clearInterval(x);
                                 localStorage.clear();
@@ -354,7 +354,7 @@
                             console.log(localStorage.getItem('timer'));
 
                             // kalau sudah habis, maka selesai 
-                            if (distance < 0) {
+                            if (distance < 1000) {
                                 // hapus timer sekarang
                                 clearInterval(x);
                                 localStorage.clear();
@@ -521,7 +521,7 @@
                             console.log(localStorage.getItem('timer'));
 
                             // kalau sudah habis, maka selesai 
-                            if (distance < 0) {
+                            if (distance < 1000) {
                                 // hapus timer sekarang
                                 clearInterval(x);
                                 localStorage.clear();
@@ -622,7 +622,7 @@
                             console.log(localStorage.getItem('timer'));
 
                             // kalau sudah habis, maka selesai 
-                            if (distance < 0) {
+                            if (distance < 1000) {
                                 // hapus timer sekarang
                                 clearInterval(x);
                                 localStorage.clear();
