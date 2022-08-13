@@ -360,7 +360,7 @@
                 clearInterval(x);
                 console.log('masuk stop');
             }
-        })
+        })*/
 
         
         window.Echo.channel('sesiPusher').listen('.sesi', (e) => {
@@ -374,7 +374,7 @@
             $('#sesi').text(e.sesi);
 
             // setting timer
-            let waktu = e.waktu;
+            /*let waktu = e.waktu;
             let timer = null;
             // console.log(timer);
             let countdownTimer = null;
@@ -623,8 +623,8 @@
 
                 // set condition supaya waktu reload masih jalan
                 localStorage.setItem('condition', 'start');
-            }
-        })*/
+            }*/
+        })
 
         window.Echo.channel('timePusher').listen('.time', (e) => {
             console.log(e.minute);

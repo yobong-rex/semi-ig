@@ -110,7 +110,7 @@
         function getLeaderboard(){
             $.ajax({
                 type: "POST",
-                url: "{{ route('leaderboard') }}",
+                url: "{{ route('leaderboard.data') }}",
                 data: {
                     '_token': '<?php echo csrf_token(); ?>'
                 },

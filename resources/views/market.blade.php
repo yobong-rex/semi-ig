@@ -103,7 +103,7 @@
 
         <div class="row spacing"></div>
 
-        <div class="alert alert-danger" role="alert">Masukkan Pembelian sesuai Urutan !!!</div>
+        <div class="alert alert-success" role="alert">Selamat Datang di IG Market! &#128591; </br> Selamat Berbelanja</div>
 
 
                 {{-- market table --}}
