@@ -171,12 +171,29 @@
                         // tampilkan timer
                         $('#timer').text(minutes + " : " + seconds);
 
+                        // tamplikan ke halaman user pakai pusher
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('timer') }}",
+                            data: {
+                                '_token': '<?php echo csrf_token(); ?>',
+                                'minute': minutes,
+                                'second': seconds
+                            },
+                            success: function() {
+                                // alert('success');
+                            },
+                            error: function() {
+                                alert('error');
+                            }
+                        })
+
                         // masukkan timer dan tanggal sekarang ke localStorage per detik
                         localStorage.setItem('timer', distance);
                         console.log(localStorage.getItem('timer'));
 
                         // kalau sudah habis, maka selesai 
-                        if (distance < 0) {
+                        if (distance < 1000) {
                             // hapus timer sekarang
                             clearInterval(x);
                             localStorage.clear();
