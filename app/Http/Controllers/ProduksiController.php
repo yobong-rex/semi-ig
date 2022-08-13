@@ -126,7 +126,9 @@ class ProduksiController extends Controller
         $defect2 = $this->getDefect($splitProses2, $user);
         $defect3 = $this->getDefect($splitProses3, $user);
 
-        return view('Produksi.produksi', compact('splitProses1', 'splitProses2', 'splitProses3', 'defect1', 'defect2', 'defect3', 'user', 'namaSesi', 'valueSesi','proses1','proses2','proses3'));
+        $limit = DB::table('teams')->select('limit_produksi1','limit_produksi2','limit_produksi3')->where('idteam',$team)->get();
+
+        return view('Produksi.produksi', compact('splitProses1', 'splitProses2', 'splitProses3', 'defect1', 'defect2', 'defect3', 'user', 'namaSesi', 'valueSesi','proses1','proses2','proses3','limit'));
     }
 
     function buat(Request $request)
