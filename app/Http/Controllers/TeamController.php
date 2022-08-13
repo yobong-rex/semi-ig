@@ -180,6 +180,9 @@ class TeamController extends Controller
             ->insert([
                 'nama' => $namaTeam,
                 'dana' => 15000,
+                'total_defect' => 0,
+                'total_berhasil' => 0,
+                'pengeluaran' => 0,
                 'inventory' => 1000,
                 'total_pendapatan' => 0,
                 'demand' => 0,
