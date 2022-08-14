@@ -142,6 +142,7 @@
                 }
             });
         }
+
         $( document ).ready(function(){
             getLeaderboard();
         });
@@ -150,6 +151,18 @@
            if(e.msg == 'berhasil'){
                 getLeaderboard();
            }
+        })
+
+        window.Echo.channel('timePusher').listen('.time', (e) => {
+            console.log(e.minute);
+            console.log(e.second);
+            console.log(e.status);
+
+            if (e.status == 'ganti' || e.status == 'back') {
+                $('#modalInfoTimer').modal('show');
+            }
+
+            $('#timer').text(e.minute + " : " + e.second);
         })
     </script>
 </body>
