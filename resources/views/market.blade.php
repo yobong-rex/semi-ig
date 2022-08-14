@@ -27,13 +27,17 @@
             color: #000000;
         }
 
-        .form-control {
-            width: 200px;
-        }
 
         .nomor_bahan {
             width: 50px;
             text-align: center;
+        }
+        thead{
+            position: sticky;
+            padding-top:25px;;
+        }
+        thead {
+            inset-block-start: 0; /* "top" */
         }
     </style>
     @php
@@ -60,7 +64,6 @@
     konfirmasi_pembelian : button konfirmasi pembelian --}}
 
     <body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
-
 
         <div class="row spacing"></div>
 
@@ -103,59 +106,67 @@
 
         <div class="row spacing"></div>
 
-        <div class="alert alert-success" role="alert">Selamat Datang di IG Market! &#128591; </br> Selamat Berbelanja</div>
+        <div class="alert alert-success" role="alert">Selamat Datang di IG Market! <span style="font-size: 24px;">&#128591;</span></br> Selamat Berbelanja</div>
 
-
-                {{-- market table --}}
-                <table class="table table-bordered" style="vertical-align: middle;">
-                    <thead class="thead">
-                        <tr>
-                            <th class="nomor_bahan" scope="col">No.</th>
-                            <th scope="col">Bahan Baku</th>
-                            <th scope="col">Isi/Paket</th>
-                            <th scope="col">Stok</th>
-                            <th scope="col">Harga Paket</th>
-                            <th scope="col" style="width:250px;">Pembelian per paket</th>
-                            <th scope="col">Sub-Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $nomer = 1; ?>
-                        @foreach ($data as $d)
-                            <input type="hidden" id="item_{{ $nomer }}" value="{{ $d->idig_markets }}">
+        <div class="row spacing"></div>
+        
+        <div class="card-body rounded" style="background-color:#ffffff;box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
+            <h2>&#x1F6D2;Daftar belanja:</h2>
+            <div class="table-responsive">
+                    {{-- market table --}}
+                    <table class="table table-striped table-bordered" style="vertical-align: middle;">
+                        <thead class="table-dark thead" style="background-color: #ffffff;">
                             <tr>
-                                <th class="nomor_bahan" scope="row">{{ $nomer }}</th>
-                                <td id="bahan_{{ $nomer }}">{{ $d->bahan_baku }}</td>
-                                <td id="isi_{{ $nomer }}">{{ $d->isi }}</td>
-                                <td id="stok_{{ $d->idig_markets }}">{{ $d->stok }}</td>
-                                <td id="harga_{{ $nomer }}">{{ $d->harga }}</td>
-                                <td><input class="form-control quantity" id="input_{{ $nomer }}" type="number"
-                                        min="0"
-                                        oninput="this.value =
-                                !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
-                                placeholder=0>
-                        </td>
-                        <td><span id="subtotal_{{ $nomer }}">0</span> TC</td>
-                    </tr>
-                    <?php $nomer += 1; ?>
-                @endforeach
-                <tr>
-                    <td colspan="6">Biaya Pengiriman:</td>
-                    <td id="biaya_pengiriman">150 TC</td>
-                </tr>
-                <tr>
-                    <td colspan="6">Total Pembelian:</td>
-                    {{-- button konfirmasi show pop up --}}
-                    <td><span id="total">0</span> TC</td>
-                </tr>
-                <tr>
-                    <td colspan="8" style="text-align:right;">
-                        <button type="button" class="btn btn-success" id="button_PopupModal" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">Konfirmasi</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                                <th class="nomor_bahan" scope="col">No.</th>
+                                <th scope="col">Bahan Baku</th>
+                                <th style="text-align: center;" scope="col">Isi / Paket</th>
+                                <th style="text-align: center;" scope="col">Stok</th>
+                                <th style="text-align: center;" scope="col">Harga Paket</th>
+                                <th scope="col">Pembelian per paket</th>
+                                <th scope="col">Sub-Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $nomer = 1; ?>
+                            @foreach ($data as $d)
+                                <input type="hidden" id="item_{{ $nomer }}" value="{{ $d->idig_markets }}">
+                                <tr>
+                                    <th class="nomor_bahan" scope="row">{{ $nomer }}</th>
+                                    <td id="bahan_{{ $nomer }}">{{ $d->bahan_baku }}</td>
+                                    <td style="text-align: center;" id="isi_{{ $nomer }}">{{ $d->isi }}</td>
+                                    <td style="text-align: center;" id="stok_{{ $d->idig_markets }}">{{ $d->stok }}</td>
+                                    <td style="text-align: center;" id="harga_{{ $nomer }}">{{ $d->harga }}</td>
+                                    <td><input style="max-width: 200px;" class="form-control quantity" id="input_{{ $nomer }}" type="number"
+                                            min="0"
+                                            oninput="this.value =
+                                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                                    placeholder=0>
+                                    </td>
+                                    <td><span id="subtotal_{{ $nomer }}">0</span> TC</td>
+                                </tr>
+                                <?php $nomer += 1; ?>
+                            @endforeach
+                            <tr>
+                                <td colspan="6">Biaya Pengiriman:</td>
+                                <td id="biaya_pengiriman">150 TC</td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">Total Pembelian:</td>
+                                {{-- button konfirmasi show pop up --}}
+                                <td><span id="total">0</span> TC</td>
+                            </tr>
+                            <tr>
+                                <td colspan="7" style="text-align:right;">
+                                    <button type="button" class="btn btn-success" id="button_PopupModal" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop" style="width:140px;">Konfirmasi</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+
+        </div>
+        <div class="row spacing"></div>
 
         {{-- Pop Up Konfirmasi --}}
         <!-- Modal -->
@@ -199,7 +210,6 @@
                     </div>
                 </div>
             </div>
-        </div>
         </div>
 
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

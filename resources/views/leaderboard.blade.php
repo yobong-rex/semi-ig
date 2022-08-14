@@ -32,6 +32,12 @@
             font-weight: bold;
             src: local('TT Norms Light'), url('assets/font/TTNorms-Light.otf');
         }
+        @font-face {
+            font-family: 'TT Norms Regular';
+            font-style: normal;
+            font-weight: normal;
+            src: local('TT Norms Regular'), url('assets/font/TTNorms-Regular.woff') format('woff');
+        }
         .leaderboard_title{
             font-family: "TT Norms Bold";
             background-color: #ea435e;
@@ -45,10 +51,7 @@
         .timer {
             background-color: #77dd77;
             /* misal waktu habis background jadi #ea435e */
-            width: 150px;
             box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
-            position: fixed;
-            top:4%;
         }
     </style>
 </head>
@@ -56,15 +59,25 @@
     <div class="container-fluid p-0">
         <div class="container px-4 py-5" style="font-family: TT Norms Light;">
             <div class="row justify-content-end">
-                <div class="col-md-2 flex text-center align-self-center timer rounded-2"
+                {{-- <div class="col-md-2 flex text-center align-self-center timer rounded-2"
                         style="font-family:TT Norms Regular;">
                     <h3>Timer</h3>
                     <h4 id="timer">- - : - -</h4>
-                </div>
+                </div> --}}
             </div>
 
-            <div class="row text-center rounded leaderboard_title">
-                <h1>LEADERBOARD</h1>
+            <div class="row text-center rounded leaderboard_title py-2">
+                <div class="col"></div>
+                <div class="col align-self-center" style="vertical-align: middle;"><h1>LEADERBOARD</h1></div>
+                
+                <div class="col align-self-center" style="font-family:TT Norms Regular;">
+                    <div class="col"></div>
+                    <div class="col rounded align-self-center timer" style="margin-bottom: 0!important;">
+                        <h3>Timer</h3>
+                        <h4 id="timer">- - : - -</h4>
+                    </div>
+                    <div class="col"></div>
+                </div>
             </div>
 
             <div class="row spacing"></div>

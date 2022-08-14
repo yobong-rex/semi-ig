@@ -50,6 +50,9 @@
             font-weight: normal;
             src: local('TT Norms Regular'), url('assets/font/TTNorms-Regular.woff') format('woff');
         }
+        .navbar{
+            
+        }
 
         .nav-link,
         .nav-link:focus {
@@ -135,7 +138,7 @@
 
 <body>
     {{-- NavBar --}}
-    <nav class="navbar navbar-expand-lg" style="background-color: #ffff; box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);">
+    <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #ffff; box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);">
         <div class="container-fluid gap-5">
             <a class="navbar-brand" href="/">
                 <img src="{{ asset('assets') }}/logo/Logo_IG_Header.png" alt="Logo IGXXX" style="max-height: 40px">
