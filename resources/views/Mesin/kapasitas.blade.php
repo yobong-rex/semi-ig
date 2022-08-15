@@ -88,7 +88,7 @@
                         <th scope="col">Mesin</th>
                         <th scope="col" style="text-align:center;">Level</th>
                         <th class="class_kapasitasMesin" style="text-align:center;">Kapasitas</th>
-                        <th scope="col" style="text-align:center;">Konfirmasi</th>
+                        {{-- <th scope="col" style="text-align:center;">Konfirmasi</th> --}}
                     </tr>
                 </thead>
                 {{-- Data Kapasitas --}}
