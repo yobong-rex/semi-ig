@@ -31,7 +31,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware([CheckSesi::class])->group(function () {
         // Mesin Kapasitas
-        Route::get('/kapasitas', 'KapasitasController@kapasitas')->middleware('can:isProduction_Manager')->name('kapasitas');
+        Route::get('/kapasitas', 'KapasitasController@kapasitas')->middleware('can:isMarketing')->name('kapasitas');
         Route::post('/kapasitas/upgrade', 'KapasitasController@kapasitasUpgrade')->name('upgrade.kapasitas');
 
         // Mesin Komponen
