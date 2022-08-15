@@ -152,11 +152,11 @@
                                     @endif
                                     <td>
                                         @if($i == 1)
-                                            <p>Sisa Produksi : {{$limit[0]->limit_produksi1}}</p>
+                                            <p >Sisa Produksi : <span id='sisa_1'>{{$limit[0]->limit_produksi1}}</span></p>
                                         @elseif($i == 2)
-                                            <p>Sisa Produksi : {{$limit[0]->limit_produksi2}}</p>
+                                            <p >Sisa Produksi : <span id='sisa_2'>{{$limit[0]->limit_produksi2}}</span></p>
                                         @else
-                                            <p>Sisa Produksi : {{$limit[0]->limit_produksi3}}</p>
+                                            <p >Sisa Produksi : <span id='sisa_3'>{{$limit[0]->limit_produksi3}}</span></p>
                                         @endif
                                         <select name="produk_{{ $i }}" id="produk_{{ $i }}">
                                             <option value="">pilih produk</option>
@@ -331,12 +331,16 @@
                     "mesinProduksi" : mesinProduksi
                 },
                 success: function(data) {
+                    let sisa = $('#sisa_'+btn).text();
+                    sisa = parseInt(sisa) - jumlah;
                     $('#staticBackdrop').modal('hide');
                     $('.btn-modal').prop('disabled', false);
                     $('#info-body').text(data.msg);
                     $('#modalInfo').modal('show');
                     $('#produk_'+btn).val("").change();
                     $('#jumlahProduk_'+btn).val(0);
+                    $('#sisa_'+btn).text(sisa);
+
                 },
                 error: function() {
                     // alert('error');

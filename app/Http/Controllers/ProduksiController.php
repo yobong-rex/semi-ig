@@ -153,7 +153,7 @@ class ProduksiController extends Controller
 
 
         if ($sesi == 1) {
-            if ($jumlah > 80) {
+            if ($jumlah > 50) {
                 return response()->json(array(
                     'msg' => 'maaf, jumlah yang ingin kamu produksi melebihi kapasitas produksi',
                     'code' => '401'
