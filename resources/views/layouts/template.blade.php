@@ -165,6 +165,10 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                href="{{ route('kapasitas') }}">Kapasitas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
                                 href="{{ route('demand') }}">Demand</a>
                         </li>
                     @elsecan('isResearcher')
@@ -173,10 +177,6 @@
                                 href="{{ route('bahan') }}">Analisis Bahan</a>
                         </li>
                     @elsecan('isProduction_Manager')
-                        <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
-                                href="{{ route('kapasitas') }}">Kapasitas</a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
                                 href="{{ route('produksi') }}">Produksi</a>

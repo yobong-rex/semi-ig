@@ -102,10 +102,10 @@
                                 {{ $data[$x]->level }}</td>
                             <td id='kapasitas_kapasitas_{{ $data[$x]->nama }}' style="text-align:center;">
                                 {{ $data[$x]->kapasitas }}</td>
-                            <td style="text-align:center;vertical-align:center;">
+                            {{-- <td style="text-align:center;vertical-align:center;">
                                 <button class='upgrade' value={{ $data[$x]->nama }} data-bs-toggle="modal"
                                     data-bs-target="#Konfirmasi">Upgrade</button>
-                            </td>
+                            </td> --}}
                         </tr>
                     @endfor
                 </tbody>
