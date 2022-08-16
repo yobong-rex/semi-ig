@@ -188,6 +188,7 @@ class TeamController extends Controller
                 'demand' => 0,
                 'customer_value' => 0,
                 'hibah' => 0,
+                'over_production' => 0,
                 'limit_produksi1' => 73,
                 'limit_produksi2' => 79,
                 'limit_produksi3' => 90
