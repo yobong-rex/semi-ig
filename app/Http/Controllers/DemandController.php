@@ -64,6 +64,7 @@ class DemandController extends Controller
             $countDemand = 0;
             $totalDemand = 0;
             $updtDemand = 0;
+            $temp_buangan = [];
 
             //pengecean stok dan sisa demand
             foreach ($demand as $d) {
@@ -72,9 +73,9 @@ class DemandController extends Controller
                 $checkSisa = DB::table('team_demand')->where('idteam', $team)->where('idproduk', $d['produk'])->where('sisa', 0)->where('sesi', $sesi)->get();
                 if (count($invtProduct) == 0 || $invtProduct[0]->hasil < $d['total']) {
                     // return $invtProduct;
-                    $msg = 'maaf jumlah produk '.$d['nama'].' team kalian kurang untuk memenuhi demand';
+                    $msg = 'maaf salah satu jumlah produk team kalian kurang untuk memenuhi demand';
                 }
-                if (count($checkSisa) > 0) $msg = 'maaf demand mu di produk '.$d['nama'].' sudah mencapai batas terpenuhi';
+                if (count($checkSisa) > 0) $msg = 'maaf salah satu demand mu sudah mencapai batas terpenuhi';
                 if ($msg != '') {
                     return response()->json(array(
                         'msg' => $msg,
@@ -107,7 +108,7 @@ class DemandController extends Controller
                     //cek sisa demand
                     if($produkDemand[0]->sisa_demand < $d['total']){
                         return response()->json(array(
-                            'msg' => 'maaf sisa demand '. $d['nama'] .' pada sesi ini kurang dari jumlah yang ingin kalian penuhi',
+                            'msg' => 'maaf demand '. $d['nama'] .' pada sesi ini sudah terpenuhi',
                             'code' => '200'
                         ), 200);
                     }
@@ -117,10 +118,11 @@ class DemandController extends Controller
                     $countDemand += 1;
                     $totalDemand += $d['total'];
                     $updtDemand += $d['total'];
-
-                    //update sisa demand
                     $sisaDemand = $produkDemand[0]->sisa_demand - $d['total'];
                     DB::table('demand')->where('produk_idproduk', $d['produk'])->update(['sisa_demand' => $sisaDemand ]);
+                }
+                else{
+                    array_push($temp_buangan, $d);
                 }
 
                 $sisaProduct = $invtProduct[0]->hasil - $d['total'];
@@ -154,6 +156,23 @@ class DemandController extends Controller
                     'code' => '200'
                 ), 200);
             } else {
+                //msk over product
+                if(count($temp_buangan)>0){
+                    $temp = 0;
+                    $tot_over = 0;
+                    $teamDana = DB::table('teams')->select('dana', 'total_pendapatan','over_production')->where('idteam', $team)->get();
+
+                    foreach($temp_buangan as $tb){
+                        $hargaProduk = DB::table('produk')->select('harga_jual')->where('idproduk', $tb['produk'])->get();
+                        $temp += ($tb['total'] * floor($hargaProduk[0]->harga_jual * 40 / 100));
+                        $tot_over += $tb['total'];
+                    }
+
+                    $danaBaru = $teamDana[0]->dana + $temp;
+                    $totalPendapatanBaru = $teamDana[0]->total_pendapatan + $temp;
+                    $over_baru = $teamDana[0]->over_production + $tot_over;
+                    $affected = DB::table('teams')->where('idteam', $team)->update(['dana' => $danaBaru, 'total_pendapatan' => $totalPendapatanBaru, 'over_production'=> $over_baru]);
+                }
                 return response()->json(array(
                     'msg' => 'maaf team anda gagal memenuhi demand',
                     'code' => '200'

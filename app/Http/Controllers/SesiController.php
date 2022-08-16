@@ -161,7 +161,7 @@ class SesiController extends Controller
         }
 
         $team = DB::table('teams')
-            ->select('idteam', 'dana', 'hibah', 'total_pendapatan')
+            ->select('idteam', 'dana', 'hibah', 'total_pendapatan','over_production')
             ->get();
 
         // nambah hibah ke dana
@@ -198,17 +198,22 @@ class SesiController extends Controller
                             'hibah' => ($hibahBaru)
                         ]);
                     }
+
+                //over production
                 $overProd = DB::table('history_produksi')->where('teams_idteam', $t->idteam)->where('sesi', $sesiSebelum)->where('hasil', '>', 0)->get();
                 $temp = 0;
+                $tot_over = 0;
                 if (count($overProd) > 0) {
                     foreach ($overProd as $op) {
                         $hargaProduk = DB::table('produk')->select('harga_jual')->where('idproduk', $op->produk_idproduk)->get();
                         $temp += ($op->hasil * floor($hargaProduk[0]->harga_jual * 40 / 100));
+                        $tot_over += $op->hasil;
                     }
                     $danaBaru += $temp;
                     $totalPendapatanBaru = $t->total_pendapatan + $temp;
+                    $over_baru = $t->over_production + $tot_over;
 
-                    $affected = DB::table('teams')->where('idteam', $t->idteam)->update(['dana' => $danaBaru, 'total_pendapatan' => $totalPendapatanBaru]);
+                    $affected = DB::table('teams')->where('idteam', $t->idteam)->update(['dana' => $danaBaru, 'total_pendapatan' => $totalPendapatanBaru,  'over_production'=> $over_baru]);
 
                 }
 
