@@ -39,6 +39,10 @@
         thead {
             inset-block-start: 0; /* "top" */
         }
+        .totalPembelianStyling{
+            font-size: 1.25em;
+            color: #198754;
+        }
     </style>
     @php
     $namaTeam = 'apapun namanya';
@@ -153,7 +157,7 @@
                             <tr>
                                 <td colspan="6">Total Pembelian:</td>
                                 {{-- button konfirmasi show pop up --}}
-                                <td><span id="total">0</span> TC</td>
+                                <td><span id="total" class="totalPembelianStyling">0</span> TC</td>
                             </tr>
                             <tr>
                                 <td colspan="7" style="text-align:right;">
@@ -179,7 +183,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body flex">
-                        Apakah anda yakin untuk melakukan pembelian sebesar <span id='mdlTotal'></span> TC?
+                        Apakah anda yakin untuk melakukan pembelian sebesar <span id='mdlTotal' class="totalPembelianStyling"></span> TC?
                     </div>
                     <div class="modal-footer">
                         {{-- button cancel --}}
