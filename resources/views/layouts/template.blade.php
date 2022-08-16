@@ -51,7 +51,7 @@
             src: local('TT Norms Regular'), url('assets/font/TTNorms-Regular.woff') format('woff');
         }
         .navbar{
-            
+
         }
 
         .nav-link,
@@ -186,10 +186,10 @@
                                 href="{{ route('analisis') }}">Analisis Produksi</a>
                         </li>
                     @endcan
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
                             href="{{ route('leaderboard') }}">Leaderboard</a>
-                    </li>
+                    </li> -->
                 </ul>
                 <div class="navbar-nav ms-auto">
                     <li class="nav-item">
