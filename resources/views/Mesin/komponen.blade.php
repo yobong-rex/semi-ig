@@ -204,7 +204,7 @@
 
         {{-- Modal --}}
         {{-- Modal Konfirmasi Upgrade --}}
-        <div class="modal fade" id="Konfirmasi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        <div class="modal fade" id="Konfirmasi" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="KonfirmasiLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
