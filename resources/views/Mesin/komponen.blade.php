@@ -179,9 +179,13 @@
                             </td>
                             <td style="text-align:center;vertical-align:middle;">
                                 {{-- button Upgrade --}}
-                                <button type="button" id="upgrade_{{ $x }}" class="upgrade"
-                                    value='{{ $data[$x]->nama_komponen }}' data-bs-toggle="modal"
-                                    data-bs-target="#Konfirmasi">Upgrade</button>
+                                @if ($valueSesi == 1)
+                                    <button type="button" id="upgrade_{{ $x }}" class="upgrade"
+                                        value='{{ $data[$x]->nama_komponen }}' data-bs-toggle="modal"
+                                        data-bs-target="#Konfirmasi">Upgrade</button>
+                                @else
+                                    <button type="button" id="button" class="upgrade" disabled>Upgrade</button>
+                                @endif
                             </td>
                         </tr>
                     @endfor

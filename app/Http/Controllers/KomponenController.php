@@ -307,25 +307,35 @@ class KomponenController extends Controller
 
         // Check Level
         if ($level_a == 10 && $level_b == 10 && $level_c == 10 && $level_d == 10) {
-            $level_mesin = 6;
-            $level_kapasitas += 1;
-            $cycle -= 1;
-        } elseif ($level_a == 8 && $level_b == 8 && $level_c == 8 && $level_d == 8) {
-            $level_mesin = 5;
-            $level_kapasitas += 1;
-            $cycle -= 1;
-        } elseif ($level_a == 6 && $level_b == 6 && $level_c == 6 && $level_d == 6) {
-            $level_mesin = 4;
-            $level_kapasitas += 1;
-            $cycle -= 1;
-        } elseif ($level_a == 4 && $level_b == 4 && $level_c == 4 && $level_d == 4) {
-            $level_mesin = 3;
-            $level_kapasitas += 1;
-            $cycle -= 1;
-        } elseif ($level_a == 2 && $level_b == 2 && $level_c == 2 && $level_d == 2) {
-            $level_mesin = 2;
-            $level_kapasitas += 1;
-            $cycle -= 1;
+            if ($level_mesin != 6) {
+                $level_mesin = 6;
+                $level_kapasitas += 1;
+                $cycle -= 1;
+            }
+        } elseif ($level_a >= 8 && $level_b >= 8 && $level_c >= 8 && $level_d >= 8) {
+            if ($level_mesin != 5) {
+                $level_mesin = 5;
+                $level_kapasitas += 1;
+                $cycle -= 1;
+            }
+        } elseif ($level_a >= 6 && $level_b >= 6 && $level_c >= 6 && $level_d >= 6) {
+            if ($level_mesin != 4) {
+                $level_mesin = 4;
+                $level_kapasitas += 1;
+                $cycle -= 1;
+            }
+        } elseif ($level_a >= 4 && $level_b >= 4 && $level_c >= 4 && $level_d >= 4) {
+            if ($level_mesin != 3) {
+                $level_mesin = 3;
+                $level_kapasitas += 1;
+                $cycle -= 1;
+            }
+        } elseif ($level_a >= 2 && $level_b >= 2 && $level_c >= 2 && $level_d >= 2) {
+            if ($level_mesin != 2) {
+                $level_mesin = 2;
+                $level_kapasitas += 1;
+                $cycle -= 1;
+            }
         }
 
         DB::table('mesin_has_teams')
@@ -393,7 +403,7 @@ class KomponenController extends Controller
             ->where('proses', 'like', '%' . $namaMesin . '%')
             ->get();
         // end (ambil proses)
-        
+
         // array Kapasitas
         $arrKapasitas1 = [];
         $arrKapasitas2 = [];
@@ -422,7 +432,7 @@ class KomponenController extends Controller
                 array_push($arrKapasitas1, $kapasitascycle1[0]->kapasitas);
             }
         }
-        
+
         if (count($produksi2) != 0) {
             $proses2 = explode(';', $produksi2[0]->proses);
 
