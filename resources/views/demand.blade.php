@@ -111,7 +111,7 @@
                     @foreach ($produk as $p)
                         <tr>
                             <td class="nomor_demand" scope="row">{{$i++}}</td>
-                            <td>{{$p->nama}}</td>
+                            <td id='nama_{{$p->idproduk}}'>{{$p->nama}}</td>
                             <td class="inputDemand"><input type="number" class='demand' id='input_{{$p->idproduk}}'min="0" oninput="this.value =
                                 !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                             <td id='total_{{$p->idproduk}}' class="demand-total">
@@ -236,6 +236,7 @@
                     console.log($(this).val());
                     arrDemand.push({
                         'produk': id_split[1],
+                        'nama': $('#nama_'+id_split[1]).text(),
                         'total': $(this).val()
                     });
                     console.log(arrDemand);

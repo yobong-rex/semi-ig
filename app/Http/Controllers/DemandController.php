@@ -72,9 +72,9 @@ class DemandController extends Controller
                 $checkSisa = DB::table('team_demand')->where('idteam', $team)->where('idproduk', $d['produk'])->where('sisa', 0)->where('sesi', $sesi)->get();
                 if (count($invtProduct) == 0 || $invtProduct[0]->hasil < $d['total']) {
                     // return $invtProduct;
-                    $msg = 'maaf salah satu jumlah produk team kalian kurang untuk memenuhi demand';
+                    $msg = 'maaf jumlah produk '.$d['nama'].' team kalian kurang untuk memenuhi demand';
                 }
-                if (count($checkSisa) > 0) $msg = 'maaf salah satu demand mu sudah mencapai batas terpenuhi';
+                if (count($checkSisa) > 0) $msg = 'maaf demand mu di produk '.$d['nama'].' sudah mencapai batas terpenuhi';
                 if ($msg != '') {
                     return response()->json(array(
                         'msg' => $msg,
@@ -102,14 +102,27 @@ class DemandController extends Controller
                 }
 
 
+
                 if (count($produkDemand) > 0) {
+                    //cek sisa demand
+                    if($produkDemand[0]->sisa_demand < $d['total']){
+                        return response()->json(array(
+                            'msg' => 'maaf sisa demand '. $d['nama'] .' pada sesi ini kurang dari jumlah yang ingin kalian penuhi',
+                            'code' => '200'
+                        ), 200);
+                    }
                     $hargaProduk = DB::table('produk')->select('harga_jual')->where('idproduk', $d['produk'])->get();
                     $hargaJual = $d['total'] * $hargaProduk[0]->harga_jual;
                     $totalJual += $hargaJual;
                     $countDemand += 1;
                     $totalDemand += $d['total'];
                     $updtDemand += $d['total'];
+
+                    //update sisa demand
+                    $sisaDemand = $produkDemand[0]->sisa_demand - $d['total'];
+                    DB::table('demand')->where('produk_idproduk', $d['produk'])->update(['sisa_demand' => $sisaDemand ]);
                 }
+
                 $sisaProduct = $invtProduct[0]->hasil - $d['total'];
                 if (count($usrDemand) > 0) {
                     $updtDemand += $usrDemand[0]->jumlah;

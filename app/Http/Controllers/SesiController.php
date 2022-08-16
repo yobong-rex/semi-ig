@@ -198,8 +198,8 @@ class SesiController extends Controller
                             'hibah' => ($hibahBaru)
                         ]);
                     }
-                    $overProd = DB::table('history_produksi')->where('teams_idteam', $t->idteam)->where('sesi', $sesiSebelum)->where('hasil', '>', 0)->get();
-                    $temp = 0;
+                $overProd = DB::table('history_produksi')->where('teams_idteam', $t->idteam)->where('sesi', $sesiSebelum)->where('hasil', '>', 0)->get();
+                $temp = 0;
                 if (count($overProd) > 0) {
                     foreach ($overProd as $op) {
                         $hargaProduk = DB::table('produk')->select('harga_jual')->where('idproduk', $op->produk_idproduk)->get();
