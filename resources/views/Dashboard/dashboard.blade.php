@@ -459,7 +459,7 @@
                         $('#body-over').append(`
                             <tr>
                                 <td class="nomor_OP" style="text-align: center;">1</td>
-                                <td id=""> Over Product </td>
+                                <td id=""> Over Production </td>
                                 <td id="">` + data.result + `</td>
                             </tr>`);
                     }
