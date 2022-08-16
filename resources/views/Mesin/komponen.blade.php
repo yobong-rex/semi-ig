@@ -161,9 +161,14 @@
                         <td colspan="2">Level Mesin : </td>
                         <td class="noLevel" id="levelMesin_">{{ $levelMesin[0]->level }}</td>
                         <td style="text-align:center;">
-                            <button class="upgradeAll" id="upgrade_all" data-bs-toggle="modal"
-                                data-bs-target="#Konfirmasi">Upgrade All
-                                Component</button>
+                            @if ($valueSesi == 1)
+                                <button type="button" id="button" class="upgrade" disabled>Upgrade All
+                                    Component</button>
+                            @else
+                                <button class="upgradeAll" id="upgrade_all" data-bs-toggle="modal"
+                                    data-bs-target="#Konfirmasi">Upgrade All
+                                    Component</button>
+                            @endif
                         </td>
                     </tr>
                     @for ($x = 0; $x < count($data); $x++)
@@ -180,11 +185,11 @@
                             <td style="text-align:center;vertical-align:middle;">
                                 {{-- button Upgrade --}}
                                 @if ($valueSesi == 1)
+                                    <button type="button" id="button" class="upgrade" disabled>Upgrade</button>
+                                @else
                                     <button type="button" id="upgrade_{{ $x }}" class="upgrade"
                                         value='{{ $data[$x]->nama_komponen }}' data-bs-toggle="modal"
                                         data-bs-target="#Konfirmasi">Upgrade</button>
-                                @else
-                                    <button type="button" id="button" class="upgrade" disabled>Upgrade</button>
                                 @endif
                             </td>
                         </tr>
