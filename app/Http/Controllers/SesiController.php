@@ -361,7 +361,7 @@ class SesiController extends Controller
             $temp = 0;
             //over production
             $overProd = DB::table('history_produksi')->where('teams_idteam', $t->idteam)->where('sesi', 6)->where('hasil', '>', 0)->get();
-            $Demand = DB::table('demand')->select('produk_idproduk')->where('sesi', 6)->get();
+            // $Demand = DB::table('demand')->select('produk_idproduk')->where('sesi', 6)->get();
 
             // return $overProd;
             $temp = 0;
@@ -369,10 +369,11 @@ class SesiController extends Controller
             if (count($overProd) > 0) {
                 foreach ($overProd as $op) {
                     $tot_over += $op->hasil;
-
-                    if(in_array($op->produk_idproduk,$Demand)){
+                    $checkDemand = DB::table('demand')->where('produk_idproduk', $op->produk_idproduk)->where('sesi', 6)->get();
+                    if(count($checkDemand)>0){
                         $hargaProduk = DB::table('produk')->select('harga_jual')->where('idproduk', $op->produk_idproduk)->get();
                         $temp += ($op->hasil * floor($hargaProduk[0]->harga_jual * 40 / 100));
+
                     }
                 }
                 $danaBaru += $temp;
