@@ -22,6 +22,7 @@
             Sesi</button>
         <button type="button" class="btn btn-success" id="button_ganti" data-bs-toggle="modal"
             data-bs-target="#ganti">Ganti Sesi</button>
+        <button type="button" class="btn btn-danger" id="selesai" >Selesai</button>
 
         {{-- Modal --}}
         {{-- Konfirmasi Pause --}}
@@ -658,5 +659,21 @@
                 }
             });
         });
+
+        $(document).on('click','#selesai',function(){
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('finish.sesi') }}",
+                data: {
+                    '_token': '<?php echo csrf_token(); ?>',
+                },
+                success: function() {
+                    alert('yey bisa turu');
+                },
+                error: function() {
+                    alert('error');
+                }
+            })
+        })
     </script>
 @endsection

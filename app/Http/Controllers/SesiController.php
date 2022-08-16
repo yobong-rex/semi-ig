@@ -349,4 +349,33 @@ class SesiController extends Controller
             'status' => "Success"
         ));
     }
+
+    function finish(){
+        $team = DB::table('teams')
+            ->select('idteam', 'dana', 'hibah', 'total_pendapatan','over_production')
+            ->get();
+        // return $team;
+
+        foreach($team as $t){
+            $danaBaru = $t->dana;
+
+            //over production
+            $overProd = DB::table('history_produksi')->where('teams_idteam', $t->idteam)->where('sesi', 6)->where('hasil', '>', 0)->get();
+            // return $overProd;
+            $temp = 0;
+            $tot_over = 0;
+            if (count($overProd) > 0) {
+                foreach ($overProd as $op) {
+                    $tot_over += $op->hasil;
+                }
+                $over_baru = $t->over_production + $tot_over;
+
+                $affected = DB::table('teams')->where('idteam', $t->idteam)->update(['over_production'=> $over_baru]);
+
+            }
+        }
+        return response()->json(array(
+            "success" => true,
+        ), 200);
+    }
 }

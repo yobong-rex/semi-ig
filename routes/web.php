@@ -71,6 +71,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/adminsesi/stopsesi', 'SesiController@stopSesi')->name('stop.sesi');
     Route::post('/adminsesi/gantisesi', 'SesiController@gantiSesi')->name('ganti.sesi');
     Route::post('/adminsesi/backsesi', 'SesiController@backSesi')->name('back.sesi');
+    Route::post('/adminsesi/finish', 'SesiController@finish')->name('finish.sesi');
 
 
     // MakeTeam
