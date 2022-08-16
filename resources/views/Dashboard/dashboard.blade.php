@@ -62,6 +62,7 @@
             .dana,
             .label_dana {
                 text-align: center;
+                padding-left: 24px;
             }
 
             .button_OverProduct,
@@ -74,6 +75,9 @@
             .OP_text {
                 font-size: 12px;
             }
+            .bi-wallet2{
+                max-width: 64px;
+            }
         }
 
         @media (max-width:1000px) {
@@ -81,6 +85,7 @@
             .dana,
             .label_dana {
                 font-size: 25px;
+                padding-left: 24px;
             }
 
             .button_OverProduct,
@@ -374,7 +379,7 @@
 
                     <!--Body buat di edit-->
                     <div class="modal-body flex">
-                        <table class="table table-bordered" style="vertical-align: middle;">
+                        <table class="table table-striped-bordered" style="vertical-align: middle;">
                             <!-- <thead>
                                 <tr>
                                     <th scope="col" style="width:1.3em;">No.</th>
@@ -458,8 +463,7 @@
                         $('#body-over').empty();
                         $('#body-over').append(`
                             <tr>
-                                <td class="nomor_OP" style="text-align: center;">1</td>
-                                <td id=""> Over Production </td>
+                                <td id=""> Total Over Production: </td>
                                 <td id="">` + data.result + `</td>
                             </tr>`);
                     }
