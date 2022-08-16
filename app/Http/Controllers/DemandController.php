@@ -132,7 +132,7 @@ class DemandController extends Controller
                 $demandBaru = $teamDana[0]->demand + $totalDemand;
                 $pendapatanBaru = $teamDana[0]->total_pendapatan + $totalJual;
                 $customerValue = $pendapatanBaru;
-                $hibah = floor($customerValue * 2.25);
+                $hibah = floor($customerValue * 1.5);
                 DB::table('teams')->where('idteam', $team)->update(['dana' => $danaBaru, 'demand' => $demandBaru, 'total_pendapatan' => $pendapatanBaru, 'customer_value' => $customerValue, 'hibah' => $hibah]);
                 event(new updateLeaderboard('berhasil'));
                 return response()->json(array(
