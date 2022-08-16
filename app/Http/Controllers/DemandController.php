@@ -136,6 +136,7 @@ class DemandController extends Controller
                 DB::table('history_produksi')
                     ->where('teams_idteam', $team)
                     ->where('produk_idproduk', $d['produk'])
+                    ->where('sesi', $sesi)
                     ->update([
                         'hasil' => $sisaProduct
                     ]);
