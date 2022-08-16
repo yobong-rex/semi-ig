@@ -333,7 +333,7 @@ class ProduksiController extends Controller
 
         return response()->json(array(
             'msg' => 'selamat kamu berhasil melakukan produksi ' . $name . ' sebanyak ' . $hasil_user . ' dengan defect produk sebanyak '. $produkDefect,
-            'code' => '401'
+            'code' => '200'
         ), 200);
     }
 }

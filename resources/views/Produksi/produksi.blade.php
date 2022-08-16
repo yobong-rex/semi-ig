@@ -332,7 +332,9 @@
                 },
                 success: function(data) {
                     let sisa = $('#sisa_'+btn).text();
-                    sisa = parseInt(sisa) - jumlah;
+                    if(data.code == '200'){
+                        sisa = parseInt(sisa) - jumlah;
+                    }
                     $('#staticBackdrop').modal('hide');
                     $('.btn-modal').prop('disabled', false);
                     $('#info-body').text(data.msg);
