@@ -113,7 +113,7 @@
         <div class="alert alert-success" role="alert">Selamat Datang di IG Market! <span style="font-size: 24px;">&#128591;</span></br> Selamat Berbelanja</div>
 
         <div class="row spacing"></div>
-        
+
         <div class="card-body rounded" style="background-color:#ffffff;box-shadow: 0 6px 10px rgba(0, 0, 0, .08);">
             <h2>&#x1F6D2;Daftar belanja:</h2>
             <div class="table-responsive">
@@ -152,7 +152,7 @@
                             @endforeach
                             <tr>
                                 <td colspan="6">Biaya Pengiriman:</td>
-                                <td id="biaya_pengiriman">150 TC</td>
+                                <td><span id="biaya_pengiriman">150</span> TC</td>
                             </tr>
                             <tr>
                                 <td colspan="6">Total Pembelian:</td>
