@@ -351,7 +351,7 @@
         </div>
 
         {{-- <div style="background:#000000 ;border:1px solid #000000;"> --}}
-        <button class="button_OverProduct" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <button class="button_OverProduct" id='btn-op' data-bs-toggle="modal" data-bs-target="#staticBackdrop">
             <svg xmlns="http://www.w3.org/2000/svg" class="gambar_OP" fill="currentColor"
                 class="bi bi-exclamation-circle" viewBox="0 0 16 16">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -374,20 +374,14 @@
 
                     <!--Body buat di edit-->
                     <div class="modal-body flex">
-                        <select id="selected_sesi">
-                            <option value="">Pilih Sesi</option>
-                            @for ($i = 1; $i < $namaSesi; $i++)
-                                <option value="{{ $i }}">Sesi {{ $i }}</option>
-                            @endfor
-                        </select>
                         <table class="table table-bordered" style="vertical-align: middle;">
-                            <thead>
+                            <!-- <thead>
                                 <tr>
                                     <th scope="col" style="width:1.3em;">No.</th>
                                     <th scope="col">Produk</th>
                                     <th scope="col" style="width:1.5em;">Jumlah</th>
                                 </tr>
-                            </thead>
+                            </thead> -->
                             <tbody id='body-over'>
                             </tbody>
                         </table>
@@ -449,7 +443,8 @@
                 }
             })
 
-            $('#selected_sesi').on('change', function() {
+            $('#btn-op').on('click', function() {
+                // alert('dar');
                 let sesi = $(this).val();
                 $.ajax({
                     type: "POST",
@@ -461,25 +456,12 @@
                     },
                     success: function(data) {
                         $('#body-over').empty();
-                        let nomer = 1;
-                        if (data.msg == '') {
-                            $.each(data.result, function(key, value) {
-                                $('#body-over').append(`
-                                    <tr>
-                                        <td class="nomor_OP" style="text-align: center;">` + nomer + `</td>
-                                        <td id="">` + value.nama + `</td>
-                                        <td id="">` + value.hasil + `</td>
-                                    </tr>`);
-                                nomer += 1;
-                            });
-                        } else {
-                            $('#body-over').append(`
-                                    <tr>
-                                        <td class="nomor_OP" style="text-align: center;"></td>
-                                        <td id="">` + data.msg + `</td>
-                                        <td id=""></td>
-                                    </tr>`);
-                        }
+                        $('#body-over').append(`
+                            <tr>
+                                <td class="nomor_OP" style="text-align: center;">1</td>
+                                <td id=""> Over Product </td>
+                                <td id="">` + data.result + `</td>
+                            </tr>`);
                     }
                 })
             })
