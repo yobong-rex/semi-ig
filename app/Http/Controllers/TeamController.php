@@ -122,7 +122,7 @@ class TeamController extends Controller
 
         $idanalisisProses = DB::table('analisis as a')
             ->join('teams_has_analisis as tha', 'a.idanalisis', '=', 'tha.analisis_idanalisis')
-            ->select(DB::raw('MAX(a.idanalisis) as maxIdAnalisis'))
+            ->select(DB::raw('MAX(a.idanalisis) as maxIdAnalisis'), 'produksi')
             ->where('tha.teams_idteam', $user[0]->idteam)
             ->groupBy('a.produksi')
             ->orderBy('a.idanalisis')
@@ -134,9 +134,17 @@ class TeamController extends Controller
                 ->select('maxProduct', 'cycleTime')
                 ->where('analisis_idanalisis', $idAP->maxIdAnalisis)
                 ->get();
-            $analisisProses[] = array($arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
+            if ($idAP->produksi == 1) {
+                $analisisProses[0] = array($idAP->produksi, $arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
+            }
+            if ($idAP->produksi == 2) {
+                $analisisProses[1] = array($idAP->produksi, $arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
+            }
+            if ($idAP->produksi == 3) {
+                $analisisProses[2] = array($idAP->produksi, $arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
+            }
         }
-
+        
         return view('Dashboard.dashboard', compact('idteam', 'user', 'valueSesi', 'namaSesi', 'data', 'produk', 'bahanBaku', 'bbTeam', 'produk_team', 'analisisProses'));
     }
 
@@ -245,8 +253,9 @@ class TeamController extends Controller
         }
     }
 
-    function leaderboard(){
-        $data1 = DB::table('teams')->select('nama', 'customer_value')->where('nama','!=','team SI')->orderBy('customer_value', 'desc')->get();
+    function leaderboard()
+    {
+        $data1 = DB::table('teams')->select('nama', 'customer_value')->where('nama', '!=', 'team SI')->orderBy('customer_value', 'desc')->get();
         // return view('leaderboard', compact('data1','data2'));
         return response()->json(array(
             'data1' => $data1,

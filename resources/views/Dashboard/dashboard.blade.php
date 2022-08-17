@@ -56,22 +56,28 @@
             width: 3.5em;
             height: 3.5em;
         }
-        .gambarTengah{
+
+        .gambarTengah {
             width: 64px;
             height: auto;
         }
-        .text_kartu,.text_kartu_proses{
+
+        .text_kartu,
+        .text_kartu_proses {
             font-weight: bolder;
             font-size: 24px;
         }
-        .text_nilai_kartu{
+
+        .text_nilai_kartu {
             font-weight: bold;
             font-size: 24px;
         }
-        @media (max-width:580px){
-            .col-md-4{
+
+        @media (max-width:580px) {
+            .col-md-4 {
                 width: fit-content;
             }
+
             .dana,
             .label_dana {
                 text-align: center;
@@ -88,35 +94,43 @@
             .OP_text {
                 font-size: 12px;
             }
-            .bi-wallet2{
+
+            .bi-wallet2 {
                 max-width: 64px;
             }
-            .kartu_Home{
+
+            .kartu_Home {
                 width: fit-content;
                 padding: 8px;
             }
-            .gambarTengah{
+
+            .gambarTengah {
                 width: 36px;
                 height: auto;
             }
-            .text_kartu,.text_kartu_proses{
+
+            .text_kartu,
+            .text_kartu_proses {
                 font-weight: bolder;
                 font-size: 14px;
             }
-            .text_nilai_kartu{
+
+            .text_nilai_kartu {
                 font-weight: bold;
                 font-size: 16px;
             }
-            .text_button_OP{
+
+            .text_button_OP {
                 font-size: 10px;
             }
         }
 
         @media (max-width:800px) and (min-width:580px) {
-            .col-md-4{
+            .col-md-4 {
                 width: fit-content;
                 padding: 4px;
             }
+
             .dana,
             .label_dana {
                 text-align: center;
@@ -133,35 +147,42 @@
             .OP_text {
                 font-size: 12px;
             }
-            .bi-wallet2{
+
+            .bi-wallet2 {
                 max-width: 64px;
             }
-            .kartu_Home{
+
+            .kartu_Home {
                 width: 160px;
                 padding: 8px;
             }
-            .gambarTengah{
+
+            .gambarTengah {
                 width: 36px;
                 height: auto;
             }
-            .text_kartu{
+
+            .text_kartu {
                 font-weight: bolder;
                 font-size: 16px;
             }
-            .text_nilai_kartu{
+
+            .text_nilai_kartu {
                 font-weight: bold;
                 font-size: 16px;
             }
-            .text_kartu_proses{
+
+            .text_kartu_proses {
                 font-weight: bolder;
                 font-size: 14px;
             }
         }
 
         @media (max-width:1000px) and (min-width:800px) {
-            .col-md-4{
+            .col-md-4 {
                 width: fit-content;
             }
+
             .dana,
             .label_dana {
                 font-size: 25px;
@@ -178,22 +199,27 @@
             .OP_text {
                 font-size: 12px;
             }
-            .gambarTengah{
+
+            .gambarTengah {
                 width: 45px;
                 height: auto;
             }
-            .kartu_Home{
+
+            .kartu_Home {
                 padding: 8px;
             }
-            .text_kartu{
+
+            .text_kartu {
                 font-weight: bolder;
                 font-size: 24px;
             }
-            .text_nilai_kartu{
+
+            .text_nilai_kartu {
                 font-weight: bold;
                 font-size: 18px;
             }
-            .text_kartu_proses{
+
+            .text_kartu_proses {
                 font-weight: bolder;
                 font-size: 20px;
             }
@@ -246,8 +272,8 @@
             <div class="col-md-4">
                 <div class="card-body rounded text-center kartu_Home">
                     <div class="col">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="gambarTengah" fill="currentColor"
-                            class="bi bi-safe" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="gambarTengah" fill="currentColor" class="bi bi-safe"
+                            viewBox="0 0 16 16">
                             <path
                                 d="M1 1.5A1.5 1.5 0 0 1 2.5 0h12A1.5 1.5 0 0 1 16 1.5v13a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 1 14.5V13H.5a.5.5 0 0 1 0-1H1V8.5H.5a.5.5 0 0 1 0-1H1V4H.5a.5.5 0 0 1 0-1H1V1.5zM2.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h12a.5.5 0 0 0 .5-.5v-13a.5.5 0 0 0-.5-.5h-12z" />
                             <path
@@ -268,8 +294,8 @@
             <div class="col-md-4">
                 <div class="card-body rounded text-center kartu_Home">
                     <div class="col">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="gambarTengah" fill="currentColor"
-                            class="bi bi-truck" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="gambarTengah" fill="currentColor" class="bi bi-truck"
+                            viewBox="0 0 16 16">
                             <path
                                 d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
                         </svg>
@@ -321,25 +347,51 @@
                             <span class="text_kartu_proses">Proses {{ $i }}</span>
                         </div>
                         <div class="col">
-                            <span class="text_kartu_proses">Kapasitas Mesin : </br><span style="color: #ea435e;" class="text_kartu_proses" id="maxProduct_{{ $i }}">
-                                    @if (isset($analisisProses[$i - 1][0]))
-                                        {{ $analisisProses[$i - 1][0] }}
-                                    @else
-                                        50
+                            <span class="text_kartu_proses">Kapasitas Mesin : </br><span style="color: #ea435e;"
+                                    class="text_kartu_proses" id="maxProduct_{{ $i }}">
+                                    @if ($i == 1)
+                                        @if (isset($analisisProses[0]))
+                                            {{ $analisisProses[0][1] }}
+                                        @else
+                                            50
+                                        @endif
+                                    @elseif($i == 2)
+                                        @if (isset($analisisProses[1]))
+                                            {{ $analisisProses[1][1] }}
+                                        @else
+                                            50
+                                        @endif
+                                    @elseif($i == 3)
+                                        @if (isset($analisisProses[2]))
+                                            {{ $analisisProses[2][1] }}
+                                        @else
+                                            50
+                                        @endif
                                     @endif
                                 </span>
                             </span>
                         </div>
                         <div class="col">
-                            <span class="text_kartu_proses">Maksimal Produksi : </br><span style="color: #ea435e;" id="cycleTime_{{ $i }}">
-                                    @if (isset($analisisProses[$i - 1][1]))
-                                        {{ $analisisProses[$i - 1][1] }}
-                                    @elseif ($i == 1)
-                                        73
-                                    @elseif ($i == 2)
-                                        79
-                                    @elseif ($i == 3)
-                                        90
+                            <span class="text_kartu_proses">Maksimal Produksi : </br><span style="color: #ea435e;"
+                                    id="cycleTime_{{ $i }}">
+                                    @if ($i == 1)
+                                        @if (isset($analisisProses[0]))
+                                            {{ $analisisProses[0][2] }}
+                                        @else
+                                            73
+                                        @endif
+                                    @elseif($i == 2)
+                                        @if (isset($analisisProses[1]))
+                                            {{ $analisisProses[1][2] }}
+                                        @else
+                                            79
+                                        @endif
+                                    @elseif($i == 3)
+                                        @if (isset($analisisProses[2]))
+                                            {{ $analisisProses[2][2] }}
+                                        @else
+                                            90
+                                        @endif
                                     @endif
                                 </span>
                             </span>
@@ -455,7 +507,8 @@
         </div>
 
         {{-- <div style="background:#000000 ;border:1px solid #000000;"> --}}
-        <button class="button_OverProduct" id='btn-op' data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="width: fit-content;">
+        <button class="button_OverProduct" id='btn-op' data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+            style="width: fit-content;">
             <svg xmlns="http://www.w3.org/2000/svg" class="gambar_OP" fill="currentColor"
                 class="bi bi-exclamation-circle" viewBox="0 0 16 16">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -480,12 +533,12 @@
                     <div class="modal-body flex">
                         <table class="table table-striped-bordered" style="vertical-align: middle;">
                             <!-- <thead>
-                                <tr>
-                                    <th scope="col" style="width:1.3em;">No.</th>
-                                    <th scope="col">Produk</th>
-                                    <th scope="col" style="width:1.5em;">Jumlah</th>
-                                </tr>
-                            </thead> -->
+                                                <tr>
+                                                    <th scope="col" style="width:1.3em;">No.</th>
+                                                    <th scope="col">Produk</th>
+                                                    <th scope="col" style="width:1.5em;">Jumlah</th>
+                                                </tr>
+                                            </thead> -->
                             <tbody id='body-over'>
                             </tbody>
                         </table>
@@ -509,7 +562,7 @@
                 console.log(e.kapasitas3);
                 console.log(e.cycle3);
 
-                let idTeam = '<?php echo $idteam ?>';
+                let idTeam = '<?php echo $idteam; ?>';
                 console.log(e.id);
                 console.log(idTeam);
 
