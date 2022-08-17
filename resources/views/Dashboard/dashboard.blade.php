@@ -56,9 +56,22 @@
             width: 3.5em;
             height: 3.5em;
         }
-
-        @media (max-width:800px) {
-
+        .gambarTengah{
+            width: 64px;
+            height: auto;
+        }
+        .text_kartu,.text_kartu_proses{
+            font-weight: bolder;
+            font-size: 24px;
+        }
+        .text_nilai_kartu{
+            font-weight: bold;
+            font-size: 24px;
+        }
+        @media (max-width:580px){
+            .col-md-4{
+                width: fit-content;
+            }
             .dana,
             .label_dana {
                 text-align: center;
@@ -78,10 +91,74 @@
             .bi-wallet2{
                 max-width: 64px;
             }
+            .kartu_Home{
+                width: fit-content;
+                padding: 8px;
+            }
+            .gambarTengah{
+                width: 36px;
+                height: auto;
+            }
+            .text_kartu,.text_kartu_proses{
+                font-weight: bolder;
+                font-size: 14px;
+            }
+            .text_nilai_kartu{
+                font-weight: bold;
+                font-size: 16px;
+            }
         }
 
-        @media (max-width:1000px) {
+        @media (max-width:800px) and (min-width:580px) {
+            .col-md-4{
+                width: fit-content;
+                padding: 4px;
+            }
+            .dana,
+            .label_dana {
+                text-align: center;
+                padding-left: 24px;
+            }
 
+            .button_OverProduct,
+            .gambar_OP {
+                width: 2em;
+                bottom: 10%;
+                right: 5%;
+            }
+
+            .OP_text {
+                font-size: 12px;
+            }
+            .bi-wallet2{
+                max-width: 64px;
+            }
+            .kartu_Home{
+                width: 160px;
+                padding: 8px;
+            }
+            .gambarTengah{
+                width: 36px;
+                height: auto;
+            }
+            .text_kartu{
+                font-weight: bolder;
+                font-size: 16px;
+            }
+            .text_nilai_kartu{
+                font-weight: bold;
+                font-size: 16px;
+            }
+            .text_kartu_proses{
+                font-weight: bolder;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width:1000px) and (min-width:800px) {
+            .col-md-4{
+                width: fit-content;
+            }
             .dana,
             .label_dana {
                 font-size: 25px;
@@ -97,6 +174,25 @@
 
             .OP_text {
                 font-size: 12px;
+            }
+            .gambarTengah{
+                width: 45px;
+                height: auto;
+            }
+            .kartu_Home{
+                padding: 8px;
+            }
+            .text_kartu{
+                font-weight: bolder;
+                font-size: 24px;
+            }
+            .text_nilai_kartu{
+                font-weight: bold;
+                font-size: 18px;
+            }
+            .text_kartu_proses{
+                font-weight: bolder;
+                font-size: 20px;
             }
         }
     </style>
@@ -141,13 +237,13 @@
         <div class="row spacing"></div>
 
         {{-- 3 Bar Card tengah --}}
-        <div class="row">
+        <div class="row justify-content-center">
 
             {{-- Card Inventory --}}
             <div class="col-md-4">
                 <div class="card-body rounded text-center kartu_Home">
                     <div class="col">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="auto" fill="currentColor"
+                        <svg xmlns="http://www.w3.org/2000/svg" class="gambarTengah" fill="currentColor"
                             class="bi bi-safe" viewBox="0 0 16 16">
                             <path
                                 d="M1 1.5A1.5 1.5 0 0 1 2.5 0h12A1.5 1.5 0 0 1 16 1.5v13a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 1 14.5V13H.5a.5.5 0 0 1 0-1H1V8.5H.5a.5.5 0 0 1 0-1H1V4H.5a.5.5 0 0 1 0-1H1V1.5zM2.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h12a.5.5 0 0 0 .5-.5v-13a.5.5 0 0 0-.5-.5h-12z" />
@@ -156,10 +252,10 @@
                         </svg>
                     </div>
                     <div class="col">
-                        <h2>Sisa Inventory</h2>
+                        <span class="text_kartu">Sisa Inventory</span>
                     </div>
                     <div class="col">
-                        <h3 id="sisaInventory">{{ $user[0]->inventory }}</h3>
+                        <span class="text_nilai_kartu" id="sisaInventory">{{ $user[0]->inventory }}</span>
                     </div>
                 </div>
             </div>
@@ -169,17 +265,17 @@
             <div class="col-md-4">
                 <div class="card-body rounded text-center kartu_Home">
                     <div class="col">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
+                        <svg xmlns="http://www.w3.org/2000/svg" class="gambarTengah" fill="currentColor"
                             class="bi bi-truck" viewBox="0 0 16 16">
                             <path
                                 d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
                         </svg>
                     </div>
                     <div class="col">
-                        <h2>Demand Terpenuhi</h2>
+                        <span class="text_kartu">Demand Terpenuhi</span>
                     </div>
                     <div class="col">
-                        <h3 id="demandTerpenuhi">{{ $user[0]->demand }}</h3>
+                        <span class="text_nilai_kartu" id="demandTerpenuhi">{{ $user[0]->demand }}</span>
                     </div>
                 </div>
             </div>
@@ -187,17 +283,17 @@
             <div class="col-md-4">
                 <div class="card-body rounded text-center kartu_Home">
                     <div class="col">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
+                        <svg xmlns="http://www.w3.org/2000/svg" class="gambarTengah" fill="currentColor"
                             class="bi bi-person" viewBox="0 0 16 16">
                             <path
                                 d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
                         </svg>
                     </div>
                     <div class="col">
-                        <h2>Customer Value</h2>
+                        <span class="text_kartu">Customer Value</span>
                     </div>
                     <div class="col">
-                        <h3 id="customerValue">{{ $user[0]->customer_value }}</h3>
+                        <span class="text_nilai_kartu" id="customerValue">{{ $user[0]->customer_value }}</span>
                     </div>
                 </div>
             </div>
@@ -205,13 +301,13 @@
 
         <div class="row spacing"></div>
 
-        <div class="row">
+        <div class="row justify-content-center">
             {{-- 3 Card Proses --}}
             @for ($i = 1; $i <= 3; $i++)
                 <div class="col-md-4">
                     <div class="card-body rounded text-center kartu_Home">
                         <div class="col">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
+                            <svg xmlns="http://www.w3.org/2000/svg" class="gambarTengah" fill="currentColor"
                                 class="bi bi-stopwatch" viewBox="0 0 16 16">
                                 <path d="M8.5 5.6a.5.5 0 1 0-1 0v2.9h-3a.5.5 0 0 0 0 1H8a.5.5 0 0 0 .5-.5V5.6z" />
                                 <path
@@ -219,20 +315,20 @@
                             </svg>
                         </div>
                         <div class="col">
-                            <h2>Proses {{ $i }}</h2>
+                            <span class="text_kartu_proses">Proses {{ $i }}</span>
                         </div>
                         <div class="col">
-                            <h4>Kapasitas Mesin : <span id="maxProduct_{{ $i }}">
+                            <span class="text_kartu_proses">Kapasitas Mesin : </br><span style="color: #ea435e;" class="text_kartu_proses" id="maxProduct_{{ $i }}">
                                     @if (isset($analisisProses[$i - 1][0]))
                                         {{ $analisisProses[$i - 1][0] }}
                                     @else
                                         50
                                     @endif
                                 </span>
-                            </h4>
+                            </span>
                         </div>
                         <div class="col">
-                            <h4>Maksimal Produksi : <span id="cycleTime_{{ $i }}">
+                            <span class="text_kartu_proses">Maksimal Produksi : </br><span style="color: #ea435e;" id="cycleTime_{{ $i }}">
                                     @if (isset($analisisProses[$i - 1][1]))
                                         {{ $analisisProses[$i - 1][1] }}
                                     @elseif ($i == 1)
@@ -243,7 +339,7 @@
                                         90
                                     @endif
                                 </span>
-                            </h4>
+                            </span>
                         </div>
                     </div>
                 </div>
