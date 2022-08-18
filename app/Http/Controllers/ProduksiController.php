@@ -194,13 +194,14 @@ class ProduksiController extends Controller
                 ->get();
 
             $analisisProses = [];
-            foreach ($idanalisisProses as $idAP) {
+            foreach ($idanalisisProses as $idAP) { 
                 $arrAP = DB::table('teams_has_analisis')
                     ->select('maxProduct', 'cycleTime')
                     ->where('analisis_idanalisis', $idAP->maxIdAnalisis)
                     ->get();
                 $analisisProses[] = array($arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
             }
+            // return $analisisProses[0][0];
 
             if (($jumlah > $analisisProses[0][0]) || ($jumlah > $analisisProses[0][1])) {
                 return response()->json(array(
