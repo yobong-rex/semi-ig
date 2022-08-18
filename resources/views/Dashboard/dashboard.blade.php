@@ -533,12 +533,12 @@
                     <div class="modal-body flex">
                         <table class="table table-striped-bordered" style="vertical-align: middle;">
                             <!-- <thead>
-                                                <tr>
-                                                    <th scope="col" style="width:1.3em;">No.</th>
-                                                    <th scope="col">Produk</th>
-                                                    <th scope="col" style="width:1.5em;">Jumlah</th>
-                                                </tr>
-                                            </thead> -->
+                                <tr>
+                                    <th scope="col" style="width:1.3em;">No.</th>
+                                    <th scope="col">Produk</th>
+                                    <th scope="col" style="width:1.5em;">Jumlah</th>
+                                </tr>
+                            </thead> -->
                             <tbody id='body-over'>
                             </tbody>
                         </table>

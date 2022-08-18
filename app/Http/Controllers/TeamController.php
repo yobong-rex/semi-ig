@@ -191,7 +191,7 @@ class TeamController extends Controller
                 'total_defect' => 0,
                 'total_berhasil' => 0,
                 'pengeluaran' => 0,
-                'inventory' => 1000,
+                'inventory' => 600,
                 'total_pendapatan' => 0,
                 'demand' => 0,
                 'customer_value' => 0,

@@ -160,97 +160,96 @@
                 </div>
             </div>
         </div>
-    </body>
-
-    <script>
-        function setProses($nomer, $proses) {
-            let triger = 1;
-            let splitProses = $proses.split(";")
-            $.each(splitProses, function(key, value) {
-                console.log(value);
-                $('#proses_' + $nomer + '_' + triger).val(value);
-                triger += 1;
-            })
-        }
-
-        $(document).ready(function() {
-            let proses1 = "<?php echo $proses1; ?>";
-            let proses2 = "<?php echo $proses2; ?>";
-            let proses3 = "<?php echo $proses3; ?>";
-
-            if (proses1 != '') {
-                setProses(1, proses1);
-            }
-            if (proses2 != '') {
-                setProses(2, proses2);
-            }
-            if (proses3 != '') {
-                setProses(3, proses3);
+        <script>
+            function setProses($nomer, $proses) {
+                let triger = 1;
+                let splitProses = $proses.split(";")
+                $.each(splitProses, function(key, value) {
+                    console.log(value);
+                    $('#proses_' + $nomer + '_' + triger).val(value);
+                    triger += 1;
+                })
             }
 
-        });
+            $(document).ready(function() {
+                let proses1 = "<?php echo $proses1; ?>";
+                let proses2 = "<?php echo $proses2; ?>";
+                let proses3 = "<?php echo $proses3; ?>";
 
-        $('.btn').click(function() {
-            var arrProses = [];
-            let arrKapasitas = [];
-            let arrCycle = [];
-            var prosesInsert = '';
-            for (var x = 1; x <= 9; x++) {
-                var proses = $("#proses_" + $(this).val() + "_" + x).val();
-                var kapasitas = $('option:selected', "#proses_" + $(this).val() + "_" + x).attr('kapasitas');
-                var cycle = $('option:selected', "#proses_" + $(this).val() + "_" + x).attr('time');
-                arrProses.push(proses);
-                arrKapasitas.push(kapasitas);
-                arrCycle.push(cycle);
-            }
-
-            arrProses1 = jQuery.grep(arrProses, function(value) {
-                return value != '';
-            });
-
-            for (var x = 0; x < arrProses.length; x++) {
-                prosesInsert += arrProses[x] + ";";
-            }
-            var panjang = arrProses1.length;
-
-            $.ajax({
-                type: "POST",
-                url: "{{ route('analisis.proses') }}",
-                data: {
-                    '_token': '<?php echo csrf_token(); ?>',
-                    'produksi': $(this).val(),
-                    'panjang': panjang,
-                    'proses': prosesInsert,
-                    'kapasitas': arrKapasitas,
-                    'cycle': arrCycle,
-                    'arrProses': arrProses1
-                },
-                success: function(data) {
-                    if (data.msg == 'Dana Tidak Mencukupi') {
-                        $('#notifUpgrade').text(data.msg);
-                        $('#Notif').modal('show');
-                    } else if (data.msg == 'x') {
-                        $('#notifUpgrade').html('Proses Kurang Panjang<br>Minimal Proses = 4');
-                        $('#Notif').modal('show');
-                    } else {
-                        $('#dana').html(data.user[0].dana);
-
-                        if (data.status == 'false') {
-                            $('#notifUpgrade').text('Not Efficient');
-                            $('#Notif').modal('show');
-                        } else if (data.status == 'true') {
-                            $('#notifUpgrade').text('Efficient');
-                            $('#Notif').modal('show');
-                        } else if (data.status == 'half') {
-                            $('#notifUpgrade').text('Wrong Order');
-                            $('#Notif').modal('show');
-                        }
-                    }
-                },
-                error: function() {
-                    // alert('error');
+                if (proses1 != '') {
+                    setProses(1, proses1);
                 }
+                if (proses2 != '') {
+                    setProses(2, proses2);
+                }
+                if (proses3 != '') {
+                    setProses(3, proses3);
+                }
+
             });
-        });
-    </script>
+
+            $('.btn').click(function() {
+                var arrProses = [];
+                let arrKapasitas = [];
+                let arrCycle = [];
+                var prosesInsert = '';
+                for (var x = 1; x <= 9; x++) {
+                    var proses = $("#proses_" + $(this).val() + "_" + x).val();
+                    var kapasitas = $('option:selected', "#proses_" + $(this).val() + "_" + x).attr('kapasitas');
+                    var cycle = $('option:selected', "#proses_" + $(this).val() + "_" + x).attr('time');
+                    arrProses.push(proses);
+                    arrKapasitas.push(kapasitas);
+                    arrCycle.push(cycle);
+                }
+
+                arrProses1 = jQuery.grep(arrProses, function(value) {
+                    return value != '';
+                });
+
+                for (var x = 0; x < arrProses.length; x++) {
+                    prosesInsert += arrProses[x] + ";";
+                }
+                var panjang = arrProses1.length;
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('analisis.proses') }}",
+                    data: {
+                        '_token': '<?php echo csrf_token(); ?>',
+                        'produksi': $(this).val(),
+                        'panjang': panjang,
+                        'proses': prosesInsert,
+                        'kapasitas': arrKapasitas,
+                        'cycle': arrCycle,
+                        'arrProses': arrProses1
+                    },
+                    success: function(data) {
+                        if (data.msg == 'Dana Tidak Mencukupi') {
+                            $('#notifUpgrade').text(data.msg);
+                            $('#Notif').modal('show');
+                        } else if (data.msg == 'x') {
+                            $('#notifUpgrade').html('Proses Kurang Panjang<br>Minimal Proses = 4');
+                            $('#Notif').modal('show');
+                        } else {
+                            $('#dana').html(data.user[0].dana);
+
+                            if (data.status == 'false') {
+                                $('#notifUpgrade').text('Not Efficient');
+                                $('#Notif').modal('show');
+                            } else if (data.status == 'true') {
+                                $('#notifUpgrade').text('Efficient');
+                                $('#Notif').modal('show');
+                            } else if (data.status == 'half') {
+                                $('#notifUpgrade').text('Wrong Order');
+                                $('#Notif').modal('show');
+                            }
+                        }
+                    },
+                    error: function() {
+                        // alert('error');
+                    }
+                });
+            });
+        </script>
+    </body>
 @endsection

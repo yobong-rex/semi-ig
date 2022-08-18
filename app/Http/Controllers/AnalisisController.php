@@ -94,13 +94,13 @@ class AnalisisController extends Controller
             ), 200);
         }
 
-        //mencari kapasitas terkecil
+        // mencari kapasitas terkecil
         $minKpasitas = min($kapasitas);
 
-        //mencari cycletime
+        // mencari cycletime
         $time = array_sum($cycle);
 
-        //9000/cycle time
+        // 9000/cycle time
         $cycleTime = intval(9000 / $time);
 
         $team = Auth::user()->teams_idteam;
@@ -138,9 +138,8 @@ class AnalisisController extends Controller
             ->where('idteam', $user[0]->idteam)
             ->update(['limit_produksi' . $produksi => $cycleTime]);
 
-
         $updatedUser = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
-        
+
         // $notEfficient = [];
         $efficient = [];
         if ($produksi == 1) {
