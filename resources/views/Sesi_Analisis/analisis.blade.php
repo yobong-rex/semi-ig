@@ -39,6 +39,7 @@
             .dana,
             .label_dana {
                 text-align: center;
+                padding-left: 24px;
             }
         }
 
@@ -95,50 +96,61 @@
 
         <div class="row spacing"></div>
         {{-- tabel analisis --}}
-        <form action="">
-            <div class="table-responsive">
-                <table class="table table-bordered" style="vertical-align: middle;">
-                    <thead class="thead">
-                        <tr>
-                            <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center">Nomor</th>
-                            <th scope="col" colspan="9" style="text-align:center;">Urutan Produksi Produk</th>
-                            <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;width:80px;">
-                                Konfirmasi</th>
-                        </tr>
-                        <tr>
-                            @for ($i = 1; $i <= 9; $i++)
-                                <th class="penomoran" scope="col">{{ $i }}</th>
-                            @endfor
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{-- id proses_(prosesId) --}}
-                        @for ($i = 1; $i <= 3; $i++)
-                            <tr id="tr_{{ $i }}">
-                                <th class="nomor" scope="row">Proses Produksi {{ $i }}</th>
-                                @for ($j = 1; $j <= 9; $j++)
-                                    <td>
-                                        <select name="proses" id="proses_{{ $i }}_{{ $j }}">
-                                            <option value="">-Select-</option>
-                                            @foreach ($mesin as $m)
-                                                <option value='{{ $m->nama }}' kapasitas='{{ $m->kapasitas }}'
-                                                    time='{{ $m->cycleTime }}'>{{ $m->nama }}</option>
-                                            @endforeach
-                                            <option value="Idle" kapasitas="" time="6">Idle</option>
-                                            <option value="Delay" kapasitas="" time="7">Delay</option>
-                                        </select>
-                                    </td>
-                                @endfor
-                                <td style="vertical-align: middle;text-align: center">
-                                    <button type="button" id="button_{{ $i }}" class="btn btn-success btn-konfrim"
-                                        value="{{ $i }}">Konfirmasi</button>
-                                </td>
+        <div class="card-body rounded" style="background-color:#ffffff">
+            <form action="">
+                <div class="table-responsive">
+                    <table class="table table-bordered" style="vertical-align: middle;">
+                        <thead class="thead">
+                            <tr>
+                                <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center">Nomor</th>
+                                <th scope="col" colspan="9" style="text-align:center;">Urutan Produksi Produk</th>
+                                <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;">
+                                    Konfirmasi</th>
+                                <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;width:96px;">Edit</th>
+                                <!-- <th rowspan="2" style="vertical-align: middle;text-align:center;width:80px;">Reset</th> -->
                             </tr>
-                        @endfor
-                    </tbody>
-                </table>
-            </div>
-        </form>
+                            <tr>
+                                @for ($i = 1; $i <= 9; $i++)
+                                    <th class="penomoran" scope="col">{{ $i }}</th>
+                                @endfor
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{-- id proses_(prosesId) --}}
+                            @for ($i = 1; $i <= 3; $i++)
+                                <tr id="tr_{{ $i }}">
+                                    <th class="nomor" scope="row">Proses Produksi {{ $i }}</th>
+                                    @for ($j = 1; $j <= 9; $j++)
+                                        <td>
+                                            <select name="proses_{{ $i }}_{{ $j }}"  id="proses_{{ $i }}_{{ $j }}" class='pilihan-mesin' disabled>
+                                                <option value="">-Select-</option>
+                                                @foreach ($mesin as $m)
+                                                    <option class='mesin_{{ $i }}_{{ $m->nama }}' value='{{ $m->nama }}' kapasitas='{{ $m->kapasitas }}'
+                                                        time='{{ $m->cycleTime }}' >{{ $m->nama }}</option>
+                                                @endforeach
+                                                <option value="Idle" kapasitas="" time="6">Idle</option>
+                                                <option value="Delay" kapasitas="" time="7">Delay</option>
+                                            </select>
+                                        </td>
+                                    @endfor
+                                    <td style="vertical-align: middle;text-align: center">
+                                        <button type="button" number = {{$i}} id="button_{{ $i }}" class="btn btn-success btn-confirm"
+                                            value="{{ $i }}" disabled>Konfirmasi</button>
+                                    </td>
+                                    <td style="vertical-align: middle;text-align: center;width:96px;">
+                                        <button id='mode-{{$i}}' type="button" mode='edit' number ='{{$i}}' class="btn btn-primary btn-mode">Edit</button>
+                                    </td>
+                                    <!-- <td>
+                                        <button type="button" id="reset-{{$i}}" reset = '{{$i}}' class="btn btn-warning btn-reset" value=''
+                                        data-bs-toggle="" data-bs-target="" disabled>Reset</button>
+                                    </td> -->
+                                </tr>
+                            @endfor
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
 
         {{-- Modal --}}
         {{-- Modal Notif --}}
@@ -188,11 +200,12 @@
 
             });
 
-            $('.btn-konfrim').click(function() {
+            $('.btn-confirm').click(function() {
                 var arrProses = [];
                 let arrKapasitas = [];
                 let arrCycle = [];
                 var prosesInsert = '';
+                let number = $(this).attr('number');
                 for (var x = 1; x <= 9; x++) {
                     var proses = $("#proses_" + $(this).val() + "_" + x).val();
                     var kapasitas = $('option:selected', "#proses_" + $(this).val() + "_" + x).attr('kapasitas');
@@ -201,6 +214,9 @@
                     arrKapasitas.push(kapasitas);
                     arrCycle.push(cycle);
                 }
+                console.log(arrProses)
+                console.log(arrKapasitas)
+                console.log(arrCycle)
 
                 arrProses1 = jQuery.grep(arrProses, function(value) {
                     return value != '';
@@ -243,6 +259,16 @@
                                 $('#notifUpgrade').text('Wrong Order');
                                 $('#Notif').modal('show');
                             }
+
+                            for (var x = 1; x <= 9; x++){
+                                $('#proses_'+number+'_'+x+'').prop('disabled', true);
+                            }
+                            $('#button_'+number+'').prop('disabled', true);
+                            $('#reset-'+number+'').prop('disabled', true);
+                            $(this).attr('mode','edit');
+                            $('#mode-'+number).text('Edit');
+                            $('#mode-'+number).removeClass('btn-danger');
+                            $('#mode-'+number).addClass('btn-primary');
                         }
                     },
                     error: function() {
@@ -250,6 +276,66 @@
                     }
                 });
             });
+
+            $('.pilihan-mesin').change(function(){
+                // alert('dar');
+                let pilihanid = $(this).attr('id');
+                let mesinPilihan = $('select[name="'+pilihanid+'"] option:selected').attr('class');
+                console.log(mesinPilihan);
+
+                $('.'+ mesinPilihan).hide();
+            });
+
+            $('.btn-reset').click(function(){
+                // location.reload();
+                number = $(this).attr('reset');
+                for (var x = 1; x <= 9; x++){
+                    $('#proses_'+number+'_'+x+'').val('');
+                }
+                $('.mesin_'+number+'_Sorting').show();
+                $('.mesin_'+number+'_Cutting').show();
+                $('.mesin_'+number+'_Bending').show();
+                $('.mesin_'+number+'_Assembling').show();
+                $('.mesin_'+number+'_Packing').show();
+                $('.mesin_'+number+'_Drilling').show();
+                $('.mesin_'+number+'_Molding').show();
+            });
+
+            $('.btn-mode').click(function(){
+                let number = $(this).attr('number');
+                let mode = $(this).attr('mode');
+                if(mode == 'edit'){
+                    for (var x = 1; x <= 9; x++){
+                        $('#proses_'+number+'_'+x+'').prop('disabled', false);
+                        $('#proses_'+number+'_'+x+'').val('');
+                    }
+                    $('#button_'+number+'').prop('disabled', false);
+                    $('#reset-'+number+'').prop('disabled', false);
+                    $(this).attr('mode','cancel');
+                    $('#mode-'+number).text('Cancel');
+                    $('#mode-'+number).removeClass('btn-primary');
+                    $('#mode-'+number).addClass('btn-danger');
+                    $('.mesin_'+number+'_Sorting').show();
+                    $('.mesin_'+number+'_Cutting').show();
+                    $('.mesin_'+number+'_Bending').show();
+                    $('.mesin_'+number+'_Assembling').show();
+                    $('.mesin_'+number+'_Packing').show();
+                    $('.mesin_'+number+'_Drilling').show();
+                    $('.mesin_'+number+'_Molding').show();
+                }
+                else{
+                    for (var x = 1; x <= 9; x++){
+                        $('#proses_'+number+'_'+x+'').prop('disabled', true);
+                    }
+                    $('#button_'+number+'').prop('disabled', true);
+                    $('#reset-'+number+'').prop('disabled', true);
+                    $(this).attr('mode','edit');
+                    $('#mode-'+number).text('Edit');
+                    $('#mode-'+number).removeClass('btn-danger');
+                    $('#mode-'+number).addClass('btn-primary');
+                }
+            })
+
         </script>
     </body>
 @endsection
