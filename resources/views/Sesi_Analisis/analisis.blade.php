@@ -130,7 +130,7 @@
                                     </td>
                                 @endfor
                                 <td style="vertical-align: middle;text-align: center">
-                                    <button type="button" id="button_{{ $i }}" class="btn btn-success"
+                                    <button type="button" id="button_{{ $i }}" class="btn btn-success btn-konfrim"
                                         value="{{ $i }}">Konfirmasi</button>
                                 </td>
                             </tr>
@@ -188,7 +188,7 @@
 
             });
 
-            $('.btn').click(function() {
+            $('.btn-konfrim').click(function() {
                 var arrProses = [];
                 let arrKapasitas = [];
                 let arrCycle = [];
