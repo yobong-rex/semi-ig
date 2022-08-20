@@ -122,6 +122,6 @@ Route::get('/test/timer', function () {
 
 // Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
+Auth::routes(['register'=>false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
