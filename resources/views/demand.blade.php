@@ -104,8 +104,8 @@
 
             {{-- Table Pemenuhan Demand --}}
             <div class="table-responsive">
-                <table class="table table-bordered table-responsive">
-                    <thead>
+                <table class="table table-bordered table-striped">
+                    <thead  class="table-dark">
                         <tr style="vertical-align: middle;">
                             <th class="nomor_demand" scope="col">No.</th>
                             <th scope="col">Produk</th>
