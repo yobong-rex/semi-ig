@@ -255,7 +255,7 @@ class TeamController extends Controller
 
     function leaderboard()
     {
-        $data1 = DB::table('teams')->select('nama', 'customer_value')->where('nama', '!=', 'team SI')->orderBy('customer_value', 'desc')->get();
+        $data1 = DB::table('teams')->select('nama', 'customer_value')->where('nama', '!=', 'SI')->orderBy('customer_value', 'desc')->get();
         // return view('leaderboard', compact('data1','data2'));
         return response()->json(array(
             'data1' => $data1,
