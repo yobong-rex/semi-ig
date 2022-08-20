@@ -152,40 +152,42 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse" style="justify-content:">
 
+                
                 <ul class="navbar-nav mb-2 mb-lg-0 gap-4">
                     <li class="nav-item">
                         <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
                             href="{{ route('dashboard') }}">Dashboard</a>
                     </li>
-
-                    @can('isMarketing')
-                        <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
-                                href="{{ route('komponen') }}">Mesin</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
-                                href="{{ route('kapasitas') }}">Kapasitas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
-                                href="{{ route('demand') }}">Demand</a>
-                        </li>
-                    @elsecan('isResearcher')
-                        <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
-                                href="{{ route('bahan') }}">Analisis Bahan</a>
-                        </li>
-                    @elsecan('isProduction_Manager')
-                        <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
-                                href="{{ route('produksi') }}">Produksi</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
-                                href="{{ route('analisis') }}">Analisis Produksi</a>
-                        </li>
-                    @endcan
+                    @if($valueSesi != 0)
+                        @can('isMarketing')
+                            <li class="nav-item">
+                                <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                    href="{{ route('komponen') }}">Mesin</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                    href="{{ route('kapasitas') }}">Kapasitas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                    href="{{ route('demand') }}">Demand</a>
+                            </li>
+                        @elsecan('isResearcher')
+                            <li class="nav-item">
+                                <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                    href="{{ route('bahan') }}">Analisis Bahan</a>
+                            </li>
+                        @elsecan('isProduction_Manager')
+                            <li class="nav-item">
+                                <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                    href="{{ route('produksi') }}">Produksi</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                    href="{{ route('analisis') }}">Analisis Produksi</a>
+                            </li>
+                        @endcan
+                    @endif
                     <!-- <li class="nav-item">
                         <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
                             href="{{ route('leaderboard') }}">Leaderboard</a>

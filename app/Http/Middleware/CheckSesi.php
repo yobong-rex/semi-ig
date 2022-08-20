@@ -18,7 +18,7 @@ class CheckSesi
     public function handle($request, Closure $next)
     {
         $checkSesi = DB::table('sesi')->join('waktu_sesi', 'sesi.sesi', '=', 'waktu_sesi.idwaktu_sesi')->select('waktu_sesi.nama')->get();
-        if($checkSesi[0]->nama == 'Cooldown'){
+        if($checkSesi[0]->nama == 'Cooldown' ||  $checkSesi[0]->nama = 'belum dimulai'){
             return redirect('/');
         }
         if(($checkSesi[0]->nama == '2') ){
