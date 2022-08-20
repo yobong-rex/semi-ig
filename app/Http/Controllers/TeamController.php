@@ -144,7 +144,7 @@ class TeamController extends Controller
                 $analisisProses[2] = array($idAP->produksi, $arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
             }
         }
-        
+
         return view('Dashboard.dashboard', compact('idteam', 'user', 'valueSesi', 'namaSesi', 'data', 'produk', 'bahanBaku', 'bbTeam', 'produk_team', 'analisisProses'));
     }
 
@@ -205,7 +205,7 @@ class TeamController extends Controller
         $idteam = DB::getPdo()->lastInsertId();
         $idkomponen = 1;
 
-        for ($jenisMesin = 1; $jenisMesin <= 7; $jenisMesin++) {
+        for ($jenisMesin = 1; $jenisMesin <= 9; $jenisMesin++) {
             DB::table('mesin_has_teams')
                 ->insert([
                     'mesin_idmesin' => $jenisMesin,
@@ -213,20 +213,40 @@ class TeamController extends Controller
                     'level' => 1,
                     'cycleTime' => $mesin[$jenisMesin - 1]->cycle
                 ]);
-            DB::table('kapasitas_has_teams')
-                ->insert([
-                    'kapasitas_idkapasitas' => ((($jenisMesin - 1) * 6) + 1),
-                    'kapasitas_mesin_idmesin' => $jenisMesin,
-                    'teams_idteam' => $idteam
-                ]);
-            for ($komponen = 0; $komponen < 4; $komponen++) {
-                DB::table('level_komponen')
+
+            if ($jenisMesin < 8) {
+                DB::table('kapasitas_has_teams')
                     ->insert([
-                        'teams_idteam' => $idteam,
-                        'komponen_idkomponen' => $idkomponen,
-                        'komponen_mesin_idmesin' => $jenisMesin
+                        'kapasitas_idkapasitas' => ((($jenisMesin - 1) * 6) + 1),
+                        'kapasitas_mesin_idmesin' => $jenisMesin,
+                        'teams_idteam' => $idteam
                     ]);
-                $idkomponen += 10;
+
+                for ($komponen = 0; $komponen < 4; $komponen++) {
+                    DB::table('level_komponen')
+                        ->insert([
+                            'teams_idteam' => $idteam,
+                            'komponen_idkomponen' => $idkomponen,
+                            'komponen_mesin_idmesin' => $jenisMesin
+                        ]);
+                    $idkomponen += 10;
+                }
+            } else if ($jenisMesin == 8) {
+
+                DB::table('kapasitas_has_teams')
+                    ->insert([
+                        'kapasitas_idkapasitas' => 43,
+                        'kapasitas_mesin_idmesin' => 8,
+                        'teams_idteam' => $idteam
+                    ]);
+            } else if ($jenisMesin == 9) {
+
+                DB::table('kapasitas_has_teams')
+                    ->insert([
+                        'kapasitas_idkapasitas' => 44,
+                        'kapasitas_mesin_idmesin' => 9,
+                        'teams_idteam' => $idteam
+                    ]);
             }
         }
 
