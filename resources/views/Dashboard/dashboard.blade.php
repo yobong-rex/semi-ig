@@ -63,7 +63,7 @@
         }
 
         .text_kartu,
-        .text_kartu_proses {
+        .text_kartu_proses,.text_kartu_bawah {
             font-weight: bolder;
             font-size: 24px;
         }
@@ -89,6 +89,7 @@
                 width: 2em;
                 bottom: 5%;
                 right: 5%;
+                height: 2em;
             }
 
             .OP_text {
@@ -142,6 +143,7 @@
                 width: 2em;
                 bottom: 10%;
                 right: 5%;
+                height: 2em;
             }
 
             .OP_text {
@@ -194,6 +196,7 @@
                 width: 3em;
                 bottom: 10%;
                 right: 5%;
+                height: 3em;
             }
 
             .OP_text {
@@ -401,109 +404,116 @@
             @endfor
         </div>
 
-        <div class="spacing"></div>
+        <div class="row spacing"></div>
 
-        {{-- Inventory --}}
-        <div class="card-body inventory rounded">
-            <h1>Inventory</h1>
-            <table class="table table-bordered" style="vertical-align: middle;">
-                <thead class="thead">
-                    <tr>
-                        <th class="nomor_inventory" scope="col">No.</th>
-                        <th scope="col">Produk</th>
-                        <th scope="col">Tersedia</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $i = 1; ?>
-                    @foreach ($bahanBaku as $b)
-                        <tr>
-                            <th class="nomor_inventory" scope="row">{{ $i }}</th>
-                            <td>{{ $b->bahan_baku }}</td>
-                            <td id="inv_{{ $i }}">
-                                @if (count($bbTeam) == 0)
-                                    0
-                                @else
-                                    <?php $trigerBB = 0; ?>
-                                    @foreach ($bbTeam as $bt)
-                                        @if ($b->bahan_baku == $bt->ig_markets)
-                                            {{ $bt->stock }}
-                                            <?php $trigerBB += 1; ?>
+        <div class="row">
+
+            <div class="col-12 col-md-6">
+                {{-- Inventory --}}
+                <div class="card-body inventory rounded">
+                    <p class="text_kartu_bawah" style="margin-bottom:0.5rem !important;">Inventory</p>
+                    <table class="table table-striped table-bordered w-100" style="vertical-align: middle;">
+                        <thead class="table-dark">
+                            <tr>
+                                <th class="nomor_inventory " scope="col">No.</th>
+                                <th scope="col">Produk</th>
+                                <th scope="col">Tersedia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $i = 1; ?>
+                            @foreach ($bahanBaku as $b)
+                                <tr>
+                                    <th class="nomor_inventory" scope="row">{{ $i }}</th>
+                                    <td>{{ $b->bahan_baku }}</td>
+                                    <td id="inv_{{ $i }}">
+                                        @if (count($bbTeam) == 0)
+                                            0
+                                        @else
+                                            <?php $trigerBB = 0; ?>
+                                            @foreach ($bbTeam as $bt)
+                                                @if ($b->bahan_baku == $bt->ig_markets)
+                                                    {{ $bt->stock }}
+                                                    <?php $trigerBB += 1; ?>
+                                                @endif
+                                            @endforeach
+                                            @if ($trigerBB == 0)
+                                                {{ $trigerBB }}
+                                            @endif
                                         @endif
-                                    @endforeach
-                                    @if ($trigerBB == 0)
-                                        {{ $trigerBB }}
-                                    @endif
-                                @endif
 
-                            </td>
-                        </tr>
-                        <?php $i++; ?>
-                    @endforeach
+                                    </td>
+                                </tr>
+                                <?php $i++; ?>
+                            @endforeach
 
-                </tbody>
-            </table>
-        </div>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-        <div class="spacing"></div>
-
-        {{-- Pemenuhan Demand --}}
-        <div class="card-body pemenuhan rounded">
-            <h1>Pemenuhan Demand</h1>
-            {{-- Table Pemenuhan Demand Baru --}}
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th class="nomor_demand" scope="col">No.</th>
-                        <th scope="col">Produk</th>
-                        <th scope="col" style="width:350px;">Jumlah Produk di Inventory</th>
-                        <th scope="col" style="width:350px;">Demand Terpenuhi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php
-                        $i = 1;
-                    @endphp
-                    @foreach ($produk as $p)
-                        <tr>
-                            <td class="nomor_demand" scope="row">{{ $i++ }}</td>
-                            <td>{{ $p->nama }}</td>
-                            <td id="produkInventory">
-                                @if (count($produk_team) == 0)
-                                    0
-                                @else
-                                    <?php $trigerP = 0; ?>
-                                    @foreach ($produk_team as $pt)
-                                        @if ($p->idproduk == $pt->produk_idproduk)
-                                            {{ $pt->hasil }}
-                                            <?php $trigerP += 1; ?>
-                                        @endif
-                                    @endforeach
-                                    @if ($trigerP == 0)
-                                        {{ $trigerP }}
-                                    @endif
-                                @endif
-                            </td>
-                            <td id='total_{{ $p->idproduk }}'>
-                                @if (count($data) == 0)
-                                    0
-                                @else
-                                    <?php $triger = 0; ?>
-                                    @foreach ($data as $d)
-                                        @if ($p->idproduk == $d->idproduk)
-                                            {{ $d->jumlah }}
-                                            <?php $triger += 1; ?>
-                                        @endif
-                                    @endforeach
-                                    @if ($triger == 0)
-                                        {{ $triger }}
-                                    @endif
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="col-12 col-md-6 mt-4 mt-md-0">
+                {{-- Pemenuhan Demand --}}
+                <div class="card-body pemenuhan rounded">
+                    <p class="text_kartu_bawah" style="margin-bottom:0.5rem !important;">Pemenuhan Demand</p>
+                    {{-- Table Pemenuhan Demand Baru --}}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered w-100" style="vertical-align: middle;">
+                            <thead class="table-dark">
+                                <tr style="vertical-align: middle;">
+                                    <th class="nomor_demand" scope="col">No.</th>
+                                    <th scope="col">Produk</th>
+                                    <th scope="col" style="width:350px;">Jumlah Produk di Inventory</th>
+                                    <th scope="col" style="width:350px;">Demand Terpenuhi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $i = 1;
+                                @endphp
+                                @foreach ($produk as $p)
+                                    <tr>
+                                        <td class="nomor_demand" scope="row">{{ $i++ }}</td>
+                                        <td>{{ $p->nama }}</td>
+                                        <td id="produkInventory">
+                                            @if (count($produk_team) == 0)
+                                                0
+                                            @else
+                                                <?php $trigerP = 0; ?>
+                                                @foreach ($produk_team as $pt)
+                                                    @if ($p->idproduk == $pt->produk_idproduk)
+                                                        {{ $pt->hasil }}
+                                                        <?php $trigerP += 1; ?>
+                                                    @endif
+                                                @endforeach
+                                                @if ($trigerP == 0)
+                                                    {{ $trigerP }}
+                                                @endif
+                                            @endif
+                                        </td>
+                                        <td id='total_{{ $p->idproduk }}'>
+                                            @if (count($data) == 0)
+                                                0
+                                            @else
+                                                <?php $triger = 0; ?>
+                                                @foreach ($data as $d)
+                                                    @if ($p->idproduk == $d->idproduk)
+                                                        {{ $d->jumlah }}
+                                                        <?php $triger += 1; ?>
+                                                    @endif
+                                                @endforeach
+                                                @if ($triger == 0)
+                                                    {{ $triger }}
+                                                @endif
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
 
         {{-- <div style="background:#000000 ;border:1px solid #000000;"> --}}
