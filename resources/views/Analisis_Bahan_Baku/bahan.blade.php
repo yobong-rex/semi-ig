@@ -90,45 +90,47 @@
 
             <div class="card-body tabelbahan rounded">
                 <h1>Analisis Bahan Baku</h1>
-                <table class="table table-bordered" style="width:100%;">
-                    <thead>
-                        <tr>
-                            {{-- Tulisan Bahan Baku --}}
-                            <th class="header_bahanbaku" scope="col" colspan="2">Bahan Baku</th>
+                <div class="table-responsive">
+                    <table class="table table-bordered" style="width:100%;">
+                        <thead>
+                            <tr>
+                                {{-- Tulisan Bahan Baku --}}
+                                <th class="header_bahanbaku" scope="col" colspan="2">Bahan Baku</th>
 
-                        {{-- combobox di kanan atas yang isinya produk --}}
-                        <th>
-                            <select name="produk" id="produk">
-                                @for ($x = 0; $x < count($product); $x++)
-                                    <option value='{{ $product[$x]->nama }}'>{{ $product[$x]->nama }}</option>
-                                @endfor
-                            </select>
-                        </th>
-                        <th scope="col">Status</th>
-                    </tr>
-                    </thead>
-                    <tbody> 
-                        <tr>
-                            {{-- 3 combobox di bawah yang isinya resource/bahan baku --}}
-                            @for ($i = 1; $i <= 3; $i++)
-                                <td>
-                                    @php
-                                        $arrResource = ['Steel', 'Iron', 'Aluminium Alloy', 'ABS Plastic', 'PP Plastic', 'PC Plastic', 'SBR Rubber', 'PU Rubber', 'NBR Rubber', 'Silicone', 'Acrylic', 'Cable', 'EVA Glue', 'PVA Glue'];
-                                    @endphp
-                                    <select name="resource{{ $i }}" id="resource{{ $i }}">
-                                        @foreach ($arrResource as $key => $resource)
-                                            <option value='{{ $resource }}'>{{ $resource }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                            @endfor
-                            {{-- Table kosong di kanan bawah buat tempat True/False --}}
-                            <td>
-                                <span id="status"></span>
-                            </td>
+                            {{-- combobox di kanan atas yang isinya produk --}}
+                            <th>
+                                <select name="produk" id="produk">
+                                    @for ($x = 0; $x < count($product); $x++)
+                                        <option value='{{ $product[$x]->nama }}'>{{ $product[$x]->nama }}</option>
+                                    @endfor
+                                </select>
+                            </th>
+                            <th scope="col">Status</th>
                         </tr>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody> 
+                            <tr>
+                                {{-- 3 combobox di bawah yang isinya resource/bahan baku --}}
+                                @for ($i = 1; $i <= 3; $i++)
+                                    <td>
+                                        @php
+                                            $arrResource = ['Steel', 'Iron', 'Aluminium Alloy', 'ABS Plastic', 'PP Plastic', 'PC Plastic', 'SBR Rubber', 'PU Rubber', 'NBR Rubber', 'Silicone', 'Acrylic', 'Cable', 'EVA Glue', 'PVA Glue'];
+                                        @endphp
+                                        <select name="resource{{ $i }}" id="resource{{ $i }}">
+                                            @foreach ($arrResource as $key => $resource)
+                                                <option value='{{ $resource }}'>{{ $resource }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                @endfor
+                                {{-- Table kosong di kanan bawah buat tempat True/False --}}
+                                <td>
+                                    <span id="status"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 {{-- Button Submit --}}
                 <button id='analisisBahan' class="btn btn-primary" type="submit" value="submit">Submit</button>
              </div>
