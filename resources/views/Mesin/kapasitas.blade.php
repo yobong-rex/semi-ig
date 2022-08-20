@@ -41,15 +41,26 @@
         .upgrade:hover {
             -webkit-transform: scale(1.07);
         }
-        @media (max-width:800px){
-            .dana, .label_dana{
+
+        @media (max-width:580px){
+            .dana,
+            .label_dana {
                 text-align: center;
+                padding-left: 24px;
             }
         }
 
-        @media (max-width:1000px){
+        @media (max-width:800px) and (min-width:580px){
+            .dana, .label_dana{
+                text-align: center;
+                padding-left: 24px;
+            }
+        }
+
+        @media (max-width:1000px) and (min-width:800px){
             .dana, .label_dana{
                 font-size: 25px;
+                padding-left: 24px;
             }
         }
     </style>

@@ -42,7 +42,7 @@
             vertical-align: middle;
         }
 
-        .upgrade,
+        /* .upgrade,
         .upgrade:focus,
         .upgradeAll {
             background-color: #ffc107;
@@ -55,18 +55,26 @@
         .upgrade:hover,
         .upgradeAll:hover {
             -webkit-transform: scale(1.07);
-        }
+        } */
 
         .kartu_tabel {
             background-color: #ffffff;
             width: 100%;
         }
+        @media (max-width:580px){
+            .dana,
+            .label_dana {
+                text-align: center;
+                padding-left: 24px;
+            }
+        }
 
-        @media (max-width:800px) {
+        @media (max-width:800px) and (min-width:580px) {
 
             .dana,
             .label_dana {
                 text-align: center;
+                padding-left: 24px;
             }
 
             .upgrade,
@@ -84,11 +92,12 @@
             }
         }
 
-        @media (max-width:1000px) {
+        @media (max-width:1000px) and (min-width:800px) {
 
             .dana,
             .label_dana {
                 font-size: 25px;
+                padding-left: 24px;
             }
 
             .upgrade,
@@ -162,10 +171,10 @@
                         <td class="noLevel" id="levelMesin_">{{ $levelMesin[0]->level }}</td>
                         <td style="text-align:center;">
                             @if ($valueSesi == 1)
-                                <button type="button" id="button" class="upgrade" disabled>Upgrade All
+                                <button type="button" id="button" class="upgrade btn btn-warning" disabled>Upgrade All
                                     Component</button>
                             @else
-                                <button class="upgradeAll" id="upgrade_all" data-bs-toggle="modal"
+                                <button class="btn btn-warning" id="upgrade_all" data-bs-toggle="modal"
                                     data-bs-target="#Konfirmasi">Upgrade All
                                     Component</button>
                             @endif
@@ -187,7 +196,7 @@
                                 @if ($valueSesi == 1)
                                     <button type="button" id="button" class="upgrade" disabled>Upgrade</button>
                                 @else
-                                    <button type="button" id="upgrade_{{ $x }}" class="upgrade"
+                                    <button type="button" id="upgrade_{{ $x }}" class="btn btn-warning upgrade"
                                         value='{{ $data[$x]->nama_komponen }}' data-bs-toggle="modal"
                                         data-bs-target="#Konfirmasi">Upgrade</button>
                                 @endif

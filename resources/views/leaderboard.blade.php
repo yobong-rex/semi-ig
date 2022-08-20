@@ -132,7 +132,7 @@
                     $('#akhir').empty()
                     let nomer = 1;
                     $.each(data.data1, function(key, value) {
-                    if(nomer<=13){
+                    if(nomer<=10){
                             $('#awal').append(`
                                 <tr>
                                     <td style="text-align:center;font-family:TT Norms Bold;">`+nomer+`</td>
