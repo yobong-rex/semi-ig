@@ -152,13 +152,13 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse" style="justify-content:">
 
-                
+
                 <ul class="navbar-nav mb-2 mb-lg-0 gap-4">
                     <li class="nav-item">
                         <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
                             href="{{ route('dashboard') }}">Dashboard</a>
                     </li>
-                    @if($valueSesi != 0)
+                    @if($namaSesi != 'belum dimulai')
                         @can('isMarketing')
                             <li class="nav-item">
                                 <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
