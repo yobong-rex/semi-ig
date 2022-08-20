@@ -166,23 +166,27 @@ class ProduksiController extends Controller
             //cek level mesin
             $splitMesin = explode(';', $mesinProduksi);
             foreach($splitMesin as $mp){
-                if($mp != '' || $mp != 'Idle' || $mp != 'Delay'){
-                    $levelMesin = DB::table('teams as t')
-                    ->join('mesin_has_teams as mht', 't.idteam', '=', 'mht.teams_idteam')
-                        ->join('mesin as m', 'mht.mesin_idmesin', '=', 'm.idmesin')
-                        ->select('mht.level')
-                        ->where('t.idteam', $team)
-                        ->where('m.nama', $mp)
-                        ->get();
+                if($mp != ""){
+                    if($mp != "Idle"){
+                        if($mp != "Delay"){
+                            $levelMesin = DB::table('teams as t')
+                                ->join('mesin_has_teams as mht', 't.idteam', '=', 'mht.teams_idteam')
+                                ->join('mesin as m', 'mht.mesin_idmesin', '=', 'm.idmesin')
+                                ->select('mht.level')
+                                ->where('t.idteam', $team)
+                                ->where('m.nama', $mp)
+                                ->get();
 
-                    // return $levelMesin;
+                            // return $levelMesin;
 
-                    if($levelMesin[0]->level < ($sesi - 1)){
-                        return response()->json(array(
-                            'msg' => 'maaf, mesin '.$mp. ' belum mencapai level '.($sesi - 1),
-                            'code' => '401'
-                        ), 200);
+                            if($levelMesin[0]->level < ($sesi - 1)){
+                                return response()->json(array(
+                                    'msg' => 'maaf, mesin '.$mp. ' belum mencapai level '.($sesi - 1),
+                                    'code' => '401'
+                                ), 200);
 
+                            }
+                        }
                     }
                 }
             }
