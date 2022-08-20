@@ -89,7 +89,7 @@
                         <thead class="table-dark">
                             <tr style="font-family:TT Norms Bold;">
                                 <th style="text-align:center;width:75px;">Ranking</th>
-                                <th>Nama Team</th>
+                                <th>No. Perusahaan</th>
                                 <th>Customer Value</th>
                             </tr>
                         </thead>
@@ -102,7 +102,7 @@
                         <thead class="table-dark">
                             <tr style="font-family:TT Norms Bold;">
                                 <th scope="col" style="text-align:center;width:75px;">Ranking</th>
-                                <th>Nama Team</th>
+                                <th>No. Perusahaan</th>
                                 <th>Customer Value</th>
                             </tr>
                         </thead>
