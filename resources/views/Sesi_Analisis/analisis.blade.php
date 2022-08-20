@@ -135,8 +135,8 @@
                                                     <option class='mesin_{{ $i }}_{{ $m->nama }}' value='{{ $m->nama }}' kapasitas='{{ $m->kapasitas }}'
                                                         time='{{ $m->cycleTime }}' >{{ $m->nama }}</option>
                                                 @endforeach
-                                                <option value="Idle" kapasitas="1000" time="6">Idle</option>
-                                                <option value="Delay" kapasitas="1000" time="7">Delay</option>
+                                                {{-- <option value="Idle" kapasitas="1000" time="6">Idle</option>
+                                                <option value="Delay" kapasitas="1000" time="7">Delay</option> --}}
                                             </select>
                                         </td>
                                     @endfor
