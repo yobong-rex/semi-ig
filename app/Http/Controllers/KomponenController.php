@@ -427,7 +427,7 @@ class KomponenController extends Controller
                     ->where('kht.teams_idteam', '=', $user[0]->idteam)
                     ->where('m.nama', 'like', '%' . $proses1[$x] . '%')
                     ->get();
-
+                    
                 array_push($arrCycle1, $kapasitascycle1[0]->cycle);
                 array_push($arrKapasitas1, $kapasitascycle1[0]->kapasitas);
             }

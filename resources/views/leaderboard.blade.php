@@ -68,13 +68,13 @@
 
             <div class="row text-center rounded leaderboard_title py-2">
                 <div class="col"></div>
-                <div class="col align-self-center" style="vertical-align: middle;"><h1>LEADERBOARD</h1></div>
+                <div class="col align-self-center" style="vertical-align: middle;"><h1 class="m-0">LEADERBOARD</h1></div>
                 
                 <div class="col align-self-center" style="font-family:TT Norms Regular;">
                     <div class="col"></div>
                     <div class="col rounded align-self-center timer" style="margin-bottom: 0!important;">
                         <h3>Timer</h3>
-                        <h4 id="timer">- - : - -</h4>
+                        <h4 class="m-0" id="timer">- - : - -</h4>
                     </div>
                     <div class="col"></div>
                 </div>
@@ -88,9 +88,9 @@
                     <table class="table table-striped">
                         <thead class="table-dark">
                             <tr style="font-family:TT Norms Bold;">
-                                <th style="text-align:center;width:75px;">Ranking</th>
-                                <th>No. Perusahaan</th>
-                                <th>Customer Value</th>
+                                <th style="vertical-align:middle;text-align:center;width:75px;">Ranking</th>
+                                <th style="text-align:center;">No. Perusahaan</th>
+                                <th style="text-align:center;">Customer Value</th>
                             </tr>
                         </thead>
                         <tbody id ='awal'>
@@ -101,9 +101,9 @@
                     <table class="table table-striped">
                         <thead class="table-dark">
                             <tr style="font-family:TT Norms Bold;">
-                                <th scope="col" style="text-align:center;width:75px;">Ranking</th>
-                                <th>No. Perusahaan</th>
-                                <th>Customer Value</th>
+                                <th scope="col" style="vertical-align:middle;text-align:center;width:75px;">Ranking</th>
+                                <th style="text-align:center;">No. Perusahaan</th>
+                                <th style="text-align:center;">Customer Value</th>
                             </tr>
                         </thead>
                         <tbody id = 'akhir'>
@@ -136,8 +136,8 @@
                             $('#awal').append(`
                                 <tr>
                                     <td style="text-align:center;font-family:TT Norms Bold;">`+nomer+`</td>
-                                    <td style="vertical-align:middle;">`+value.nama+`</td>
-                                    <td style="vertical-align:middle;">`+value.customer_value+`</td>
+                                    <td style="vertical-align:middle;text-align:center;">`+value.nama+`</td>
+                                    <td style="vertical-align:middle;text-align:center;">`+value.customer_value+`</td>
                                 </tr>
                             `);
                         }
@@ -145,8 +145,8 @@
                             $('#akhir').append(`
                                 <tr>
                                     <td style="text-align:center;font-family:TT Norms Bold;">`+nomer+`</td>
-                                    <td style="vertical-align:middle;">`+value.nama+`</td>
-                                    <td style="vertical-align:middle;">`+value.customer_value+`</td>
+                                    <td style="vertical-align:middle;text-align:center;">`+value.nama+`</td>
+                                    <td style="vertical-align:middle;text-align:center;">`+value.customer_value+`</td>
                                 </tr>
                             `);
                         }
