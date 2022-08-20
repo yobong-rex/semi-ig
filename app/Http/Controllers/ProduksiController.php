@@ -16,12 +16,36 @@ class ProduksiController extends Controller
         $tempDefect = [];
         $defectDefault = 10;
         foreach ($proses as $p) {
-            $data = DB::table('mesin_has_teams')
-                ->join('mesin', 'mesin_has_teams.mesin_idmesin', '=','mesin.idmesin')
-                ->select('mesin_has_teams.level')
-                ->where('mesin.nama', $p)
-                ->where('mesin_has_teams.teams_idteam', $user[0]->idteam)
-                ->get();
+            if($p != 'Idle' || $p != 'Delay'){
+                $data = DB::table('mesin_has_teams')
+                    ->join('mesin', 'mesin_has_teams.mesin_idmesin', '=','mesin.idmesin')
+                    ->select('mesin_has_teams.level')
+                    ->where('mesin.nama', $p)
+                    ->where('mesin_has_teams.teams_idteam', $user[0]->idteam)
+                    ->get();
+                    if (count($data) > 0) {
+                            // $lvlDefect = $d->level - 1;
+                            // array_push($tempDefect, $lvlDefect);
+                            $minDefect = 0;
+                            if($data[0]->level == 2){
+                                $minDefect = 2;
+                            }
+                            else if($data[0]->level == 3){
+                                $minDefect = 4;
+                            }
+                            else if($data[0]->level == 4){
+                                $minDefect = 6;
+                            }
+                            else if($data[0]->level == 5){
+                                $minDefect = 8;
+                            }
+                            else if($data[0]->level == 6){
+                                $minDefect = 10;
+                            }
+                            $newDefect = $defectDefault - $minDefect;
+                            $defect = $defect . $newDefect . ';';
+                        }
+            }
             //     ->get();
             // $data = DB::table('mesin as m')
             //     ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
@@ -31,28 +55,6 @@ class ProduksiController extends Controller
             //     ->where('m.nama', $p)
             //     ->orderBy('k.idkomponen', 'asc')
             //     ->get();
-            if (count($data) > 0) {
-                    // $lvlDefect = $d->level - 1;
-                    // array_push($tempDefect, $lvlDefect);
-                    $minDefect = 0;
-                    if($data[0]->level == 2){
-                        $minDefect = 2;
-                    }
-                    else if($data[0]->level == 3){
-                        $minDefect = 4;
-                    }
-                    else if($data[0]->level == 4){
-                        $minDefect = 6;
-                    }
-                    else if($data[0]->level == 5){
-                        $minDefect = 8;
-                    }
-                    else if($data[0]->level == 6){
-                        $minDefect = 10;
-                    }
-                    $newDefect = $defectDefault - $minDefect;
-                    $defect = $defect . $newDefect . ';';
-                }
                 // $minDefect = min($tempDefect);
         }
         return $defect;
@@ -164,14 +166,16 @@ class ProduksiController extends Controller
             //cek level mesin
             $splitMesin = explode(';', $mesinProduksi);
             foreach($splitMesin as $mp){
-                if($mp != ''){
+                if($mp != '' || $mp != 'Idle' || $mp != 'Delay'){
                     $levelMesin = DB::table('teams as t')
                     ->join('mesin_has_teams as mht', 't.idteam', '=', 'mht.teams_idteam')
-                    ->join('mesin as m', 'mht.mesin_idmesin', '=', 'm.idmesin')
-                    ->select('mht.level')
-                    ->where('t.idteam', $team)
-                    ->where('m.nama', $mp)
-                    ->get();
+                        ->join('mesin as m', 'mht.mesin_idmesin', '=', 'm.idmesin')
+                        ->select('mht.level')
+                        ->where('t.idteam', $team)
+                        ->where('m.nama', $mp)
+                        ->get();
+
+                    // return $levelMesin;
 
                     if($levelMesin[0]->level < ($sesi - 1)){
                         return response()->json(array(
@@ -194,7 +198,7 @@ class ProduksiController extends Controller
                 ->get();
 
             $analisisProses = [];
-            foreach ($idanalisisProses as $idAP) { 
+            foreach ($idanalisisProses as $idAP) {
                 $arrAP = DB::table('teams_has_analisis')
                     ->select('maxProduct', 'cycleTime')
                     ->where('analisis_idanalisis', $idAP->maxIdAnalisis)
