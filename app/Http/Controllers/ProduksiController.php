@@ -235,7 +235,7 @@ class ProduksiController extends Controller
                 'code' => '401'
             ), 200);
         }
-        if($jumlah > $teamStatus[0]->limit){
+        if($teamStatus[0]->limit <$jumlah  ){
             return response()->json(array(
                 'msg' => 'maaf, jumlah yang ingin kamu produksi melebihi limit proses',
                 'code' => '401'
