@@ -181,7 +181,7 @@ class SesiController extends Controller
         // }
 
 
-        if ($upSesi % 2 != 0) {
+        if ( $upSesi != 1 && $upSesi % 2 != 0) {
             $getSesiSebelum = DB::table('waktu_sesi')->select('nama')->where('idwaktu_sesi', ($sekarang - 1))->get();
             $sesiSebelum = $getSesiSebelum[0]->nama;
             foreach ($team as $t) {

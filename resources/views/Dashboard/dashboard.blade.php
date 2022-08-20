@@ -47,7 +47,7 @@
         .button_OverProduct {
             border: 0px;
             position: fixed;
-            bottom: 10%;
+            bottom: 7%;
             right: 5%;
             background-color: rgba(0, 0, 0, 0);
         }

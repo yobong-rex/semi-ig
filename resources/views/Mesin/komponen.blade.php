@@ -194,7 +194,7 @@
                             <td style="text-align:center;vertical-align:middle;">
                                 {{-- button Upgrade --}}
                                 @if ($valueSesi == 1)
-                                    <button type="button" id="button" class="upgrade" disabled>Upgrade</button>
+                                    <button type="button" id="button" class="btn btn-warning upgrade" disabled>Upgrade</button>
                                 @else
                                     <button type="button" id="upgrade_{{ $x }}" class="btn btn-warning upgrade"
                                         value='{{ $data[$x]->nama_komponen }}' data-bs-toggle="modal"
