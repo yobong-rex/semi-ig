@@ -43,25 +43,27 @@
         }
 
         /* .upgrade,
-        .upgrade:focus,
-        .upgradeAll {
-            background-color: #ffc107;
-            border: 1px #ffc107;
-            border-radius: 5px;
-            padding: 6px 12px 6px 12px;
-            transition: all 0.2s ease;
-        }
+                                .upgrade:focus,
+                                .upgradeAll {
+                                    background-color: #ffc107;
+                                    border: 1px #ffc107;
+                                    border-radius: 5px;
+                                    padding: 6px 12px 6px 12px;
+                                    transition: all 0.2s ease;
+                                }
 
-        .upgrade:hover,
-        .upgradeAll:hover {
-            -webkit-transform: scale(1.07);
-        } */
+                                .upgrade:hover,
+                                .upgradeAll:hover {
+                                    -webkit-transform: scale(1.07);
+                                } */
 
         .kartu_tabel {
             background-color: #ffffff;
             width: 100%;
         }
-        @media (max-width:580px){
+
+        @media (max-width:580px) {
+
             .dana,
             .label_dana {
                 text-align: center;
@@ -155,7 +157,12 @@
                             @php
                                 $arrMesin = [];
                                 for ($a = 0; $a < count($namaMesin); $a++) {
-                                    array_push($arrMesin, $namaMesin[$a]->nama);
+                                    if ($namaMesin[$a]->nama != 'Idle') {
+                                        if ($namaMesin[$a]->nama != 'Delay') {
+                                            array_push($arrMesin, $namaMesin[$a]->nama);
+                                            // php kontol
+                                        }
+                                    }
                                 }
                             @endphp
                             @foreach ($arrMesin as $mesin)
@@ -194,7 +201,8 @@
                             <td style="text-align:center;vertical-align:middle;">
                                 {{-- button Upgrade --}}
                                 @if ($valueSesi == 1)
-                                    <button type="button" id="button" class="btn btn-warning upgrade" disabled>Upgrade</button>
+                                    <button type="button" id="button" class="btn btn-warning upgrade"
+                                        disabled>Upgrade</button>
                                 @else
                                     <button type="button" id="upgrade_{{ $x }}" class="btn btn-warning upgrade"
                                         value='{{ $data[$x]->nama_komponen }}' data-bs-toggle="modal"
@@ -237,8 +245,8 @@
         </div>
 
         {{-- Modal Notif --}}
-        <div class="modal fade" id="Notif" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="NotifLabel" aria-hidden="true">
+        <div class="modal fade" id="Notif" data-bs-keyboard="false" tabindex="-1" aria-labelledby="NotifLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
