@@ -272,7 +272,7 @@
 
                 if (temp >= 0) {
 
-                    let kirim = temp * 4
+                    let kirim = temp * 3
 
                     let pengiriman = 150 + kirim;
                     $('#biaya_pengiriman').text(pengiriman);
