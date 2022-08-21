@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
-use App\Events\Market;
+// use App\Events\Market;
 use Illuminate\Http\Response;
 
 class MarketController extends Controller
@@ -134,7 +134,7 @@ class MarketController extends Controller
                     ['ig_markets' => $val['nama'], 'teams' => $team],
                     ['stock' => $newInventory]
                 );
-                event(new Market($stokPusser));
+                // event(new Market($stokPusser));
             }
 
             return response()->json(array(
