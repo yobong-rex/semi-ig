@@ -381,7 +381,7 @@ class SesiController extends Controller
         foreach ($team as $t) {
             $danaBaru = $t->dana;
             //over production
-            $overProd = DB::table('history_produksi')->where('teams_idteam', $t->idteam)->where('sesi', 6)->where('hasil', '>', 0)->get();
+            $overProd = DB::table('history_produksi')->where('teams_idteam', $t->idteam)->where('sesi', 4)->where('hasil', '>', 0)->get();
             // $Demand = DB::table('demand')->select('produk_idproduk')->where('sesi', 6)->get();
 
             // return $overProd;
