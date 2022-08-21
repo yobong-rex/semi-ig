@@ -20,7 +20,10 @@ class Sesi implements ShouldBroadcast
     public $condition;
     public $detailSesi;
 
-    public function __construct($id, $sesi, $waktu, $condition, $detailSesi)
+    // waktu tujuan timer
+    public $countdownTimer;
+
+    public function __construct($id, $sesi, $waktu, $condition, $detailSesi, $countdownTimer)
     {
         $this->id = $id;
         $this->sesi = $sesi;
@@ -29,6 +32,7 @@ class Sesi implements ShouldBroadcast
         // start || pause || stop
         $this->condition = $condition;
         $this->detailSesi = $detailSesi;
+        $this->countdownTimer = $countdownTimer;
     }
 
     public function broadcastOn()

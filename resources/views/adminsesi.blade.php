@@ -8,11 +8,13 @@
         <h1>Admin Sesi</h1>
         <h3>Sesi : <span id="nomorSesi" value="{{ $sesi[0]->sesi }}"> {{ $sesi[0]->nama }} </span></h3>
         <h3>Detail : <span id="detailSesi">{{ $detail }}</span></h3>
+
         <h3>Status : <span id="status"></span></h3>
         <div class="col-md-2 flex text-center align-self-end timer rounded-2" style="font-family:TT Norms Regular;">
             <h4>Server Time</h4>
             <h4 id="timer">- - : - -</h4>
         </div>
+        
         <button type="button" class="btn btn-success" id="button_start">Start</button>
         <button type="button" class="btn btn-success" id="button_pause" data-bs-toggle="modal"
             data-bs-target="#pause">Pause</button>
@@ -233,7 +235,10 @@
                 type: 'POST',
                 url: "{{ route('start.sesi') }}",
                 data: {
-                    '_token': '<?php echo csrf_token(); ?>'
+                    '_token': '<?php echo csrf_token(); ?>',
+                    'now': new Date().getTime(),
+                    'time': localStorage.getItem('timer'),
+                    'condition': localStorage.getItem('condition')
                 },
                 success: function(data) {
                     // alert('success');
@@ -466,6 +471,9 @@
                 data: {
                     '_token': '<?php echo csrf_token(); ?>',
                     'sesi': $('#nomorSesi').attr('value'),
+
+                    'now': new Date().getTime()
+                    
                 },
                 success: function(data) {
                     if (data.msg == 'Sesi Sudah Max Woe!!') {
@@ -566,7 +574,8 @@
                 url: "{{ route('back.sesi') }}",
                 data: {
                     '_token': '<?php echo csrf_token(); ?>',
-                    'sesi': $('#nomorSesi').attr('value')
+                    'sesi': $('#nomorSesi').attr('value'),
+                    'now': new Date().getTime()
                 },
                 success: function(data) {
                     if (data.msg == 'Sesi Sudah Gabisa Kurang Woe!!') {
