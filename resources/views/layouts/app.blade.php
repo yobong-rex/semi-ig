@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'IG XXX') }}</title>
+    <title>{{ config('app.name', 'Industrial Games XXX') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -32,13 +32,29 @@
             border-radius: 5px;
         }
         .nav-link:hover {
-            color: #ffff;
+            color: #ffffff !important;
             background-color: #ea435e;
             border-radius: 5px;
+            transition: all 0.2s ease;
+        }
+        
+        @media (max-width:800px) {
+            .nav-link:focus,
+            .nav-link:hover,
+            .nav-link:active {
+                transition: all 0.2s ease;
+            }
+        }
+        @media (max-width:1000px) {
+            .nav-link:focus,
+            .nav-link:hover,
+            .nav-link:active {
+                transition: all 0.2s ease;
+            }
         }
     </style>
 </head>
-<body>
+<body style="background: url('{{ asset('assets') }}/background/Background.png') top / cover no-repeat;">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
@@ -60,11 +76,11 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link" style="padding-left:0.5em" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" style="padding-left:0.5em" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else
@@ -91,7 +107,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-5 px-4">
             @yield('content')
         </main>
     </div>

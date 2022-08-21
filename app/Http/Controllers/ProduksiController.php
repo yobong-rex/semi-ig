@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use Auth;
 
+
 class ProduksiController extends Controller
 {
 
@@ -15,23 +16,46 @@ class ProduksiController extends Controller
         $tempDefect = [];
         $defectDefault = 10;
         foreach ($proses as $p) {
-            $data = DB::table('mesin as m')
-                ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
-                ->join('level_komponen as lk', 'k.idkomponen', '=', 'lk.komponen_idkomponen')
-                ->select('k.level')
-                ->where('lk.teams_idteam', $user[0]->idteam)
-                ->where('m.nama', $p)
-                ->orderBy('k.idkomponen', 'asc')
-                ->get();
-            if (count($data) > 0) {
-                foreach ($data as $d) {
-                    $lvlDefect = $d->level - 1;
-                    array_push($tempDefect, $lvlDefect);
-                }
-                $minDefect = min($tempDefect);
-                $newDefect = $defectDefault - $minDefect;
-                $defect = $defect . $newDefect . ';';
+            if($p != 'Idle' || $p != 'Delay'){
+                $data = DB::table('mesin_has_teams')
+                    ->join('mesin', 'mesin_has_teams.mesin_idmesin', '=','mesin.idmesin')
+                    ->select('mesin_has_teams.level')
+                    ->where('mesin.nama', $p)
+                    ->where('mesin_has_teams.teams_idteam', $user[0]->idteam)
+                    ->get();
+                    if (count($data) > 0) {
+                            // $lvlDefect = $d->level - 1;
+                            // array_push($tempDefect, $lvlDefect);
+                            $minDefect = 0;
+                            if($data[0]->level == 2){
+                                $minDefect = 2;
+                            }
+                            else if($data[0]->level == 3){
+                                $minDefect = 4;
+                            }
+                            else if($data[0]->level == 4){
+                                $minDefect = 6;
+                            }
+                            else if($data[0]->level == 5){
+                                $minDefect = 8;
+                            }
+                            else if($data[0]->level == 6){
+                                $minDefect = 10;
+                            }
+                            $newDefect = $defectDefault - $minDefect;
+                            $defect = $defect . $newDefect . ';';
+                        }
             }
+            //     ->get();
+            // $data = DB::table('mesin as m')
+            //     ->join('komponen as k', 'm.idmesin', '=', 'k.mesin_idmesin')
+            //     ->join('level_komponen as lk', 'k.idkomponen', '=', 'lk.komponen_idkomponen')
+            //     ->select('k.level')
+            //     ->where('lk.teams_idteam', $user[0]->idteam)
+            //     ->where('m.nama', $p)
+            //     ->orderBy('k.idkomponen', 'asc')
+            //     ->get();
+                // $minDefect = min($tempDefect);
         }
         return $defect;
     }
@@ -104,7 +128,9 @@ class ProduksiController extends Controller
         $defect2 = $this->getDefect($splitProses2, $user);
         $defect3 = $this->getDefect($splitProses3, $user);
 
-        return view('Produksi.produksi', compact('splitProses1', 'splitProses2', 'splitProses3', 'defect1', 'defect2', 'defect3', 'user', 'namaSesi', 'valueSesi','proses1','proses2','proses3'));
+        $limit = DB::table('teams')->select('limit_produksi1','limit_produksi2','limit_produksi3')->where('idteam',$team)->get();
+
+        return view('Produksi.produksi', compact('splitProses1', 'splitProses2', 'splitProses3', 'defect1', 'defect2', 'defect3', 'user', 'namaSesi', 'valueSesi','proses1','proses2','proses3','limit'));
     }
 
     function buat(Request $request)
@@ -129,7 +155,7 @@ class ProduksiController extends Controller
 
 
         if ($sesi == 1) {
-            if ($jumlah > 80) {
+            if ($jumlah > 50) {
                 return response()->json(array(
                     'msg' => 'maaf, jumlah yang ingin kamu produksi melebihi kapasitas produksi',
                     'code' => '401'
@@ -140,21 +166,27 @@ class ProduksiController extends Controller
             //cek level mesin
             $splitMesin = explode(';', $mesinProduksi);
             foreach($splitMesin as $mp){
-                if($mp != ''){
-                    $levelMesin = DB::table('teams as t')
-                    ->join('mesin_has_teams as mht', 't.idteam', '=', 'mht.teams_idteam')
-                    ->join('mesin as m', 'mht.mesin_idmesin', '=', 'm.idmesin')
-                    ->select('mht.level')
-                    ->where('t.idteam', $team)
-                    ->where('m.nama', $mp)
-                    ->get();
+                if($mp != ""){
+                    if($mp != "Idle"){
+                        if($mp != "Delay"){
+                            $levelMesin = DB::table('teams as t')
+                                ->join('mesin_has_teams as mht', 't.idteam', '=', 'mht.teams_idteam')
+                                ->join('mesin as m', 'mht.mesin_idmesin', '=', 'm.idmesin')
+                                ->select('mht.level')
+                                ->where('t.idteam', $team)
+                                ->where('m.nama', $mp)
+                                ->get();
 
-                    if($levelMesin[0]->level < ($sesi - 1)){
-                        return response()->json(array(
-                            'msg' => 'maaf, mesin '.$mp. ' belum mencapai level '.($sesi - 1),
-                            'code' => '401'
-                        ), 200);
+                            // return $levelMesin;
 
+                            if($levelMesin[0]->level < ($sesi - 1)){
+                                return response()->json(array(
+                                    'msg' => 'maaf, mesin '.$mp. ' belum mencapai level '.($sesi - 1),
+                                    'code' => '401'
+                                ), 200);
+
+                            }
+                        }
                     }
                 }
             }
@@ -177,6 +209,7 @@ class ProduksiController extends Controller
                     ->get();
                 $analisisProses[] = array($arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
             }
+            // return $analisisProses[0][0];
 
             if (($jumlah > $analisisProses[0][0]) || ($jumlah > $analisisProses[0][1])) {
                 return response()->json(array(
@@ -191,7 +224,7 @@ class ProduksiController extends Controller
         $limit = 'limit_produksi'.$btn;
 
         //ambil status team
-        $teamStatus = DB::table('teams')->select('dana', 'inventory', $limit.' as limit')->where('idteam', $team)->get();
+        $teamStatus = DB::table('teams')->select('dana', 'inventory', $limit.' as limit', 'total_defect', 'total_berhasil')->where('idteam', $team)->get();
 
         //get inventory
         $newInv = $teamStatus[0]->inventory;
@@ -202,39 +235,56 @@ class ProduksiController extends Controller
                 'code' => '401'
             ), 200);
         }
-        if($jumlah > $teamStatus[0]->limit){
+        if($teamStatus[0]->limit <$jumlah  ){
             return response()->json(array(
                 'msg' => 'maaf, jumlah yang ingin kamu produksi melebihi limit proses',
                 'code' => '401'
             ), 200);
         }
 
+        $stockINV = array();
+        $whereBahanBaku = array();
+        $countCukup = 0;
+
         //bahan baku harusnya bisa untuk sesi selanjutnya
         foreach ($bahanBaku_split as $bb) {
+            //ubah
             $inv = DB::table('inventory')
-                ->join('ig_markets', 'inventory.ig_markets', '=', 'ig_markets.idig_markets')
-                ->select('inventory.stock', 'ig_markets.idig_markets', 'ig_markets.isi')
+                ->select('stock','ig_markets')
                 ->where('inventory.teams', $team)
-                ->where('ig_markets.bahan_baku', 'like', "%" . $bb . "%")
-                ->where('ig_markets.sesi', $sesi)
+                ->where('ig_markets', 'like', "%" . $bb . "%")
                 ->get();
             if (count($inv) > 0) {
-                if ($jumlah > $inv[0]->stock) {
-                    DB::table('teams')->where('idteam', $team)->update([
-                        'inventory'     => $newInv,
-                    ]);
+                //ubah
+                if($jumlah > $inv[0]->stock){
                     return response()->json(array(
                         'msg' => 'maaf, bahan baku mu kurang untuk membuat product',
                         'code' => '401'
                     ), 200);
-                } else {
-                    $invBaru = $inv[0]->stock - $jumlah;
-                    $newInv += $jumlah;
-                    DB::table('inventory')
-                        ->where('ig_markets', $inv[0]->idig_markets)
-                        ->where('teams', $team)
-                        ->update(['stock' => $invBaru]);
                 }
+                else{
+                    $countCukup +=1;
+                    array_push($stockINV, $inv[0]->stock);
+                    array_push($whereBahanBaku,  $inv[0]->ig_markets);
+                    $newInv += $jumlah;
+                }
+                // if ($jumlah > $inv[0]->stock) {
+                //     DB::table('teams')->where('idteam', $team)->update([
+                //         'inventory'     => $newInv,
+                //     ]);
+                //     return response()->json(array(
+                //         'msg' => 'maaf, bahan baku mu kurang untuk membuat product',
+                //         'code' => '401'
+                //     ), 200);
+                // } else {
+                //     $invBaru = $inv[0]->stock - $jumlah;
+                //     $newInv += $jumlah;
+
+                //     DB::table('inventory')
+                //         ->where('ig_markets', $inv[0]->idig_markets)
+                //         ->where('teams', $team)
+                //         ->update(['stock' => $invBaru]);
+                // }
             } else {
                 DB::table('teams')->where('idteam', $team)->update([
                     'inventory'     => $newInv,
@@ -244,6 +294,12 @@ class ProduksiController extends Controller
                     'code' => '401'
                 ), 200);
             }
+        }
+
+        if($countCukup == 3){
+            DB::table('inventory')->where('teams', $team)->where('ig_markets', $whereBahanBaku[0])->update(['stock'=> ($stockINV[0]-$jumlah)]);
+            DB::table('inventory')->where('teams', $team)->where('ig_markets', $whereBahanBaku[1])->update(['stock'=> ($stockINV[1]-$jumlah)]);
+            DB::table('inventory')->where('teams', $team)->where('ig_markets', $whereBahanBaku[2])->update(['stock'=> ($stockINV[2]-$jumlah)]);
         }
 
         //bagian penghitungan jml produk jadi
@@ -263,9 +319,13 @@ class ProduksiController extends Controller
         if (count($histori) > 0) {
             $hasil += $histori[0]->hasil;
         }
+
         // $totBahan = $jumlah * 3;
         // $newInv = $teamStatus[0]->inventory + $totBahan;
-        $newDana = $teamStatus[0]->dana - 100;
+        $produkDefect = $jumlah - $hasil_user;
+        $newDefect = $teamStatus[0]->total_defect + $produkDefect;
+        $newBerhasil = $teamStatus[0]->total_berhasil + $hasil;
+        $newDana = $teamStatus[0]->dana - 0;
         $newLimit = $teamStatus[0]->limit - $jumlah;
         DB::table('history_produksi')
             ->updateOrInsert(
@@ -273,13 +333,16 @@ class ProduksiController extends Controller
                 ['hasil' => $hasil]
             );
         DB::table('teams')->where('idteam', $team)->update([
-            'dana'          => $newDana,
-            'inventory'     => $newInv,
-            $limit          => $newLimit
+            'dana'              => $newDana,
+            'inventory'         => $newInv,
+            $limit              => $newLimit,
+            'total_defect'      => $newDefect,
+            'total_berhasil'    => $newBerhasil,
         ]);
+
         return response()->json(array(
-            'msg' => 'selamat kamu berhasil melakukan produksi ' . $name . ' sebanyak ' . $hasil_user,
-            'code' => '401'
+            'msg' => 'selamat kamu berhasil melakukan produksi ' . $name . ' sebanyak ' . $hasil_user . ' dengan defect produk sebanyak '. $produkDefect,
+            'code' => '200'
         ), 200);
     }
 }

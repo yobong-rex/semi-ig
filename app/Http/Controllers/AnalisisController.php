@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use Auth;
 use App\Events\Analisis;
+use App\Events\Mesin;
 use Illuminate\Http\Response;
 
 class AnalisisController extends Controller
@@ -93,17 +94,29 @@ class AnalisisController extends Controller
             ), 200);
         }
 
-        //mencari kapasitas terkecil
+        // mencari kapasitas terkecil
         $minKpasitas = min($kapasitas);
 
-        //mencari cycletime
+        // mencari cycletime
         $time = array_sum($cycle);
 
-        //9000/cycle time
+        // 9000/cycle time
         $cycleTime = intval(9000 / $time);
 
         $team = Auth::user()->teams_idteam;
         $user = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
+
+        $dana = $user[0]->dana;
+        $harga = 150;
+        if ($dana >= $harga) {
+            DB::table('teams')
+                ->where('idteam', $user[0]->idteam)
+                ->update(['dana' => ($dana - $harga)]);
+        } else {
+            return response()->json(array(
+                'msg' => 'Dana Tidak Mencukupi'
+            ), 200);
+        }
 
         DB::table('analisis')->insert([
             'produksi' => $produksi,
@@ -123,19 +136,7 @@ class AnalisisController extends Controller
         //memasukan cycleTime ke users
         DB::table('teams')
             ->where('idteam', $user[0]->idteam)
-            ->update(['limit_produksi'.$produksi => $cycleTime]);
-
-        $dana = $user[0]->dana;
-        $harga = 150;
-        if ($dana >= $harga) {
-            DB::table('teams')
-                ->where('idteam', $user[0]->idteam)
-                ->update(['dana' => ($dana - $harga)]);
-        } else {
-            return response()->json(array(
-                'msg' => 'Dana Tidak Mencukupi'
-            ), 200);
-        }
+            ->update(['limit_produksi' . $produksi => $cycleTime]);
 
         $updatedUser = DB::table('teams')->select('nama', 'dana', 'idteam')->where('idteam', $team)->get();
 
@@ -151,7 +152,6 @@ class AnalisisController extends Controller
             // $notEfficient = ['Sorting', 'Molding', 'Idle', 'Assembling', 'Sorting', 'Delay', 'Assembling', 'Packing'];
             $efficient = ['Sorting', 'Molding', 'Assembling', 'Packing'];
         }
-
 
         $status = 'false';
         $arrayProses = $arrProses;

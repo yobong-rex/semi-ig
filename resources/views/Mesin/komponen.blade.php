@@ -42,31 +42,41 @@
             vertical-align: middle;
         }
 
-        .upgrade,
-        .upgrade:focus,
-        .upgradeAll {
-            background-color: #ffc107;
-            border: 1px #ffc107;
-            border-radius: 5px;
-            padding: 6px 12px 6px 12px;
-            transition: all 0.2s ease;
-        }
+        /* .upgrade,
+                                .upgrade:focus,
+                                .upgradeAll {
+                                    background-color: #ffc107;
+                                    border: 1px #ffc107;
+                                    border-radius: 5px;
+                                    padding: 6px 12px 6px 12px;
+                                    transition: all 0.2s ease;
+                                }
 
-        .upgrade:hover,
-        .upgradeAll:hover {
-            -webkit-transform: scale(1.07);
-        }
+                                .upgrade:hover,
+                                .upgradeAll:hover {
+                                    -webkit-transform: scale(1.07);
+                                } */
 
         .kartu_tabel {
             background-color: #ffffff;
             width: 100%;
         }
 
-        @media (max-width:800px) {
+        @media (max-width:580px) {
 
             .dana,
             .label_dana {
                 text-align: center;
+                padding-left: 24px;
+            }
+        }
+
+        @media (max-width:800px) and (min-width:580px) {
+
+            .dana,
+            .label_dana {
+                text-align: center;
+                padding-left: 24px;
             }
 
             .upgrade,
@@ -84,11 +94,12 @@
             }
         }
 
-        @media (max-width:1000px) {
+        @media (max-width:1000px) and (min-width:800px) {
 
             .dana,
             .label_dana {
                 font-size: 25px;
+                padding-left: 24px;
             }
 
             .upgrade,
@@ -146,7 +157,12 @@
                             @php
                                 $arrMesin = [];
                                 for ($a = 0; $a < count($namaMesin); $a++) {
-                                    array_push($arrMesin, $namaMesin[$a]->nama);
+                                    if ($namaMesin[$a]->nama != 'Idle') {
+                                        if ($namaMesin[$a]->nama != 'Delay') {
+                                            array_push($arrMesin, $namaMesin[$a]->nama);
+                                            // php kontol
+                                        }
+                                    }
                                 }
                             @endphp
                             @foreach ($arrMesin as $mesin)
@@ -161,9 +177,14 @@
                         <td colspan="2">Level Mesin : </td>
                         <td class="noLevel" id="levelMesin_">{{ $levelMesin[0]->level }}</td>
                         <td style="text-align:center;">
-                            <button class="upgradeAll" id="upgrade_all" data-bs-toggle="modal"
-                                data-bs-target="#Konfirmasi">Upgrade All
-                                Component</button>
+                            @if ($valueSesi == 1)
+                                <button type="button" id="button" class="upgrade btn btn-warning" disabled>Upgrade All
+                                    Component</button>
+                            @else
+                                <button class="btn btn-warning" id="upgrade_all" data-bs-toggle="modal"
+                                    data-bs-target="#Konfirmasi">Upgrade All
+                                    Component</button>
+                            @endif
                         </td>
                     </tr>
                     @for ($x = 0; $x < count($data); $x++)
@@ -179,9 +200,14 @@
                             </td>
                             <td style="text-align:center;vertical-align:middle;">
                                 {{-- button Upgrade --}}
-                                <button type="button" id="upgrade_{{ $x }}" class="upgrade"
-                                    value='{{ $data[$x]->nama_komponen }}' data-bs-toggle="modal"
-                                    data-bs-target="#Konfirmasi">Upgrade</button>
+                                @if ($valueSesi == 1)
+                                    <button type="button" id="button" class="btn btn-warning upgrade"
+                                        disabled>Upgrade</button>
+                                @else
+                                    <button type="button" id="upgrade_{{ $x }}" class="btn btn-warning upgrade"
+                                        value='{{ $data[$x]->nama_komponen }}' data-bs-toggle="modal"
+                                        data-bs-target="#Konfirmasi">Upgrade</button>
+                                @endif
                             </td>
                         </tr>
                     @endfor
@@ -195,8 +221,8 @@
 
         {{-- Modal --}}
         {{-- Modal Konfirmasi Upgrade --}}
-        <div class="modal fade" id="Konfirmasi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="KonfirmasiLabel" aria-hidden="true">
+        <div class="modal fade" id="Konfirmasi" data-bs-keyboard="false" tabindex="-1" aria-labelledby="KonfirmasiLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -219,8 +245,8 @@
         </div>
 
         {{-- Modal Notif --}}
-        <div class="modal fade" id="Notif" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="NotifLabel" aria-hidden="true">
+        <div class="modal fade" id="Notif" data-bs-keyboard="false" tabindex="-1" aria-labelledby="NotifLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">

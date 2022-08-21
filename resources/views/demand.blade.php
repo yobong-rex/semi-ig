@@ -34,18 +34,29 @@
             background-color: #ffffff;
             box-shadow: 0 6px 10px rgba(0, 0, 0, .08);
         }
-        @media (max-width:800px){
+
+        @media (max-width:580px){
+            .dana,
+            .label_dana {
+                text-align: center;
+                padding-left: 24px;
+            }
+        }
+        
+        @media (max-width:800px) and (min-width:580px){
             .dana, .label_dana{
                 text-align: center;
+                padding-left: 24px;
             }
             .demand{
                 max-width: 100px;
             }
         }
 
-        @media (max-width:1000px){
+        @media (max-width:1000px) and (min-width:800px){
             .dana, .label_dana{
                 font-size: 25px;
+                padding-left: 24px;
             }
         }
     </style>
@@ -93,8 +104,8 @@
 
             {{-- Table Pemenuhan Demand --}}
             <div class="table-responsive">
-                <table class="table table-bordered table-responsive">
-                    <thead>
+                <table class="table table-bordered table-striped">
+                    <thead  class="table-dark">
                         <tr style="vertical-align: middle;">
                             <th class="nomor_demand" scope="col">No.</th>
                             <th scope="col">Produk</th>
@@ -111,7 +122,7 @@
                     @foreach ($produk as $p)
                         <tr>
                             <td class="nomor_demand" scope="row">{{$i++}}</td>
-                            <td>{{$p->nama}}</td>
+                            <td id='nama_{{$p->idproduk}}'>{{$p->nama}}</td>
                             <td class="inputDemand"><input type="number" class='demand' id='input_{{$p->idproduk}}'min="0" oninput="this.value =
                                 !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0></td>
                             <td id='total_{{$p->idproduk}}' class="demand-total">
@@ -236,6 +247,7 @@
                     console.log($(this).val());
                     arrDemand.push({
                         'produk': id_split[1],
+                        'nama': $('#nama_'+id_split[1]).text(),
                         'total': $(this).val()
                     });
                     console.log(arrDemand);

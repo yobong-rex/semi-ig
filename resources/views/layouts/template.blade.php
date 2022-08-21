@@ -50,6 +50,9 @@
             font-weight: normal;
             src: local('TT Norms Regular'), url('assets/font/TTNorms-Regular.woff') format('woff');
         }
+        .navbar{
+
+        }
 
         .nav-link,
         .nav-link:focus {
@@ -131,11 +134,11 @@
 
 </head>
 
-{{-- <body oncontextmenu="return false"> --}}
+<body oncontextmenu="return false">
 
-<body>
+<!-- <body> -->
     {{-- NavBar --}}
-    <nav class="navbar navbar-expand-lg" style="background-color: #ffff; box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);">
+    <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #ffff; box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3);">
         <div class="container-fluid gap-5">
             <a class="navbar-brand" href="/">
                 <img src="{{ asset('assets') }}/logo/Logo_IG_Header.png" alt="Logo IGXXX" style="max-height: 40px">
@@ -149,44 +152,46 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse" style="justify-content:">
 
+
                 <ul class="navbar-nav mb-2 mb-lg-0 gap-4">
                     <li class="nav-item">
                         <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
                             href="{{ route('dashboard') }}">Dashboard</a>
                     </li>
-
-                    @can('isMarketing')
-                        <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
-                                href="{{ route('komponen') }}">Mesin</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
-                                href="{{ route('demand') }}">Demand</a>
-                        </li>
-                    @elsecan('isResearcher')
-                        <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
-                                href="{{ route('bahan') }}">Analisis Bahan</a>
-                        </li>
-                    @elsecan('isProduction_Manager')
-                        <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
-                                href="{{ route('kapasitas') }}">Kapasitas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
-                                href="{{ route('produksi') }}">Produksi</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
-                                href="{{ route('analisis') }}">Analisis Produksi</a>
-                        </li>
-                    @endcan
-                    <li class="nav-item">
+                    @if($namaSesi != 'belum dimulai')
+                        @can('isMarketing')
+                            <li class="nav-item">
+                                <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                    href="{{ route('komponen') }}">Mesin</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                    href="{{ route('kapasitas') }}">Kapasitas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                    href="{{ route('demand') }}">Demand</a>
+                            </li>
+                        @elsecan('isResearcher')
+                            <li class="nav-item">
+                                <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                    href="{{ route('bahan') }}">Analisis Bahan</a>
+                            </li>
+                        @elsecan('isProduction_Manager')
+                            <li class="nav-item">
+                                <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                    href="{{ route('produksi') }}">Produksi</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
+                                    href="{{ route('analisis') }}">Analisis Produksi</a>
+                            </li>
+                        @endcan
+                    @endif
+                    <!-- <li class="nav-item">
                         <a class="nav-link active" style="padding-left:0.5em" aria-current="page"
                             href="{{ route('leaderboard') }}">Leaderboard</a>
-                    </li>
+                    </li> -->
                 </ul>
                 <div class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -242,7 +247,7 @@
                     Sesi telah berganti!!
                 </div>
                 <div class="modal-footer">
-                    @can('isProduction')
+                    @can('isProduction_Manager')
                         <a href="{{ route('dashboard') }}" class="btn btn-secondary mdl-close">OK!</a>
                     @elsecan('isMarketing')
                         <a href="{{ route('dashboard') }}" class="btn btn-secondary mdl-close">OK!</a>
@@ -286,12 +291,12 @@
         let x = null;
 
         // buat menjalankan / melanjutkan timer pas buka webpage
-        $(document).ready(function() {
+        /*$(document).ready(function() {
             let condition = localStorage.getItem('condition');
 
             // kalau game sudah start
             if (condition == 'start') {
-                /* Timer */
+
                 clearInterval(x);
                 console.log('masuk start');
 
@@ -337,7 +342,7 @@
                         localStorage.setItem(key, distance);
                         console.log(localStorage.getItem(key));
 
-                        // kalau sudah habis, maka selesai 
+                        // kalau sudah habis, maka selesai
                         if (distance < 0) {
                             // hapus timer sekarang
                             clearInterval(x);
@@ -360,9 +365,9 @@
                 clearInterval(x);
                 console.log('masuk stop');
             }
-        })
+        })*/
 
-        /* Pusher */
+
         window.Echo.channel('sesiPusher').listen('.sesi', (e) => {
             console.log(e.id);
             console.log(e.sesi);
@@ -375,7 +380,7 @@
             $('#sesi').text(e.sesi);
 
             // setting timer
-            let waktu = e.waktu;
+            /*let waktu = e.waktu;
             let timer = null;
             // console.log(timer);
             let countdownTimer = null;
@@ -386,7 +391,7 @@
             let condition = localStorage.getItem('condition');
             // console.log(condition);
 
-            /* Timer */
+
             // variable buat continue timer
             const key = 'timer';
             var timeInMs = localStorage.getItem(key);
@@ -435,7 +440,7 @@
                         localStorage.setItem(key, distance);
                         console.log(localStorage.getItem(key));
 
-                        // kalau sudah habis, maka selesai 
+                        // kalau sudah habis, maka selesai
                         if (distance < 0) {
                             // hapus timer sekarang
                             clearInterval(x);
@@ -487,7 +492,7 @@
                         localStorage.setItem(key, distance);
                         console.log(localStorage.getItem(key));
 
-                        // kalau sudah habis, maka selesai 
+                        // kalau sudah habis, maka selesai
                         if (distance < 0) {
                             // hapus timer sekarang
                             clearInterval(x);
@@ -558,7 +563,7 @@
                     localStorage.setItem(key, distance);
                     console.log(localStorage.getItem(key));
 
-                    // kalau sudah habis, maka selesai 
+                    // kalau sudah habis, maka selesai
                     if (distance < 0) {
                         // hapus timer sekarang
                         clearInterval(x);
@@ -614,7 +619,7 @@
                     localStorage.setItem(key, distance);
                     console.log(localStorage.getItem(key));
 
-                    // kalau sudah habis, maka selesai 
+                    // kalau sudah habis, maka selesai
                     if (distance < 0) {
                         // hapus timer sekarang
                         clearInterval(x);
@@ -628,7 +633,19 @@
 
                 // set condition supaya waktu reload masih jalan
                 localStorage.setItem('condition', 'start');
+            }*/
+        })
+
+        window.Echo.channel('timePusher').listen('.time', (e) => {
+            console.log(e.minute);
+            console.log(e.second);
+            console.log(e.status);
+
+            if (e.status == 'ganti' || e.status == 'back') {
+                $('#modalInfoTimer').modal('show');
             }
+
+            $('#timer').text(e.minute + " : " + e.second);
         })
 
         window.Echo.channel('analisisChannel').listen('.analisis', (e) => {
@@ -653,23 +670,23 @@
 
 
         //disable inspect
-        // document.onkeydown = function(e) {
-        //     if(event.keyCode == 123) {
-        //         return false;
-        //     }
-        //     if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
-        //         return false;
-        //     }
-        //     if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
-        //         return false;
-        //     }
-        //     if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
-        //         return false;
-        //     }
-        //     if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
-        //         return false;
-        //     }
-        // }
+        document.onkeydown = function(e) {
+            if(event.keyCode == 123) {
+                return false;
+            }
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+                return false;
+            }
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+                return false;
+            }
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+                return false;
+            }
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+                return false;
+            }
+        }
     </script>
 </body>
 

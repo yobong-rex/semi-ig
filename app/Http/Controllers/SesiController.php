@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\Sesi;
+use App\Events\Timer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use DB;
@@ -88,7 +89,8 @@ class SesiController extends Controller
 
         return response()->json(array(
             "success" => true,
-            'status' => 'Started'
+            'status' => 'Started',
+            'waktu' => $sesi[0]->waktu
         ), 200);
     }
 
@@ -165,6 +167,9 @@ class SesiController extends Controller
         $now = $request->get('now');
 
         $upSesi = $sekarang + 1;
+        // $danaBaru= 0;
+
+
         if ($sekarang == 11) {
             return response()->json(array(
                 'msg' => 'Sesi Sudah Max Woe!!'
@@ -176,47 +181,68 @@ class SesiController extends Controller
         }
 
         $team = DB::table('teams')
-            ->select('idteam', 'dana', 'hibah', 'total_pendapatan')
+            ->select('idteam', 'dana', 'hibah', 'total_pendapatan', 'over_production')
             ->get();
 
         // nambah hibah ke dana
-        if ($upSesi == 5) {
-            foreach ($team as $t) {
-                $dblDana = (float)$t->dana;
-                $danaPlus = ($dblDana) + ($t->hibah);
-                $hibahBaru = ($t->hibah) - ($t->hibah);
-                $danaBaru = (int)floor($danaPlus);
-                DB::table('teams')
-                    ->where('idteam', $t->idteam)
-                    ->update([
-                        'dana' => ($danaBaru),
-                        'hibah' => ($hibahBaru)
-                    ]);
-            }
-        }
+        // if ($upSesi == 5) {
+        //     foreach ($team as $t) {
+        //         $dblDana = (float)$t->dana;
+        //         $danaPlus = ($dblDana) + ($t->hibah);
+        //         $hibahBaru = ($t->hibah) - ($t->hibah);
+        //         $danaBaru = (int)floor($danaPlus);
+        //         DB::table('teams')
+        //             ->where('idteam', $t->idteam)
+        //             ->update([
+        //                 'dana' => ($danaBaru),
+        //                 'hibah' => ($hibahBaru)
+        //             ]);
+        //     }
+        // }
 
-        //reset inventory di sesi 5
-        if ($upSesi == 9) {
-            DB::table('inventory')->delete();
-            foreach ($team as $t) {
-                DB::table('teams')->where('idteam', $t->idteam)->update(['inventory' => 450]);
-            }
-        }
 
-        //over production, reset limit dan charge inventory
-        if ($upSesi % 2 != 0) {
+        if ( $upSesi != 1 && $upSesi % 2 != 0) {
+            $getSesiSebelum = DB::table('waktu_sesi')->select('nama')->where('idwaktu_sesi', ($sekarang - 1))->get();
+            $sesiSebelum = $getSesiSebelum[0]->nama;
             foreach ($team as $t) {
-                $overProd = DB::table('history_produksi')->where('teams_idteam', $t->idteam)->where('sesi', $sekarang)->where('hasil', '>', 0)->get();
+            
+            //reset inventory di sesi 5
+            if ($upSesi == 9) {
+                DB::table('inventory')->delete();
+                foreach ($team as $t) {
+                    DB::table('teams')->where('idteam', $t->idteam)->update(['inventory' => 450]);
+                }
+            }
+                //hibah
+                $danaBaru = $t->dana;
+                if ($upSesi == 5) {
+                    $danaPlus = ($danaBaru) + ($t->hibah);
+                    $hibahBaru = ($t->hibah) - ($t->hibah);
+                    $danaBaru = (int)floor($danaPlus);
+                    DB::table('teams')
+                        ->where('idteam', $t->idteam)
+                        ->update([
+                            'dana' => ($danaBaru),
+                            'hibah' => ($hibahBaru)
+                        ]);
+                }
+
+                //over production
+                $overProd = DB::table('history_produksi')->where('teams_idteam', $t->idteam)->where('sesi', $sesiSebelum)->where('hasil', '>', 0)->get();
+
                 $temp = 0;
+                $tot_over = 0;
                 if (count($overProd) > 0) {
                     foreach ($overProd as $op) {
                         $hargaProduk = DB::table('produk')->select('harga_jual')->where('idproduk', $op->produk_idproduk)->get();
                         $temp += ($op->hasil * floor($hargaProduk[0]->harga_jual * 40 / 100));
+                        $tot_over += $op->hasil;
                     }
-                    $danaBaru = $t->dana + $temp;
+                    $danaBaru += $temp;
                     $totalPendapatanBaru = $t->total_pendapatan + $temp;
+                    $over_baru = $t->over_production + $tot_over;
 
-                    DB::table('teams')->where('idteam', $t->idteam)->update(['dana' => $danaBaru, 'total_pendapatan' => $totalPendapatanBaru]);
+                    $affected = DB::table('teams')->where('idteam', $t->idteam)->update(['dana' => $danaBaru, 'total_pendapatan' => $totalPendapatanBaru,  'over_production' => $over_baru]);
                 }
 
                 //reset cycle time
@@ -244,16 +270,26 @@ class SesiController extends Controller
                 }
 
                 // charge inventory
-                $teamInv = DB::table('inventory')->where('teams', $t->idteam)->get();
+
+                $teamInv = DB::table('inventory')->where('teams', $t->idteam)->where('stock', '>', 0)->get();
                 if (count($teamInv) > 0) {
                     foreach ($teamInv as $ti) {
-                        $danaBaru = $t->dana - ($ti->stock * 2);
+                        $danaBaru -= ($ti->stock * 2);
+                        
                         DB::table('teams')->where('idteam', $t->idteam)->update(['dana' => $danaBaru]);
                     }
                 }
             }
         }
-
+        
+        //reset inventory di sesi 5
+        if ($upSesi == 9) {
+            DB::table('inventory')->delete();
+            foreach ($team as $t) {
+                DB::table('teams')->where('idteam', $t->idteam)->update(['inventory' => 450]);
+            }
+        }
+        
         $sesi = DB::table('sesi as s')
             ->join('waktu_sesi as ws', 's.sesi', '=', 'ws.idwaktu_sesi')
             ->select('s.sesi', 'ws.nama', 'ws.waktu')
@@ -282,7 +318,8 @@ class SesiController extends Controller
             "success" => true,
             "sesi" => $sesi,
             'detail' => $detail,
-            'status' => 'Started'
+            'status' => 'Started',
+            'waktu' => $sesi[0]->waktu
         ), 200);
     }
 
@@ -329,18 +366,59 @@ class SesiController extends Controller
             "success" => true,
             "sesi" => $sesi,
             'detail' => $detail,
-            'status' => 'Started'
+            'status' => 'Started',
+            'waktu' => $sesi[0]->waktu
         ), 200);
     }
 
     function timer(Request $request)
     {
-        $namaSesi = $request->get('namaSesi');
+        $minute = $request->get('minute');
+        $second = $request->get('second');
 
-        $waktu_sesi = DB::table('waktu_sesi')->select('waktu')->where('nama', 'like', '%' . $namaSesi . '%')->get();
+        $status = $request->get('status');
+
+        event(new Timer($minute, $second, $status));
 
         return response()->json(array(
-            'waktu' => $waktu_sesi
+            'status' => "Success"
         ));
+    }
+
+    function finish()
+    {
+        $team = DB::table('teams')
+            ->select('idteam', 'dana', 'hibah', 'total_pendapatan', 'over_production')
+            ->get();
+        // return $team;
+
+        foreach ($team as $t) {
+            $danaBaru = $t->dana;
+            //over production
+            $overProd = DB::table('history_produksi')->where('teams_idteam', $t->idteam)->where('sesi', 6)->where('hasil', '>', 0)->get();
+            // $Demand = DB::table('demand')->select('produk_idproduk')->where('sesi', 6)->get();
+
+            // return $overProd;
+            $temp = 0;
+            $tot_over = 0;
+            if (count($overProd) > 0) {
+                foreach ($overProd as $op) {
+                    $tot_over += $op->hasil;
+                    $checkDemand = DB::table('demand')->where('produk_idproduk', $op->produk_idproduk)->where('sesi', 6)->get();
+                    if (count($checkDemand) > 0) {
+                        $hargaProduk = DB::table('produk')->select('harga_jual')->where('idproduk', $op->produk_idproduk)->get();
+                        $temp += ($op->hasil * floor($hargaProduk[0]->harga_jual * 40 / 100));
+                    }
+                }
+                $danaBaru += $temp;
+                $totalPendapatanBaru = $t->total_pendapatan + $temp;
+                $over_baru = $t->over_production + $tot_over;
+
+                $affected = DB::table('teams')->where('idteam', $t->idteam)->update(['dana' => $danaBaru, 'total_pendapatan' => $totalPendapatanBaru, 'over_production' => $over_baru]);
+            }
+        }
+        return response()->json(array(
+            "success" => true,
+        ), 200);
     }
 }

@@ -1,6 +1,5 @@
 
 @extends('layouts.app')
-
 @section('content')
 <!--Script-->
 <script src="{{ asset('js/login.js') }}" defer></script>

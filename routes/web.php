@@ -31,7 +31,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware([CheckSesi::class])->group(function () {
         // Mesin Kapasitas
-        Route::get('/kapasitas', 'KapasitasController@kapasitas')->middleware('can:isProduction_Manager')->name('kapasitas');
+        Route::get('/kapasitas', 'KapasitasController@kapasitas')->middleware('can:isMarketing')->name('kapasitas');
         Route::post('/kapasitas/upgrade', 'KapasitasController@kapasitasUpgrade')->name('upgrade.kapasitas');
 
         // Mesin Komponen
@@ -71,11 +71,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/adminsesi/stopsesi', 'SesiController@stopSesi')->name('stop.sesi');
     Route::post('/adminsesi/gantisesi', 'SesiController@gantiSesi')->name('ganti.sesi');
     Route::post('/adminsesi/backsesi', 'SesiController@backSesi')->name('back.sesi');
+    Route::post('/adminsesi/finish', 'SesiController@finish')->name('finish.sesi');
 
 
     // MakeTeam
     Route::get('/maketeam', 'TeamController@masukMakeTeam')->middleware('can:isSI')->name('maketeam');
     Route::post('/maketeam/maketeam', 'TeamController@makeTeam')->name('makeTeam');
+
+    //leaderboard
+    Route::get('/leaderboard', function() {
+        return view('leaderboard');
+    })->middleware('can:isAdmin')->name('leaderboard');
+    Route::post('/leaderboard/data', 'TeamController@leaderboard')->name('leaderboard.data');
 });
 
 
@@ -112,12 +119,9 @@ Route::get('/test/timer', function () {
 })->name('test.timer');
 //Route coba-coba
 
-Route::get('/leaderboard', function() {
-    return view('leaderboard');
-})->name('leaderboard');
 
 // Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
+Auth::routes(['register'=>false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
