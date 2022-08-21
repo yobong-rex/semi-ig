@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\Sesi;
-use App\Events\Timer;
+// use App\Events\Sesi;
+// use App\Events\Timer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use DB;
@@ -85,7 +85,7 @@ class SesiController extends Controller
         //         'timerEndPoint' => $date
         //     ]);
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'start', $detail, $countdownTimer));
+        // event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'start', $detail, $countdownTimer));
 
         return response()->json(array(
             "success" => true,
@@ -118,7 +118,7 @@ class SesiController extends Controller
             $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
         }
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'pause', $detail, ''));
+        // event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'pause', $detail, ''));
 
         return response()->json(array(
             "success" => true,
@@ -150,7 +150,7 @@ class SesiController extends Controller
             $detail = $namaAtas[0]->nama . ' ke ' . $namaBawah[0]->nama;
         }
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'stop', $detail, ''));
+        // event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'stop', $detail, ''));
 
         return response()->json(array(
             "success" => true,
@@ -312,7 +312,7 @@ class SesiController extends Controller
 
         $countdownTimer = $now + ($sesi[0]->waktu * 1000);
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'ganti', $detail, $countdownTimer));
+        // event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'ganti', $detail, $countdownTimer));
 
         return response()->json(array(
             "success" => true,
@@ -360,7 +360,7 @@ class SesiController extends Controller
 
         $countdownTimer = $now + ($sesi[0]->waktu * 1000);
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'back', $detail, $countdownTimer));
+        // event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'back', $detail, $countdownTimer));
 
         return response()->json(array(
             "success" => true,
@@ -378,7 +378,7 @@ class SesiController extends Controller
 
         $status = $request->get('status');
 
-        event(new Timer($minute, $second, $status));
+        // event(new Timer($minute, $second, $status));
 
         return response()->json(array(
             'status' => "Success"
