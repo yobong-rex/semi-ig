@@ -145,7 +145,7 @@ class KomponenController extends Controller
             ->where('t.idteam', $user[0]->idteam)
             ->where('m.idmesin', $idmesin[0]->idmesin)
             ->get();
-            
+
         return response()->json(array(
             'data' => $data,
             'levelMesin' => $levelMesin
@@ -307,25 +307,35 @@ class KomponenController extends Controller
 
         // Check Level
         if ($level_a == 10 && $level_b == 10 && $level_c == 10 && $level_d == 10) {
-            $level_mesin = 6;
-            $level_kapasitas += 1;
-            $cycle -= 1;
-        } elseif ($level_a == 8 && $level_b == 8 && $level_c == 8 && $level_d == 8) {
-            $level_mesin = 5;
-            $level_kapasitas += 1;
-            $cycle -= 1;
-        } elseif ($level_a == 6 && $level_b == 6 && $level_c == 6 && $level_d == 6) {
-            $level_mesin = 4;
-            $level_kapasitas += 1;
-            $cycle -= 1;
-        } elseif ($level_a == 4 && $level_b == 4 && $level_c == 4 && $level_d == 4) {
-            $level_mesin = 3;
-            $level_kapasitas += 1;
-            $cycle -= 1;
-        } elseif ($level_a == 2 && $level_b == 2 && $level_c == 2 && $level_d == 2) {
-            $level_mesin = 2;
-            $level_kapasitas += 1;
-            $cycle -= 1;
+            if ($level_mesin != 6) {
+                $level_mesin = 6;
+                $level_kapasitas += 1;
+                $cycle -= 1;
+            }
+        } elseif ($level_a >= 8 && $level_b >= 8 && $level_c >= 8 && $level_d >= 8) {
+            if ($level_mesin != 5) {
+                $level_mesin = 5;
+                $level_kapasitas += 1;
+                $cycle -= 1;
+            }
+        } elseif ($level_a >= 6 && $level_b >= 6 && $level_c >= 6 && $level_d >= 6) {
+            if ($level_mesin != 4) {
+                $level_mesin = 4;
+                $level_kapasitas += 1;
+                $cycle -= 1;
+            }
+        } elseif ($level_a >= 4 && $level_b >= 4 && $level_c >= 4 && $level_d >= 4) {
+            if ($level_mesin != 3) {
+                $level_mesin = 3;
+                $level_kapasitas += 1;
+                $cycle -= 1;
+            }
+        } elseif ($level_a >= 2 && $level_b >= 2 && $level_c >= 2 && $level_d >= 2) {
+            if ($level_mesin != 2) {
+                $level_mesin = 2;
+                $level_kapasitas += 1;
+                $cycle -= 1;
+            }
         }
 
         DB::table('mesin_has_teams')
@@ -394,6 +404,12 @@ class KomponenController extends Controller
             ->get();
         // end (ambil proses)
 
+        // array Kapasitas
+        $arrKapasitas1 = [];
+        $arrKapasitas2 = [];
+        $arrKapasitas3 = [];
+
+        // array cycleTime
         $arrCycle1 = [];
         $arrCycle2 = [];
         $arrCycle3 = [];
@@ -402,14 +418,18 @@ class KomponenController extends Controller
             $proses1 = explode(';', $produksi1[0]->proses);
 
             for ($x = 0; $x < $idProduksi1[0]->length; $x++) {
-                $cycle1 =  DB::table('mesin_has_teams as mht')
-                    ->join('mesin as m', 'mht.mesin_idmesin', '=', 'm.idmesin')
-                    ->select(DB::raw('mht.cycleTime as cycle'))
+                $kapasitascycle1 =  DB::table('kapasitas_has_teams as kht')
+                    ->join('kapasitas as k', 'kht.kapasitas_idkapasitas', '=', 'k.idkapasitas')
+                    ->join('mesin as m', 'kht.kapasitas_mesin_idmesin', '=', 'm.idmesin')
+                    ->join('mesin_has_teams as mht', 'm.idmesin', '=', 'mht.mesin_idmesin')
+                    ->select(DB::raw('mht.cycleTime as cycle'), DB::raw('k.kapasitas as kapasitas'))
                     ->where('mht.teams_idteam', '=', $user[0]->idteam)
+                    ->where('kht.teams_idteam', '=', $user[0]->idteam)
                     ->where('m.nama', 'like', '%' . $proses1[$x] . '%')
                     ->get();
-
-                array_push($arrCycle1, $cycle1[0]->cycle);
+                    
+                array_push($arrCycle1, $kapasitascycle1[0]->cycle);
+                array_push($arrKapasitas1, $kapasitascycle1[0]->kapasitas);
             }
         }
 
@@ -417,14 +437,18 @@ class KomponenController extends Controller
             $proses2 = explode(';', $produksi2[0]->proses);
 
             for ($x = 0; $x < $idProduksi2[0]->length; $x++) {
-                $cycle2 =  DB::table('mesin_has_teams as mht')
-                    ->join('mesin as m', 'mht.mesin_idmesin', '=', 'm.idmesin')
-                    ->select(DB::raw('mht.cycleTime as cycle'))
+                $kapasitascycle2 =  DB::table('kapasitas_has_teams as kht')
+                    ->join('kapasitas as k', 'kht.kapasitas_idkapasitas', '=', 'k.idkapasitas')
+                    ->join('mesin as m', 'kht.kapasitas_mesin_idmesin', '=', 'm.idmesin')
+                    ->join('mesin_has_teams as mht', 'm.idmesin', '=', 'mht.mesin_idmesin')
+                    ->select(DB::raw('mht.cycleTime as cycle'), DB::raw('k.kapasitas as kapasitas'))
                     ->where('mht.teams_idteam', '=', $user[0]->idteam)
+                    ->where('kht.teams_idteam', '=', $user[0]->idteam)
                     ->where('m.nama', 'like', '%' . $proses2[$x] . '%')
                     ->get();
 
-                array_push($arrCycle2, $cycle2[0]->cycle);
+                array_push($arrCycle2, $kapasitascycle2[0]->cycle);
+                array_push($arrKapasitas2, $kapasitascycle2[0]->kapasitas);
             }
         }
 
@@ -432,14 +456,18 @@ class KomponenController extends Controller
             $proses3 = explode(';', $produksi3[0]->proses);
 
             for ($x = 0; $x < $idProduksi3[0]->length; $x++) {
-                $cycle3 =  DB::table('mesin_has_teams as mht')
-                    ->join('mesin as m', 'mht.mesin_idmesin', '=', 'm.idmesin')
-                    ->select(DB::raw('mht.cycleTime as cycle'))
+                $kapasitascycle3 =  DB::table('kapasitas_has_teams as kht')
+                    ->join('kapasitas as k', 'kht.kapasitas_idkapasitas', '=', 'k.idkapasitas')
+                    ->join('mesin as m', 'kht.kapasitas_mesin_idmesin', '=', 'm.idmesin')
+                    ->join('mesin_has_teams as mht', 'm.idmesin', '=', 'mht.mesin_idmesin')
+                    ->select(DB::raw('mht.cycleTime as cycle'), DB::raw('k.kapasitas as kapasitas'))
                     ->where('mht.teams_idteam', '=', $user[0]->idteam)
+                    ->where('kht.teams_idteam', '=', $user[0]->idteam)
                     ->where('m.nama', 'like', '%' . $proses3[$x] . '%')
                     ->get();
 
-                array_push($arrCycle3, $cycle3[0]->cycle);
+                array_push($arrCycle3, $kapasitascycle3[0]->cycle);
+                array_push($arrKapasitas3, $kapasitascycle3[0]->kapasitas);
             }
         }
 
@@ -447,7 +475,7 @@ class KomponenController extends Controller
         $cycleTime2 = '';
         $cycleTime3 = '';
 
-        //mencari cycletime
+        //mencari dan update cycletime
         if (count($arrCycle1) != 0) {
             $time1 = array_sum($arrCycle1);
             $cycleTime1 = intval(9000 / $time1);
@@ -521,7 +549,39 @@ class KomponenController extends Controller
             // DB::table('teams')->increment('limit_produksi3', $selisih,['idteam'=>$user[0]->idteam]);
         }
 
-        event(new Mesin($user[0]->idteam, '', $cycleTime1, '', $cycleTime2, '', $cycleTime3));
+        $minKpasitas1 = '';
+        $minKpasitas2 = '';
+        $minKpasitas3 = '';
+
+        // mencari dan update maxKapasitas
+        if (count($arrKapasitas1) != 0) {
+            $minKpasitas1 = min($arrKapasitas1);
+
+            DB::table('teams_has_analisis')
+                ->where('teams_idteam', '=', $user[0]->idteam)
+                ->where('analisis_idanalisis', '=', $idProduksi1[0]->maxIdAnalisis)
+                ->update(['maxProduct' => $minKpasitas1]);
+        }
+
+        if (count($arrKapasitas2) != 0) {
+            $minKpasitas2 = min($arrKapasitas2);
+
+            DB::table('teams_has_analisis')
+                ->where('teams_idteam', '=', $user[0]->idteam)
+                ->where('analisis_idanalisis', '=', $idProduksi2[0]->maxIdAnalisis)
+                ->update(['maxProduct' => $minKpasitas2]);
+        }
+
+        if (count($arrKapasitas3) != 0) {
+            $minKpasitas3 = min($arrKapasitas3);
+
+            DB::table('teams_has_analisis')
+                ->where('teams_idteam', '=', $user[0]->idteam)
+                ->where('analisis_idanalisis', '=', $idProduksi3[0]->maxIdAnalisis)
+                ->update(['maxProduct' => $minKpasitas3]);
+        }
+
+        event(new Mesin($user[0]->idteam, $minKpasitas1, $cycleTime1, $minKpasitas2, $cycleTime2, $minKpasitas3, $cycleTime3));
 
         return response()->json(array(
             'data' => $data,

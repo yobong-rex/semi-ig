@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
+use App\Events\updateLeaderboard;
+use Illuminate\Http\Response;
 
 class DemandController extends Controller
 {
@@ -62,6 +64,7 @@ class DemandController extends Controller
             $countDemand = 0;
             $totalDemand = 0;
             $updtDemand = 0;
+            $temp_buangan = [];
 
             //pengecean stok dan sisa demand
             foreach ($demand as $d) {
@@ -100,14 +103,28 @@ class DemandController extends Controller
                 }
 
 
+
                 if (count($produkDemand) > 0) {
+                    //cek sisa demand
+                    if($produkDemand[0]->sisa_demand < $d['total']){
+                        return response()->json(array(
+                            'msg' => 'maaf demand '. $d['nama'] .' pada sesi ini sudah terpenuhi',
+                            'code' => '200'
+                        ), 200);
+                    }
                     $hargaProduk = DB::table('produk')->select('harga_jual')->where('idproduk', $d['produk'])->get();
                     $hargaJual = $d['total'] * $hargaProduk[0]->harga_jual;
                     $totalJual += $hargaJual;
                     $countDemand += 1;
                     $totalDemand += $d['total'];
                     $updtDemand += $d['total'];
+                    $sisaDemand = $produkDemand[0]->sisa_demand - $d['total'];
+                    DB::table('demand')->where('produk_idproduk', $d['produk'])->update(['sisa_demand' => $sisaDemand ]);
                 }
+                else{
+                    array_push($temp_buangan, $d);
+                }
+
                 $sisaProduct = $invtProduct[0]->hasil - $d['total'];
                 if (count($usrDemand) > 0) {
                     $updtDemand += $usrDemand[0]->jumlah;
@@ -119,6 +136,7 @@ class DemandController extends Controller
                 DB::table('history_produksi')
                     ->where('teams_idteam', $team)
                     ->where('produk_idproduk', $d['produk'])
+                    ->where('sesi', $sesi)
                     ->update([
                         'hasil' => $sisaProduct
                     ]);
@@ -130,13 +148,32 @@ class DemandController extends Controller
                 $demandBaru = $teamDana[0]->demand + $totalDemand;
                 $pendapatanBaru = $teamDana[0]->total_pendapatan + $totalJual;
                 $customerValue = $pendapatanBaru;
-                $hibah = floor($customerValue * 2.25);
+                $hibah = floor($customerValue * 1.5);
                 DB::table('teams')->where('idteam', $team)->update(['dana' => $danaBaru, 'demand' => $demandBaru, 'total_pendapatan' => $pendapatanBaru, 'customer_value' => $customerValue, 'hibah' => $hibah]);
+                event(new updateLeaderboard('berhasil'));
                 return response()->json(array(
+                    "success" => true,
                     'msg' => 'selamat team anda berhasil memenuhi demand',
                     'code' => '200'
                 ), 200);
             } else {
+                //msk over product
+                if(count($temp_buangan)>0){
+                    $temp = 0;
+                    $tot_over = 0;
+                    $teamDana = DB::table('teams')->select('dana', 'total_pendapatan','over_production')->where('idteam', $team)->get();
+
+                    foreach($temp_buangan as $tb){
+                        $hargaProduk = DB::table('produk')->select('harga_jual')->where('idproduk', $tb['produk'])->get();
+                        $temp += ($tb['total'] * floor($hargaProduk[0]->harga_jual * 40 / 100));
+                        $tot_over += $tb['total'];
+                    }
+
+                    $danaBaru = $teamDana[0]->dana + $temp;
+                    $totalPendapatanBaru = $teamDana[0]->total_pendapatan + $temp;
+                    $over_baru = $teamDana[0]->over_production + $tot_over;
+                    $affected = DB::table('teams')->where('idteam', $team)->update(['dana' => $danaBaru, 'total_pendapatan' => $totalPendapatanBaru, 'over_production'=> $over_baru]);
+                }
                 return response()->json(array(
                     'msg' => 'maaf team anda gagal memenuhi demand',
                     'code' => '200'

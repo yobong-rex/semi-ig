@@ -47,15 +47,24 @@
         .urutanProduksi {
             width: 100px;
         }
-        @media (max-width:800px){
+        @media (max-width:580px){
+            .dana,
+            .label_dana {
+                text-align: center;
+                padding-left: 24px;
+            }
+        }
+        @media (max-width:800px) and (min-width:580px){
             .dana, .label_dana{
                 text-align: center;
+                padding-left: 24px;
             }
         }
 
-        @media (max-width:1000px){
+        @media (max-width:1000px) and (min-width:800px){
             .dana, .label_dana{
                 font-size: 25px;
+                padding-left: 24px;
             }
         }
     </style>
@@ -114,99 +123,108 @@
             <div class="alert alert-danger" role="alert">Pastikan untuk MEMILIH Jenis Produk dan MENGINPUT Jumlah Produk
                 SEBELUM Konfirmasi</div>
             {{-- Form produksi --}}
-            <form action="{{ route('produksi.buat') }}" method='post'>
-                @csrf
-                <input type="hidden" id='mesinProduksi_1' value = '{{$proses1}}'>
-                <input type="hidden" id='mesinProduksi_2' value = '{{$proses2}}'>
-                <input type="hidden" id='mesinProduksi_3' value = '{{$proses3}}'>
-                <div class="table-responsive">
-                    <table class="table table-bordered" style="vertical-align: middle;">
-                        <thead class="thead">
-                            <tr>
-                                <th scope="col"> </th>
-                                <th scope="col"> </th>
-                                <th scope="col" colspan="10" style="text-align:center;">Urutan Produksi Produk</th>
-                                <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;">Konfirmasi
-                                </th>
-                            </tr>
-                            <tr>
-                                <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;">Produk</th>
-                                <th scope="col" class="inputJumlahProduk" rowspan="2"
-                                    style="vertical-align: middle;text-align:center;">Jumlah Produk</th>
-                                <th class="nomor" scope="col">Nomor</th>
-                                @for ($i = 1; $i <= 9; $i++)
-                                    <th class="penomoran" scope="col">{{ $i }}</th>
-                                @endfor
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{-- id proses_(prosesId) --}}
-                            @for ($i = 1; $i <= 3; $i++)
-                                <tr id="tr_{{ $i }}">
-                                    @if ($i == 1)
-                                        <input type="hidden" id='defect_{{ $i }}' name='defect_{{ $i }}' value='{{ $defect1 }}'>
-                                    @elseif ($i == 2)
-                                        <input type="hidden" id="defect_{{ $i }}" name='defect_{{ $i }}' value='{{ $defect2 }}'>
-                                    @else
-                                        <input type="hidden" id='defect_{{ $i }}' name='defect_{{ $i }}' value='{{ $defect3 }}'>
-                                    @endif
-                                    <td>
-                                        <select name="produk_{{ $i }}" id="produk_{{ $i }}">
-                                            <option value="">pilih produk</option>
-                                            @if ($i == 1)
-                                                <option value="1">Scooter</option>
-                                                <option value="12">Hoverboard</option>
-                                                <option value="9">Skateboard</option>
-                                                <option value="10">Bicycle</option>
-                                                <option value="15">Claw Machine</option>
-                                            @elseif ($i == 2)
-                                                <option value="2">RC Car</option>
-                                                <option value="13">RC Helicopter</option>
-                                                <option value="3">Trampoline</option>
-                                                <option value="7">Robot</option>
-                                                <option value="11">Airsoft Gun</option>
-                                                <option value="6">Playstation</option>
-                                            @else
-                                                <option value="4">Rubber Ball</option>
-                                                <option value="5">Fidget Spiner</option>
-                                                <option value="14">Bowling Set</option>
-                                                <option value="8">Action Figure (Gundam)</option>
-                                            @endif
-                                        </select>
-                                    </td>
-                                    <td><input class="inputJumlahProduk" type="number" name='jumlah_{{ $i }}'
-                                            id='jumlahProduk_{{ $i }}' min="0" oninput="this.value =
-                                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0>
-                                    </td>
-                                    <th class="nomor" scope="row">Proses Produksi {{ $i }}</th>
-                                    @for ($j = 1; $j <= 9; $j++)
-                                        <td>
-                                            @if ($i == 1)
-                                                <input class="urutanProduksi" type="text"
-                                                    value='{{ $splitProses1[$j - 1] }}' disabled>
-                                            @elseif ($i == 2)
-                                                <input class="urutanProduksi" type="text"
-                                                    value='{{ $splitProses2[$j - 1] }}' disabled>
-                                            @else
-                                                <input class="urutanProduksi" type="text"
-                                                    value='{{ $splitProses3[$j - 1] }}' disabled>
-                                            @endif
-                                        </td>
-                                    @endfor
-                                    <td>
-                                        {{--Button Tampilin modal--}}
-                                        <button type="button" class="btn btn-success " id="button_PopupModal" btn='{{$i}}' data-bs-toggle="modal" data-bs-target="#staticBackdrop">Konfirmasi</button>
-
-                                        {{-- Button asli --}}
-                                        {{-- <button class="btn btn-success" name='submit' value='{{ $i }}' id="button_{{ $i }}">Konfirmasi</button> --}}
-
-                                    </td>
+            <div class="card-body rounded" style="background-color:#ffffff">
+                <form action="{{ route('produksi.buat') }}" method='post'>
+                    @csrf
+                    <input type="hidden" id='mesinProduksi_1' value = '{{$proses1}}'>
+                    <input type="hidden" id='mesinProduksi_2' value = '{{$proses2}}'>
+                    <input type="hidden" id='mesinProduksi_3' value = '{{$proses3}}'>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" style="vertical-align: middle;">
+                            <thead class="thead">
+                                <tr>
+                                    <th scope="col"> </th>
+                                    <th scope="col"> </th>
+                                    <th scope="col" colspan="10" style="text-align:center;">Urutan Produksi Produk</th>
+                                    <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;">Konfirmasi
+                                    </th>
                                 </tr>
-                            @endfor
-                        </tbody>
-                    </table>
-                </div>
-            </form>
+                                <tr>
+                                    <th scope="col" rowspan="2" style="vertical-align: middle;text-align:center;">Produk</th>
+                                    <th scope="col" class="inputJumlahProduk" rowspan="2"
+                                        style="vertical-align: middle;text-align:center;">Jumlah Produk</th>
+                                    <th class="nomor" scope="col">Nomor</th>
+                                    @for ($i = 1; $i <= 9; $i++)
+                                        <th class="penomoran" scope="col">{{ $i }}</th>
+                                    @endfor
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{-- id proses_(prosesId) --}}
+                                @for ($i = 1; $i <= 3; $i++)
+                                    <tr id="tr_{{ $i }}">
+                                        @if ($i == 1)
+                                            <input type="hidden" id='defect_{{ $i }}' name='defect_{{ $i }}' value='{{ $defect1 }}'>
+                                        @elseif ($i == 2)
+                                            <input type="hidden" id="defect_{{ $i }}" name='defect_{{ $i }}' value='{{ $defect2 }}'>
+                                        @else
+                                            <input type="hidden" id='defect_{{ $i }}' name='defect_{{ $i }}' value='{{ $defect3 }}'>
+                                        @endif
+                                        <td>
+                                            @if($i == 1)
+                                                <p >Sisa Produksi : <span id='sisa_1'>{{$limit[0]->limit_produksi1}}</span></p>
+                                            @elseif($i == 2)
+                                                <p >Sisa Produksi : <span id='sisa_2'>{{$limit[0]->limit_produksi2}}</span></p>
+                                            @else
+                                                <p >Sisa Produksi : <span id='sisa_3'>{{$limit[0]->limit_produksi3}}</span></p>
+                                            @endif
+                                            <select name="produk_{{ $i }}" id="produk_{{ $i }}">
+                                                <option value="">pilih produk</option>
+                                                @if ($i == 1)
+                                                    <option value="1">Scooter</option>
+                                                    <option value="12">Hoverboard</option>
+                                                    <option value="9">Skateboard</option>
+                                                    <option value="10">Bicycle</option>
+                                                    <option value="15">Claw Machine</option>
+                                                @elseif ($i == 2)
+                                                    <option value="2">RC Car</option>
+                                                    <option value="13">RC Helicopter</option>
+                                                    <option value="3">Trampoline</option>
+                                                    <option value="7">Robot</option>
+                                                    <option value="11">Airsoft Gun</option>
+                                                    <option value="6">Playstation</option>
+                                                @else
+                                                    <option value="4">Rubber Ball</option>
+                                                    <option value="5">Fidget Spiner</option>
+                                                    <option value="14">Bowling Set</option>
+                                                    <option value="8">Action Figure (Gundam)</option>
+                                                @endif
+                                            </select>
+                                        </td>
+                                        <td><input class="inputJumlahProduk" type="number" name='jumlah_{{ $i }}'
+                                                id='jumlahProduk_{{ $i }}' min="0" oninput="this.value =
+                                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" placeholder=0>
+                                        </td>
+                                        <th class="nomor" scope="row">Proses Produksi {{ $i }}</th>
+                                        @for ($j = 1; $j <= 9; $j++)
+                                            <td>
+                                                @if ($i == 1)
+                                                    <input class="urutanProduksi" type="text"
+                                                        value='{{ $splitProses1[$j - 1] }}' disabled>
+                                                @elseif ($i == 2)
+                                                    <input class="urutanProduksi" type="text"
+                                                        value='{{ $splitProses2[$j - 1] }}' disabled>
+                                                @else
+                                                    <input class="urutanProduksi" type="text"
+                                                        value='{{ $splitProses3[$j - 1] }}' disabled>
+                                                @endif
+                                            </td>
+                                        @endfor
+                                        <td>
+                                            {{--Button Tampilin modal--}}
+                                            <button type="button" class="btn btn-success " id="button_PopupModal" btn='{{$i}}' data-bs-toggle="modal" data-bs-target="#staticBackdrop">Konfirmasi</button>
+
+                                            {{-- Button asli --}}
+                                            {{-- <button class="btn btn-success" name='submit' value='{{ $i }}' id="button_{{ $i }}">Konfirmasi</button> --}}
+
+                                        </td>
+                                    </tr>
+                                @endfor
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
 
             <div class="row spacing"></div>
 
@@ -324,12 +342,18 @@
                     "mesinProduksi" : mesinProduksi
                 },
                 success: function(data) {
+                    let sisa = $('#sisa_'+btn).text();
+                    if(data.code == '200'){
+                        sisa = parseInt(sisa) - jumlah;
+                    }
                     $('#staticBackdrop').modal('hide');
                     $('.btn-modal').prop('disabled', false);
                     $('#info-body').text(data.msg);
                     $('#modalInfo').modal('show');
                     $('#produk_'+btn).val("").change();
                     $('#jumlahProduk_'+btn).val(0);
+                    $('#sisa_'+btn).text(sisa);
+
                 },
                 error: function() {
                     // alert('error');

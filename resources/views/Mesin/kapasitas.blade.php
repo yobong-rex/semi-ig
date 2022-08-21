@@ -41,15 +41,26 @@
         .upgrade:hover {
             -webkit-transform: scale(1.07);
         }
-        @media (max-width:800px){
-            .dana, .label_dana{
+
+        @media (max-width:580px){
+            .dana,
+            .label_dana {
                 text-align: center;
+                padding-left: 24px;
             }
         }
 
-        @media (max-width:1000px){
+        @media (max-width:800px) and (min-width:580px){
+            .dana, .label_dana{
+                text-align: center;
+                padding-left: 24px;
+            }
+        }
+
+        @media (max-width:1000px) and (min-width:800px){
             .dana, .label_dana{
                 font-size: 25px;
+                padding-left: 24px;
             }
         }
     </style>
@@ -88,7 +99,7 @@
                         <th scope="col">Mesin</th>
                         <th scope="col" style="text-align:center;">Level</th>
                         <th class="class_kapasitasMesin" style="text-align:center;">Kapasitas</th>
-                        <th scope="col" style="text-align:center;">Konfirmasi</th>
+                        {{-- <th scope="col" style="text-align:center;">Konfirmasi</th> --}}
                     </tr>
                 </thead>
                 {{-- Data Kapasitas --}}
@@ -102,10 +113,10 @@
                                 {{ $data[$x]->level }}</td>
                             <td id='kapasitas_kapasitas_{{ $data[$x]->nama }}' style="text-align:center;">
                                 {{ $data[$x]->kapasitas }}</td>
-                            <td style="text-align:center;vertical-align:center;">
+                            {{-- <td style="text-align:center;vertical-align:center;">
                                 <button class='upgrade' value={{ $data[$x]->nama }} data-bs-toggle="modal"
                                     data-bs-target="#Konfirmasi">Upgrade</button>
-                            </td>
+                            </td> --}}
                         </tr>
                     @endfor
                 </tbody>

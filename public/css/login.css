@@ -77,6 +77,10 @@
 
 .form-control input:focus + label span,
 .form-control input:valid + label span{
-    color:lightblue;
+    color:#567aa7;
     transform: translateY(-30px);
+}
+.btn:hover{
+    background-color: #567aa7;
+    color: #ffffff;
 }

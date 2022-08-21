@@ -122,7 +122,7 @@ class TeamController extends Controller
 
         $idanalisisProses = DB::table('analisis as a')
             ->join('teams_has_analisis as tha', 'a.idanalisis', '=', 'tha.analisis_idanalisis')
-            ->select(DB::raw('MAX(a.idanalisis) as maxIdAnalisis'))
+            ->select(DB::raw('MAX(a.idanalisis) as maxIdAnalisis'), 'produksi')
             ->where('tha.teams_idteam', $user[0]->idteam)
             ->groupBy('a.produksi')
             ->orderBy('a.idanalisis')
@@ -134,7 +134,15 @@ class TeamController extends Controller
                 ->select('maxProduct', 'cycleTime')
                 ->where('analisis_idanalisis', $idAP->maxIdAnalisis)
                 ->get();
-            $analisisProses[] = array($arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
+            if ($idAP->produksi == 1) {
+                $analisisProses[0] = array($idAP->produksi, $arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
+            }
+            if ($idAP->produksi == 2) {
+                $analisisProses[1] = array($idAP->produksi, $arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
+            }
+            if ($idAP->produksi == 3) {
+                $analisisProses[2] = array($idAP->produksi, $arrAP[0]->maxProduct, $arrAP[0]->cycleTime);
+            }
         }
 
         return view('Dashboard.dashboard', compact('idteam', 'user', 'valueSesi', 'namaSesi', 'data', 'produk', 'bahanBaku', 'bbTeam', 'produk_team', 'analisisProses'));
@@ -183,11 +191,12 @@ class TeamController extends Controller
                 'total_defect' => 0,
                 'total_berhasil' => 0,
                 'pengeluaran' => 0,
-                'inventory' => 1000,
+                'inventory' => 600,
                 'total_pendapatan' => 0,
                 'demand' => 0,
                 'customer_value' => 0,
                 'hibah' => 0,
+                'over_production' => 0,
                 'limit_produksi1' => 73,
                 'limit_produksi2' => 79,
                 'limit_produksi3' => 90
@@ -196,7 +205,7 @@ class TeamController extends Controller
         $idteam = DB::getPdo()->lastInsertId();
         $idkomponen = 1;
 
-        for ($jenisMesin = 1; $jenisMesin <= 7; $jenisMesin++) {
+        for ($jenisMesin = 1; $jenisMesin <= 9; $jenisMesin++) {
             DB::table('mesin_has_teams')
                 ->insert([
                     'mesin_idmesin' => $jenisMesin,
@@ -204,20 +213,40 @@ class TeamController extends Controller
                     'level' => 1,
                     'cycleTime' => $mesin[$jenisMesin - 1]->cycle
                 ]);
-            DB::table('kapasitas_has_teams')
-                ->insert([
-                    'kapasitas_idkapasitas' => ((($jenisMesin - 1) * 6) + 1),
-                    'kapasitas_mesin_idmesin' => $jenisMesin,
-                    'teams_idteam' => $idteam
-                ]);
-            for ($komponen = 0; $komponen < 4; $komponen++) {
-                DB::table('level_komponen')
+
+            if ($jenisMesin < 8) {
+                DB::table('kapasitas_has_teams')
                     ->insert([
-                        'teams_idteam' => $idteam,
-                        'komponen_idkomponen' => $idkomponen,
-                        'komponen_mesin_idmesin' => $jenisMesin
+                        'kapasitas_idkapasitas' => ((($jenisMesin - 1) * 6) + 1),
+                        'kapasitas_mesin_idmesin' => $jenisMesin,
+                        'teams_idteam' => $idteam
                     ]);
-                $idkomponen += 10;
+
+                for ($komponen = 0; $komponen < 4; $komponen++) {
+                    DB::table('level_komponen')
+                        ->insert([
+                            'teams_idteam' => $idteam,
+                            'komponen_idkomponen' => $idkomponen,
+                            'komponen_mesin_idmesin' => $jenisMesin
+                        ]);
+                    $idkomponen += 10;
+                }
+            } else if ($jenisMesin == 8) {
+
+                DB::table('kapasitas_has_teams')
+                    ->insert([
+                        'kapasitas_idkapasitas' => 43,
+                        'kapasitas_mesin_idmesin' => 8,
+                        'teams_idteam' => $idteam
+                    ]);
+            } else if ($jenisMesin == 9) {
+
+                DB::table('kapasitas_has_teams')
+                    ->insert([
+                        'kapasitas_idkapasitas' => 44,
+                        'kapasitas_mesin_idmesin' => 9,
+                        'teams_idteam' => $idteam
+                    ]);
             }
         }
 
@@ -229,19 +258,12 @@ class TeamController extends Controller
     function overProduct(Request $request)
     {
         try {
-            $msg = '';
-            $sesi = $request->get('sesi');
             $team = Auth::user()->teams_idteam;
-            $result = DB::table('history_produksi')
-                ->join('produk', 'history_produksi.produk_idproduk', '=', 'produk.idproduk')
-                ->where('history_produksi.sesi', $sesi)
-                ->where('history_produksi.teams_idteam', $team)->get();
-            if (count($result) == 0) {
-                $msg = 'Tidak ada over production dalam sesi ini';
-            }
+            $result = DB::table('teams')
+                ->select('over_production')
+                ->where('idteam', $team)->get()[0]->over_production;
             return response()->json(array(
                 'result' => $result,
-                'msg'  => $msg
             ), 200);
         } catch (\PDOException $e) {
             return response()->json(array(
@@ -249,5 +271,14 @@ class TeamController extends Controller
                 'code' => '401'
             ), 200);
         }
+    }
+
+    function leaderboard()
+    {
+        $data1 = DB::table('teams')->select('nama', 'customer_value')->where('nama', '!=', 'SI')->orderBy('customer_value', 'desc')->get();
+        // return view('leaderboard', compact('data1','data2'));
+        return response()->json(array(
+            'data1' => $data1,
+        ), 200);
     }
 }
