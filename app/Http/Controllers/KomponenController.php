@@ -581,7 +581,7 @@ class KomponenController extends Controller
                 ->update(['maxProduct' => $minKpasitas3]);
         }
 
-        event(new Mesin($user[0]->idteam, $minKpasitas1, $cycleTime1, $minKpasitas2, $cycleTime2, $minKpasitas3, $cycleTime3));
+        // event(new Mesin($user[0]->idteam, $minKpasitas1, $cycleTime1, $minKpasitas2, $cycleTime2, $minKpasitas3, $cycleTime3));
 
         return response()->json(array(
             'data' => $data,
