@@ -276,7 +276,7 @@ class SesiController extends Controller
 
         $countdownTimer = $now + ($sesi[0]->waktu * 1000);
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'ganti', $detail, $countdownTimer));
+        // event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'ganti', $detail, $countdownTimer));
 
         return response()->json(array(
             "success" => true,
@@ -323,7 +323,7 @@ class SesiController extends Controller
 
         $countdownTimer = $now + ($sesi[0]->waktu * 1000);
 
-        event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'back', $detail, $countdownTimer));
+        // event(new Sesi($sesi[0]->sesi, $sesi[0]->nama, $sesi[0]->waktu, 'back', $detail, $countdownTimer));
 
         return response()->json(array(
             "success" => true,
