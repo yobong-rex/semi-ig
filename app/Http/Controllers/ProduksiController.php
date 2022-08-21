@@ -325,7 +325,7 @@ class ProduksiController extends Controller
         $produkDefect = $jumlah - $hasil_user;
         $newDefect = $teamStatus[0]->total_defect + $produkDefect;
         $newBerhasil = $teamStatus[0]->total_berhasil + $hasil;
-        $newDana = $teamStatus[0]->dana - 100;
+        $newDana = $teamStatus[0]->dana - 0;
         $newLimit = $teamStatus[0]->limit - $jumlah;
         DB::table('history_produksi')
             ->updateOrInsert(
