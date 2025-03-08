@@ -43,19 +43,19 @@
         }
 
         /* .upgrade,
-                                .upgrade:focus,
-                                .upgradeAll {
-                                    background-color: #ffc107;
-                                    border: 1px #ffc107;
-                                    border-radius: 5px;
-                                    padding: 6px 12px 6px 12px;
-                                    transition: all 0.2s ease;
-                                }
+                                    .upgrade:focus,
+                                    .upgradeAll {
+                                        background-color: #ffc107;
+                                        border: 1px #ffc107;
+                                        border-radius: 5px;
+                                        padding: 6px 12px 6px 12px;
+                                        transition: all 0.2s ease;
+                                    }
 
-                                .upgrade:hover,
-                                .upgradeAll:hover {
-                                    -webkit-transform: scale(1.07);
-                                } */
+                                    .upgrade:hover,
+                                    .upgradeAll:hover {
+                                        -webkit-transform: scale(1.07);
+                                    } */
 
         .kartu_tabel {
             background-color: #ffffff;

@@ -617,7 +617,7 @@
                     type: "POST",
                     url: "{{ route('dashboard.overProduct') }}",
                     data: {
-                        '_token': '<?php echo csrf_token(); ?>',
+                        '_token': '<?php echo csrf_token(); ?>',    
                         'sesi': sesi,
 
                     },
